@@ -36,3 +36,8 @@ OR
 ```console
 /bin/bash project.sh
 ```
+
+for connect to php container with .env file in windows
+```console
+docker-compose --env-file .env.local exec -it "php" /bin/bash
+```
