@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello IndexController!{% endblock %}
+
+{% block body %}
+
+    <div class="example-wrapper">
+        <h2>Trade History</h2>
+
+        {% if app.user %}
+            <p>Amount of account: {{ app.user.amount }}</p>
+            <a href="{{ path('app_logout') }}">Logout</a>
+        {% else %}
+            <a href="{{ path('app_register') }}">Register</a>
+            <a href="{{ path('app_login') }}">Login</a>
+        {% endif %}
+        <br>
+        <hr>
+        {% if app.user %}
+            {{ include('includes/_categoty.html.twig') }}
+            {% if categories %}
+                {{ include('category/index.html.twig') }}
+            {% endif %}
+            <hr>
+            {{ include('includes/_transaction.html.twig') }}
+            {% if transactions %}
+                {{ include('transaction/index.html.twig') }}
+            {% endif %}
+            <hr>
+            {{ include('includes/_deposite.html.twig') }}
+            {% if deposits %}
+                {{ include('deposite/index.html.twig') }}
+            {% endif %}
+        {% endif %}
+        <hr>
+    </div>
+{% endblock %}

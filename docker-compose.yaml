@@ -1,16 +1,5 @@
 version: "3"
 services:
-  symfony-install:
-    container_name: symfony_${PROJECT_NAME}_install
-    build:
-      context: ./
-      dockerfile: docker/configs/php/Dockerfile-installer
-      args:
-        WORKDIR: ${WORKDIR}
-    environment:
-      WORKDIR: ${WORKDIR}
-    volumes:
-      - ./:${WORKDIR}
   php:
     container_name: php_${PROJECT_NAME}
     build:
