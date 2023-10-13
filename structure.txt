@@ -1,0 +1,24 @@
+- User
+    - Deposit
+    - Category
+    - Transaction
+    - Rapport
+- Deposit
+    - create
+    - delete
+- Category
+    - create
+    - delete
+    - edit
+- Transaction
+    - create
+    - delete
+    - edit
+- Rapport
+    -
+
+
+
+- нарахування процентів
+- вирахування суми депозиту з основного рахунку
+- тип нарахування процентів
