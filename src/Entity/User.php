@@ -114,7 +114,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setAmount(?float $amount): static
     {
-        $this->amount = password_hash($amount, PASSWORD_BCRYPT);
+        $this->amount = $amount;
 
         return $this;
     }

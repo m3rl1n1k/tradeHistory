@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-class SecurityUserData
+class SecurityUserDataService
 {
 		//написати код для захисту даних користувача та інформації
 }

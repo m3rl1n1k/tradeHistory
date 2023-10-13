@@ -16,7 +16,7 @@ class TransactionService
 	{
 	}
 
-	public function testCalcEdit(UserInterface $user, Transaction $transaction, $oldAmount, $newAmount)
+	public function testCalcEdit(UserInterface $user, Transaction $transaction, $oldAmount, $newAmount): void
 	{
 		/**
 		 * @var User $user
@@ -28,10 +28,11 @@ class TransactionService
 			$user->setAmount($user->getAmount() + ($oldAmount - $newAmount));
 	}
 
-	public function testCalculating(UserInterface $user, Transaction $transaction)
+	public function testCalculating(UserInterface $user, Transaction $transaction): void
 	{
-		$amount = null;
-
+		/**
+		 * @var User $user
+		 */
 		match ($transaction->getType()) {
 			TransactionTypesEnum::Expense => $user->setAmount($user->decrementAmount($transaction->getAmount())),
 			TransactionTypesEnum::Income => $user->setAmount($user->incrementAmount($transaction->getAmount()))

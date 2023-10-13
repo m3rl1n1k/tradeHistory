@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
+use App\Enum\DepositSettingsEnum;
 use App\Repository\DepositRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use function PHPUnit\Framework\isNull;
 
 #[ORM\Entity(repositoryClass: DepositRepository::class)]
 class Deposit
@@ -20,11 +22,16 @@ class Deposit
     #[ORM\Column]
     private ?int $percent = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date_open = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date_close = null;
+
+    #[ORM\Column(length: 25, options: [
+        'default' => DepositSettingsEnum::OPEN
+    ])]
+    private ?string $status = null;
 
     public function getId(): ?int
     {
@@ -77,5 +84,39 @@ class Deposit
         $this->date_close = $date_close;
 
         return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
+        if (isNull($status))
+            $this->status = DepositSettingsEnum::OPEN;
+
+        return $this;
+    }
+
+    public function setActive(): string
+    {
+        return DepositSettingsEnum::ACTIVE;
+    }
+
+    public function setNotActive(): string
+    {
+        return DepositSettingsEnum::NOT_ACTIVE;
+    }
+
+    public function setClose(): string
+    {
+        return DepositSettingsEnum::CLOSE;
+    }
+
+    public function setOpen(): string
+    {
+        return DepositSettingsEnum::OPEN;
     }
 }

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Deposit;
 use App\Form\DepositType;
 use App\Repository\DepositRepository;
+use App\Services\DepositService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,16 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/deposit')]
 class DepositController extends AbstractController
 {
+    private Deposit $deposit;
+
+    public function __construct(
+        protected DepositService $depositService,
+        protected EntityManagerInterface $entityManager
+    )
+    {
+        $this->deposit = new Deposit();
+    }
+
     #[Route('/', name: 'app_deposit_index', methods: ['GET'])]
     public function index(DepositRepository $depositRepository): Response
     {
@@ -23,21 +34,20 @@ class DepositController extends AbstractController
     }
 
     #[Route('/new', name: 'app_deposit_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request): Response
     {
-        $deposit = new Deposit();
-        $form = $this->createForm(DepositType::class, $deposit);
+        $form = $this->createForm(DepositType::class, $this->deposit);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($deposit);
-            $entityManager->flush();
+            $this->deposit->setStatus($this->deposit->setOpen());
+            $this->entityManager->persist($this->deposit);
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('app_deposit_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('deposit/new.html.twig', [
-            'deposit' => $deposit,
+            'deposit' => $this->deposit,
             'form' => $form,
         ]);
     }
@@ -51,13 +61,13 @@ class DepositController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_deposit_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Deposit $deposit, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Deposit $deposit): Response
     {
         $form = $this->createForm(DepositType::class, $deposit);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('app_deposit_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -69,11 +79,11 @@ class DepositController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_deposit_delete', methods: ['POST'])]
-    public function delete(Request $request, Deposit $deposit, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Deposit $deposit): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$deposit->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($deposit);
-            $entityManager->flush();
+        if ($this->isCsrfTokenValid('delete' . $deposit->getId(), $request->request->get('_token'))) {
+            $this->entityManager->remove($deposit);
+            $this->entityManager->flush();
         }
 
         return $this->redirectToRoute('app_deposit_index', [], Response::HTTP_SEE_OTHER);
