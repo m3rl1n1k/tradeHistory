@@ -22,16 +22,19 @@ class Deposit
     #[ORM\Column]
     private ?int $percent = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_open = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_close = null;
 
     #[ORM\Column(length: 25, options: [
         'default' => DepositSettingsEnum::OPEN
     ])]
     private ?string $status = null;
+
+    #[ORM\Column]
+    private ?float $startAmount = null;
 
     public function getId(): ?int
     {
@@ -94,29 +97,38 @@ class Deposit
     public function setStatus(string $status): static
     {
         $this->status = $status;
-        if (isNull($status))
-            $this->status = DepositSettingsEnum::OPEN;
-
         return $this;
     }
 
-    public function setActive(): string
+    public function setActive(): int
     {
         return DepositSettingsEnum::ACTIVE;
     }
 
-    public function setNotActive(): string
+    public function setNotActive(): int
     {
         return DepositSettingsEnum::NOT_ACTIVE;
     }
 
-    public function setClose(): string
+    public function setClose(): int
     {
         return DepositSettingsEnum::CLOSE;
     }
 
-    public function setOpen(): string
+    public function setOpen(): int
     {
         return DepositSettingsEnum::OPEN;
+    }
+
+    public function getStartAmount(): ?float
+    {
+        return $this->startAmount;
+    }
+
+    public function setStartAmount(float $startAmount): static
+    {
+        $this->startAmount = $startAmount;
+
+        return $this;
     }
 }

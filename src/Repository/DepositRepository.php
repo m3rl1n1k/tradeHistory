@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Deposit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -16,7 +17,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class DepositRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry                  $registry,
+                                protected EntityManagerInterface $manager)
     {
         parent::__construct($registry, Deposit::class);
     }
@@ -45,4 +47,10 @@ class DepositRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function save($entity, bool $flush = false)
+    {
+        $this->manager->persist($entity);
+        $this->manager->flush();
+    }
 }

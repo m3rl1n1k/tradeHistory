@@ -9,9 +9,9 @@ enum DepositSettingsEnum
 	const p3 = '3';
 	const p5 = '5';
 
-	const MONTH1 = '1 minute';
-	const MONTH2 = '2 minute';
-	const MONTH3 = '3 minute';
+	const MONTH1 = '1 day';
+	const MONTH2 = '2 day';
+	const MONTH3 = '3 day';
 
 	const OPEN = 'OPEN';
 	const ACTIVE = 'ACTIVE';

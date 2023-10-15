@@ -21,7 +21,7 @@
         {% for deposit in deposits %}
             <tr>
                 <td>{{ deposit.id }}</td>
-                <td>{{ deposit.amount }}</td>
+                <td>{{ deposit.startamount }}</td>
                 <td>{{ deposit.percent }}</td>
                 <td>{{ deposit.dateOpen ? deposit.dateOpen|date('Y-m-d') : '' }}</td>
                 <td>{{ deposit.dateClose ? deposit.dateClose|date('Y-m-d') : '' }}</td>

@@ -1,0 +1,235 @@
+From root@localhost Sun Oct 15 14:04:41 2023
+Return-path: <root@localhost>
+Envelope-to: root@localhost
+Delivery-date: Sun, 15 Oct 2023 14:04:41 +0000
+Received: from root by eca9d365c4fc with local (Exim 4.96)
+	(envelope-from <root@localhost>)
+	id 1qs1jU-0000HW-2R
+	for root@localhost;
+	Sun, 15 Oct 2023 14:04:40 +0000
+From: root@localhost (Cron Daemon)
+To: root@localhost
+Subject: Cron <root@eca9d365c4fc> XDEBUG_MODE=off /usr/local/bin/php /srv/src/app/bin/console app:tested-command
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+X-Cron-Env: <SHELL=/bin/sh>
+X-Cron-Env: <HOME=/root>
+X-Cron-Env: <PATH=/usr/bin:/bin>
+X-Cron-Env: <LOGNAME=root>
+Message-Id: <E1qs1jU-0000HW-2R@eca9d365c4fc>
+Date: Sun, 15 Oct 2023 14:04:40 +0000
+
+
+In Filesystem.php line 686:
+                                                                               
+  Warning: fileperms(): stat failed for /srv/src/app/var/cache/dev/ContainerL  
+  CgvmOx/get_Console_Command_MailerTest_LazyService.php                        
+                                                                               
+
+2023-10-15T14:04:40+00:00 [info] User Deprecated: The "Monolog\Logger" class is considered final. It may change without further notice as of its next major version. You should not extend it from "Symfony\Bridge\Monolog\Logger".
+
+From root@localhost Sun Oct 15 14:27:34 2023
+Return-path: <root@localhost>
+Envelope-to: root@localhost
+Delivery-date: Sun, 15 Oct 2023 14:27:34 +0000
+Received: from root by eca9d365c4fc with local (Exim 4.96)
+	(envelope-from <root@localhost>)
+	id 1qs25e-0000JU-0o
+	for root@localhost;
+	Sun, 15 Oct 2023 14:27:34 +0000
+From: root@localhost (Cron Daemon)
+To: root@localhost
+Subject: Cron <root@eca9d365c4fc> XDEBUG_MODE=off /usr/local/bin/php /srv/src/app/bin/console app:tested-command
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+X-Cron-Env: <SHELL=/bin/sh>
+X-Cron-Env: <HOME=/root>
+X-Cron-Env: <PATH=/usr/bin:/bin>
+X-Cron-Env: <LOGNAME=root>
+Message-Id: <E1qs25e-0000JU-0o@eca9d365c4fc>
+Date: Sun, 15 Oct 2023 14:27:34 +0000
+
+ParseError {#438
+  #message: "syntax error, unexpected variable "$res""
+  #code: 0
+  #file: "/srv/src/app/src/Services/DepositService.php"
+  #line: 33
+  trace: {
+    /srv/src/app/src/Services/DepositService.php:33 {
+      Composer\Autoload\{closure}
+      ›     $this->depositRepository->\r
+      ›     return $res;\r
+      › }\r
+    }
+    /srv/src/app/vendor/composer/ClassLoader.php:427 { …}
+    /srv/src/app/vendor/symfony/error-handler/DebugClassLoader.php:300 { …}
+    Symfony\Component\ErrorHandler\DebugClassLoader->loadClass() {}
+    /srv/src/app/vendor/symfony/config/Resource/ClassExistenceResource.php:76 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/ContainerBuilder.php:361 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/FileLoader.php:275 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/FileLoader.php:121 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/YamlFileLoader.php:705 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/YamlFileLoader.php:254 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/YamlFileLoader.php:177 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/YamlFileLoader.php:133 { …}
+    /srv/src/app/vendor/symfony/config/Loader/FileLoader.php:167 { …}
+    /srv/src/app/vendor/symfony/config/Loader/FileLoader.php:98 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/FileLoader.php:70 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/Configurator/ContainerConfigurator.php:64 { …}
+    /srv/src/app/vendor/symfony/framework-bundle/Kernel/MicroKernelTrait.php:57 { …}
+    /srv/src/app/vendor/symfony/framework-bundle/Kernel/MicroKernelTrait.php:180 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/ClosureLoader.php:36 { …}
+    /srv/src/app/vendor/symfony/config/Loader/DelegatingLoader.php:37 { …}
+    /srv/src/app/vendor/symfony/framework-bundle/Kernel/MicroKernelTrait.php:188 { …}
+    /srv/src/app/vendor/symfony/http-kernel/Kernel.php:604 { …}
+    /srv/src/app/vendor/symfony/http-kernel/Kernel.php:505 { …}
+    /srv/src/app/vendor/symfony/http-kernel/Kernel.php:757 { …}
+    /srv/src/app/vendor/symfony/http-kernel/Kernel.php:126 { …}
+    /srv/src/app/vendor/symfony/framework-bundle/Console/Application.php:154 { …}
+    /srv/src/app/vendor/symfony/framework-bundle/Console/Application.php:72 { …}
+    /srv/src/app/vendor/symfony/console/Application.php:174 { …}
+    /srv/src/app/vendor/symfony/runtime/Runner/Symfony/ConsoleApplicationRunner.php:54 { …}
+    /srv/src/app/vendor/autoload_runtime.php:29 { …}
+    /srv/src/app/bin/console:11 { …}
+  }
+}
+2023-10-15T14:27:34+00:00 [critical] Uncaught Error: syntax error, unexpected variable "$res"
+
+From root@localhost Sun Oct 15 14:28:22 2023
+Return-path: <root@localhost>
+Envelope-to: root@localhost
+Delivery-date: Sun, 15 Oct 2023 14:28:22 +0000
+Received: from root by eca9d365c4fc with local (Exim 4.96)
+	(envelope-from <root@localhost>)
+	id 1qs26Q-0000Jd-1q
+	for root@localhost;
+	Sun, 15 Oct 2023 14:28:22 +0000
+From: root@localhost (Cron Daemon)
+To: root@localhost
+Subject: Cron <root@eca9d365c4fc> XDEBUG_MODE=off /usr/local/bin/php /srv/src/app/bin/console app:tested-command
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+X-Cron-Env: <SHELL=/bin/sh>
+X-Cron-Env: <HOME=/root>
+X-Cron-Env: <PATH=/usr/bin:/bin>
+X-Cron-Env: <LOGNAME=root>
+Message-Id: <E1qs26Q-0000Jd-1q@eca9d365c4fc>
+Date: Sun, 15 Oct 2023 14:28:22 +0000
+
+ParseError {#438
+  #message: "syntax error, unexpected variable "$res""
+  #code: 0
+  #file: "/srv/src/app/src/Services/DepositService.php"
+  #line: 33
+  trace: {
+    /srv/src/app/src/Services/DepositService.php:33 {
+      Composer\Autoload\{closure}
+      ›     $this->depositRepository->\r
+      ›     return $res;\r
+      › }\r
+    }
+    /srv/src/app/vendor/composer/ClassLoader.php:427 { …}
+    /srv/src/app/vendor/symfony/error-handler/DebugClassLoader.php:300 { …}
+    Symfony\Component\ErrorHandler\DebugClassLoader->loadClass() {}
+    /srv/src/app/vendor/symfony/config/Resource/ClassExistenceResource.php:76 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/ContainerBuilder.php:361 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/FileLoader.php:275 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/FileLoader.php:121 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/YamlFileLoader.php:705 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/YamlFileLoader.php:254 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/YamlFileLoader.php:177 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/YamlFileLoader.php:133 { …}
+    /srv/src/app/vendor/symfony/config/Loader/FileLoader.php:167 { …}
+    /srv/src/app/vendor/symfony/config/Loader/FileLoader.php:98 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/FileLoader.php:70 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/Configurator/ContainerConfigurator.php:64 { …}
+    /srv/src/app/vendor/symfony/framework-bundle/Kernel/MicroKernelTrait.php:57 { …}
+    /srv/src/app/vendor/symfony/framework-bundle/Kernel/MicroKernelTrait.php:180 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/ClosureLoader.php:36 { …}
+    /srv/src/app/vendor/symfony/config/Loader/DelegatingLoader.php:37 { …}
+    /srv/src/app/vendor/symfony/framework-bundle/Kernel/MicroKernelTrait.php:188 { …}
+    /srv/src/app/vendor/symfony/http-kernel/Kernel.php:604 { …}
+    /srv/src/app/vendor/symfony/http-kernel/Kernel.php:505 { …}
+    /srv/src/app/vendor/symfony/http-kernel/Kernel.php:757 { …}
+    /srv/src/app/vendor/symfony/http-kernel/Kernel.php:126 { …}
+    /srv/src/app/vendor/symfony/framework-bundle/Console/Application.php:154 { …}
+    /srv/src/app/vendor/symfony/framework-bundle/Console/Application.php:72 { …}
+    /srv/src/app/vendor/symfony/console/Application.php:174 { …}
+    /srv/src/app/vendor/symfony/runtime/Runner/Symfony/ConsoleApplicationRunner.php:54 { …}
+    /srv/src/app/vendor/autoload_runtime.php:29 { …}
+    /srv/src/app/bin/console:11 { …}
+  }
+}
+2023-10-15T14:28:22+00:00 [critical] Uncaught Error: syntax error, unexpected variable "$res"
+
+From root@localhost Sun Oct 15 14:29:19 2023
+Return-path: <root@localhost>
+Envelope-to: root@localhost
+Delivery-date: Sun, 15 Oct 2023 14:29:19 +0000
+Received: from root by eca9d365c4fc with local (Exim 4.96)
+	(envelope-from <root@localhost>)
+	id 1qs27L-0000Jm-1Q
+	for root@localhost;
+	Sun, 15 Oct 2023 14:29:19 +0000
+From: root@localhost (Cron Daemon)
+To: root@localhost
+Subject: Cron <root@eca9d365c4fc> XDEBUG_MODE=off /usr/local/bin/php /srv/src/app/bin/console app:tested-command
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+X-Cron-Env: <SHELL=/bin/sh>
+X-Cron-Env: <HOME=/root>
+X-Cron-Env: <PATH=/usr/bin:/bin>
+X-Cron-Env: <LOGNAME=root>
+Message-Id: <E1qs27L-0000Jm-1Q@eca9d365c4fc>
+Date: Sun, 15 Oct 2023 14:29:19 +0000
+
+ParseError {#438
+  #message: "syntax error, unexpected variable "$res""
+  #code: 0
+  #file: "/srv/src/app/src/Services/DepositService.php"
+  #line: 33
+  trace: {
+    /srv/src/app/src/Services/DepositService.php:33 {
+      Composer\Autoload\{closure}
+      ›     $this->depositRepository->\r
+      ›     return $res;\r
+      › }\r
+    }
+    /srv/src/app/vendor/composer/ClassLoader.php:427 { …}
+    /srv/src/app/vendor/symfony/error-handler/DebugClassLoader.php:300 { …}
+    Symfony\Component\ErrorHandler\DebugClassLoader->loadClass() {}
+    /srv/src/app/vendor/symfony/config/Resource/ClassExistenceResource.php:76 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/ContainerBuilder.php:361 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/FileLoader.php:275 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/FileLoader.php:121 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/YamlFileLoader.php:705 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/YamlFileLoader.php:254 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/YamlFileLoader.php:177 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/YamlFileLoader.php:133 { …}
+    /srv/src/app/vendor/symfony/config/Loader/FileLoader.php:167 { …}
+    /srv/src/app/vendor/symfony/config/Loader/FileLoader.php:98 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/FileLoader.php:70 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/Configurator/ContainerConfigurator.php:64 { …}
+    /srv/src/app/vendor/symfony/framework-bundle/Kernel/MicroKernelTrait.php:57 { …}
+    /srv/src/app/vendor/symfony/framework-bundle/Kernel/MicroKernelTrait.php:180 { …}
+    /srv/src/app/vendor/symfony/dependency-injection/Loader/ClosureLoader.php:36 { …}
+    /srv/src/app/vendor/symfony/config/Loader/DelegatingLoader.php:37 { …}
+    /srv/src/app/vendor/symfony/framework-bundle/Kernel/MicroKernelTrait.php:188 { …}
+    /srv/src/app/vendor/symfony/http-kernel/Kernel.php:604 { …}
+    /srv/src/app/vendor/symfony/http-kernel/Kernel.php:505 { …}
+    /srv/src/app/vendor/symfony/http-kernel/Kernel.php:757 { …}
+    /srv/src/app/vendor/symfony/http-kernel/Kernel.php:126 { …}
+    /srv/src/app/vendor/symfony/framework-bundle/Console/Application.php:154 { …}
+    /srv/src/app/vendor/symfony/framework-bundle/Console/Application.php:72 { …}
+    /srv/src/app/vendor/symfony/console/Application.php:174 { …}
+    /srv/src/app/vendor/symfony/runtime/Runner/Symfony/ConsoleApplicationRunner.php:54 { …}
+    /srv/src/app/vendor/autoload_runtime.php:29 { …}
+    /srv/src/app/bin/console:11 { …}
+  }
+}
+2023-10-15T14:29:19+00:00 [critical] Uncaught Error: syntax error, unexpected variable "$res"
+

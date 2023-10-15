@@ -13,7 +13,8 @@ services:
       PHP_IDE_CONFIG: serverName=docker
     volumes:
       - ./:${WORKDIR}
-      - ./logs/cron:/var/log/cron
+      - ./docker/configs/cron/crontabs/:/var/spool/cron/crontabs
+      - ./docker/configs/cron/mail/:/var/mail/
     links:
       - db_mysql
 
@@ -48,5 +49,3 @@ services:
       - ./logs/nginx:/var/log/nginx
     links:
       - php
-  cron:
-    image: cron

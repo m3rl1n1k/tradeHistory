@@ -8,7 +8,7 @@ use App\Services\DateTimeService;
 use DateTime;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -24,7 +24,7 @@ class DepositType extends AbstractType
 	{
         $date = new DateTime();
 		$builder
-			->add('amount')
+			->add('startAmount')
 			->add('percent', ChoiceType::class, [
 				'choices' => [
 					'1%' => DepositSettingsEnum::p1,
@@ -32,17 +32,17 @@ class DepositType extends AbstractType
 					'3%' => DepositSettingsEnum::p3,
 				]
 			])
-			->add('date_open', DateTimeType::class, [
+			->add('date_open', DateType::class, [
 				'data' => $date,
-                'html5' => false,
-                'format' => "d m Y"
+                'html5'=> "false"
 			])
 			->add('date_close', ChoiceType::class, [
 				'choices' => [
 					DepositSettingsEnum::MONTH1 => $this->dateTime->calculateDifferent(DepositSettingsEnum::MONTH1),
 					DepositSettingsEnum::MONTH2 => $this->dateTime->calculateDifferent(DepositSettingsEnum::MONTH2),
 					DepositSettingsEnum::MONTH3 => $this->dateTime->calculateDifferent(DepositSettingsEnum::MONTH3),
-				]
+				],
+                'label' => 'Which term?'
 			]);
 	}
 
