@@ -39,7 +39,7 @@ class DepositController extends AbstractController
         $form = $this->createForm(DepositType::class, $this->deposit);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->deposit->setStatus($this->deposit->setOpen());
+            $this->deposit->setStatus($this->deposit->setActive());
             $this->entityManager->persist($this->deposit);
             $this->entityManager->flush();
 
@@ -67,6 +67,7 @@ class DepositController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->deposit->setStatus($this->deposit->setActive());
             $this->entityManager->flush();
 
             return $this->redirectToRoute('app_deposit_index', [], Response::HTTP_SEE_OTHER);

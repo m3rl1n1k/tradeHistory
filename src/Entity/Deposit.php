@@ -16,7 +16,7 @@ class Deposit
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?float $amount = null;
 
     #[ORM\Column]
@@ -28,9 +28,7 @@ class Deposit
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_close = null;
 
-    #[ORM\Column(length: 25, options: [
-        'default' => DepositSettingsEnum::OPEN
-    ])]
+    #[ORM\Column(length: 25)]
     private ?string $status = null;
 
     #[ORM\Column]
@@ -96,26 +94,26 @@ class Deposit
 
     public function setStatus(string $status): static
     {
-        $this->status = $status;
+        $this->status = json_encode($status);
         return $this;
     }
 
-    public function setActive(): int
+    public function setActive(): string
     {
         return DepositSettingsEnum::ACTIVE;
     }
 
-    public function setNotActive(): int
+    public function setNotActive(): string
     {
         return DepositSettingsEnum::NOT_ACTIVE;
     }
 
-    public function setClose(): int
+    public function setClose(): string
     {
         return DepositSettingsEnum::CLOSE;
     }
 
-    public function setOpen(): int
+    public function setOpen(): string
     {
         return DepositSettingsEnum::OPEN;
     }

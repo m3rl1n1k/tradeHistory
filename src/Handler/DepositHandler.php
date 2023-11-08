@@ -14,6 +14,6 @@ class DepositHandler
 
     public function handler(): void
     {
-        $this->depositService->depositStatusChecker();
+        $this->depositService->calculateDeposit();
     }
 }

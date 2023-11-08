@@ -2,9 +2,10 @@
 
 namespace App\Services;
 
-
+use App\Entity\Deposit;
 use App\Enum\DepositSettingsEnum;
 use App\Repository\DepositRepository;
+use DateTime;
 
 
 class DepositService
@@ -15,35 +16,39 @@ class DepositService
     {
     }
 
-    public function depositStatusChecker(): void
+    public function calculateDeposit(): array
     {
+        $depositsList = [];
         $deposits = $this->depositRepository->findAll();
         foreach ($deposits as $deposit) {
-            if ($deposit->getStatus() == DepositSettingsEnum::CLOSE) {
-                $deposit->setStatus($deposit->setOpen());
-                $this->depositRepository->save($deposit);
+            $status = $this->checkStatus($deposit->getStatus(), DepositSettingsEnum::ACTIVE);
+            $date = $deposit->getDateClose() > new DateTime();
+            if ($status && $date) {
+                $deposit->setPercent($this->calculatePercent($deposit));
+                $depositsList[] = $deposit;
             }
         }
+        return $depositsList;
     }
 
-    public function calculatePercent(): int
+    protected function calculatePercent(Deposit $deposit): int
     {
+        $percent = $deposit->getPercent();
+        $calculate = $deposit->getStartAmount()*$percent;
+        //term 30 days
+        //100% / 30 days
+        //every day add 1% from all amount
+        //
         $res = 0;
-        $this->depositRepository->
+
         return $res;
     }
 
-    protected function prepare($data, bool $encode = false): string
+    protected function checkStatus($list, $needle): ?bool
     {
-        $res = "No data";
-        if ($encode) {
-            $res = json_encode($data);
-        }
-        if (!$encode) {
-            $res = json_decode($data);
-        }
-        return $res;
+        $needle = array($needle);
+        $array = json_decode($list, JSON_OBJECT_AS_ARRAY);
+        return in_array($array, $needle);
     }
-
 }
 
