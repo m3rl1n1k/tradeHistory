@@ -6,7 +6,6 @@ use App\Entity\Transaction;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,18 +24,11 @@ class TransactionType extends AbstractType
                 'currency' => 'PLN'
             ])
             ->add('type', Type\TransactionType::class)
-            ->add('date', DateTimeType::class, [
-                'html5' => true
-            ])
+            ->add('date', DateTimeType::class)
             ->add('description', TextareaType::class, [
                 'required' => false,
                 'attr' => [
                     'max' => 255,
-                ]
-            ])
-            ->add('user_id', HiddenType::class, [
-                'attr' => [
-                    'value' => $this->security->getUser()
                 ]
             ]);
     }

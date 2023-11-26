@@ -6,6 +6,7 @@ use App\Entity\Transaction;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bundle\SecurityBundle\Security;
 
 /**
  * @extends ServiceEntityRepository<Transaction>
@@ -17,7 +18,9 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TransactionRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry          $registry,
+                                protected Security       $security,
+                                protected UserRepository $userRepository)
     {
         parent::__construct($registry, Transaction::class);
     }
@@ -46,18 +49,27 @@ class TransactionRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-    public function saveAmount(EntityManagerInterface $entityManager, Transaction $transaction, float $amount, bool $persist = false): void
+    public function saveAmount(EntityManagerInterface $entityManager, Transaction $transaction, bool $persist = false): void
     {
         if ($transaction->getType() === Transaction::INCOMING) {
-            $transaction->incrementAmount($amount);
+            $this->incrementAmount($transaction);
         }
         if ($transaction->getType() === Transaction::EXPENSE) {
-            $transaction->decrementAmount($amount);
+            $this->decrementAmount($transaction);
         }
 
         if ($persist)
             $entityManager->persist($transaction);
-        dd($transaction);
         $entityManager->flush();
+    }
+
+    protected function incrementAmount(Transaction $transaction): void
+    {
+        $transaction->setAmount($this->security->getUser()->getAmount() + $transaction->getAmount());
+    }
+
+    protected function decrementAmount(Transaction $transaction): void
+    {
+        $transaction->setAmount($this->security->getUser()->getAmount() - $transaction->getAmount());
     }
 }

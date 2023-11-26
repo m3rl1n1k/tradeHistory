@@ -14,6 +14,8 @@ class Transaction
     const INCOMING = 1;
     const EXPENSE = 2;
     const TRANSACTION = 3;
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -33,7 +35,7 @@ class Transaction
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $user_id = null;
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -90,23 +92,15 @@ class Transaction
 
     public function getUserId(): ?User
     {
-        return $this->user_id;
+        return $this->user;
     }
 
-    public function setUserId(?User $user_id): static
+    public function setUserId(?User $user): static
     {
-        $this->user_id = $user_id;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function incrementAmount(float $amount): void
-    {
-        $this->setAmount($this->getAmount() + $amount);
-    }
 
-    public function decrementAmount(float $amount): void
-    {
-        $this->setAmount($this->getAmount() - $amount);
-    }
 }

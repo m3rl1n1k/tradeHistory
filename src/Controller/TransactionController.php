@@ -17,7 +17,7 @@ class TransactionController extends AbstractController
 {
     public function __construct(
         protected TransactionRepository $transactionRepository,
-        protected Security $security
+        protected Security              $security
     )
     {
     }
@@ -38,7 +38,9 @@ class TransactionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->transactionRepository->saveAmount($entityManager, $transaction, $request->request->get('amount'), true);
+            $formData = $form->getData();
+            $formData->setUserId($this->security->getUser());
+            $this->transactionRepository->saveAmount($entityManager, $transaction, true);
 
             return $this->redirectToRoute('app_transaction_index', [], Response::HTTP_SEE_OTHER);
         }
