@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Deposit{% endblock %}
+
+{% block body %}
+    <h1>Deposit</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ deposit.id }}</td>
+            </tr>
+            <tr>
+                <th>Amount</th>
+                <td>{{ deposit.amount }}</td>
+            </tr>
+            <tr>
+                <th>DateOpen</th>
+                <td>{{ deposit.dateOpen ? deposit.dateOpen|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DateClose</th>
+                <td>{{ deposit.dateClose ? deposit.dateClose|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_deposit_index') }}">back to list</a>
+
+    <a href="{{ path('app_deposit_edit', {'id': deposit.id}) }}">edit</a>
+
+    {{ include('deposit/_delete_form.html.twig') }}
+{% endblock %}
