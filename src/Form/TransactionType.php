@@ -2,41 +2,42 @@
 
 namespace App\Form;
 
-use App\Entity\Category;
 use App\Entity\Transaction;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Date;
 
 class TransactionType extends AbstractType
 {
+    public function __construct(protected Security $security)
+    {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('amount')
-            ->add('type', ChoiceType::class, [
-                'choices' => [
-                    'Income' => 'INCOME',
-                    'Expense' => 'EXPENSE',
-                ],
-                'label' => 'Select transaction type:',
+            ->add('amount', MoneyType::class, [
+                'currency' => 'PLN'
+            ])
+            ->add('type', Type\TransactionType::class)
+            ->add('date', DateTimeType::class, [
+                'html5' => true
             ])
             ->add('description', TextareaType::class, [
-                'required' => false
-            ])
-            ->add('date', DateType::class, [
-                'data' => new \DateTime(),
-            ])
-            ->add('category_id', EntityType::class, [
-                'class' => Category::class,
-                'choice_label' => 'name',
-                'empty_data' => null,
                 'required' => false,
+                'attr' => [
+                    'max' => 255,
+                ]
+            ])
+            ->add('user_id', HiddenType::class, [
+                'attr' => [
+                    'value' => $this->security->getUser()
+                ]
             ]);
     }
 

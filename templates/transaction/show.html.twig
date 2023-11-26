@@ -21,7 +21,11 @@
             </tr>
             <tr>
                 <th>Date</th>
-                <td>{{ transaction.date ? transaction.date|date('Y-m-d') : '' }}</td>
+                <td>{{ transaction.date ? transaction.date|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ transaction.description }}</td>
             </tr>
         </tbody>
     </table>

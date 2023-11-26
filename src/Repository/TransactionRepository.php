@@ -3,10 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Transaction;
-use App\Enum\TransactionTypesEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @extends ServiceEntityRepository<Transaction>
@@ -18,10 +17,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class TransactionRepository extends ServiceEntityRepository
 {
-	public function __construct(ManagerRegistry $registry)
-	{
-		parent::__construct($registry, Transaction::class);
-	}
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Transaction::class);
+    }
 
 //    /**
 //     * @return Transaction[] Returns an array of Transaction objects
@@ -47,5 +46,18 @@ class TransactionRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function saveAmount(EntityManagerInterface $entityManager, Transaction $transaction, float $amount, bool $persist = false): void
+    {
+        if ($transaction->getType() === Transaction::INCOMING) {
+            $transaction->incrementAmount($amount);
+        }
+        if ($transaction->getType() === Transaction::EXPENSE) {
+            $transaction->decrementAmount($amount);
+        }
 
+        if ($persist)
+            $entityManager->persist($transaction);
+        dd($transaction);
+        $entityManager->flush();
+    }
 }

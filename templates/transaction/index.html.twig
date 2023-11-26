@@ -7,27 +7,23 @@
 
     <table class="table">
         <thead>
-        <tr>
-            <th>Id</th>
-            <th>Amount</th>
-            <th>Category</th>
-            <th>Type</th>
-            <th>Date</th>
-            <th>actions</th>
-        </tr>
+            <tr>
+                <th>Id</th>
+                <th>Amount</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
         </thead>
         <tbody>
         {% for transaction in transactions %}
             <tr>
                 <td>{{ transaction.id }}</td>
                 <td>{{ transaction.amount }}</td>
-                {% if transaction.categoryId is null %}
-                    <td>---</td>
-                {% else %}
-                    <td>{{ transaction.categoryId.name }}</td>
-                {% endif %}
                 <td>{{ transaction.type }}</td>
-                <td>{{ transaction.date ? transaction.date|date('d m Y') : '' }}</td>
+                <td>{{ transaction.date ? transaction.date|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ transaction.description }}</td>
                 <td>
                     <a href="{{ path('app_transaction_show', {'id': transaction.id}) }}">show</a>
                     <a href="{{ path('app_transaction_edit', {'id': transaction.id}) }}">edit</a>
@@ -35,7 +31,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="6">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

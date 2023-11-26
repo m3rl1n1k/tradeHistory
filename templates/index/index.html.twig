@@ -17,20 +17,8 @@
         <br>
         <hr>
         {% if app.user %}
-            {{ include('includes/_categoty.html.twig') }}
-            {% if categories %}
-                {{ include('category/index.html.twig') }}
-            {% endif %}
-            <hr>
-            {{ include('includes/_transaction.html.twig') }}
-            {% if transactions %}
-                {{ include('transaction/index.html.twig') }}
-            {% endif %}
-            <hr>
-            {{ include('includes/_deposit.html.twig') }}
-            {% if deposits %}
-                {{ include('deposit/index.html.twig') }}
-            {% endif %}
+<h2>Logged in!</h2>
+            <a href="{{ path('app_transaction_new') }}">new transaction</a>
         {% endif %}
         <hr>
     </div>
