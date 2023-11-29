@@ -72,7 +72,7 @@ class TransactionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $amount = $request->request->get('amount');
+            $amount = $form->get('amount')->getData();
             $this->transactionService->editAmount($amount, $transaction);
             $this->transactionRepository->saveAmount($entityManager);
 
