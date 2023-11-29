@@ -19,6 +19,7 @@
         {% if app.user %}
 <h2>Logged in!</h2>
             <a href="{{ path('app_transaction_new') }}">new transaction</a>
+            {{ include('transaction/index.html.twig') }}
         {% endif %}
         <hr>
     </div>
