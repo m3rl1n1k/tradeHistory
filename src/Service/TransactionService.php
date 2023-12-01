@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Transaction;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -12,7 +13,8 @@ class TransactionService
     private UserInterface $user;
 
     public function __construct(protected Security       $security,
-                                protected UserRepository $userRepository
+                                protected UserRepository $userRepository,
+                                protected EntityManagerInterface   $entityManager
     )
     {
         $this->user = $this->security->getUser();
@@ -32,14 +34,14 @@ class TransactionService
 
     public function editAmount(float $newAmount, Transaction $transaction): void
     {
-        //if old amount bigger that new then to user amount add different.
-        if ($newAmount > $transaction->getAmount()){
+        //if old amount less than new then from user amount minus different.
+        if ($newAmount > $transaction->getAmount()) {
             $different = $transaction->getAmount() - $newAmount;
             $this->user->setAmount($this->user->getAmount() - $different);
         }
 
-        //if old amount less than new then from user amount minus different.
-        if ($newAmount < $transaction->getAmount()){
+        //if old amount bigger that new then to user amount add different.
+        if ($newAmount < $transaction->getAmount()) {
             $different = $newAmount - $this->user->getAmount();
             $this->user->setAmount($this->user->getAmount() + $different);
         }
