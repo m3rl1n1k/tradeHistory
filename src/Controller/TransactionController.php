@@ -73,12 +73,12 @@ class TransactionController extends AbstractController
         if ($this->getUser() !== $transaction->getUserId()) {
             throw $this->createAccessDeniedException('You don\'t have access! ');
         }
+        $oldAmount = $transaction->getAmount();
         $form = $this->createForm(TransactionType::class, $transaction);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $amount = $form->get('amount')->getData();
-            $this->transactionService->editAmount($this->user, $amount, $transaction);
+            $this->transactionService->editAmount($this->user, $oldAmount, $transaction);
             $entityManager->flush();
             return $this->redirectToRoute('app_transaction_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -93,6 +93,7 @@ class TransactionController extends AbstractController
     public function delete(Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $transaction->getId(), $request->request->get('_token'))) {
+            $this->transactionService->decrementAmount($transaction->getAmount());
             $entityManager->remove($transaction);
             $entityManager->flush();
         }

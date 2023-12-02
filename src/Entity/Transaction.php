@@ -103,5 +103,15 @@ class Transaction
         return $this;
     }
 
+    public function isIncome(): bool
+    {
+        return $this->getType() === Transaction::INCOMING ?? false;
+    }
+
+    public function isExpense(): bool
+    {
+        return $this->getType() === Transaction::EXPENSE ?? false;
+    }
+
 
 }

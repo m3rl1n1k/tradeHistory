@@ -13,7 +13,7 @@
     </head>
     <body>
     <a href="{{ path('app_index') }}">Home</a>
-    <p>amount: {{ app.user.amount }}</p>
+    <p>amount: {{ app.user.amount ?? "0"}}</p>
         {% block body %}{% endblock %}
     </body>
 </html>
