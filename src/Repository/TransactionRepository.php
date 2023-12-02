@@ -46,13 +46,6 @@ class TransactionRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-    public function saveAmount(EntityManagerInterface $entityManager, Transaction $transaction = null, bool $persist = false): void
-    {
-
-        if ($persist)
-            $entityManager->persist($transaction);
-        $entityManager->flush();
-    }
 }
 
 

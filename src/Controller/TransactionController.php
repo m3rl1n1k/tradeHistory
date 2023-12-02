@@ -12,17 +12,21 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 
 #[Route('/transaction')]
 class TransactionController extends AbstractController
 {
+    private ?UserInterface $user;
+
     public function __construct(
         protected TransactionRepository $transactionRepository,
         protected Security              $security,
         protected TransactionService    $transactionService
     )
     {
+        $this->user = $this->security->getUser();
     }
 
     #[Route('/', name: 'app_transaction_index', methods: ['GET'])]
@@ -43,8 +47,9 @@ class TransactionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
             $formData->setUserId($this->security->getUser());
-            $this->transactionService->newAmount($transaction);
-            $this->transactionRepository->saveAmount($entityManager, $transaction, true);
+            $this->transactionService->newAmount($this->user, $transaction);
+            $entityManager->persist($transaction);
+            $entityManager->flush();
             return $this->redirectToRoute('app_transaction_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -73,9 +78,8 @@ class TransactionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $amount = $form->get('amount')->getData();
-            $this->transactionService->editAmount($amount, $transaction);
-            $this->transactionRepository->saveAmount($entityManager);
-
+            $this->transactionService->editAmount($this->user, $amount, $transaction);
+            $entityManager->flush();
             return $this->redirectToRoute('app_transaction_index', [], Response::HTTP_SEE_OTHER);
         }
 
