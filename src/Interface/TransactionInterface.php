@@ -4,6 +4,7 @@ namespace App\Interface;
 
 use App\Entity\Transaction;
 use App\Entity\User;
+use App\Enum\TransactionEnum;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 interface TransactionInterface
@@ -18,36 +19,11 @@ interface TransactionInterface
     public function editAmount(float $oldAmount, UserInterface|User $user, Transaction $transaction):void;
 
     /**
-     * @param int $type
      * @param UserInterface|User $user
-     * @param Transaction $transaction
+     * @param int $type
      * @return array
      */
-    public function getAllIncome(int $type, UserInterface|User $user, Transaction $transaction): array;
+    public function getByType(UserInterface|User $user, int $type): array;
 
-    /**
-     * @param int $type
-     * @param UserInterface|User $user
-     * @param Transaction $transaction
-     * @return array
-     */
-    public function getAllExpense(int $type, UserInterface|User $user, Transaction $transaction): array;
-
-    /**
-     * @param array $transactions
-     * @return float
-     */
     public function summaryTransactions(array $transactions):float;
-
-    /**
-     * @param float $amount
-     * @return float
-     */
-    public function increment(float $amount):float;
-
-    /**
-     * @param float $amount
-     * @return float
-     */
-    public function decrement(float $amount):float;
 }

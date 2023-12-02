@@ -2,9 +2,13 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\Transaction;
+use App\Enum\TransactionEnum;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -22,9 +26,24 @@ class TransactionType extends AbstractType
         $builder
             ->add('amount', MoneyType::class, [
                 'currency' => 'PLN'
+            ])->add('category', EntityType::class, [
+                'class' => Category::class,
+                'required' => false,
+                'choice_label' => function (Category $category): string {
+                    return $category->getName();
+                }
             ])
-            ->add('type', Type\TransactionType::class)
-            ->add('date', DateTimeType::class)
+            ->add('type', ChoiceType::class,
+                [
+                    'choices' => [
+                        "Income" => TransactionEnum::INCOME,
+                        "Expense" => TransactionEnum::EXPENSE,
+                        "Transaction" => TransactionEnum::TRANSACTION,
+                    ]
+                ])
+            ->add('date', DateTimeType::class,[
+                'data' => new DateTime(),
+            ])
             ->add('description', TextareaType::class, [
                 'required' => false,
                 'attr' => [

@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ReportController!{% endblock %}
+
+{% block body %}
+    <h1>Report</h1>
+
+    <div class="row">
+        <h3>Total:</h3>
+        <div class="col-3">
+            <p>Current amount: {{ app.user.amount ?? "0" }}</p>
+        </div>
+        <div class="col-3">
+            <p>Income: {{ income ?? "0" }}</p>
+        </div>
+        <div class="col-3">
+            <p>Expense: {{ expense ?? "0" }}</p>
+        </div>
+    </div>
+    <h3>Per period:</h3>
+{#    {{ include('report/_form.html.twig') }}#}
+{#    {% if pagerfanta is not null %}#}
+{#        {{ include('report/_table.html.twig') }}#}
+{#    {% endif %}#}
+{% endblock %}

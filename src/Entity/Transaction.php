@@ -3,6 +3,7 @@
 
 namespace App\Entity;
 
+use App\Enum\TransactionEnum;
 use App\Repository\TransactionRepository;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
@@ -11,12 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: TransactionRepository::class)]
 class Transaction
 {
-
-    const INCOMING = 1;
-    const EXPENSE = 2;
-    const TRANSACTION = 3;
-
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -37,6 +32,9 @@ class Transaction
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    #[ORM\ManyToOne(inversedBy: 'transactions')]
+    private ?Category $category = null;
 
     public function getId(): ?int
     {
@@ -105,12 +103,24 @@ class Transaction
 
     public function isIncome(): bool
     {
-        return $this->getType() === Transaction::INCOMING ?? false;
+        return $this->getType() === TransactionEnum::INCOME ?? false;
     }
 
     public function isExpense(): bool
     {
-        return $this->getType() === Transaction::EXPENSE ?? false;
+        return $this->getType() === TransactionEnum::EXPENSE ?? false;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): static
+    {
+        $this->category = $category;
+
+        return $this;
     }
 
 

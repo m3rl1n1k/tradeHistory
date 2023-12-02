@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'main_base.html.twig' %}
 
 {% block title %}Log in!{% endblock %}
 
@@ -24,7 +24,7 @@
            value="{{ csrf_token('authenticate') }}"
     >
 
-    <button class="btn btn-lg btn-primary" type="submit">
+    <button class="btn btn-lg btn-primary mt-4" type="submit">
         Sign in
     </button>
 </form>

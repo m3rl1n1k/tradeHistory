@@ -1,10 +1,4 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Transaction index{% endblock %}
-
 {% block body %}
-    <h1>Transaction index</h1>
-    <a class="btn btn-outline-success" href="{{ path('app_transaction_new') }}">Create new</a>
     <table class="table table-hover">
         <thead>
         <tr>
@@ -13,7 +7,6 @@
             <th>Category</th>
             <th>Date</th>
             <th>Description</th>
-            <th>actions</th>
         </tr>
         </thead>
         <tbody>
@@ -27,13 +20,6 @@
                 <td>{{ transaction.category ? transaction.category.name : '' }}</td>
                 <td>{{ transaction.date ? transaction.date|date('Y-m-d') : '' }}</td>
                 <td>{{ transaction.description }}</td>
-                <td>
-                    <div class="d-flex flex-row">
-                        <a class="btn btn-warning me-2"
-                           href="{{ path('app_transaction_edit', {'id': transaction.id}) }}">Edit</a>
-                        {{ include('transaction/_delete_form.html.twig') }}
-                    </div>
-                </td>
             </tr>
         {% else %}
             <tr>
@@ -42,9 +28,6 @@
         {% endfor %}
         </tbody>
     </table>
-    <div class="pagination">
-        <div class="pagerfanta">
-            {{ pagerfanta(pagerfanta, 'twitter_bootstrap4') }}
-        </div>
-    </div>
 {% endblock %}
+
+

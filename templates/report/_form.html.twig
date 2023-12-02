@@ -1,0 +1,18 @@
+{% block body %}
+
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-6">
+            {{ form_label(form.dateFrom) }}
+            {{ form_widget(form.dateFrom) }}
+        </div>
+        <div class="col-6">
+            {{ form_label(form.dateEnd) }}
+            {{ form_widget(form.dateEnd) }}
+        </div>
+    </div>
+    <button class="btn btn-success mt-4" type="submit">Show</button>
+    {{ form_end(form) }}
+{% endblock %}
+
+
