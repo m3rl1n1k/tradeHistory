@@ -15,7 +15,6 @@ class DepositType extends AbstractType
             ->add('amount')
             ->add('dateOpen')
             ->add('dateClose')
-            ->add('userId')
         ;
     }
 

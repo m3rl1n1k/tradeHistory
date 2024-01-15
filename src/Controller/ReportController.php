@@ -17,6 +17,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class ReportController extends AbstractController
 {
     private UserInterface|User $user;
+    private mixed $data = null;
 
     public function __construct(
         protected TransactionRepository $transactionRepository,
@@ -37,8 +38,6 @@ class ReportController extends AbstractController
     #[Route('/report', name: 'app_report', methods: ['GET', 'POST'])]
     public function index(Request $request, TransactionRepository $transactionRepository): Response
     {
-        $start = null;
-        $end = null;
         $userId = $this->user->getId();
 
         $form = $this->createForm(ReportPeriodType::class);
@@ -49,14 +48,22 @@ class ReportController extends AbstractController
 
             $start = $formDate['dateFrom'];
             $end = $formDate['dateEnd'];
-            return $this->redirectToRoute('app_report', [], Response::HTTP_SEE_OTHER);
+            $this->data = $this->paginate($transactionRepository->getTransactionsPerPeriod($start, $end), $request, inf: true);
+            return $this->redirectToRoute('app_report_show', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('report/index.html.twig', [
             'income' => $this->transactionRepository->getSumIncome($userId),
             'expense' => $this->transactionRepository->getSumExpense($userId),
             'form' => $form,
-            'pagerfanta' => $this->paginate($transactionRepository->getTransactionsPerPeriod($start, $end), $request, inf: true)
+        ]);
+    }
+
+    #[Route('/records', name: 'app_report_show', methods: ['GET'])]
+    public function show(): Response
+    {
+        return $this->render('report/records.html.twig', [
+            'pagerfanta' => $this->data
         ]);
     }
 }
