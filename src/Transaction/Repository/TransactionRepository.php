@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Repository;
+namespace App\Transaction\Repository;
 
-use App\Entity\Transaction;
 use App\Entity\User;
-use App\Enum\TransactionEnum;
-use App\Service\SerializerService;
+use App\Transaction\Entity\Transaction;
+use App\Transaction\Enum\TransactionEnum;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -24,8 +23,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class TransactionRepository extends ServiceEntityRepository
 {
 
-    public function __construct(ManagerRegistry             $registry,
-                                protected SerializerService $serializerService)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Transaction::class);
     }
@@ -55,25 +53,12 @@ class TransactionRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-    public function getAllUserCurrentTransactionsQuery(UserInterface $user): Query
+    public function getAllUserCurrentTransactionsQuery(UserInterface|int $user): Query
     {
         return $this->createQueryBuilder('t')
             ->where('t.user = :user')
             ->setParameter('user', $user)
             ->getQuery();
-    }
-
-    public function getAllInString(int $user): string
-    {
-        /** @var User $user */
-        $list = $this->findBy(
-            [
-                'user' => $user
-            ]);
-        $list = trim($this->serializerService->serializeArray($list), '[]');
-        $list = str_replace('{', '[', $list);
-        $list = str_replace(':', '=>', $list);
-        return str_replace('}', ']', $list);
     }
 
     /**
@@ -89,7 +74,7 @@ class TransactionRepository extends ServiceEntityRepository
             ->setParameter('type', TransactionEnum::INCOME)
             ->getQuery()
             ->getOneOrNullResult();
-        return $res['incomeSum'];
+        return $res['incomeSum'] ?? 0;
     }
 
     /**
@@ -105,7 +90,7 @@ class TransactionRepository extends ServiceEntityRepository
             ->setParameter('type', TransactionEnum::EXPENSE)
             ->getQuery()
             ->getOneOrNullResult();
-        return $res['expenseSum'];
+        return $res['expenseSum'] ?? 0;
 
     }
 

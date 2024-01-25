@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Interface;
+namespace App\Transaction;
 
-use App\Entity\Transaction;
 use App\Entity\User;
-use App\Enum\TransactionEnum;
+use App\Transaction\Entity\Transaction;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 interface TransactionInterface

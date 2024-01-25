@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Interface;
+namespace App\Deposit;
 
-use App\Entity\Deposit;
+use App\Deposit\Entity\Deposit;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

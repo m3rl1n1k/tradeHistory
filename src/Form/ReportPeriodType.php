@@ -23,8 +23,8 @@ class ReportPeriodType extends AbstractType
                 'attr' => [
                     'max' => (new DateTime())->format('Y-m-d'), // Set the max attribute to the current date
                 ],
-            ])
-        ;
+            ]);
+        $builder->setAttribute('id', 'report_period');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

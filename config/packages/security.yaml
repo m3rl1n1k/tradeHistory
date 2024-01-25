@@ -21,6 +21,10 @@ security:
                 path: app_logout
                 # where to redirect after logout
                 # target: app_any_route
+        api:
+            pattern: ^/api
+            stateless: true
+            security: false
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -33,6 +37,7 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+#        - { path: ^/api, role: ROLE_NO_ACCESS }
 
 when@test:
     security:

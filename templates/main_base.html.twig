@@ -25,8 +25,8 @@
             aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <span class="navbar-brand col-md-3 col-lg-2 me-0 px-3"> Amount: {{ app.user.amount ?? "0" }}</span>
     {% if app.user is not null %}
+    <span class="navbar-brand col-md-3 col-lg-2 me-0 px-3"> Amount: {{ app.user.amount ?? "0" }}</span>
         <div class="navbar-nav">
             <div class="nav-item text-nowrap">
                 <a class="nav-link px-3" href="{{ path('app_logout') }}">Sign out</a>

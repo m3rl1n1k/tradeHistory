@@ -2,16 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\Transaction;
 use App\Entity\User;
 use App\Form\TransactionType;
-use App\Repository\TransactionRepository;
-use App\Service\TransactionService;
-use App\Trait\TransactionTrait;
+use App\Transaction\Entity\Transaction;
+use App\Transaction\Repository\TransactionRepository;
+use App\Transaction\Sevice\TransactionService;
+use App\Transaction\Trait\TransactionTrait;
 use Doctrine\ORM\EntityManagerInterface;
-
-use Pagerfanta\Doctrine\ORM\QueryAdapter;
-use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,7 +29,7 @@ class TransactionController extends AbstractController
         protected TransactionService    $transactionService
     )
     {
-        $this->user = $this->security->getUser();
+            $this->user = $this->security->getUser();
     }
 
     use TransactionTrait;

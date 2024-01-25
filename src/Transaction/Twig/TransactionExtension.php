@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Twig;
+namespace App\Transaction\Twig;
 
-use App\Enum\TransactionEnum;
+use App\Transaction\Enum\TransactionEnum;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 

@@ -18,6 +18,9 @@
         </div>
         <div class="col-6">
             {{ form_row(form.category) }}
+            {% if form.category is empty %}
+                <p>Create new <a href="{{ path('app_category_new') }}">category</a></p>
+            {% endif %}
         </div>
     </div>
     <button class="btn btn-success">{{ button_label|default('Save') }}</button>

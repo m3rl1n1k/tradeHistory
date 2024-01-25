@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Service;
+namespace App\Transaction\Sevice;
 
-use App\Entity\Transaction;
 use App\Entity\User;
-use App\Enum\TransactionEnum;
-use App\Interface\TransactionInterface;
-use App\Repository\TransactionRepository;
 use App\Repository\UserRepository;
-use App\Trait\TransactionTrait;
-use DateTime;
+use App\Transaction\Entity\Transaction;
+use App\Transaction\Enum\TransactionEnum;
+use App\Transaction\Repository\TransactionRepository;
+use App\Transaction\TransactionInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 

@@ -4,8 +4,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ReportPeriodType;
-use App\Repository\TransactionRepository;
-use App\Trait\TransactionTrait;
+use App\Transaction\Repository\TransactionRepository;
+use App\Transaction\Trait\TransactionTrait;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -17,14 +17,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class ReportController extends AbstractController
 {
     private UserInterface|User $user;
-    private mixed $data = null;
 
     public function __construct(
         protected TransactionRepository $transactionRepository,
         protected Security              $security,
     )
     {
-        $this->user = $this->security->getUser();
     }
 
     use TransactionTrait;
@@ -38,7 +36,7 @@ class ReportController extends AbstractController
     #[Route('/report', name: 'app_report', methods: ['GET', 'POST'])]
     public function index(Request $request, TransactionRepository $transactionRepository): Response
     {
-        $userId = $this->user->getId();
+        $userId = $this->security->getUser()->getId();
 
         $form = $this->createForm(ReportPeriodType::class);
         $form->handleRequest($request);
@@ -48,22 +46,23 @@ class ReportController extends AbstractController
 
             $start = $formDate['dateFrom'];
             $end = $formDate['dateEnd'];
-            $this->data = $this->paginate($transactionRepository->getTransactionsPerPeriod($start, $end), $request, inf: true);
+            $data = $this->paginate($transactionRepository->getTransactionsPerPeriod($start, $end), $request, inf: true);
             return $this->redirectToRoute('app_report_show', [], Response::HTTP_SEE_OTHER);
         }
-
+        $income = $this->transactionRepository->getSumIncome($userId);
+        $expense = $this->transactionRepository->getSumExpense($userId);
         return $this->render('report/index.html.twig', [
-            'income' => $this->transactionRepository->getSumIncome($userId),
-            'expense' => $this->transactionRepository->getSumExpense($userId),
+            'income' => $income,
+            'expense' => $expense,
             'form' => $form,
         ]);
     }
 
-    #[Route('/records', name: 'app_report_show', methods: ['GET'])]
-    public function show(): Response
+    #[Route('/records', name: 'app_report_show', methods: ['POST'])]
+    public function show($data): Response
     {
         return $this->render('report/records.html.twig', [
-            'pagerfanta' => $this->data
+            'pagerfanta' => $data
         ]);
     }
 }
