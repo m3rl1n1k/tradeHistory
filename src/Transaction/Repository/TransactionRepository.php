@@ -53,7 +53,7 @@ class TransactionRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-    public function getAllUserCurrentTransactionsQuery(UserInterface|int $user): Query
+    public function getAllUserCurrentTransactionsQuery(UserInterface|string $user): Query
     {
         return $this->createQueryBuilder('t')
             ->where('t.user = :user')
