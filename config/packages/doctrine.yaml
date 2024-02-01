@@ -20,6 +20,11 @@ doctrine:
         dir: '%kernel.project_dir%/src/Entity'
         prefix: 'App\Entity'
         alias: App
+      Api:
+        is_bundle: false
+        dir: '%kernel.project_dir%/src/Api/Entity'
+        prefix: 'App\Api\Entity'
+        alias: Api
       Transaction:
         is_bundle: false
         dir: '%kernel.project_dir%/src/Transaction/Entity'

@@ -15,96 +15,95 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 #[Route('/transaction')]
 class TransactionController extends AbstractController
 {
-    private UserInterface|User $user;
-
-    public function __construct(
-        protected TransactionRepository $transactionRepository,
-        protected Security              $security,
-        protected TransactionService    $transactionService
-    )
-    {
-            $this->user = $this->security->getUser();
-    }
-
-    use TransactionTrait;
-
-    #[Route('/', name: 'app_transaction_index', methods: ['GET'])]
-    public function index(TransactionRepository $transactionRepository, Request $request): Response
-    {
-        $query = $transactionRepository->getAllUserCurrentTransactionsQuery($this->user);
-        return $this->render('transaction/index.html.twig', [
-            'pagerfanta' => $this->paginate($query, $request),
-        ]);
-    }
-
-    #[Route('/new', name: 'app_transaction_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $transaction = new Transaction();
-        $form = $this->createForm(TransactionType::class, $transaction);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $formData = $form->getData();
-            $formData->setUserId($this->security->getUser());
-            $this->transactionService->amount($this->user, $transaction);
-            $entityManager->persist($transaction);
-            $entityManager->flush();
-            return $this->redirectToRoute('app_transaction_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('transaction/new.html.twig', [
-            'transaction' => $transaction,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_transaction_show', methods: ['GET'])]
-    public function show(Transaction $transaction): Response
-    {
-        dd($transaction);
-        $this->accessDenied($transaction);
-        return $this->render('transaction/show.html.twig', [
-            'transaction' => $transaction,
-        ]);
-    }
-
-    #[Route('/{id}/edit', name: 'app_transaction_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
-    {
-        $this->accessDenied($transaction);
-        $oldAmount = $transaction->getAmount();
-        $form = $this->createForm(TransactionType::class, $transaction);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->transactionService->editAmount($oldAmount, $this->user, $transaction);
-            $entityManager->flush();
-            return $this->redirectToRoute('app_transaction_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('transaction/edit.html.twig', [
-            'transaction' => $transaction,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_transaction_delete', methods: ['POST'])]
-    public function delete(Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
-    {
-        $this->accessDenied($transaction);
-        if ($this->isCsrfTokenValid('delete' . $transaction->getId(), $request->request->get('_token'))) {
-            $this->user->decrementAmount($transaction->getAmount());
-            $entityManager->remove($transaction);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_transaction_index', [], Response::HTTP_SEE_OTHER);
-    }
+	private UserInterface|User $user;
+	
+	public function __construct(
+		protected TransactionRepository $transactionRepository,
+		protected TransactionService    $transactionService
+	)
+	{
+	}
+	
+	use TransactionTrait;
+	
+	#[Route('/', name: 'app_transaction_index', methods: ['GET'])]
+	public function index(#[CurrentUser] ?User $user, TransactionRepository $transactionRepository, Request $request): Response
+	{
+		$query = $transactionRepository->getAllCurrentUserTransactionsQuery($user);
+		return $this->render('transaction/index.html.twig', [
+			'pagerfanta' => $this->paginate($query, $request),
+		]);
+	}
+	
+	#[Route('/new', name: 'app_transaction_new', methods: ['GET', 'POST'])]
+	public function new(#[CurrentUser] ?User $user,Request $request, EntityManagerInterface $entityManager): Response
+	{
+		$transaction = new Transaction();
+		$form = $this->createForm(TransactionType::class, $transaction);
+		$form->handleRequest($request);
+		
+		if ($form->isSubmitted() && $form->isValid()) {
+			$formData = $form->getData();
+			$formData->setUserId($user);
+			$this->transactionService->amount($user, $transaction);
+			$entityManager->persist($transaction);
+			$entityManager->flush();
+			return $this->redirectToRoute('app_transaction_index', [], Response::HTTP_SEE_OTHER);
+		}
+		
+		return $this->render('transaction/new.html.twig', [
+			'transaction' => $transaction,
+			'form' => $form,
+		]);
+	}
+	
+	#[Route('/{id}', name: 'app_transaction_show', methods: ['GET'])]
+	public function show(Transaction $transaction): Response
+	{
+		dd($transaction);
+		$this->accessDenied($transaction);
+		return $this->render('transaction/show.html.twig', [
+			'transaction' => $transaction,
+		]);
+	}
+	
+	#[Route('/{id}/edit', name: 'app_transaction_edit', methods: ['GET', 'POST'])]
+	public function edit(#[CurrentUser] ?User $user,Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
+	{
+		$this->accessDenied($transaction);
+		$oldAmount = $transaction->getAmount();
+		$form = $this->createForm(TransactionType::class, $transaction);
+		$form->handleRequest($request);
+		
+		if ($form->isSubmitted() && $form->isValid()) {
+			$this->transactionService->editAmount($oldAmount, $user, $transaction);
+			$entityManager->flush();
+			return $this->redirectToRoute('app_transaction_index', [], Response::HTTP_SEE_OTHER);
+		}
+		
+		return $this->render('transaction/edit.html.twig', [
+			'transaction' => $transaction,
+			'form' => $form,
+		]);
+	}
+	
+	#[Route('/{id}', name: 'app_transaction_delete', methods: ['POST'])]
+	public function delete(Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
+	{
+		$this->accessDenied($transaction);
+		if ($this->isCsrfTokenValid('delete' . $transaction->getId(), $request->request->get('_token'))) {
+			$this->user->decrementAmount($transaction->getAmount());
+			$entityManager->remove($transaction);
+			$entityManager->flush();
+		}
+		
+		return $this->redirectToRoute('app_transaction_index', [], Response::HTTP_SEE_OTHER);
+	}
 }

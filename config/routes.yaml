@@ -3,7 +3,8 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
-apiLogin:
-    path: /api/login
-    controller: App\Controller\Api\SecurityApiController::login
-    methods: POST
+ApiFiles:
+    resource:
+        path: ../src/Api/
+        namespace: App\Api
+    type: attribute

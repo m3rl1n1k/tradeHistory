@@ -53,13 +53,18 @@ class TransactionRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-    public function getAllUserCurrentTransactionsQuery(UserInterface|string $user): Query
+    public function getAllCurrentUserTransactionsQuery(UserInterface $user): Query
     {
-        return $this->createQueryBuilder('t')
-            ->where('t.user = :user')
+        return $this->createQueryBuilder('transaction')
+            ->where('transaction.user = :user')
             ->setParameter('user', $user)
             ->getQuery();
     }
+	
+	public function getTransactionsApi(int $user): array
+	{
+		return $this->findBy(['user'=>$user]);
+	}
 
     /**
      * @throws NonUniqueResultException
