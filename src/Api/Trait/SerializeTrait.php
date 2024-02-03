@@ -12,7 +12,7 @@ trait SerializeTrait
 	}
 	
 	public function serializer(mixed $data, bool $is_circular = false, callable $function =
-	null, string $format = 'json')
+	null, string                     $format = 'json')
 	{
 		if ($is_circular) {
 			$data = $this->serializer->serialize($data, $format);
@@ -22,7 +22,10 @@ trait SerializeTrait
 			AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => $function,
 		]);
 		return json_decode($data);
-		
-		
+	}
+	
+	public function deserializer($data)
+	{
+		return $this->serializer->deserialize($data, 'object', 'json');
 	}
 }
