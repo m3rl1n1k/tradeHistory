@@ -24,8 +24,8 @@ trait SerializeTrait
 		return json_decode($data);
 	}
 	
-	public function deserializer($data)
+	public function deserializer($data, string $type)
 	{
-		return $this->serializer->deserialize($data, 'object', 'json');
+		return $this->serializer->deserialize($data, $type, 'json' );
 	}
 }

@@ -43,7 +43,7 @@ class TransactionController extends AbstractController
 	}
 	
 	#[Route('/new', name: 'app_transaction_new', methods: ['GET', 'POST'])]
-	public function new(#[CurrentUser] ?User $user,Request $request, EntityManagerInterface $entityManager): Response
+	public function new(#[CurrentUser] ?User $user, Request $request, EntityManagerInterface $entityManager): Response
 	{
 		$transaction = new Transaction();
 		$form = $this->createForm(TransactionType::class, $transaction);
@@ -65,19 +65,18 @@ class TransactionController extends AbstractController
 	}
 	
 	#[Route('/{id}', name: 'app_transaction_show', methods: ['GET'])]
-	public function show(Transaction $transaction): Response
+	public function show(#[CurrentUser] ?User $user, Transaction $transaction): Response
 	{
-		dd($transaction);
-		$this->accessDenied($transaction);
+		$this->accessDenied($transaction, $user);
 		return $this->render('transaction/show.html.twig', [
 			'transaction' => $transaction,
 		]);
 	}
 	
 	#[Route('/{id}/edit', name: 'app_transaction_edit', methods: ['GET', 'POST'])]
-	public function edit(#[CurrentUser] ?User $user,Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
+	public function edit(#[CurrentUser] ?User $user, Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
 	{
-		$this->accessDenied($transaction);
+		$this->accessDenied($transaction, $user);
 		$oldAmount = $transaction->getAmount();
 		$form = $this->createForm(TransactionType::class, $transaction);
 		$form->handleRequest($request);
@@ -95,9 +94,10 @@ class TransactionController extends AbstractController
 	}
 	
 	#[Route('/{id}', name: 'app_transaction_delete', methods: ['POST'])]
-	public function delete(Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
+	public function delete(#[CurrentUser] ?User   $user, Request $request, Transaction $transaction,
+						   EntityManagerInterface $entityManager): Response
 	{
-		$this->accessDenied($transaction);
+		$this->accessDenied($transaction, $user);
 		if ($this->isCsrfTokenValid('delete' . $transaction->getId(), $request->request->get('_token'))) {
 			$this->user->decrementAmount($transaction->getAmount());
 			$entityManager->remove($transaction);

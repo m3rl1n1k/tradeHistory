@@ -2,6 +2,7 @@
 
 namespace App\Transaction\Trait;
 
+use App\Entity\User;
 use App\Transaction\Entity\Transaction;
 use Doctrine\ORM\Query;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
@@ -10,9 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 trait TransactionTrait
 {
-    public function accessDenied(Transaction $transaction): void
+    public function accessDenied(Transaction $transaction, User $user): void
     {
-        if ($this->getUser() !== $transaction->getUserId()) {
+        if ($user->getEmail() !== $transaction->getUserId()) {
             throw $this->createAccessDeniedException('You don\'t have access! ');
         }
     }
