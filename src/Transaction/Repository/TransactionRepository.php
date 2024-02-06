@@ -128,6 +128,15 @@ class TransactionRepository extends ServiceEntityRepository
 		$this->notFoundedTransaction($record);
 		return $record;
 	}
+	
+	public function updateData(Transaction|null $transaction, mixed $update, User $user): void
+	{
+		$transaction->setAmount($update->getAmount());
+		$transaction->setType($update->getType());
+		$transaction->setDate($update->getDate());
+		$transaction->setDescription($update->getDescription());
+		$transaction->setUserId($user);
+	}
 }
 
 

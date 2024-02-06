@@ -33,16 +33,17 @@ class TransactionService implements TransactionInterface
 	
 	public function editAmount(float $oldAmount, UserInterface|User $user, Transaction $transaction): void
 	{
-		if ($transaction->isExpense() && $transaction->getAmount() === $oldAmount) {
-			$user->setAmount($user->decrementAmount($transaction->getAmount()));
-		}
 		if ($transaction->isExpense() && $transaction->getAmount() > $oldAmount) {
 			$difference = $transaction->getAmount() - $oldAmount;
 			$newAmount = ($difference > 0) ? $user->getAmount() - $difference : $user->getAmount() + abs($difference);
 			$user->setAmount($newAmount);
 		}
 		if ($transaction->isExpense() && $transaction->getAmount() < $oldAmount) {
-			$user->setAmount($user->getAmount() + ($oldAmount - $transaction->getAmount()));
+			$amount = $user->getAmount() + ($oldAmount - $transaction->getAmount());
+			$user->setAmount($amount);
+		}
+		if ($transaction->isExpense() && $transaction->getAmount() === $oldAmount) {
+			$user->setAmount($user->decrementAmount($transaction->getAmount()));
 		}
 		if ($transaction->isIncome()) {
 			$user->setAmount(

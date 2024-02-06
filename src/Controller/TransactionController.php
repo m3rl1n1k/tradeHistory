@@ -64,15 +64,6 @@ class TransactionController extends AbstractController
 		]);
 	}
 	
-	#[Route('/{id}', name: 'app_transaction_show', methods: ['GET'])]
-	public function show(#[CurrentUser] ?User $user, Transaction $transaction): Response
-	{
-		$this->accessDenied($transaction, $user);
-		return $this->render('transaction/show.html.twig', [
-			'transaction' => $transaction,
-		]);
-	}
-	
 	#[Route('/{id}/edit', name: 'app_transaction_edit', methods: ['GET', 'POST'])]
 	public function edit(#[CurrentUser] ?User $user, Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
 	{
@@ -99,7 +90,7 @@ class TransactionController extends AbstractController
 	{
 		$this->accessDenied($transaction, $user);
 		if ($this->isCsrfTokenValid('delete' . $transaction->getId(), $request->request->get('_token'))) {
-			$this->user->decrementAmount($transaction->getAmount());
+			$user->decrementAmount($transaction->getAmount());
 			$entityManager->remove($transaction);
 			$entityManager->flush();
 		}

@@ -35,23 +35,24 @@ class TransactionApiController extends AbstractController
 	JsonResponse
 	{
 		$user = $user->getUserId();
-		$data = $transactionRepository->getTransactionsApi($user);
-		$data = $this->serializer($data, function: fn($data) => $data->getId());
-		return $this->json($data)->setStatusCode(Response::HTTP_OK);
+		$transaction = $transactionRepository->getTransactionsApi($user);
+		$content = $this->serializer($transaction, function: fn($transaction) => $transaction->getId());
+		return $this->json($content)->setStatusCode(Response::HTTP_OK);
 	}
 	
 	#[Route('/new', name: 'app_api_transaction_new', methods: ['POST'])]
 	public function new(#[CurrentUser] ?User $user, Request $request, EntityManagerInterface $entityManager): JsonResponse
 	{
-		$data = $request->getContent();
+		$content = $request->getContent();
 		/**
-		 * @var Transaction $data
+		 * @var Transaction $transaction
 		 **/
-		$data = $this->deserializer($data, Transaction::class);
-		$data->setUserId($user);
-		$entityManager->persist($data);
+		$transaction = $this->deserializer($content, Transaction::class);
+		$transaction->setUserId($user);
+		$this->transactionService->amount($user, $transaction);
+		$entityManager->persist($transaction);
 		$entityManager->flush();
-		return $this->json($data)->setStatusCode(Response::HTTP_OK);
+		return $this->json($transaction)->setStatusCode(Response::HTTP_OK);
 	}
 	
 	#[Route('/show/{id}', name: 'app_api_transaction_show', methods: ['GET'])]
@@ -68,22 +69,32 @@ class TransactionApiController extends AbstractController
 	JsonResponse
 	{
 		/**
-		 * @var Transaction $content
+		 * @var Transaction $update
 		 **/
 		$transaction = $transactionRepository->getOneBy($id);
+		
 		$oldAmount = $transaction->getAmount();
 		$content = $request->getContent();
 		$update = $this->deserializer($content, Transaction::class);
-		$update->setUserId($user);
-		$this->transactionService->editAmount($oldAmount, $user, $update);
+		
+		$transactionRepository->updateData($transaction, $update, $user);
+		$this->transactionService->editAmount($oldAmount, $user, $transaction);
+		
 		$entityManager->flush();
-		return $this->json($update)->setStatusCode(Response::HTTP_OK);
+		
+		$transaction = $this->serializer($transaction, function: fn($data) => $data->getId());
+		return $this->json($transaction)->setStatusCode(Response::HTTP_OK);
 		
 	}
 	
 	#[Route('/delete/{id}', name: 'app_api_transaction_delete', methods: ['DELETE'])]
-	public function delete()
+	public function delete(#[CurrentUser] ?User   $user, int $id, TransactionRepository $transactionRepository,
+						   EntityManagerInterface $entityManager): JsonResponse
 	{
-	
+		$transaction = $transactionRepository->getOneBy($id);
+		$user->decrementAmount($transaction->getAmount());
+		$entityManager->remove($transaction);
+		$entityManager->flush();
+		return $this->json('Record remove!')->setStatusCode(Response::HTTP_OK);
 	}
 }
