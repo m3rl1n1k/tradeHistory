@@ -3,8 +3,8 @@ WORKDIR ${WORKDIR}
 
 RUN apt-get -y update && apt-get -y install git unzip rsync
 
-RUN git config --global user.email "user@docker.com"
-RUN git config --global user.name "Docker"
+RUN git config --global user.email "bisix21@gmail.com"
+RUN git config --global user.name "Bisix21"
 
 ENV TERM xterm-256color
 
