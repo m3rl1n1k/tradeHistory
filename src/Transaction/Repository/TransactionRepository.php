@@ -2,6 +2,7 @@
 
 namespace App\Transaction\Repository;
 
+use App\Category\Repository\CategoryRepository;
 use App\Entity\User;
 use App\Transaction\Entity\Transaction;
 use App\Transaction\Enum\TransactionEnum;
@@ -26,7 +27,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class TransactionRepository extends ServiceEntityRepository
 {
 	
-	public function __construct(ManagerRegistry $registry)
+	public function __construct(ManagerRegistry $registry, protected CategoryRepository $categoryRepository)
 	{
 		parent::__construct($registry, Transaction::class);
 	}
@@ -56,7 +57,7 @@ class TransactionRepository extends ServiceEntityRepository
 //        ;
 //    }
 	
-	public function getAllCurrentUserTransactionsQuery(UserInterface $user): Query
+	public function getUserTransactionsQuery(UserInterface $user): Query
 	{
 		return $this->createQueryBuilder('transaction')
 			->where('transaction.user = :user')
@@ -64,7 +65,7 @@ class TransactionRepository extends ServiceEntityRepository
 			->getQuery();
 	}
 	
-	public function getTransactionsApi(int $user): array
+	public function getUserTransactions(int $user): array
 	{
 		return $this->findBy(['user' => $user]);
 	}
@@ -129,13 +130,16 @@ class TransactionRepository extends ServiceEntityRepository
 		return $record;
 	}
 	
-	public function updateData(Transaction|null $transaction, mixed $update, User $user): void
+	public function updateDataTransaction(Transaction|null $transaction, mixed $update, User $user, $category_id): void
 	{
+		$category = $this->categoryRepository->findOneBy(['id' => $category_id]);
+		
 		$transaction->setAmount($update->getAmount());
 		$transaction->setType($update->getType());
 		$transaction->setDate($update->getDate());
 		$transaction->setDescription($update->getDescription());
 		$transaction->setUserId($user);
+		$transaction->setCategory($category);
 	}
 }
 

@@ -63,7 +63,6 @@ class Transaction
 	public function setType(int $type): static
 	{
 		$this->type = $type;
-		
 		return $this;
 	}
 	

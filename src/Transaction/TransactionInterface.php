@@ -4,25 +4,36 @@ namespace App\Transaction;
 
 use App\Entity\User;
 use App\Transaction\Entity\Transaction;
+use Doctrine\ORM\Query;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 interface TransactionInterface
 {
-    public function amount(UserInterface|User $user, Transaction $transaction):void;
-
-    /**
-     * @param float $oldAmount
-     * @param UserInterface|User $user
-     * @param Transaction $transaction
-     */
-    public function editAmount(float $oldAmount, UserInterface|User $user, Transaction $transaction):void;
-
-    /**
-     * @param UserInterface|User $user
-     * @param int $type
-     * @return array
-     */
-    public function getByType(UserInterface|User $user, int $type): array;
-
-    public function summaryTransactions(array $transactions):float;
+	/**
+	 * @param UserInterface|User $user
+	 * @param bool $is_array
+	 * @return array|Query
+	 */
+	public function getTransactionListByUser(UserInterface|User $user, bool $is_array = true)
+	:array|Query;
+	
+	/**
+	 * @param UserInterface|User $user
+	 * @param Transaction $transaction
+	 * @param float|null $oldAmount
+	 */
+    public function calculateAmount(UserInterface|User $user, Transaction $transaction, float $oldAmount = 0):void;
+	
+	/**
+	 * @param int $id
+	 * @return Transaction
+	 */
+    public function getTransactionById(int $id): Transaction;
+	
+	/**
+	 * @param UserInterface|User $user
+	 * @param int $type
+	 * @return array
+	 */
+	public function getTransactionByType(UserInterface|User $user, int $type): array;
 }
