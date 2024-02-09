@@ -20,7 +20,7 @@ interface TransactionInterface
 	/**
 	 * @param UserInterface|User $user
 	 * @param Transaction $transaction
-	 * @param float|null $oldAmount
+	 * @param float $oldAmount
 	 */
     public function calculateAmount(UserInterface|User $user, Transaction $transaction, float $oldAmount = 0):void;
 	
@@ -36,4 +36,11 @@ interface TransactionInterface
 	 * @return array
 	 */
 	public function getTransactionByType(UserInterface|User $user, int $type): array;
+	
+	/**
+	 * @param User $user
+	 * @param Transaction $transaction
+	 * @return void
+	 */
+	public function removeTransaction(User $user, Transaction $transaction):void;
 }

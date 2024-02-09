@@ -52,15 +52,8 @@ class TransactionService implements TransactionInterface
 	/**
 	 * @inheritDoc
 	 */
-	public function calculateAmount( UserInterface|User $user, Transaction $transaction, float $oldAmount = 0): void
+	public function calculateAmount(UserInterface|User $user, Transaction $transaction, float $oldAmount = 0): void
 	{
-		if ($transaction->isIncome()) {
-			$user->setAmount($user->incrementAmount($transaction->getAmount()));
-		}
-		
-		if ($transaction->isExpense()) {
-			$user->setAmount($user->decrementAmount($transaction->getAmount()));
-		}
 		$this->isExpenseCurrentMoreOldAmount($oldAmount, $user, $transaction);
 		$this->isExpenseOldMoreCurrentAmount($oldAmount, $user, $transaction);
 		$this->isExpenseOldEqualCurrentAmount($oldAmount, $user, $transaction);
@@ -123,4 +116,19 @@ class TransactionService implements TransactionInterface
 		}
 	}
 	
+	public function setUserAmount(UserInterface|User $user, Transaction $transaction): void
+	{
+		if ($transaction->isIncome()) {
+			$user->setAmount($user->incrementAmount($transaction->getAmount()));
+		}
+		
+		if ($transaction->isExpense()) {
+			$user->setAmount($user->decrementAmount($transaction->getAmount()));
+		}
+	}
+	
+	public function removeTransaction(User $user, Transaction $transaction): void
+	{
+	
+	}
 }

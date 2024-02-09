@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\TransactionType;
 use App\Transaction\Entity\Transaction;
+use App\Transaction\Enum\TransactionEnum;
 use App\Transaction\Repository\TransactionRepository;
 use App\Transaction\Service\TransactionService;
 use App\Transaction\Trait\TransactionTrait;
@@ -54,7 +55,7 @@ class TransactionController extends AbstractController
 			$formData = $form->getData();
 			$formData->setUserId($user);
 			
-			$this->transactionService->calculateAmount($user, $transaction);
+			$this->transactionService->setUserAmount($user, $transaction);
 			
 			$entityManager->persist($transaction);
 			$entityManager->flush();
@@ -81,6 +82,7 @@ class TransactionController extends AbstractController
 	public function edit(#[CurrentUser] ?User $user, Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
 	{
 		$this->accessDenied($transaction, $user);
+		
 		$oldAmount = $transaction->getAmount();
 		$form = $this->createForm(TransactionType::class, $transaction);
 		$form->handleRequest($request);
@@ -104,8 +106,14 @@ class TransactionController extends AbstractController
 						   EntityManagerInterface $entityManager): Response
 	{
 		$this->accessDenied($transaction, $user);
+		
 		if ($this->isCsrfTokenValid('delete' . $transaction->getId(), $request->request->get('_token'))) {
-			$user->decrementAmount($transaction->getAmount());
+//			$this->transactionService->removeTransaction($user, $transaction);
+			$amount = $transaction->getAmount();
+			if ($transaction->getType() === TransactionEnum::EXPENSE)
+				$user->incrementAmount($amount);
+			else
+				$user->decrementAmount($amount);
 			$entityManager->remove($transaction);
 			$entityManager->flush();
 		}
@@ -113,3 +121,14 @@ class TransactionController extends AbstractController
 		return $this->redirectToRoute('app_transaction_index', [], Response::HTTP_SEE_OTHER);
 	}
 }
+
+/**
+ * BZPA44SA
+ *
+ * BZPA449A
+ * B2PA449A
+ *
+ * BZPA445A
+ * BZPA999A
+ * B2PA44SA
+ **/
