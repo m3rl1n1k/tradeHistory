@@ -11,6 +11,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -28,7 +29,7 @@ class TransactionType extends AbstractType
     {
         $builder
             ->add('amount', MoneyType::class, [
-                'currency' => 'PLN'
+                'currency' => 'CP'
             ])->add('category', EntityType::class, [
                 'class' => Category::class,
                 'required' => false,
@@ -39,12 +40,12 @@ class TransactionType extends AbstractType
             ->add('type', ChoiceType::class,
                 [
                     'choices' => [
-                        "Income" => TransactionEnum::INCOME,
                         "Expense" => TransactionEnum::EXPENSE,
+                        "Income" => TransactionEnum::INCOME,
                         "Transaction" => TransactionEnum::TRANSACTION,
                     ]
                 ])
-            ->add('date', DateTimeType::class,[
+            ->add('date', DateType::class,[
                 'data' => new DateTime(),
             ])
             ->add('description', TextareaType::class, [

@@ -14,11 +14,8 @@
 ###< phpunit/phpunit ###
 
 ###> symfony/phpunit-bridge ###
-.phpunit.result.cache
-/phpunit.xml
 ###< symfony/phpunit-bridge ###
 .idea
-/.env.local
 /.env.install
-/logs/nginx/
-/docker/configs/nginx/project.conf
+/logs/
+/docker/

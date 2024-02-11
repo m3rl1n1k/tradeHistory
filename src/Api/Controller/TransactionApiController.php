@@ -88,7 +88,7 @@ class TransactionApiController extends AbstractController
 		
 		$id = json_decode($content, true)['category'];
 		
-		$this->transactionRepository->updateDataTransaction($transaction, $update, $user, $id );
+		$this->transactionRepository->updateDataTransaction($transaction, $update, $user, $id);
 		$this->transactionService->calculateAmount($user, $transaction, $oldAmount);
 		$entityManager->flush();
 		
@@ -102,7 +102,7 @@ class TransactionApiController extends AbstractController
 						   EntityManagerInterface $entityManager): JsonResponse
 	{
 		$transaction = $this->transactionRepository->getOneBy($id);
-		$user->decrementAmount($transaction->getAmount());
+		$this->transactionService->removeTransaction($user, $transaction);
 		$entityManager->remove($transaction);
 		$entityManager->flush();
 		return $this->json('Record remove!')->setStatusCode(Response::HTTP_OK);

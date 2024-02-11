@@ -105,14 +105,17 @@ class TransactionRepository extends ServiceEntityRepository
 		
 	}
 	
-	public
-	function getTransactionsPerPeriod(?DateTimeInterface $dateStart, ?DateTimeInterface $dateEnd): Query
+	public function getTransactionsPerPeriod(UserInterface $user, DateTimeInterface $dateStart, DateTimeInterface $dateEnd):
+	string|array|int|float
 	{
 		return $this->createQueryBuilder('transaction')
 			->andWhere('transaction.date BETWEEN :startDate AND :endDate')
+			->andWhere('transaction.user = :user')
 			->setParameter('startDate', $dateStart)
 			->setParameter('endDate', $dateEnd)
-			->getQuery();
+			->setParameter('user', $user)
+			->getQuery()
+			->getResult();
 	}
 	
 	protected function notFoundedTransaction($data): bool
