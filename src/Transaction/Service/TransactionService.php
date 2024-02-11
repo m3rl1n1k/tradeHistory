@@ -8,15 +8,17 @@ use App\Transaction\Entity\Transaction;
 use App\Transaction\Enum\TransactionEnum;
 use App\Transaction\Repository\TransactionRepository;
 use App\Transaction\TransactionInterface;
+use DateTimeInterface;
 use Doctrine\ORM\Query;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 class TransactionService implements TransactionInterface
 {
 	public function __construct(protected Security              $security,
 								protected UserRepository        $userRepository,
-								protected TransactionRepository $transactionRepository
+								protected TransactionRepository $transactionRepository,
 	)
 	{
 	}
@@ -30,11 +32,10 @@ class TransactionService implements TransactionInterface
 		return $summary;
 	}
 	
-	public function getTransactionsPerPeriod($dateStart, $dateEnd)
+	public function getTransactionsPerPeriod(User $user, $dateStart, $dateEnd):
+	array|float|int|string
 	{
-		return $this->transactionRepository->getTransactionsPerPeriod($dateStart->getTimestamp(),
-			$dateEnd->getTimestamp());
-		
+		return $this->transactionRepository->getTransactionsPerPeriod($user, $dateStart, $dateEnd);
 	}
 	
 	/**
@@ -129,6 +130,23 @@ class TransactionService implements TransactionInterface
 	
 	public function removeTransaction(User $user, Transaction $transaction): void
 	{
+		$amount = $transaction->getAmount();
+		if ($transaction->getType() === TransactionEnum::EXPENSE) {
+			$amount = $user->incrementAmount($amount);
+		} else {
+			$amount = $user->decrementAmount($amount);
+		}
+		$user->setAmount($amount);
+	}
 	
+	public function getSum(float|array|int|string $transactions, int $type): float
+	{
+		$sum = 0;
+		foreach ($transactions as $transaction) {
+			if ($transaction->getType() === $type) {
+				$sum += $transaction->getAmount();
+			}
+		}
+		return $sum;
 	}
 }

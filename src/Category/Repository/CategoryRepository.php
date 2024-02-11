@@ -16,10 +16,10 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CategoryRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Category::class);
-    }
+	public function __construct(ManagerRegistry $registry)
+	{
+		parent::__construct($registry, Category::class);
+	}
 
 //    /**
 //     * @return Category[] Returns an array of Category objects
@@ -45,4 +45,10 @@ class CategoryRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+	
+	
+	public function getAll($user): array
+	{
+		return $this->findBy(['user' => $user]);
+	}
 }

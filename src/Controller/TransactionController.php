@@ -14,7 +14,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -22,8 +21,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/transaction')]
 class TransactionController extends AbstractController
 {
-	private UserInterface|User $user;
-	
 	public function __construct(
 		protected TransactionRepository $transactionRepository,
 		protected TransactionService    $transactionService
@@ -108,12 +105,7 @@ class TransactionController extends AbstractController
 		$this->accessDenied($transaction, $user);
 		
 		if ($this->isCsrfTokenValid('delete' . $transaction->getId(), $request->request->get('_token'))) {
-//			$this->transactionService->removeTransaction($user, $transaction);
-			$amount = $transaction->getAmount();
-			if ($transaction->getType() === TransactionEnum::EXPENSE)
-				$user->incrementAmount($amount);
-			else
-				$user->decrementAmount($amount);
+			$this->transactionService->removeTransaction($user, $transaction);
 			$entityManager->remove($transaction);
 			$entityManager->flush();
 		}
@@ -121,14 +113,3 @@ class TransactionController extends AbstractController
 		return $this->redirectToRoute('app_transaction_index', [], Response::HTTP_SEE_OTHER);
 	}
 }
-
-/**
- * BZPA44SA
- *
- * BZPA449A
- * B2PA449A
- *
- * BZPA445A
- * BZPA999A
- * B2PA44SA
- **/

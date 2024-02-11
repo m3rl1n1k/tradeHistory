@@ -2,23 +2,21 @@
     <table class="table table-hover">
         <thead>
         <tr>
-            <th>Type</th>
             <th>Amount</th>
-            <th>Category</th>
+            {#            <th>Category</th> #}
             <th>Date</th>
             <th>Description</th>
         </tr>
         </thead>
         <tbody>
-        {% for transaction in pagerfanta.currentPageResults %}
+        {% for transaction in transactions %}
             <tr>
-                <td>{{ type(transaction.type) }}</td>
                 <td class="text-center">
-                    <a class="btn btn-outline-info text-decoration-none"
+                    <a class="btn {{ color(transaction.type) }} text-decoration-none"
                        href="{{ path('app_transaction_show', {'id': transaction.id}) }}">{{ transaction.amount }}</a>
                 </td>
-                <td>{{ transaction.category ? transaction.category.name : '' }}</td>
-                <td>{{ transaction.date ? transaction.date|date('Y-m-d') : '' }}</td>
+                {#                <td>{{ transaction.category ? transaction.category.name : '' }}</td> #}
+                <td>{{ transaction.date ? transaction.date|date('Y m d') : '' }}</td>
                 <td>{{ transaction.description }}</td>
             </tr>
         {% else %}

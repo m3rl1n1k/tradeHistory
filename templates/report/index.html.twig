@@ -20,4 +20,7 @@
     <h3>Per period:</h3>
 
     {{ include('report/_form.html.twig') }}
+    {% if transactions is not null  %}
+        {{ include('report/_table.html.twig') }}
+    {% endif %}
 {% endblock %}
