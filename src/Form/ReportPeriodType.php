@@ -15,11 +15,9 @@ class ReportPeriodType extends AbstractType
         $builder
             ->add('dateFrom', DateType::class,[
                 'data' => new DateTime('-1 week'),
-                'widget' => 'single_text',
             ])
             ->add('dateEnd', DateType::class,[
                 'data' => new DateTime(),
-                'widget' => 'single_text',
                 'attr' => [
                     'max' => (new DateTime())->format('Y-m-d'), // Set the max attribute to the current date
                 ],
