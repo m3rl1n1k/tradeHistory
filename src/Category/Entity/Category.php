@@ -69,4 +69,9 @@ class Category
 	{
 		return $this->transactions;
 	}
+	
+	public function setId(?int $id): void
+	{
+		$this->id = $id;
+	}
 }
