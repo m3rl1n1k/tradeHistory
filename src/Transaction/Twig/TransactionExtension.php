@@ -25,9 +25,6 @@ class TransactionExtension extends AbstractExtension
 			TransactionEnum::EXPENSE => "Expense",
 			TransactionEnum::TRANSACTION => "Transaction",
 		];
-//		if ($colorful){
-//
-//		}
 		return $types[$type];
 	}
 	
