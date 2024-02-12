@@ -10,7 +10,6 @@ use App\Transaction\Service\TransactionService;
 use App\Transaction\Trait\TransactionTrait;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,7 +20,7 @@ class ReportController extends AbstractController
 {
 	public function __construct(
 		protected TransactionRepository $transactionRepository,
-		protected TransactionService    $transactionService,
+		protected TransactionService    $transactionService
 	)
 	{
 	}
