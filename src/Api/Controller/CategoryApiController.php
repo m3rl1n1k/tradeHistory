@@ -26,8 +26,7 @@ class CategoryApiController extends AbstractController
 	use SerializeTrait;
 	use TransactionTrait;
 	
-	public function __construct(protected SerializerInterface $serializer, protected CategoryRepository
-	$categoryService)
+	public function __construct(protected SerializerInterface $serializer, protected CategoryRepository $categoryRepository)
 	{
 	}
 	
@@ -37,7 +36,7 @@ class CategoryApiController extends AbstractController
 	JsonResponse
 	{
 		$user = $user->getUserId();
-		$category = $categoryRepository->getUserTransactions($user);
+		$category = $categoryRepository->getAll($user);
 		$content = $this->serializer($category, function: fn($category) => $category->getId());
 		return $this->json($content)->setStatusCode(Response::HTTP_OK);
 	}
@@ -46,41 +45,37 @@ class CategoryApiController extends AbstractController
 	public function new(#[CurrentUser] ?User $user, Request $request, EntityManagerInterface $entityManager): JsonResponse
 	{
 		$content = $request->getContent();
-		$category = $this->deserializer($content, Transaction::class);
+		$category = $this->deserializer($content, Category::class);
+		$category->setUser($user);
 		$entityManager->persist($category);
 		$entityManager->flush();
 		return $this->json($category)->setStatusCode(Response::HTTP_OK);
 	}
 	
 	#[Route('/edit/{id}', name: 'app_api_category_edit', methods: ['PUT'])]
-	public function edit(int $id, Request $request, TransactionRepository
-	$categoryRepository,
-						 EntityManagerInterface $entityManager):
-	JsonResponse
+	public function edit(#[CurrentUser] ?User $user, int $id, Request $request, EntityManagerInterface $entityManager): JsonResponse
 	{
 		/**
 		 * @var Category $update
 		 **/
-		$category = $categoryRepository->getOneBy($id);
+		$category = $this->categoryRepository->getOneBy($id);
 		$content = $request->getContent();
 		$update = $this->deserializer($content, Category::class);
-		
-		
+		$this->categoryRepository->categoryUpdate($category, $update, $user, $id);
 		$entityManager->flush();
-		
 		$category = $this->serializer($category, function: fn($data) => $data->getId());
 		return $this->json($category)->setStatusCode(Response::HTTP_OK);
 		
 	}
 	
 	#[Route('/delete/{id}', name: 'app_api_category_delete', methods: ['DELETE'])]
-	public function delete(int $id, TransactionRepository $categoryRepository,
-						   EntityManagerInterface $entityManager): JsonResponse
+	public function delete(int $id, EntityManagerInterface $entityManager): JsonResponse
 	{
-		$category = $categoryRepository->getOneBy($id);
-
+		$category = $this->categoryRepository->getOneBy($id);
+		
 		$entityManager->remove($category);
 		$entityManager->flush();
+		
 		return $this->json('Record remove!')->setStatusCode(Response::HTTP_OK);
 	}
 }

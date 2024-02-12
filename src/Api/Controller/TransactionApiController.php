@@ -86,9 +86,9 @@ class TransactionApiController extends AbstractController
 		$content = $request->getContent();
 		$update = $this->deserializer($content, Transaction::class);
 		
-		$id = json_decode($content, true)['category'];
+		$idCategory = json_decode($content, true)['category'];
 		
-		$this->transactionRepository->updateDataTransaction($transaction, $update, $user, $id);
+		$this->transactionRepository->updateDataTransaction($transaction, $update, $user, $idCategory);
 		$this->transactionService->calculateAmount($user, $transaction, $oldAmount);
 		$entityManager->flush();
 		

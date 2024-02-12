@@ -3,6 +3,7 @@
 namespace App\Category\Repository;
 
 use App\Category\Entity\Category;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -51,4 +52,19 @@ class CategoryRepository extends ServiceEntityRepository
 	{
 		return $this->findBy(['user' => $user]);
 	}
+	
+	public function getOneBy(int $id): Category
+	{
+		return $this->findOneBy(['id' => $id]);
+	}
+	
+	public function categoryUpdate(Category $category, Category $update, ?User $user, int $id): void
+	{
+		$category->setUser($user);
+		$category->setName($update->getName());
+		$category->setId($id);
+		
+	}
+	
+	
 }

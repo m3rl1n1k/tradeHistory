@@ -55,9 +55,14 @@ class TransactionService implements TransactionInterface
 	 */
 	public function calculateAmount(UserInterface|User $user, Transaction $transaction, float $oldAmount = 0): void
 	{
+		/**
+		 * @function $this->isExpenseOldMoreCurrentAmount()// якщо стара сума більше нової (від старої віднімаєм нову
+		 * і різницю на баланс)
+		 * @function isExpenseCurrentMoreOldAmount// якщо стара сума менше нової (від старої віднімаєм нову і різницю
+		 * знімаєм з балансу баланс)
+		**/
 		$this->isExpenseCurrentMoreOldAmount($oldAmount, $user, $transaction);
 		$this->isExpenseOldMoreCurrentAmount($oldAmount, $user, $transaction);
-		$this->isExpenseOldEqualCurrentAmount($oldAmount, $user, $transaction);
 		$this->isIncome($user, $transaction);
 	}
 	
@@ -96,13 +101,6 @@ class TransactionService implements TransactionInterface
 		if ($transaction->isExpense() && $transaction->getAmount() < $oldAmount) {
 			$amount = $user->getAmount() + ($oldAmount - $transaction->getAmount());
 			$user->setAmount($amount);
-		}
-	}
-	
-	private function isExpenseOldEqualCurrentAmount(float $oldAmount, UserInterface|User $user, Transaction $transaction): void
-	{
-		if ($transaction->isExpense() && $transaction->getAmount() === $oldAmount) {
-			$user->setAmount($user->decrementAmount($transaction->getAmount()));
 		}
 	}
 	
