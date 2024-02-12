@@ -40,7 +40,7 @@
                 <td scope="row">{{ loop.index }}</td>
                 <td>{{ type(transaction.type) }}</td>
                 <td class="text-center">
-                    <a class="btn btn-outline-info text-decoration-none"
+                    <a class="btn {{ color(transaction.type)}} text-decoration-none"
                        href="{{ path('app_transaction_show', {'id': transaction.id}) }}">{{ transaction.amount }}</a>
                 </td>
                 <td>{{ transaction.category ? transaction.category.name : '' }}</td>
@@ -53,7 +53,4 @@
         {% endfor %}
         </tbody>
     </table>
-    <script>
-        {#const Transaction = {{ transactions|json_encode|raw }};#}
-    </script>
 {% endblock %}
