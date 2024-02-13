@@ -2,7 +2,8 @@ FROM php:8.1-fpm
 ARG WORKDIR
 WORKDIR ${WORKDIR}
 
-RUN apt-get -y update && apt-get -y install git unzip vim rsync \ && apt-get install -y libicu-dev \ && docker-php-ext-configure intl \
+RUN apt-get -y update && apt-get -y install git unzip vim rsync
+RUN apt-get install -y libicu-dev && docker-php-ext-configure intl
 
 RUN docker-php-ext-install pdo pdo_mysql intl
 
