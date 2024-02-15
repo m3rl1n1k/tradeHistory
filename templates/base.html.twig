@@ -84,15 +84,15 @@
                     <hr class="my-3">
 
                     <ul class="nav flex-column mb-auto">
-                        {#                        <li class="nav-item"> #}
-                        {#                            <a class="nav-link d-flex align-items-center {{ isActive(path('app_home'))}} gap-2"
-href="#"> #}
-                        {#                                <svg class="bi"> #}
-                        {#                                    <use xlink:href="#gear-wide-connected"/> #}
-                        {#                                </svg> #}
-                        {#                                Profile #}
-                        {#                            </a> #}
-                        {#                        </li> #}
+{#                        <li class="nav-item">#}
+{#                            <a class="nav-link d-flex align-items-center {{ isActive(path('app_home')) }} gap-2"#}
+{#                               href="#">#}
+{#                                <svg class="bi">#}
+{#                                    <use xlink:href="#gear-wide-connected"/>#}
+{#                                </svg>#}
+{#                                Profile#}
+{#                            </a>#}
+{#                        </li>#}
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center gap-2" href="{{ path('app_logout') }}">
                                 <svg class="bi">
@@ -100,6 +100,14 @@ href="#"> #}
                                 </svg>
                                 Sign out
                             </a>
+                        </li>
+                        <li class="nav-item">
+                            <span class="text-white nav-link d-flex align-items-center gap-2">
+                                <svg class="bi">
+                                    <use xlink:href="#cash"/>
+                                </svg>
+                                Amount: {{ app.user.amount ?? "0" }}
+                            </span>
                         </li>
                     </ul>
                 </div>
