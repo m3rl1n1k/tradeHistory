@@ -1,10 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Transaction index{% endblock %}
+{% block title %}Transaction List{% endblock %}
 
 {% block body %}
-    <h1>Transactions</h1>
-    <a class="btn btn-outline-success" href="{{ path('app_transaction_new') }}">Create new</a>
+    <a class="btn btn-outline-success mt-sm-4 mt-md-0" href="{{ path('app_transaction_new') }}">Create new</a>
     <table class="table table-hover">
         <thead>
         <tr>
