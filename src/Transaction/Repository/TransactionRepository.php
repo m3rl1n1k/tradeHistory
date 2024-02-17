@@ -61,13 +61,14 @@ class TransactionRepository extends ServiceEntityRepository
 	{
 		return $this->createQueryBuilder('transaction')
 			->where('transaction.user = :user')
+			->orderBy('transaction.id', 'DESC')
 			->setParameter('user', $user)
 			->getQuery();
 	}
 	
-	public function getUserTransactions(int $user): array
+	public function getUserTransactions(int $user, array $orderBy = [], int $limit = null): array
 	{
-		return $this->findBy(['user' => $user]);
+		return $this->findBy(['user' => $user], $orderBy, $limit);
 	}
 	
 	/**

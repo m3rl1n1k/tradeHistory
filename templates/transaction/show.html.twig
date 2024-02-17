@@ -7,32 +7,40 @@
 
     <table class="table">
         <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ transaction.id }}</td>
+        </tr>
+        <tr>
+            <th>Amount</th>
+            <td>{{ transaction.amount }}</td>
+        </tr>
+        {% if transaction.category %}
             <tr>
-                <th>Id</th>
-                <td>{{ transaction.id }}</td>
+                <th>Category</th>
+                <td>{{ transaction.category }}</td>
             </tr>
-            <tr>
-                <th>Amount</th>
-                <td>{{ transaction.amount }}</td>
-            </tr>
-            <tr>
-                <th>Type</th>
-                <td>{{ transaction.type }}</td>
-            </tr>
-            <tr>
-                <th>Date</th>
-                <td>{{ transaction.date ? transaction.date|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
+        {% endif %}
+        <tr>
+            <th>Type</th>
+            <td>{{ type(transaction.type) }}</td>
+        </tr>
+        <tr>
+            <th>Date</th>
+            <td>{{ transaction.date ? transaction.date|date('d-m-y') : '' }}</td>
+        </tr>
+        {% if transaction.description %}
             <tr>
                 <th>Description</th>
                 <td>{{ transaction.description }}</td>
             </tr>
+        {% endif %}
         </tbody>
     </table>
 
-    <a class="btn btn-outline-secondary" href="{{ path('app_transaction_index') }}">back to list</a>
+    <a class="btn btn-outline-secondary" href="{{ path('app_transaction_index') }}">Back to list</a>
 
-    <a class="btn btn-warning" href="{{ path('app_transaction_edit', {'id': transaction.id}) }}">edit</a>
+    <a class="btn btn-warning" href="{{ path('app_transaction_edit', {'id': transaction.id}) }}">Edit</a>
 
     {{ include('transaction/_delete_form.html.twig') }}
 {% endblock %}
