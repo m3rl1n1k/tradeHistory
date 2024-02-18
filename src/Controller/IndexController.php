@@ -15,9 +15,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class IndexController extends AbstractController
 {
-	public function __construct(
-		protected TransactionRepository $transactionRepository,
-	)
+	public function __construct()
 	{
 	}
 	
