@@ -10,6 +10,7 @@ use App\Transaction\Twig\TransactionExtension;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,30 +33,6 @@ class TransactionRepository extends ServiceEntityRepository
 		parent::__construct($registry, Transaction::class);
 	}
 
-//    /**
-//     * @return Transaction[] Returns an array of Transaction objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('t.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Transaction
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 	
 	public function getUserTransactionsQuery(UserInterface $user): Query
 	{
@@ -74,36 +51,17 @@ class TransactionRepository extends ServiceEntityRepository
 	/**
 	 * @throws NonUniqueResultException
 	 */
-	public
-	function getSumIncome(int $user): int
+	public function getSumByType(int $user, string $type): float
 	{
 		$res = $this->createQueryBuilder('transaction')
-			->select('SUM(transaction.amount) as incomeSum')
+			->select('SUM(transaction.amount)')
 			->andWhere('transaction.user = :user')
 			->andWhere('transaction.type = :type')
 			->setParameter('user', $user)
-			->setParameter('type', TransactionEnum::INCOME)
+			->setParameter('type', $type)
 			->getQuery()
 			->getOneOrNullResult();
-		return $res['incomeSum'] ?? 0;
-	}
-	
-	/**
-	 * @throws NonUniqueResultException
-	 */
-	public
-	function getSumExpense(int $user): int
-	{
-		$res = $this->createQueryBuilder('transaction')
-			->select('SUM(transaction.amount) as expenseSum')
-			->andWhere('transaction.user = :user')
-			->andWhere('transaction.type = :type')
-			->setParameter('user', $user)
-			->setParameter('type', TransactionEnum::EXPENSE)
-			->getQuery()
-			->getOneOrNullResult();
-		return $res['expenseSum'] ?? 0;
-		
+		return $res ?? 0;
 	}
 	
 	public function getTransactionsPerPeriod(UserInterface $user, DateTimeInterface $dateStart, DateTimeInterface $dateEnd):
@@ -144,6 +102,36 @@ class TransactionRepository extends ServiceEntityRepository
 		$transaction->setDescription($update->getDescription());
 		$transaction->setUserId($user);
 		$transaction->setCategory($category);
+	}
+	
+	/**
+	 * @throws NonUniqueResultException
+	 * @throws NoResultException
+	 */
+	public function getSumByCategory(string $category): float|bool|int|string|null
+	{
+		return $this->createQueryBuilder('transaction')
+			->select("sum(transaction.amount)")
+			->andWhere("transaction.category = :category")
+			->andWhere("transaction.type = :type")
+			->setParameter('category', $category)
+			->setParameter('type', TransactionEnum::EXPENSE)
+			->getQuery()
+			->getSingleScalarResult();
+	}
+	
+	/**
+	 * @throws NonUniqueResultException
+	 * @throws NoResultException
+	 */
+	public function getMaxAmount(int $user): float|bool|int|string|null
+	{
+		return $this->createQueryBuilder('transaction')
+			->select('max(transaction.amount)')
+			->andWhere('transaction.user = :user')
+			->setParameter('user', $user)
+			->getQuery()
+			->getSingleScalarResult();
 	}
 }
 
