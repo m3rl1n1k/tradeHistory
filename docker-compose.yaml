@@ -13,7 +13,6 @@ services:
       PHP_IDE_CONFIG: serverName=docker
     volumes:
       - ./:${WORKDIR}
-      - ./docker/configs/cron/mail/:/var/mail/
     links:
       - db_mysql
 

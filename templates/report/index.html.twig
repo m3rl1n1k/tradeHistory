@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ReportController!{% endblock %}
+{% block title %}Report{% endblock %}
 
 {% block body %}
     <h1>Report</h1>
@@ -17,10 +17,13 @@
             <p>Expense: {{ expense ?? "0" }}</p>
         </div>
     </div>
-    <h3>Per period:</h3>
+    {{ render_chart(chart) }}
+    <h3>Transactions per period:</h3>
 
     {{ include('report/_form.html.twig') }}
-    {% if transactions is not null  %}
-        {{ include('report/_table.html.twig') }}
+    {% if transactionsList is not null  %}
+        {{ include('report/_card.html.twig') }}
     {% endif %}
+
+
 {% endblock %}

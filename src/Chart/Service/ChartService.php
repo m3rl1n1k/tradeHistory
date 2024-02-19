@@ -4,33 +4,35 @@ namespace App\Chart\Service;
 
 use App\Entity\User;
 use App\Repository\CategoryRepository;
+use App\Transaction\Enum\TransactionEnum;
 use App\Transaction\Repository\TransactionRepository;
+use DateInterval;
+use DatePeriod;
+use DateTime;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use JetBrains\PhpStorm\NoReturn;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
 class ChartService
 {
-	public function __construct(protected ChartBuilderInterface $chartBuilder,
-								protected CategoryRepository    $categoryRepository,
-								protected TransactionRepository $transactionRepository
-	)
-	{
+	
+	public function __construct(
+		protected ChartBuilderInterface $chartBuilder,
+		protected CategoryRepository $categoryRepository,
+		protected TransactionRepository $transactionRepository
+	) {
 	}
 	
-	/**
-	 * @throws NonUniqueResultException
-	 * @throws NoResultException
-	 */
 	public function dashboardChart(User $user, string $label): Chart
 	{
+		$categories = $this->getCategories($user);
+		
 		$chart = $this->chartBuilder->createChart(Chart::TYPE_BAR);
 		$chart->setData([
-			'labels' => array_values($this->dataset($user, categoryReturn: true)),
+			'labels' => array_values($categories),
 			'datasets' => [
-				$this->dataset($user, $label)
+				$this->datasetDashboard($user, $label),
 			],
 		]);
 		
@@ -42,10 +44,11 @@ class ChartService
 				],
 			],
 		]);
+		
 		return $chart;
 	}
 	
-	protected function getCategories($user): array
+	protected function getCategories(User $user): array
 	{
 		$categoryList = [];
 		$categories = $this->categoryRepository->getCategories($user->getUserId());
@@ -55,31 +58,21 @@ class ChartService
 		return $categoryList;
 	}
 	
-	/**
-	 * @throws NonUniqueResultException
-	 * @throws NoResultException
-	 */
-	protected function getSumByCategory(int $id): bool|float|int|string
+	protected function getSumByCategory(int $id): float
 	{
-		return $this->transactionRepository->getSumByCategory($id) ?? 0;
+		return (float)($this->transactionRepository->getTransactionSum(['id' => $id]) ?? 0);
 	}
 	
-	/**
-	 * @throws NonUniqueResultException
-	 * @throws NoResultException
-	 */
 	protected function getMax(User $user): float
 	{
 		return (float)$this->transactionRepository->getMaxAmount($user->getUserId());
 	}
 	
-	/**
-	 * @throws NonUniqueResultException
-	 * @throws NoResultException
-	 */
-	protected function dataset($user, string $label = '', bool $categoryReturn = false): array
+	protected function datasetDashboard(User $user, string $label = ''): array
 	{
 		$categories = $this->getCategories($user);
+		$categoriesList = [];
+		$result = [];
 		foreach ($categories as $key => $category) {
 			$sum = $this->getSumByCategory($key);
 			if ($sum) {
@@ -87,13 +80,11 @@ class ChartService
 				$result[] = $sum;
 			}
 		}
-		if ($categoryReturn) {
-			return $categoriesList;
-		}
+		
 		return [
 			'label' => $label,
 			'backgroundColor' => $this->colors(),
-			'borderColor' => $this->colors(),
+			'borderColor' => $this->colors()[0],
 			'data' => $result,
 		];
 	}
@@ -114,15 +105,74 @@ class ChartService
 		];
 	}
 	
+	public function reportChart(User $user): Chart
+	{
+		$chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
+		$chart->setData([
+			'labels' => $this->getDateArray(),
+			'datasets' => [
+				$this->datasetReport(TransactionEnum::EXPENSE, 'Expense', 0),
+				$this->datasetReport(TransactionEnum::INCOME, 'Income', 1),
+			],
+		]);
+		
+		$chart->setOptions([
+			'scales' => [
+				'y' => [
+					'suggestedMin' => 0,
+					'suggestedMax' => $this->getMax($user),
+				],
+			],
+		]);
+		
+		return $chart;
+	}
+	
+	private function getDateArray(): array
+	{
+		$currentYear = date("Y");
+		$currentMonth = date("m");
+		
+		$start = new DateTime("$currentYear-$currentMonth-01");
+		$end = new DateTime("$currentYear-$currentMonth-01");
+		$end->modify('last day of this month');
+		$interval = new DateInterval('P1D');
+		$period = new DatePeriod($start, $interval, $end);
+		
+		$daysArray = [];
+		foreach ($period as $date) {
+			$daysArray[] = $date->format('y-m-d');
+		}
+		
+		return $daysArray;
+	}
+	
 	/**
 	 * @throws NonUniqueResultException
 	 * @throws NoResultException
 	 */
-	#[NoReturn] public function debug($user)
+	private function getSumByDay(array $days, string $type): array
 	{
-		$categories = $this->getCategories($user);
-		$data = $this->dataset($categories, '');
-		dd($data);
+		$sum = [];
+		foreach ($days as $day) {
+			$sum[] = $this->transactionRepository->getTransactionSum(['date' => $day], $type) ?? 0;
+		}
+		return $sum;
 	}
 	
+	/**
+	 * @throws NonUniqueResultException
+	 * @throws NoResultException
+	 */
+	protected function datasetReport(string $type, string $label = '', int $colorMax10 = 10): array
+	{
+		$days = $this->getDateArray();
+		$result = $this->getSumByDay($days, $type);
+		return [
+			'label' => $label,
+			'backgroundColor' => $this->colors()[$colorMax10],
+			'borderColor' => $this->colors()[$colorMax10],
+			'data' => $result,
+		];
+	}
 }

@@ -26,9 +26,9 @@ interface TransactionInterface
 	
 	/**
 	 * @param int $id
-	 * @return Transaction
+	 * @return array
 	 */
-    public function getTransactionById(int $id): Transaction;
+    public function getTransactionById(int $id): array;
 	
 	/**
 	 * @param UserInterface|User $user

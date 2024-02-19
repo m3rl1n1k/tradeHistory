@@ -1,0 +1,21 @@
+<div class="row g-4">
+    <div class="card-group">
+        {% for key, transactions in transactionsList %}
+            <div class="col mt-4">
+                <div class="card mx-3 border-info">
+                    <div class="card-header">
+                        {{ key }}
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        {% for transaction in transactions %}
+                            <li class="list-group-item list-group-item-info">
+                                {{ include('component/_transaction_type.html.twig') }}
+                                {{ transaction.amount }} <br>
+                                {{ transaction.date ? transaction.date|date('d-m-y') : '' }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

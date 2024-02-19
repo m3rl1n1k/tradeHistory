@@ -69,7 +69,7 @@ class TransactionService implements TransactionInterface
 	/**
 	 * @inheritDoc
 	 */
-	public function getTransactionById(int $id): Transaction
+	public function getTransactionById(int $id): array
 	{
 		return $this->transactionRepository->findBy(['id' => $id]);
 	}
@@ -146,5 +146,21 @@ class TransactionService implements TransactionInterface
 			}
 		}
 		return $sum;
+	}
+	
+	public function groupTransactionsByCategory(array $transactions): array
+	{
+		$groupedTransactions = [];
+		
+		foreach ($transactions as $transaction) {
+			$category = $transaction->getCategory();
+			if (!$transaction->getCategory()) {
+				$groupedTransactions['No category'][] = $transaction;
+			} else {
+				$groupedTransactions[$category->getName()][] = $transaction;
+			}
+		}
+		
+		return $groupedTransactions;
 	}
 }

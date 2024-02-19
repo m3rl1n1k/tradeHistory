@@ -13,6 +13,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use phpDocumentor\Reflection\Type;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -32,7 +33,7 @@ class TransactionRepository extends ServiceEntityRepository
 	{
 		parent::__construct($registry, Transaction::class);
 	}
-
+	
 	
 	public function getUserTransactionsQuery(UserInterface $user): Query
 	{
@@ -48,21 +49,6 @@ class TransactionRepository extends ServiceEntityRepository
 		return $this->findBy(['user' => $user], $orderBy, $limit);
 	}
 	
-	/**
-	 * @throws NonUniqueResultException
-	 */
-	public function getSumByType(int $user, string $type): float
-	{
-		$res = $this->createQueryBuilder('transaction')
-			->select('SUM(transaction.amount)')
-			->andWhere('transaction.user = :user')
-			->andWhere('transaction.type = :type')
-			->setParameter('user', $user)
-			->setParameter('type', $type)
-			->getQuery()
-			->getOneOrNullResult();
-		return $res ?? 0;
-	}
 	
 	public function getTransactionsPerPeriod(UserInterface $user, DateTimeInterface $dateStart, DateTimeInterface $dateEnd):
 	string|array|int|float
@@ -108,22 +94,6 @@ class TransactionRepository extends ServiceEntityRepository
 	 * @throws NonUniqueResultException
 	 * @throws NoResultException
 	 */
-	public function getSumByCategory(string $category): float|bool|int|string|null
-	{
-		return $this->createQueryBuilder('transaction')
-			->select("sum(transaction.amount)")
-			->andWhere("transaction.category = :category")
-			->andWhere("transaction.type = :type")
-			->setParameter('category', $category)
-			->setParameter('type', TransactionEnum::EXPENSE)
-			->getQuery()
-			->getSingleScalarResult();
-	}
-	
-	/**
-	 * @throws NonUniqueResultException
-	 * @throws NoResultException
-	 */
 	public function getMaxAmount(int $user): float|bool|int|string|null
 	{
 		return $this->createQueryBuilder('transaction')
@@ -132,6 +102,78 @@ class TransactionRepository extends ServiceEntityRepository
 			->setParameter('user', $user)
 			->getQuery()
 			->getSingleScalarResult();
+	}
+	
+	/**
+	 * @throws NonUniqueResultException
+	 * @throws NoResultException
+	 */
+//	public function getSumByDayExpense(mixed $day, string $type): float|bool|int|string|null
+//	{
+//		return $this->createQueryBuilder('transaction')
+//			->select("sum(transaction.amount)")
+//			->andWhere("transaction.date = :date")
+//			->andWhere("transaction.type = :type")
+//			->setParameter('date', $day)
+//			->setParameter('type', $type)
+//			->getQuery()
+//			->getSingleScalarResult() ?? 0;
+//	}
+//
+//	public function getSumByCategoryExpense(string $category): float|bool|int|string|null
+//	{
+//		return $this->createQueryBuilder('transaction')
+//			->select("sum(transaction.amount)")
+//			->andWhere("transaction.category = :category")
+//			->andWhere("transaction.type = :type")
+//			->setParameter('category', $category)
+//			->setParameter('type', TransactionEnum::EXPENSE)
+//			->getQuery()
+//			->getSingleScalarResult() ?? 0;
+//	}
+//
+//	public function getSumByType(int $user, string $type): float
+//	{
+//		return $this->createQueryBuilder('transaction')
+//			->select('SUM(transaction.amount)')
+//			->andWhere('transaction.user = :user')
+//			->andWhere('transaction.type = :type')
+//			->setParameter('user', $user)
+//			->setParameter('type', $type)
+//			->getQuery()
+//			->getOneOrNullResult() ?? 0;
+//	}
+	
+	public function getTransactionSum(array $conditions, string $type = TransactionEnum::EXPENSE): float|bool|int|string|null
+	{
+		$queryBuilder = $this->createQueryBuilder('transaction')
+			->select('SUM(transaction.amount)')
+			->andWhere($this->matchConditions($conditions));
+		
+		foreach ($conditions as $key => $value) {
+			if (in_array($key, ['date', 'category', 'user'])) {
+				$queryBuilder->setParameter($key, $value);
+			}
+		}
+		
+		if ($type) {
+			$queryBuilder->andWhere('transaction.type = :type')
+				->setParameter('type', $type);
+		}
+		
+		return $queryBuilder->getQuery()
+			->getSingleScalarResult() ?? 0;
+	}
+	
+	private function matchConditions(array $conditions): string
+	{
+		return match(true) {
+			isset($conditions['date']) => 'transaction.date = :date',
+			isset($conditions['category']) => 'transaction.category = :category',
+			isset($conditions['user']) => 'transaction.user = :user',
+			isset($conditions['id']) => 'transaction.id = :id',
+			default => '',
+		};
 	}
 }
 
