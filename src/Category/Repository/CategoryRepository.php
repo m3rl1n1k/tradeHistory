@@ -66,5 +66,10 @@ class CategoryRepository extends ServiceEntityRepository
 		
 	}
 	
+	public function getCategories(int $user)
+	{
+		return $this->findBy(['user' => $user]);
+	}
+	
 	
 }
