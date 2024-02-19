@@ -16,23 +16,24 @@ use Symfony\UX\Chartjs\Model\Chart;
 
 class ChartService
 {
-	
-	public function __construct(
-		protected ChartBuilderInterface $chartBuilder,
-		protected CategoryRepository $categoryRepository,
-		protected TransactionRepository $transactionRepository
-	) {
+	public function __construct(protected ChartBuilderInterface $chartBuilder,
+								protected CategoryRepository    $categoryRepository,
+								protected TransactionRepository $transactionRepository
+	)
+	{
 	}
 	
+	/**
+	 * @throws NonUniqueResultException
+	 * @throws NoResultException
+	 */
 	public function dashboardChart(User $user, string $label): Chart
 	{
-		$categories = $this->getCategories($user);
-		
 		$chart = $this->chartBuilder->createChart(Chart::TYPE_BAR);
 		$chart->setData([
-			'labels' => array_values($categories),
+			'labels' => array_values($this->datasetDashboard($user, categoryReturn: true)),
 			'datasets' => [
-				$this->datasetDashboard($user, $label),
+				$this->datasetDashboard($user, $label)
 			],
 		]);
 		
@@ -44,11 +45,10 @@ class ChartService
 				],
 			],
 		]);
-		
 		return $chart;
 	}
 	
-	protected function getCategories(User $user): array
+	protected function getCategories($user): array
 	{
 		$categoryList = [];
 		$categories = $this->categoryRepository->getCategories($user->getUserId());
@@ -58,21 +58,33 @@ class ChartService
 		return $categoryList;
 	}
 	
-	protected function getSumByCategory(int $id): float
+	/**
+	 * @throws NonUniqueResultException
+	 * @throws NoResultException
+	 */
+	protected function getSumByCategory(int $id): bool|float|int|string
 	{
-		return (float)($this->transactionRepository->getTransactionSum(['id' => $id]) ?? 0);
+		return $this->transactionRepository->getTransactionSum(['category' => $id]) ?? 0;
 	}
 	
+	/**
+	 * @throws NonUniqueResultException
+	 * @throws NoResultException
+	 */
 	protected function getMax(User $user): float
 	{
 		return (float)$this->transactionRepository->getMaxAmount($user->getUserId());
 	}
 	
-	protected function datasetDashboard(User $user, string $label = ''): array
+	/**
+	 * @throws NonUniqueResultException
+	 * @throws NoResultException
+	 */
+	protected function datasetDashboard($user, string $label = '', bool $categoryReturn = false, bool $singleColor =
+	false):
+	array
 	{
 		$categories = $this->getCategories($user);
-		$categoriesList = [];
-		$result = [];
 		foreach ($categories as $key => $category) {
 			$sum = $this->getSumByCategory($key);
 			if ($sum) {
@@ -80,12 +92,14 @@ class ChartService
 				$result[] = $sum;
 			}
 		}
-		
+		if ($categoryReturn) {
+			return $categoriesList ?? [];
+		}
 		return [
 			'label' => $label,
 			'backgroundColor' => $this->colors(),
-			'borderColor' => $this->colors()[0],
-			'data' => $result,
+			'borderColor' => $singleColor ? $this->colors()[0] : $this->colors(),
+			'data' => $result ?? [],
 		];
 	}
 	
@@ -105,14 +119,20 @@ class ChartService
 		];
 	}
 	
+	
+	/**
+	 * @throws NonUniqueResultException
+	 * @throws NoResultException
+	 */
 	public function reportChart(User $user): Chart
 	{
+		//select all transactions per month and build chart
 		$chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
 		$chart->setData([
 			'labels' => $this->getDateArray(),
 			'datasets' => [
 				$this->datasetReport(TransactionEnum::EXPENSE, 'Expense', 0),
-				$this->datasetReport(TransactionEnum::INCOME, 'Income', 1),
+				$this->datasetReport(TransactionEnum::INCOME, 'Income',1)
 			],
 		]);
 		
@@ -124,7 +144,6 @@ class ChartService
 				],
 			],
 		]);
-		
 		return $chart;
 	}
 	
@@ -164,7 +183,8 @@ class ChartService
 	 * @throws NonUniqueResultException
 	 * @throws NoResultException
 	 */
-	protected function datasetReport(string $type, string $label = '', int $colorMax10 = 10): array
+	protected function datasetReport(string $type, string $label = '', int $colorMax10 = 10):
+	array
 	{
 		$days = $this->getDateArray();
 		$result = $this->getSumByDay($days, $type);
@@ -172,7 +192,8 @@ class ChartService
 			'label' => $label,
 			'backgroundColor' => $this->colors()[$colorMax10],
 			'borderColor' => $this->colors()[$colorMax10],
-			'data' => $result,
+			'data' => $result ?? [],
 		];
 	}
+	
 }
