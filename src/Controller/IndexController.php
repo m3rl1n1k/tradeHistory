@@ -2,79 +2,43 @@
 
 namespace App\Controller;
 
+use App\Chart\Service\ChartService;
 use App\Entity\User;
 use App\Transaction\Repository\TransactionRepository;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
-use Symfony\UX\Chartjs\Model\Chart;
 
 class IndexController extends AbstractController
 {
-	private UserInterface|User|null $user;
-	
-	public function __construct(
-		protected TransactionRepository $transactionRepository,
-		protected Security              $security,
-	)
+	public function __construct()
 	{
-		$this->user = $this->security->getUser();
 	}
 	
 	/**
 	 * @throws NonUniqueResultException
+	 * @throws NoResultException
 	 */
 	#[IsGranted('IS_AUTHENTICATED_FULLY')]
 	#[Route('/home', name: 'app_home')]
-	public function home(TransactionRepository $transactionRepository, ChartBuilderInterface $chartBuilder): Response
+	public function home(#[CurrentUser] ?User $user, TransactionRepository $transactionRepository, ChartService $chartService):
+	Response
 	{
-		$chart = $chartBuilder->createChart(Chart::TYPE_LINE);
-		
-		$chart->setData([
-			'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-			'datasets' => [
-				[
-					'label' => 'My First dataset',
-					'backgroundColor' => 'rgb(255, 99, 132)',
-					'borderColor' => 'rgb(255, 99, 132)',
-					'data' => [0, 10, 5, 2, 20, 30, 45],
-				],
-			],
-		]);
-		
-		$chart->setOptions([
-			'scales' => [
-				'y' => [
-					'suggestedMin' => 0,
-					'suggestedMax' => 100,
-				],
-			],
-		]);
-		$userId = $this->user->getId();
+//		$chartService->debug($user);
+		$chart = $chartService->dashboardChart($user, 'Expense');
 		return $this->render('index/index.html.twig', [
 			'chart' => $chart,
-			'last10transaction' => $transactionRepository->findBy(
-				[
-					'user' => $userId
-				],
-				orderBy: [
-					'id' => 'DESC'
-				],
-				limit: 10
-			),
-			'income' => $transactionRepository->getSumIncome($userId),
-			'expense' => $transactionRepository->getSumExpense($userId)
+			'last10transaction' => $transactionRepository->getUserTransactions($user->getUserId(), ['id' => 'DESC'], 10)
 		]);
 	}
 	
 	#[Route('/', name: 'app_index')]
-	public function index(): Response
+	public function index(#[CurrentUser] ?User $user): Response
 	{
-		return !$this->user ? $this->redirectToRoute('app_login') : $this->redirectToRoute('app_home');
+		return !$user ? $this->redirectToRoute('app_login') : $this->redirectToRoute('app_home');
 	}
 }

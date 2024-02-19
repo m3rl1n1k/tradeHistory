@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Category index{% endblock %}
+{% block title %}Category{% endblock %}
 
 {% block body %}
-    <h1>Category index</h1>
+    <h1>Category</h1>
 
     <a class="btn btn-outline-success" href="{{ path('app_category_new') }}">Create new</a>
     <table class="table">
@@ -18,7 +18,7 @@
         {% for category in categories %}
             <tr>
                 <td>{{ category.id }}</td>
-                <td>{{ category.name }}</td>
+                <td class="text-capitalize">{{ category.name }}</td>
                 <td>
                     <div class="d-flex flex-row">
                         <a class="btn btn-warning me-2" href="{{ path('app_category_edit', {'id': category.id}) }}">Edit</a>

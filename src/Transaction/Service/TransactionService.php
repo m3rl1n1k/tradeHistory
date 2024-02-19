@@ -45,7 +45,7 @@ class TransactionService implements TransactionInterface
 	array|Query
 	{
 		if ($is_array) {
-			return $this->transactionRepository->findBy(['user' => $user->getId()]);
+			return $this->transactionRepository->findBy(['user' => $user->getId()], ['id' => 'DESC']);
 		}
 		return $this->transactionRepository->getUserTransactionsQuery($user);
 	}
@@ -60,7 +60,7 @@ class TransactionService implements TransactionInterface
 		 * і різницю на баланс)
 		 * @function isExpenseCurrentMoreOldAmount// якщо стара сума менше нової (від старої віднімаєм нову і різницю
 		 * знімаєм з балансу баланс)
-		**/
+		 **/
 		$this->isExpenseCurrentMoreOldAmount($oldAmount, $user, $transaction);
 		$this->isExpenseOldMoreCurrentAmount($oldAmount, $user, $transaction);
 		$this->isIncome($user, $transaction);
@@ -69,7 +69,7 @@ class TransactionService implements TransactionInterface
 	/**
 	 * @inheritDoc
 	 */
-	public function getTransactionById(int $id): Transaction
+	public function getTransactionById(int $id): array
 	{
 		return $this->transactionRepository->findBy(['id' => $id]);
 	}
@@ -146,5 +146,21 @@ class TransactionService implements TransactionInterface
 			}
 		}
 		return $sum;
+	}
+	
+	public function groupTransactionsByCategory(array $transactions): array
+	{
+		$groupedTransactions = [];
+		
+		foreach ($transactions as $transaction) {
+			$category = $transaction->getCategory();
+			if (!$transaction->getCategory()) {
+				$groupedTransactions['No category'][] = $transaction;
+			} else {
+				$groupedTransactions[$category->getName()][] = $transaction;
+			}
+		}
+		
+		return $groupedTransactions;
 	}
 }

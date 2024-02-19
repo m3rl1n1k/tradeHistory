@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\TransactionType;
 use App\Transaction\Entity\Transaction;
-use App\Transaction\Enum\TransactionEnum;
 use App\Transaction\Repository\TransactionRepository;
 use App\Transaction\Service\TransactionService;
 use App\Transaction\Trait\TransactionTrait;

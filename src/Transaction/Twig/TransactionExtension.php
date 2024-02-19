@@ -15,6 +15,7 @@ class TransactionExtension extends AbstractExtension
 		return [
 			new TwigFunction('type', [$this, 'numberToName']),
 			new TwigFunction('color', [$this, 'color']),
+			new TwigFunction('type_transaction', [$this, 'typeTransaction']),
 		];
 	}
 	
@@ -35,6 +36,16 @@ class TransactionExtension extends AbstractExtension
 			TransactionEnum::EXPENSE => "btn-outline-danger",
 			TransactionEnum::TRANSACTION => "btn-outline-warning",
 			default => "btn-outline-info"
+		};
+	}
+	
+	public function typeTransaction(int $type): string
+	{
+		return match ($type) {
+			TransactionEnum::INCOME => "income",
+			TransactionEnum::EXPENSE => "expense",
+			TransactionEnum::TRANSACTION => "transaction",
+			default => ""
 		};
 	}
 }

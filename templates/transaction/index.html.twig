@@ -13,29 +13,21 @@
                 <th>Amount</th>
                 <th>Category</th>
                 <th>Date</th>
-                <th>Description</th>
-                <th>actions</th>
             </tr>
             </thead>
             <tbody>
             {% for transaction in pagerfanta.currentPageResults %}
                 <tr>
                     <td>{{ transaction.id }}</td>
-                    <td>{{ type(transaction.type) }}</td>
+                    <td>
+                        {{ include('component/_transaction_type.html.twig') }}
+                    </td>
                     <td class="text-center">
                         <a class="btn {{ color(transaction.type) }} text-decoration-none"
                            href="{{ path('app_transaction_show', {'id': transaction.id}) }}">{{ transaction.amount }}</a>
                     </td>
                     <td>{{ transaction.category ? transaction.category.name : '' }}</td>
-                    <td>{{ transaction.date ? transaction.date|date('Y-m-d') : '' }}</td>
-                    <td>{{ transaction.description }}</td>
-                    <td>
-                        <div class="d-flex flex-row">
-                            <a class="btn btn-warning me-2"
-                               href="{{ path('app_transaction_edit', {'id': transaction.id}) }}">Edit</a>
-                            {{ include('transaction/_delete_form.html.twig') }}
-                        </div>
-                    </td>
+                    <td>{{ transaction.date ? transaction.date|date('d-m-y') : '' }}</td>
                 </tr>
             {% else %}
                 <tr>
