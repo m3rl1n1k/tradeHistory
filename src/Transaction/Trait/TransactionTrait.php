@@ -11,26 +11,19 @@ use Symfony\Component\HttpFoundation\Request;
 
 trait TransactionTrait
 {
-    public function accessDenied(Transaction $transaction, User $user): void
-    {
-        if ($user->getEmail() !== $transaction->getUserId()) {
-            throw $this->createAccessDeniedException('You don\'t have access! ');
-        }
-    }
-
-    public function paginate(Query $query, Request $request, int $maxRecords = 10, bool $inf = false): Pagerfanta
-    {
-        $adapter = new QueryAdapter($query);
-        $pagerfanta = new Pagerfanta($adapter);
-
-        $pagerfanta->setCurrentPage($request->query->getInt('page', 1));
-
-        if ($inf) {
-            $pagerfanta->setMaxPerPage($pagerfanta->count());
-        } else {
-            $pagerfanta->setMaxPerPage($maxRecords);
-        }
-
-        return $pagerfanta;
-    }
+	public function paginate(Query $query, Request $request, int $maxRecords = 10, bool $inf = false): Pagerfanta
+	{
+		$adapter = new QueryAdapter($query);
+		$pagerfanta = new Pagerfanta($adapter);
+		
+		$pagerfanta->setCurrentPage($request->query->getInt('page', 1));
+		
+		if ($inf) {
+			$pagerfanta->setMaxPerPage($pagerfanta->count());
+		} else {
+			$pagerfanta->setMaxPerPage($maxRecords);
+		}
+		
+		return $pagerfanta;
+	}
 }

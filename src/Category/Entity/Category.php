@@ -43,6 +43,11 @@ class Category
 		return $this->user;
 	}
 	
+	public function getUserId(): string
+	{
+		return $this->user->getUserIdentifier();
+	}
+	
 	public function setUser(?User $user): static
 	{
 		$this->user = $user;
