@@ -58,13 +58,9 @@ class ChartService
 		return $categoryList;
 	}
 	
-	/**
-	 * @throws NonUniqueResultException
-	 * @throws NoResultException
-	 */
-	protected function getSumByCategory(int $id): bool|float|int|string
+	protected function getSumByCategory(int $id, $user): bool|float|int|string
 	{
-		return $this->transactionRepository->getTransactionSum(['category' => $id]) ?? 0;
+		return $this->transactionRepository->getTransactionSum($user, ['category' => $id]) ?? 0;
 	}
 	
 	/**
@@ -76,17 +72,13 @@ class ChartService
 		return (float)$this->transactionRepository->getMaxAmount($user->getUserId());
 	}
 	
-	/**
-	 * @throws NonUniqueResultException
-	 * @throws NoResultException
-	 */
 	protected function datasetDashboard($user, string $label = '', bool $categoryReturn = false, bool $singleColor =
 	false):
 	array
 	{
 		$categories = $this->getCategories($user);
 		foreach ($categories as $key => $category) {
-			$sum = $this->getSumByCategory($key);
+			$sum = $this->getSumByCategory($key, $user);
 			if ($sum) {
 				$categoriesList[] = $category;
 				$result[] = $sum;
@@ -131,8 +123,8 @@ class ChartService
 		$chart->setData([
 			'labels' => $this->getDateArray(),
 			'datasets' => [
-				$this->datasetReport(TransactionEnum::EXPENSE, 'Expense', 0),
-				$this->datasetReport(TransactionEnum::INCOME, 'Income',1)
+				$this->datasetReport($user, TransactionEnum::EXPENSE, 'Expense', 0),
+				$this->datasetReport($user, TransactionEnum::INCOME, 'Income', 1)
 			],
 		]);
 		
@@ -166,28 +158,20 @@ class ChartService
 		return $daysArray;
 	}
 	
-	/**
-	 * @throws NonUniqueResultException
-	 * @throws NoResultException
-	 */
-	private function getSumByDay(array $days, string $type): array
+	private function getSumByDay(array $days, string $type, $user): array
 	{
 		$sum = [];
 		foreach ($days as $day) {
-			$sum[] = $this->transactionRepository->getTransactionSum(['date' => $day], $type) ?? 0;
+			$sum[] = $this->transactionRepository->getTransactionSum($user,['date' => $day], $type) ?? 0;
 		}
 		return $sum;
 	}
 	
-	/**
-	 * @throws NonUniqueResultException
-	 * @throws NoResultException
-	 */
-	protected function datasetReport(string $type, string $label = '', int $colorMax10 = 10):
+	protected function datasetReport($user, string $type, string $label = '', int $colorMax10 = 10):
 	array
 	{
 		$days = $this->getDateArray();
-		$result = $this->getSumByDay($days, $type);
+		$result = $this->getSumByDay($days, $type, $user);
 		return [
 			'label' => $label,
 			'backgroundColor' => $this->colors()[$colorMax10],

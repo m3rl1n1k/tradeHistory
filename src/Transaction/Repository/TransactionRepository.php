@@ -17,6 +17,7 @@ use phpDocumentor\Reflection\Type;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 /**
  * @extends ServiceEntityRepository<Transaction>
@@ -29,7 +30,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class TransactionRepository extends ServiceEntityRepository
 {
 	
-	public function __construct(ManagerRegistry $registry, protected CategoryRepository $categoryRepository)
+	public function __construct(ManagerRegistry $registry, protected CategoryRepository $categoryRepository,
+								#[CurrentUser] ?User $user)
 	{
 		parent::__construct($registry, Transaction::class);
 	}
@@ -104,52 +106,14 @@ class TransactionRepository extends ServiceEntityRepository
 			->getSingleScalarResult();
 	}
 	
-	/**
-	 * @throws NonUniqueResultException
-	 * @throws NoResultException
-	 */
-//	public function getSumByDayExpense(mixed $day, string $type): float|bool|int|string|null
-//	{
-//		return $this->createQueryBuilder('transaction')
-//			->select("sum(transaction.amount)")
-//			->andWhere("transaction.date = :date")
-//			->andWhere("transaction.type = :type")
-//			->setParameter('date', $day)
-//			->setParameter('type', $type)
-//			->getQuery()
-//			->getSingleScalarResult() ?? 0;
-//	}
-//
-//	public function getSumByCategoryExpense(string $category): float|bool|int|string|null
-//	{
-//		return $this->createQueryBuilder('transaction')
-//			->select("sum(transaction.amount)")
-//			->andWhere("transaction.category = :category")
-//			->andWhere("transaction.type = :type")
-//			->setParameter('category', $category)
-//			->setParameter('type', TransactionEnum::EXPENSE)
-//			->getQuery()
-//			->getSingleScalarResult() ?? 0;
-//	}
-//
-//	public function getSumByType(int $user, string $type): float
-//	{
-//		return $this->createQueryBuilder('transaction')
-//			->select('SUM(transaction.amount)')
-//			->andWhere('transaction.user = :user')
-//			->andWhere('transaction.type = :type')
-//			->setParameter('user', $user)
-//			->setParameter('type', $type)
-//			->getQuery()
-//			->getOneOrNullResult() ?? 0;
-//	}
-	
-	public function getTransactionSum(array $conditions, string $type = TransactionEnum::EXPENSE): float|bool|int|string|null
+	public function getTransactionSum($user, array $conditions, string $type = TransactionEnum::EXPENSE):
+float|bool|int|string|null
 	{
 		$queryBuilder = $this->createQueryBuilder('transaction')
 			->select('SUM(transaction.amount)')
-			->andWhere($this->matchConditions($conditions));
-		
+			->andWhere($this->matchConditions($conditions))
+			->andWhere('transaction.user = :user')
+			->setParameter('user', $user);
 		foreach ($conditions as $key => $value) {
 			if (in_array($key, ['date', 'category', 'user'])) {
 				$queryBuilder->setParameter($key, $value);
@@ -170,7 +134,6 @@ class TransactionRepository extends ServiceEntityRepository
 		return match(true) {
 			isset($conditions['date']) => 'transaction.date = :date',
 			isset($conditions['category']) => 'transaction.category = :category',
-			isset($conditions['user']) => 'transaction.user = :user',
 			isset($conditions['id']) => 'transaction.id = :id',
 			default => '',
 		};
