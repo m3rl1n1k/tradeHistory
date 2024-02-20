@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Category\Repository\CategoryRepository;
 use App\Entity\User;
 use App\Form\TransactionType;
+use App\Security\Access;
 use App\Transaction\Entity\Transaction;
 use App\Transaction\Repository\TransactionRepository;
 use App\Transaction\Service\TransactionService;
@@ -23,7 +24,8 @@ class TransactionController extends AbstractController
 {
 	public function __construct(
 		protected TransactionRepository $transactionRepository,
-		protected TransactionService    $transactionService
+		protected TransactionService    $transactionService,
+		private readonly Access $access
 	)
 	{
 	}
@@ -71,7 +73,7 @@ class TransactionController extends AbstractController
 	#[Route('/{id}', name: 'app_transaction_show', methods: ['GET'])]
 	public function show(#[CurrentUser] ?User $user, Transaction $transaction): Response
 	{
-		$this->accessDenied($transaction, $user);
+		$this->access->accessDenied($transaction, $user);
 		return $this->render('transaction/show.html.twig', [
 			'transaction' => $transaction,
 		]);
@@ -80,7 +82,7 @@ class TransactionController extends AbstractController
 	#[Route('/{id}/edit', name: 'app_transaction_edit', methods: ['GET', 'POST'])]
 	public function edit(#[CurrentUser] ?User $user, Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
 	{
-		$this->accessDenied($transaction, $user);
+		$this->access->accessDenied($transaction, $user);
 		
 		$oldAmount = $transaction->getAmount();
 		$form = $this->createForm(TransactionType::class, $transaction);
@@ -104,7 +106,7 @@ class TransactionController extends AbstractController
 	public function delete(#[CurrentUser] ?User   $user, Request $request, Transaction $transaction,
 						   EntityManagerInterface $entityManager): Response
 	{
-		$this->accessDenied($transaction, $user);
+		$this->access->accessDenied($transaction, $user);
 		
 		if ($this->isCsrfTokenValid('delete' . $transaction->getId(), $request->request->get('_token'))) {
 			$this->transactionService->removeTransaction($user, $transaction);
