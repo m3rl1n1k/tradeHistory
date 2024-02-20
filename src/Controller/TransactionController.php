@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Category\Repository\CategoryRepository;
 use App\Entity\User;
 use App\Form\TransactionType;
 use App\Transaction\Entity\Transaction;
@@ -39,10 +40,12 @@ class TransactionController extends AbstractController
 	}
 	
 	#[Route('/new', name: 'app_transaction_new', methods: ['GET', 'POST'])]
-	public function new(#[CurrentUser] ?User $user, Request $request, EntityManagerInterface $entityManager): Response
+	public function new(#[CurrentUser] ?User $user, Request $request, EntityManagerInterface $entityManager,
+						CategoryRepository   $categoryRepository):
+	Response
 	{
 		$transaction = new Transaction();
-		$form = $this->createForm(TransactionType::class, $transaction);
+		$form = $this->createForm(TransactionType::class, $transaction, ['category' => $categoryRepository->getAll($user)]);
 		
 		$form->handleRequest($request);
 		

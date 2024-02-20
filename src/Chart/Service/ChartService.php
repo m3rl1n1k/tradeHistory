@@ -2,8 +2,8 @@
 
 namespace App\Chart\Service;
 
+use App\Category\Repository\CategoryRepository;
 use App\Entity\User;
-use App\Repository\CategoryRepository;
 use App\Transaction\Enum\TransactionEnum;
 use App\Transaction\Repository\TransactionRepository;
 use DateInterval;

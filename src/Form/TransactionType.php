@@ -42,7 +42,7 @@ class TransactionType extends AbstractType
                     'choices' => [
                         "Expense" => TransactionEnum::EXPENSE,
                         "Income" => TransactionEnum::INCOME,
-                        "Transaction" => TransactionEnum::TRANSACTION,
+//                        "Transaction" => TransactionEnum::TRANSACTION,
                     ]
                 ])
             ->add('date', DateType::class,[
@@ -60,6 +60,7 @@ class TransactionType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Transaction::class,
+			'category' => []
         ]);
     }
 }
