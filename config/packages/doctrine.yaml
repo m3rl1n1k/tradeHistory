@@ -42,6 +42,11 @@ doctrine:
         dir: '%kernel.project_dir%/src/Deposit/Entity'
         prefix: 'App\Deposit\Entity'
         alias: App/Deposit
+      Wallet:
+        is_bundle: false
+        dir: '%kernel.project_dir%/src/Wallet/Entity'
+        prefix: 'App\Wallet\Entity'
+        alias: App/Wallet
 
 when@test:
   doctrine:
