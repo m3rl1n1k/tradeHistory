@@ -25,7 +25,8 @@ class TransactionController extends AbstractController
 	public function __construct(
 		protected TransactionRepository $transactionRepository,
 		protected TransactionService    $transactionService,
-		private readonly Access $access
+		private readonly Access         $access,
+		protected CategoryRepository    $categoryRepository
 	)
 	{
 	}
@@ -42,12 +43,12 @@ class TransactionController extends AbstractController
 	}
 	
 	#[Route('/new', name: 'app_transaction_new', methods: ['GET', 'POST'])]
-	public function new(#[CurrentUser] ?User $user, Request $request, EntityManagerInterface $entityManager,
-						CategoryRepository   $categoryRepository):
+	public function new(#[CurrentUser] ?User $user, Request $request, EntityManagerInterface $entityManager):
 	Response
 	{
 		$transaction = new Transaction();
-		$form = $this->createForm(TransactionType::class, $transaction, ['category' => $categoryRepository->getAll($user)]);
+		$form = $this->createForm(TransactionType::class, $transaction, ['category' => $this->categoryRepository->getAll
+		($user)]);
 		
 		$form->handleRequest($request);
 		
@@ -55,7 +56,8 @@ class TransactionController extends AbstractController
 			
 			$formData = $form->getData();
 			$formData->setUserId($user);
-			
+			//todo якщо нова тразакція то інкрементувало або декрементувало баланс користтувача на суму відповідно до
+			// типу транзакції
 			$this->transactionService->setUserAmount($user, $transaction);
 			
 			$entityManager->persist($transaction);
@@ -85,11 +87,13 @@ class TransactionController extends AbstractController
 		$this->access->accessDenied($transaction, $user);
 		
 		$oldAmount = $transaction->getAmount();
-		$form = $this->createForm(TransactionType::class, $transaction);
+		$form = $this->createForm(TransactionType::class, $transaction, ['category' => $this->categoryRepository->getAll
+		($user)]);
 		$form->handleRequest($request);
 		
 		if ($form->isSubmitted() && $form->isValid()) {
-			
+			// todo перврфло що робити якщо сума нова більше або менше поточної або не змінна
+			// todo для чого я написав метод isIncome()????????
 			$this->transactionService->calculateAmount($user, $transaction, $oldAmount);
 			
 			$entityManager->flush();

@@ -28,6 +28,7 @@ doctrine:
         prefix: 'App\Api\Entity'
         alias: Api
       Transaction:
+        type: attribute
         is_bundle: false
         dir: '%kernel.project_dir%/src/Transaction/Entity'
         prefix: 'App\Transaction\Entity'
@@ -38,15 +39,11 @@ doctrine:
         prefix: 'App\Category\Entity'
         alias: App/Category
       Deposit:
+        type: attribute
         is_bundle: false
         dir: '%kernel.project_dir%/src/Deposit/Entity'
         prefix: 'App\Deposit\Entity'
         alias: App/Deposit
-      Wallet:
-        is_bundle: false
-        dir: '%kernel.project_dir%/src/Wallet/Entity'
-        prefix: 'App\Wallet\Entity'
-        alias: App/Wallet
 
 when@test:
   doctrine:

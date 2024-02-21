@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class TransactionType extends AbstractType
 {
 	public function __construct(protected Security              $security,
-								protected UrlGeneratorInterface $urlGenerator)
+								protected UrlGeneratorInterface $urlGenerator                    )
 	{
 	}
 	
