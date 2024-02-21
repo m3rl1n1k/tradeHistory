@@ -53,7 +53,7 @@ class TransactionService implements TransactionInterface
 	/**
 	 * @inheritDoc
 	 */
-	public function calculateAmount(UserInterface|User $user, Transaction $transaction, float $oldAmount = 0): void
+	public function calculateAmount(Wallet $wallet, Transaction $transaction, float $oldAmount = 0): void
 	{
 		/**
 		 * @function $this->isExpenseOldMoreCurrentAmount()// якщо стара сума більше нової (від старої віднімаєм нову
@@ -61,7 +61,8 @@ class TransactionService implements TransactionInterface
 		 * @function isExpenseCurrentMoreOldAmount// якщо стара сума менше нової (від старої віднімаєм нову і різницю
 		 * знімаєм з балансу баланс)
 		 **/
-		$this->isExpenseCurrentMoreOldAmount($oldAmount, $user, $transaction);
+//юзера замінити на відповідний рахунок з яким мають проводитись зміни.  тобто в даний метод передаєм рахунок
+		$this->isExpenseCurrentMoreOldAmount($oldAmount, $wallet, $transaction);
 		$this->isExpenseOldMoreCurrentAmount($oldAmount, $user, $transaction);
 		$this->isIncome($user, $transaction);
 	}
@@ -87,7 +88,7 @@ class TransactionService implements TransactionInterface
 		);
 	}
 	
-	private function isExpenseCurrentMoreOldAmount(float $oldAmount, UserInterface|User $user, Transaction $transaction): void
+	private function isExpenseCurrentMoreOldAmount(float $oldAmount, Wallet $user, Transaction $transaction): void
 	{
 		if ($transaction->isExpense() && $transaction->getAmount() > $oldAmount) {
 			$difference = $transaction->getAmount() - $oldAmount;
