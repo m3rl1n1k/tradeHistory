@@ -16,6 +16,16 @@
         <button type="submit" class="btn btn-success mt-4" >Show</button>
         {{ form_end(form) }}
     </form>
+
+    <div class="row mt-4">
+        <h3>Total:</h3>
+        <div class="col-3">
+            <p>Income: {{ income ?? "0" }}</p>
+        </div>
+        <div class="col-3">
+            <p>Expense: {{ expense ?? "0" }}</p>
+        </div>
+    </div>
 {% endblock %}
 
 

@@ -11,31 +11,36 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Validator\Constraints\Length;
 
 class WalletType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
-        $builder
-            ->add('currency', ChoiceType::class, [
-				'choices' => [
-					'PLN' => CurrencyEnum::PLN,
-					'EUR' => CurrencyEnum::EUR,
-					'UAH' => CurrencyEnum::UAH,
-					'USD' => CurrencyEnum::USD,
-				]
+	public function buildForm(FormBuilderInterface $builder, array $options): void
+	{
+		$builder
+			->add('currency', ChoiceType::class, [
+				'choices' => CurrencyEnum::associativeArray()
 			])
-            ->add('amount', NumberType::class)
-            ->add('isDefault', CheckboxType::class);
-    }
-
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => Wallet::class,
-        ]);
-    }
+			->add('amount', NumberType::class, [
+				'required' => false,
+			])
+			->add('name', TextType::class, [
+				'constraints' => [
+					new Length([
+						'max' => 20
+					])
+				]
+			]);
+	}
+	
+	public function configureOptions(OptionsResolver $resolver): void
+	{
+		$resolver->setDefaults([
+			'data_class' => Wallet::class,
+		]);
+	}
 }

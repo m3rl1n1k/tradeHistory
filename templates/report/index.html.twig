@@ -4,22 +4,8 @@
 
 {% block body %}
     <h1>Report</h1>
-
-    <div class="row">
-        <h3>Total:</h3>
-        <div class="col-3">
-            <p>Current amount: {{ app.user.amount ?? "0" }}</p>
-        </div>
-        <div class="col-3">
-            <p>Income: {{ income ?? "0" }}</p>
-        </div>
-        <div class="col-3">
-            <p>Expense: {{ expense ?? "0" }}</p>
-        </div>
-    </div>
     {{ render_chart(chart) }}
     <h3>Transactions per period:</h3>
-
     {{ include('report/_form.html.twig') }}
     {% if transactionsList is not null  %}
         {{ include('report/_card.html.twig') }}

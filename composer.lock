@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e6aff45db235ed8952e9d55b1bccba69",
+    "content-hash": "fc3ed290d70f93a989b4e1518ff51559",
     "packages": [
         {
             "name": "babdev/pagerfanta-bundle",
@@ -92,6 +92,39 @@
                 }
             ],
             "time": "2023-12-20T23:40:09+00:00"
+        },
+        {
+            "name": "dannyben/php-quandl",
+            "version": "v0.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DannyBen/php-quandl.git",
+                "reference": "2087585d1161e9fb6c2a55207e8190b719a53aeb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DannyBen/php-quandl/zipball/2087585d1161e9fb6c2a55207e8190b719a53aeb",
+                "reference": "2087585d1161e9fb6c2a55207e8190b719a53aeb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "Quandl.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "support": {
+                "issues": "https://github.com/DannyBen/php-quandl/issues",
+                "source": "https://github.com/DannyBen/php-quandl/tree/master"
+            },
+            "time": "2016-06-22T16:19:33+00:00"
         },
         {
             "name": "doctrine/cache",
@@ -1644,6 +1677,51 @@
                 "source": "https://github.com/nelmio/NelmioCorsBundle/tree/2.4.0"
             },
             "time": "2023-11-30T16:41:19+00:00"
+        },
+        {
+            "name": "othyn/php-enum-enhancements",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/othyn/php-enum-enhancements.git",
+                "reference": "9294a2511eb9b130a5a969b763d14de3f910d2e8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/othyn/php-enum-enhancements/zipball/9294a2511eb9b130a5a969b763d14de3f910d2e8",
+                "reference": "9294a2511eb9b130a5a969b763d14de3f910d2e8",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.6",
+                "phpunit/phpunit": "^9.5.13"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Othyn\\PhpEnumEnhancements\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ben",
+                    "email": "git@othyn.com",
+                    "homepage": "https://othyn.com"
+                }
+            ],
+            "description": "Adds some helpful enum traits to the glorious new PHP Enum type.",
+            "support": {
+                "issues": "https://github.com/othyn/php-enum-enhancements/issues",
+                "source": "https://github.com/othyn/php-enum-enhancements/tree/v1.0.1"
+            },
+            "time": "2022-02-15T19:17:42+00:00"
         },
         {
             "name": "pagerfanta/pagerfanta",
@@ -10010,8 +10088,7 @@
     "platform": {
         "php": ">=8.1",
         "ext-ctype": "*",
-        "ext-iconv": "*",
-        "ext-calendar": "*"
+        "ext-iconv": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.6.0"

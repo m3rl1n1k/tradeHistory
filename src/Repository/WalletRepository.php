@@ -45,4 +45,13 @@ class WalletRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+	
+	public function getAll($user): array
+	{
+		$result = [];
+		foreach ($this->findBy(['user' => $user]) as $wallet) {
+			$result[$wallet->getId()] = $wallet;
+		}
+		return $result;
+	}
 }

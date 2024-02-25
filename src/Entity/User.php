@@ -38,6 +38,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[ORM\OneToMany(mappedBy: 'user', targetEntity: Wallet::class, orphanRemoval: true)]
 	private Collection $wallets;
 	
+	#[ORM\Column(length: 4)]
+	private ?string $currency = null;
+	
 	public function __construct()
 	{
 		$this->apiTokens = new ArrayCollection();
@@ -157,6 +160,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		return $this->wallets;
 	}
 	
+	public function getWalletByCurrency(string $currency = "PLN")
+	{
+		$wallets = $this->getWallets();
+		foreach ($wallets as $wallet) {
+			if ($wallet->getCurrency() === $currency)
+				return $wallet->getAmount();
+		}
+		return;
+	}
+	
 	public function addWallet(Wallet $wallet): static
 	{
 		if (!$this->wallets->contains($wallet)) {
@@ -175,6 +188,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 				$wallet->setUser(null);
 			}
 		}
+		
+		return $this;
+	}
+	
+	public function getCurrency(): ?string
+	{
+		return $this->currency;
+	}
+	
+	public function setCurrency(string $currency): static
+	{
+		$this->currency = $currency;
 		
 		return $this;
 	}

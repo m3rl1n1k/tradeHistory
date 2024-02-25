@@ -2,10 +2,19 @@
 
 namespace App\Wallet\Enum;
 
-enum CurrencyEnum
+use Othyn\PhpEnumEnhancements\Traits\EnumEnhancements;
+
+enum CurrencyEnum: string
 {
-	public const USD = 'USD';
-	public const EUR = 'EUR';
-	public const UAH = 'UAH';
-	public const PLN = 'PLN';
+	use EnumEnhancements;
+	
+	case USD = 'USD';
+	case EUR = 'EUR';
+	case UAH = 'UAH';
+	case PLN = 'PLN';
+	
+	public static function associativeArray(): array
+	{
+		return array_combine(self::valueArray(), self::valueArray());
+	}
 }

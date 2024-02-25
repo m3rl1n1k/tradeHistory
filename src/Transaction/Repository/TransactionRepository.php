@@ -30,7 +30,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class TransactionRepository extends ServiceEntityRepository
 {
 	
-	public function __construct(ManagerRegistry $registry, protected CategoryRepository $categoryRepository,
+	public function __construct(ManagerRegistry      $registry, protected CategoryRepository $categoryRepository,
 								#[CurrentUser] ?User $user)
 	{
 		parent::__construct($registry, Transaction::class);
@@ -106,17 +106,22 @@ class TransactionRepository extends ServiceEntityRepository
 			->getSingleScalarResult();
 	}
 	
-	public function getTransactionSum($user, array $conditions, string $type = TransactionEnum::EXPENSE):
-float|bool|int|string|null
+	/**
+	 * @throws NonUniqueResultException
+	 * @throws NoResultException
+	 */
+	public function getTransactionSum(User $user, array $conditions = [], string $type = TransactionEnum::EXPENSE):
+	float|bool|int|string|null
 	{
 		$queryBuilder = $this->createQueryBuilder('transaction')
 			->select('SUM(transaction.amount)')
-			->andWhere($this->matchConditions($conditions))
 			->andWhere('transaction.user = :user')
 			->setParameter('user', $user);
+		
 		foreach ($conditions as $key => $value) {
 			if (in_array($key, ['date', 'category', 'user'])) {
-				$queryBuilder->setParameter($key, $value);
+				$queryBuilder->andWhere("transaction.$key = :$key")
+					->setParameter($key, $value);
 			}
 		}
 		
@@ -131,7 +136,7 @@ float|bool|int|string|null
 	
 	private function matchConditions(array $conditions): string
 	{
-		return match(true) {
+		return match (true) {
 			isset($conditions['date']) => 'transaction.date = :date',
 			isset($conditions['category']) => 'transaction.category = :category',
 			isset($conditions['id']) => 'transaction.id = :id',

@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\WalletRepository;
+use App\Transaction\Entity\Transaction;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 
@@ -10,25 +13,33 @@ use InvalidArgumentException;
 class Wallet
 {
 	const LENGTH = 9;
-//	#[ORM\GeneratedValue]
-//	#[ORM\Column]
-//	private ?int $id = null;
 	#[ORM\Id]
+	#[ORM\GeneratedValue]
+	#[ORM\Column]
+	private ?int $id = null;
 	#[ORM\Column(length: 15, unique: true)]
 	private ?string $number = null;
-	
+
 	#[ORM\Column(length: 4, nullable: true)]
 	private ?string $currency = null;
 	
 	#[ORM\Column(nullable: true)]
 	private ?float $amount = null;
 	
+	#[ORM\Column(length: 255, nullable: true)]
+	private ?string $name = null;
+	
 	#[ORM\ManyToOne(inversedBy: 'wallets')]
 	#[ORM\JoinColumn(nullable: false)]
 	private ?User $user = null;
 	
-	#[ORM\Column]
-	private ?bool $isDefault = null;
+	#[ORM\OneToMany(mappedBy: 'wallet', targetEntity: Transaction::class, orphanRemoval: true)]
+	private Collection $transactions;
+	
+	public function __construct()
+	{
+		$this->transactions = new ArrayCollection();
+	}
 	
 	public function getNumber(): ?string
 	{
@@ -46,9 +57,17 @@ class Wallet
 		return $this;
 	}
 	
+	public function setCustomNumber(string $number): static
+	{
+		$this->number = $number;
+		
+		return $this;
+	}
+	
 	public function getCurrency(): ?string
 	{
-		return $this->currency;
+		$currency = $this->getNumber();
+		return substr($currency,0,3);
 	}
 	
 	public function setCurrency(?string $currency): static
@@ -77,31 +96,63 @@ class Wallet
 	
 	public function setUser(?User $user): static
 	{
-		if ($user) {
-			$isDefault = $user->getWallets()->filter(fn(Wallet $wallet) => $wallet->isDefault())->first();
-			if ($isDefault) {
-				if ($isDefault->getNumber() !== $this->getNumber()) {
-					throw new InvalidArgumentException('User already has a default wallet');
-				}
-			}else{
-				$this->setIsDefault(true);
-				$this->setNumber($this->getCurrency());
-			}
-		}
 		$this->user = $user;
 		
 		return $this;
 	}
 	
-	public function isDefault(): ?bool
+	public function getName(): ?string
 	{
-		return $this->isDefault;
+		return $this->name;
 	}
 	
-	public function setIsDefault(bool $isDefault): static
+	public function setName(?string $name): void
 	{
-		$this->isDefault = $isDefault;
+		$this->name = $name;
+	}
+	
+	/**
+	 * @return Collection<int, Transaction>
+	 */
+	public function getTransactions(): Collection
+	{
+		return $this->transactions;
+	}
+	
+	public function addTransaction(Transaction $transaction): static
+	{
+		if (!$this->transactions->contains($transaction)) {
+			$this->transactions->add($transaction);
+			$transaction->setWallet($this);
+		}
 		
 		return $this;
+	}
+	
+	public function removeTransaction(Transaction $transaction): static
+	{
+		if ($this->transactions->removeElement($transaction)) {
+			// set the owning side to null (unless already changed)
+			if ($transaction->getWallet() === $this) {
+				$transaction->setWallet(null);
+			}
+		}
+		
+		return $this;
+	}
+	
+	public function getId(): ?int
+	{
+		return $this->id;
+	}
+	
+	public function increment(float $amount): int
+	{
+		return $this->getAmount() + $amount;
+	}
+	
+	public function decrement(float $amount): int
+	{
+		return $this->getAmount() - $amount;
 	}
 }

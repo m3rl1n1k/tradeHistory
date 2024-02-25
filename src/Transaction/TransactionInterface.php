@@ -3,6 +3,7 @@
 namespace App\Transaction;
 
 use App\Entity\User;
+use App\Entity\Wallet;
 use App\Transaction\Entity\Transaction;
 use Doctrine\ORM\Query;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -14,15 +15,15 @@ interface TransactionInterface
 	 * @param bool $is_array
 	 * @return array|Query
 	 */
-	public function getTransactionListByUser(UserInterface|User $user, bool $is_array = true)
+	public function getTransactionsForUser(UserInterface|User $user, bool $is_array = true)
 	:array|Query;
 	
 	/**
-	 * @param UserInterface|User $user
+	 * @param Wallet $wallet
 	 * @param Transaction $transaction
 	 * @param float $oldAmount
 	 */
-    public function calculateAmount(UserInterface|User $user, Transaction $transaction, float $oldAmount = 0):void;
+    public function calculate(Wallet $wallet, Transaction $transaction, float $oldAmount = 0):void;
 	
 	/**
 	 * @param int $id

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Category\Repository\CategoryRepository;
 use App\Entity\User;
 use App\Form\TransactionType;
+use App\Repository\WalletRepository;
 use App\Security\Access;
 use App\Transaction\Entity\Transaction;
 use App\Transaction\Repository\TransactionRepository;
@@ -26,7 +27,8 @@ class TransactionController extends AbstractController
 		protected TransactionRepository $transactionRepository,
 		protected TransactionService    $transactionService,
 		private readonly Access         $access,
-		protected CategoryRepository    $categoryRepository
+		protected CategoryRepository    $categoryRepository,
+		protected WalletRepository      $walletRepository
 	)
 	{
 	}
@@ -36,7 +38,7 @@ class TransactionController extends AbstractController
 	#[Route('/', name: 'app_transaction_index', methods: ['GET'])]
 	public function index(#[CurrentUser] ?User $user, Request $request): Response
 	{
-		$query = $this->transactionService->getTransactionListByUser($user);
+		$query = $this->transactionService->getTransactionsForUser($user);
 		return $this->render('transaction/index.html.twig', [
 			'pagerfanta' => $this->paginate($query, $request),
 		]);
@@ -47,8 +49,10 @@ class TransactionController extends AbstractController
 	Response
 	{
 		$transaction = new Transaction();
-		$form = $this->createForm(TransactionType::class, $transaction, ['category' => $this->categoryRepository->getAll
-		($user)]);
+		$form = $this->createForm(TransactionType::class, $transaction, [
+			'category' => $this->categoryRepository->getAll($user),
+			'wallet' => $this->walletRepository->getAll($user)
+		]);
 		
 		$form->handleRequest($request);
 		
@@ -56,9 +60,11 @@ class TransactionController extends AbstractController
 			
 			$formData = $form->getData();
 			$formData->setUserId($user);
+			$id = $form->get('wallet')->getData();
+			$wallet = $this->walletRepository->find($id);
 			//todo якщо нова тразакція то інкрементувало або декрементувало баланс користтувача на суму відповідно до
 			// типу транзакції
-			$this->transactionService->setUserAmount($user, $transaction);
+			$this->transactionService->setAmount($wallet, $transaction);
 			
 			$entityManager->persist($transaction);
 			$entityManager->flush();
@@ -87,14 +93,14 @@ class TransactionController extends AbstractController
 		$this->access->accessDenied($transaction, $user);
 		
 		$oldAmount = $transaction->getAmount();
-		$form = $this->createForm(TransactionType::class, $transaction, ['category' => $this->categoryRepository->getAll
-		($user)]);
+		$form = $this->createForm(TransactionType::class, $transaction, [
+			'category' => $this->categoryRepository->getAll($user),
+			'wallet' => $this->walletRepository->getAll($user)
+		]);
 		$form->handleRequest($request);
-		
 		if ($form->isSubmitted() && $form->isValid()) {
-			// todo перврфло що робити якщо сума нова більше або менше поточної або не змінна
-			// todo для чого я написав метод isIncome()????????
-			$this->transactionService->calculateAmount($user, $transaction, $oldAmount);
+			$wallet = $form->get('wallet')->getData();
+			$this->transactionService->calculate($wallet, $transaction, $oldAmount);
 			
 			$entityManager->flush();
 			
@@ -113,7 +119,7 @@ class TransactionController extends AbstractController
 		$this->access->accessDenied($transaction, $user);
 		
 		if ($this->isCsrfTokenValid('delete' . $transaction->getId(), $request->request->get('_token'))) {
-			$this->transactionService->removeTransaction($user, $transaction);
+			$this->transactionService->removeTransaction($transaction->getWallet(), $transaction);
 			$entityManager->remove($transaction);
 			$entityManager->flush();
 		}
