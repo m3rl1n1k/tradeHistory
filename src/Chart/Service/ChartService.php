@@ -68,8 +68,8 @@ class ChartService
 	 * @throws NoResultException
 	 */
 	protected function getMax(User $user): float
-	{
-		return (float)$this->transactionRepository->getMaxAmount($user->getUserId());
+	{ $max = (float)$this->transactionRepository->getMaxAmount($user->getUserId());
+		return  $max + ($max / 100) ;
 	}
 	
 	protected function datasetDashboard($user, string $label = '', bool $categoryReturn = false, bool $singleColor =
