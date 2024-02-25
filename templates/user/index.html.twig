@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block body %}
+    {{ form_start(form, {'attr': {'class': 'editUser'}}) }}
+    <div class="row">
+        <div class="col-6">
+            <div class="mb-3">
+                {{ form_label(form.email, 'Email address', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.email, {'attr': {'class': 'form-control edit', 'disabled': 'disabled'}}) }}
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="mb-3">
+                {{ form_label(form.currency, 'Select your currency', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.currency, {'attr': {'class': 'form-select edit', 'id': 'currency', 'disabled': 'disabled'}}) }}
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn-primary" id="user_edit">Edit</button>
+    {{ form_end(form) }}
+{% endblock %}
