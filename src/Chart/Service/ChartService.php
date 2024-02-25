@@ -29,7 +29,7 @@ class ChartService
 	 */
 	public function dashboardChart(User $user, string $label): Chart
 	{
-		$chart = $this->chartBuilder->createChart(Chart::TYPE_BAR);
+		$chart = $this->create();
 		$chart->setData([
 			'labels' => array_values($this->datasetDashboard($user, categoryReturn: true)),
 			'datasets' => [
@@ -119,7 +119,7 @@ class ChartService
 	public function reportChart(User $user): Chart
 	{
 		//select all transactions per month and build chart
-		$chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
+		$chart = $this->create(Chart::TYPE_LINE);
 		$chart->setData([
 			'labels' => $this->getDateArray(),
 			'datasets' => [
@@ -178,6 +178,33 @@ class ChartService
 			'borderColor' => $this->colors()[$colorMax10],
 			'data' => $result ?? [],
 		];
+	}
+	
+	public function totalChart(User $user)
+	{
+		$chart = $this->create();
+		$chart->setData([
+			'labels' => $this->getDateArray(),
+			'datasets' => [
+				$this->datasetReport($user, TransactionEnum::EXPENSE, 'Expense', 0),
+				$this->datasetReport($user, TransactionEnum::INCOME, 'Income', 1)
+			],
+		]);
+		
+		$chart->setOptions([
+			'scales' => [
+				'y' => [
+					'suggestedMin' => 0,
+					'suggestedMax' => $this->getMax($user),
+				],
+			],
+		]);
+		return $chart;
+	}
+	
+	protected function create(string $type = Chart::TYPE_BAR): Chart
+	{
+		return  $this->chartBuilder->createChart($type);
 	}
 	
 }

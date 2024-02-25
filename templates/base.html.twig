@@ -44,7 +44,7 @@
                                 <svg class="bi">
                                     <use xlink:href="#cash"/>
                                 </svg>
-                                Amount: {{ app.user.amount ?? "0" }}
+                                Amount: {{ app.user.walletByCurrency ?? "0" }} {{ app.user.currency }}
                             </span>
                         </li>
                     </ul>
@@ -93,17 +93,28 @@
 
 
                     <hr class="my-3">
-
                     <ul class="nav flex-column mb-auto">
-                        {#                        <li class="nav-item"> #}
-                        {#                            <a class="nav-link d-flex align-items-center {{ isActive(path('app_home')) }} gap-2" #}
-                        {#                               href="#"> #}
-                        {#                                <svg class="bi"> #}
-                        {#                                    <use xlink:href="#gear-wide-connected"/> #}
-                        {#                                </svg> #}
-                        {#                                Profile #}
-                        {#                            </a> #}
-                        {#                        </li> #}
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center {{ isActive(path('app_wallet_index')) }} gap-2"
+                               href="{{ path('app_wallet_index') }}">
+                                <svg class="bi">
+                                    <use xlink:href="#wallet"/>
+                                </svg>
+                                Wallet
+                            </a>
+                        </li>
+                    </ul>
+                    <hr class="my-3">
+                    <ul class="nav flex-column mb-auto">
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center {{ isActive(path('app_user_index',{'id':app.user.id})) }}
+                            gap-2" href="{{ path('app_user_index', {'id':app.user.id}) }}">
+                                <svg class="bi">
+                                    <use xlink:href="#person"/>
+                                </svg>
+                                Profile
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center gap-2" href="{{ path('app_logout') }}">
                                 <svg class="bi">

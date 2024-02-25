@@ -40,7 +40,7 @@ class ReportController extends AbstractController
 	{
 		$form = $this->createForm(ReportPeriodType::class);
 		$form->handleRequest($request);
-		$chart = $this->chartService->reportChart($user, '');
+		$chart = $this->chartService->reportChart($user);
 		
 		if ($form->isSubmitted() && $form->isValid()) {
 			$formDate = $form->getData();

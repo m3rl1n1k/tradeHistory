@@ -22,6 +22,10 @@
             </tr>
         {% endif %}
         <tr>
+            <th>Number</th>
+            <td>{{ transaction.wallet.number }}</td>
+        </tr>
+        <tr>
             <th>Type</th>
             <td>{{ type(transaction.type) }}</td>
         </tr>

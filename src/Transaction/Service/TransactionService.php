@@ -3,6 +3,7 @@
 namespace App\Transaction\Service;
 
 use App\Entity\User;
+use App\Entity\Wallet;
 use App\Repository\UserRepository;
 use App\Transaction\Entity\Transaction;
 use App\Transaction\Enum\TransactionEnum;
@@ -14,7 +15,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
-class TransactionService implements TransactionInterface
+class TransactionService
 {
 	public function __construct(protected Security              $security,
 								protected UserRepository        $userRepository,
@@ -41,7 +42,7 @@ class TransactionService implements TransactionInterface
 	/**
 	 * @inheritDoc
 	 */
-	public function getTransactionListByUser(UserInterface|User $user, bool $is_array = false):
+	public function getTransactionsForUser(UserInterface|User $user, bool $is_array = false):
 	array|Query
 	{
 		if ($is_array) {
@@ -50,10 +51,7 @@ class TransactionService implements TransactionInterface
 		return $this->transactionRepository->getUserTransactionsQuery($user);
 	}
 	
-	/**
-	 * @inheritDoc
-	 */
-	public function calculateAmount(UserInterface|User $user, Transaction $transaction, float $oldAmount = 0): void
+	public function calculate(Wallet $wallet, Transaction $transaction, float $oldAmount = 0): void
 	{
 		/**
 		 * @function $this->isExpenseOldMoreCurrentAmount()// якщо стара сума більше нової (від старої віднімаєм нову
@@ -61,22 +59,28 @@ class TransactionService implements TransactionInterface
 		 * @function isExpenseCurrentMoreOldAmount// якщо стара сума менше нової (від старої віднімаєм нову і різницю
 		 * знімаєм з балансу баланс)
 		 **/
-		$this->isExpenseCurrentMoreOldAmount($oldAmount, $user, $transaction);
-		$this->isExpenseOldMoreCurrentAmount($oldAmount, $user, $transaction);
-		$this->isIncome($user, $transaction);
+//юзера замінити на відповідний рахунок з яким мають проводитись зміни.  тобто в даний метод передаєм рахунок
+		$this->CurrentMoreOldAmount($wallet, $transaction, $oldAmount);
+		$this->OldMoreCurrentAmount($wallet, $transaction, $oldAmount);
+		if ($transaction->getAmount() === $oldAmount && $transaction->isExpense()) {
+			$wallet->setAmount(
+				$wallet->getAmount() - $transaction->getAmount()
+			);
+		}
+		if ($transaction->getAmount() === $oldAmount && $transaction->isIncome()) {
+			$wallet->setAmount(
+				$wallet->getAmount() + $transaction->getAmount()
+			);
+		}
+		
+		
 	}
 	
-	/**
-	 * @inheritDoc
-	 */
 	public function getTransactionById(int $id): array
 	{
 		return $this->transactionRepository->findBy(['id' => $id]);
 	}
 	
-	/**
-	 * @inheritDoc
-	 */
 	public function getTransactionByType(UserInterface|User $user, int $type): array
 	{
 		return $this->transactionRepository->findBy(
@@ -87,54 +91,54 @@ class TransactionService implements TransactionInterface
 		);
 	}
 	
-	private function isExpenseCurrentMoreOldAmount(float $oldAmount, UserInterface|User $user, Transaction $transaction): void
+	private function CurrentMoreOldAmount(Wallet $wallet, Transaction $transaction, float $oldAmount): void
 	{
 		if ($transaction->isExpense() && $transaction->getAmount() > $oldAmount) {
 			$difference = $transaction->getAmount() - $oldAmount;
-			$newAmount = ($difference > 0) ? $user->getAmount() - $difference : $user->getAmount() + abs($difference);
-			$user->setAmount($newAmount);
+			$newAmount = ($difference > 0) ? $wallet->getAmount() - $difference : $wallet->getAmount() + abs
+				($difference);
+			$wallet->setAmount($newAmount);
+		}
+		if ($transaction->isIncome() && $transaction->getAmount() > $oldAmount) {
+			$wallet->setAmount(
+				$wallet->getAmount() + abs($transaction->getAmount() - $oldAmount)
+			);
 		}
 	}
 	
-	private function isExpenseOldMoreCurrentAmount(float $oldAmount, UserInterface|User $user, Transaction $transaction): void
+	private function OldMoreCurrentAmount(Wallet $wallet, Transaction $transaction, float $oldAmount,): void
 	{
 		if ($transaction->isExpense() && $transaction->getAmount() < $oldAmount) {
-			$amount = $user->getAmount() + ($oldAmount - $transaction->getAmount());
-			$user->setAmount($amount);
+			$amount = $wallet->getAmount() + ($oldAmount - $transaction->getAmount());
+			$wallet->setAmount($amount);
+		}
+		if ($transaction->isIncome() && $transaction->getAmount() < $oldAmount) {
+			$wallet->setAmount(
+				$wallet->getAmount() - abs($transaction->getAmount() - $oldAmount)
+			);
 		}
 	}
 	
-	private function isIncome(UserInterface|User $user, Transaction $transaction): void
+	public function setAmount(Wallet $wallet, Transaction $transaction): void
 	{
 		if ($transaction->isIncome()) {
-			
-			$sumIncome = $this->summaryTransactions($this->getTransactionByType($user, TransactionEnum::INCOME));
-			$sumExpense = $this->summaryTransactions($this->getTransactionByType($user, TransactionEnum::EXPENSE));
-			
-			$user->setAmount($sumIncome - $sumExpense);
-		}
-	}
-	
-	public function setUserAmount(UserInterface|User $user, Transaction $transaction): void
-	{
-		if ($transaction->isIncome()) {
-			$user->setAmount($user->incrementAmount($transaction->getAmount()));
+			$wallet->setAmount($wallet->increment($transaction->getAmount()));
 		}
 		
 		if ($transaction->isExpense()) {
-			$user->setAmount($user->decrementAmount($transaction->getAmount()));
+			$wallet->setAmount($wallet->decrement($transaction->getAmount()));
 		}
 	}
 	
-	public function removeTransaction(User $user, Transaction $transaction): void
+	public function removeTransaction(Wallet $walllet, Transaction $transaction): void
 	{
 		$amount = $transaction->getAmount();
 		if ($transaction->getType() === TransactionEnum::EXPENSE) {
-			$amount = $user->incrementAmount($amount);
+			$amount = $walllet->increment($amount);
 		} else {
-			$amount = $user->decrementAmount($amount);
+			$amount = $walllet->decrement($amount);
 		}
-		$user->setAmount($amount);
+		$walllet->setAmount($amount);
 	}
 	
 	public function getSum(float|array|int|string $transactions, int $type): float

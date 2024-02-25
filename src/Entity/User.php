@@ -32,15 +32,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[ORM\Column]
 	private ?string $password = null;
 	
-	#[ORM\Column(nullable: true)]
-	private ?float $amount = null;
-	
 	#[ORM\OneToMany(mappedBy: 'user', targetEntity: ApiToken::class, orphanRemoval: true)]
 	private Collection $apiTokens;
+	
+	#[ORM\OneToMany(mappedBy: 'user', targetEntity: Wallet::class, orphanRemoval: true)]
+	private Collection $wallets;
+	
+	#[ORM\Column(length: 4)]
+	private ?string $currency = null;
 	
 	public function __construct()
 	{
 		$this->apiTokens = new ArrayCollection();
+		$this->wallets = new ArrayCollection();
 	}
 	
 	public function getId(): ?int
@@ -118,28 +122,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		// $this->plainPassword = null;
 	}
 	
-	public function getAmount(): ?float
-	{
-		return $this->amount;
-	}
-	
-	public function setAmount(?float $amount): static
-	{
-		$this->amount = $amount;
-		
-		return $this;
-	}
-	
-	public function incrementAmount(float $amount): float
-	{
-		return $this->getAmount() + $amount;
-	}
-	
-	public function decrementAmount(float $amount): float
-	{
-		return $this->getAmount() - $amount;
-	}
-	
 	/**
 	 * @return Collection<int, ApiToken>
 	 */
@@ -166,6 +148,58 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 				$apiToken->setUser(null);
 			}
 		}
+		
+		return $this;
+	}
+	
+	/**
+	 * @return Collection<int, Wallet>
+	 */
+	public function getWallets(): Collection
+	{
+		return $this->wallets;
+	}
+	
+	public function getWalletByCurrency(string $currency = "PLN")
+	{
+		$wallets = $this->getWallets();
+		foreach ($wallets as $wallet) {
+			if ($wallet->getCurrency() === $currency)
+				return $wallet->getAmount();
+		}
+		return;
+	}
+	
+	public function addWallet(Wallet $wallet): static
+	{
+		if (!$this->wallets->contains($wallet)) {
+			$this->wallets->add($wallet);
+			$wallet->setUser($this);
+		}
+		
+		return $this;
+	}
+	
+	public function removeWallet(Wallet $wallet): static
+	{
+		if ($this->wallets->removeElement($wallet)) {
+			// set the owning side to null (unless already changed)
+			if ($wallet->getUser() === $this) {
+				$wallet->setUser(null);
+			}
+		}
+		
+		return $this;
+	}
+	
+	public function getCurrency(): ?string
+	{
+		return $this->currency;
+	}
+	
+	public function setCurrency(string $currency): static
+	{
+		$this->currency = $currency;
 		
 		return $this;
 	}

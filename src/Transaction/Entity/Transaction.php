@@ -5,6 +5,7 @@ namespace App\Transaction\Entity;
 
 use App\Category\Entity\Category;
 use App\Entity\User;
+use App\Entity\Wallet;
 use App\Transaction\Enum\TransactionEnum;
 use App\Transaction\Repository\TransactionRepository;
 use DateTimeInterface;
@@ -38,9 +39,26 @@ class Transaction
 	#[ORM\ManyToOne(inversedBy: 'transactions')]
 	private ?Category $category = null;
 	
+	
+	#[ORM\ManyToOne(inversedBy: 'transactions')]
+	#[ORM\JoinColumn(nullable: false)]
+	private ?Wallet $wallet = null;
+	
 	public function getId(): ?int
 	{
 		return $this->id;
+	}
+	
+	public function getWallet(): ?Wallet
+	{
+		return $this->wallet;
+	}
+	
+	public function setWallet(?Wallet $wallet): static
+	{
+		$this->wallet = $wallet;
+		
+		return $this;
 	}
 	
 	public function getAmount(): ?float
