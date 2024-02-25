@@ -28,7 +28,7 @@ class WalletController extends AbstractController
 	{
 		$this->walletService->currencyExchange($user, 'PLN');
 		return $this->render('wallet/index.html.twig', [
-			'wallets' => $walletRepository->findAll(),
+			'wallets' => $walletRepository->getAll($user),
 		]);
 	}
 	
