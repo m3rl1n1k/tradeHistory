@@ -101,6 +101,8 @@ class TransactionRepository extends ServiceEntityRepository
 		return $this->createQueryBuilder('transaction')
 			->select('max(transaction.amount)')
 			->andWhere('transaction.user = :user')
+			->andWhere('transaction.type = :type')
+			->setParameter('type', TransactionEnum::EXPENSE)
 			->setParameter('user', $user)
 			->getQuery()
 			->getSingleScalarResult();
