@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240222104502 extends AbstractMigration
+final class Version20240225180457 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -21,13 +21,13 @@ final class Version20240222104502 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE api_token ADD CONSTRAINT FK_7BA2F5EBA76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
-        $this->addSql('ALTER TABLE wallet CHANGE is_default is_default TINYINT(1) DEFAULT 0 NOT NULL');
+        $this->addSql('ALTER TABLE wallet ADD currency VARCHAR(4) DEFAULT NULL, DROP is_default, CHANGE name name VARCHAR(255) DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE api_token DROP FOREIGN KEY FK_7BA2F5EBA76ED395');
-        $this->addSql('ALTER TABLE wallet CHANGE is_default is_default TINYINT(1) NOT NULL');
+        $this->addSql('ALTER TABLE wallet ADD is_default TINYINT(1) NOT NULL, DROP currency, CHANGE name name DOUBLE PRECISION DEFAULT NULL');
     }
 }
