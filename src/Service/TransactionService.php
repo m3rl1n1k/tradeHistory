@@ -1,19 +1,16 @@
 <?php
 
-namespace App\Transaction\Service;
+namespace App\Service;
 
+use App\Entity\Transaction;
 use App\Entity\User;
 use App\Entity\Wallet;
+use App\Enum\TransactionEnum;
+use App\Repository\TransactionRepository;
 use App\Repository\UserRepository;
-use App\Transaction\Entity\Transaction;
-use App\Transaction\Enum\TransactionEnum;
-use App\Transaction\Repository\TransactionRepository;
-use App\Transaction\TransactionInterface;
-use DateTimeInterface;
 use Doctrine\ORM\Query;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 class TransactionService
 {

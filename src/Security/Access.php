@@ -3,7 +3,6 @@
 namespace App\Security;
 
 use App\Entity\User;
-use App\Transaction\Entity\Transaction;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class Access extends AbstractController

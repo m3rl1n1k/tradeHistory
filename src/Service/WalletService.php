@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Wallet\Service;
+namespace App\Service;
 
 use App\Entity\User;
 use App\Entity\Wallet;

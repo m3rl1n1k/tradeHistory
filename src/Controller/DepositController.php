@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Deposit\Entity\Deposit;
-use App\Deposit\Repository\DepositRepository;
+use App\Entity\Deposit;
 use App\Form\DepositType;
+use App\Repository\DepositRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

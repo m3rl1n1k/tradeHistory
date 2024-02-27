@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Chart\Service;
+namespace App\Service;
 
-use App\Category\Repository\CategoryRepository;
 use App\Entity\User;
-use App\Transaction\Enum\TransactionEnum;
-use App\Transaction\Repository\TransactionRepository;
+use App\Enum\TransactionEnum;
+use App\Repository\CategoryRepository;
+use App\Repository\TransactionRepository;
 use DateInterval;
 use DatePeriod;
 use DateTime;

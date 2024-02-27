@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Deposit\Entity;
+namespace App\Entity;
 
-use App\Deposit\Repository\DepositRepository;
-use App\Entity\User;
+use App\Repository\DepositRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 

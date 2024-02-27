@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Chart\Service\ChartService;
 use App\Entity\User;
-use App\Transaction\Repository\TransactionRepository;
+use App\Repository\TransactionRepository;
+use App\Service\ChartService;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

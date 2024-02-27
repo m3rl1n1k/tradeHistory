@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Transaction\Enum;
+namespace App\Enum;
 
 enum TransactionEnum
 {

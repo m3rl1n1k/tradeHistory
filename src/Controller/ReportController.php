@@ -2,13 +2,12 @@
 
 namespace App\Controller;
 
-use App\Chart\Service\ChartService;
 use App\Entity\User;
+use App\Enum\TransactionEnum;
 use App\Form\ReportPeriodType;
-use App\Transaction\Enum\TransactionEnum;
-use App\Transaction\Repository\TransactionRepository;
-use App\Transaction\Service\TransactionService;
-use App\Transaction\Trait\TransactionTrait;
+use App\Service\ChartService;
+use App\Service\TransactionService;
+use App\Trait\TransactionTrait;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

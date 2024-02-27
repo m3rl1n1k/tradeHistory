@@ -1,13 +1,10 @@
 <?php
 
 
-namespace App\Transaction\Entity;
+namespace App\Entity;
 
-use App\Category\Entity\Category;
-use App\Entity\User;
-use App\Entity\Wallet;
-use App\Transaction\Enum\TransactionEnum;
-use App\Transaction\Repository\TransactionRepository;
+use App\Enum\TransactionEnum;
+use App\Repository\TransactionRepository;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;

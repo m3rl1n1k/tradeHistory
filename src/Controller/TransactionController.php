@@ -2,15 +2,15 @@
 
 namespace App\Controller;
 
-use App\Category\Repository\CategoryRepository;
+use App\Entity\Transaction;
 use App\Entity\User;
 use App\Form\TransactionType;
+use App\Repository\CategoryRepository;
+use App\Repository\TransactionRepository;
 use App\Repository\WalletRepository;
 use App\Security\Access;
-use App\Transaction\Entity\Transaction;
-use App\Transaction\Repository\TransactionRepository;
-use App\Transaction\Service\TransactionService;
-use App\Transaction\Trait\TransactionTrait;
+use App\Service\TransactionService;
+use App\Trait\TransactionTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

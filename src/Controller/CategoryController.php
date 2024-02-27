@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
-use App\Category\Entity\Category;
-use App\Category\Repository\CategoryRepository;
+use App\Entity\Category;
 use App\Entity\User;
 use App\Form\CategoryType;
+use App\Repository\CategoryRepository;
 use App\Security\Access;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

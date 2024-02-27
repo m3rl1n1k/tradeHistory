@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Category\Entity;
+namespace App\Entity;
 
-use App\Category\Repository\CategoryRepository;
-use App\Entity\User;
-use App\Transaction\Entity\Transaction;
+use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category

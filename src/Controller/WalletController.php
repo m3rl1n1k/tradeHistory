@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Entity\Wallet;
 use App\Form\WalletType;
 use App\Repository\WalletRepository;
-use App\Wallet\Service\WalletService;
+use App\Service\WalletService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

@@ -3,11 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\WalletRepository;
-use App\Transaction\Entity\Transaction;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use InvalidArgumentException;
 
 #[ORM\Entity(repositoryClass: WalletRepository::class)]
 class Wallet

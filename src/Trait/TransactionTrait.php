@@ -1,9 +1,7 @@
 <?php
 
-namespace App\Transaction\Trait;
+namespace App\Trait;
 
-use App\Entity\User;
-use App\Transaction\Entity\Transaction;
 use Doctrine\ORM\Query;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;

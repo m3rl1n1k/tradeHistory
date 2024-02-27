@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Transaction\Twig;
+namespace App\Twig;
 
-use App\Transaction\Enum\TransactionEnum;
+use App\Enum\TransactionEnum;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use function PHPUnit\Framework\matches;
 
 class TransactionExtension extends AbstractExtension
 {

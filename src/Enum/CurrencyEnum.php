@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Wallet\Enum;
+namespace App\Enum;
 
 use Othyn\PhpEnumEnhancements\Traits\EnumEnhancements;
 
