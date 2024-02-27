@@ -8,8 +8,6 @@
     {{ include('transaction/_form.html.twig', {'button_label': 'Update'}) }}
 
     <div class="d-flex flex-row">
-        <a class="btn btn-secondary me-2" href="{{ path('app_transaction_index') }}">back to list</a>
-
         {{ include('transaction/_delete_form.html.twig') }}
     </div>
 {% endblock %}

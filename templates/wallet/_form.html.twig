@@ -1,13 +1,25 @@
 {{ form_start(form) }}
-{{ form_label(form.currency) }}
-{{ form_widget(form.currency) }}
-{{ form_label(form.amount) }}
-{{ form_widget(form.amount) }}
-{{ form_label(form.name) }}
-{{ form_widget(form.name) }}
+<div class="alert-danger">
+    {{ form_errors(form) }}
+</div>
+<div class="row">
+    <div class="col-lg-6 col-md-12 mt-3">
+        {{ form_label(form.currency, 'From/To', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.currency, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="col-lg-6 col-md-12 mt-3">
+        {{ form_label(form.amount, 'Amount', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.amount, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="col-lg-6 col-md-12 mt-3">
+        {{ form_label(form.name, 'Type', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+    </div>
+</div>
+
 <br>
-<div class="mt-3">
-    <button class="btn btn-success">{{ button_label|default('Save') }}</button>
-    <a class="btn btn-outline-secondary" href="{{ path('app_wallet_index') }}">Back to list</a>
+<div class="mt-4">
+    {{ include('component/_button.html.twig', {'href': path('app_wallet_new') }) }}
+    {{ include('component/_link.html.twig', {'href': path('app_wallet_index') }) }}
 </div>
 {{ form_end(form) }}

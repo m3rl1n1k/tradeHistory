@@ -4,28 +4,34 @@
         {{ form_errors(form) }}
     </div>
     <div class="row">
-        <div class="col-6">
-            {{ form_row(form.wallet) }}
+        <div class="col-lg-6 col-md-12 mt-3">
+            {{ form_label(form.wallet, 'From/To', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.wallet, {'attr': {'class': 'form-control'}}) }}
         </div>
-        <div class="col-6">
-            {{ form_row(form.amount) }}
+        <div class="col-lg-6 col-md-12 mt-3">
+            {{ form_label(form.amount, 'Amount', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.amount, {'attr': {'class': 'form-control'}}) }}
         </div>
-        <div class="col-6">
-            {{ form_row(form.type) }}
+        <div class="col-lg-6 col-md-12 mt-3">
+            {{ form_label(form.type, 'Type', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
         </div>
-        <div class="col-6">
-            {{ form_row(form.date) }}
+        <div class="col-lg-6 col-md-12 mt-3">
+            {{ form_label(form.date, 'Date', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
         </div>
-        <div class="col-6">
-            {{ form_row(form.description) }}
+        <div class="col-lg-6 col-md-12 mt-3">
+            {{ form_label(form.description, 'Desription', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
         </div>
-        <div class="col-6">
-            {{ form_row(form.category) }}
-            {% if form.category is empty %}
-                <p>Create new <a href="{{ path('app_category_new') }}">category</a></p>
-            {% endif %}
+        <div class="col-lg-6 col-md-12 mt-3">
+            {{ form_label(form.category, 'Category', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
         </div>
     </div>
-    <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+    <div class="mt-4">
+        <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+        <a class="btn btn-outline-secondary float-end" href="{{ path('app_transaction_index') }}">back to list</a>
+    </div>
     {{ form_end(form) }}
 </div>
