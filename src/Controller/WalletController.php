@@ -72,7 +72,6 @@ class WalletController extends AbstractController
 		
 		if ($form->isSubmitted() && $form->isValid()) {
 			
-			/** @var Wallet $formData */
 			$formData = $form->getData();
 			$currency = $form->get('currency')->getData();
 			$number = $this->walletService->editWallet($wallet, $currency);

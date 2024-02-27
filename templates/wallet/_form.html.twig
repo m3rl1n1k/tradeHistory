@@ -4,7 +4,7 @@
 </div>
 <div class="row">
     <div class="col-lg-6 col-md-12 mt-3">
-        {{ form_label(form.currency, 'From/To', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_label(form.currency, 'Currency', {'label_attr': {'class': 'form-label'}}) }}
         {{ form_widget(form.currency, {'attr': {'class': 'form-control'}}) }}
     </div>
     <div class="col-lg-6 col-md-12 mt-3">
@@ -12,7 +12,7 @@
         {{ form_widget(form.amount, {'attr': {'class': 'form-control'}}) }}
     </div>
     <div class="col-lg-6 col-md-12 mt-3">
-        {{ form_label(form.name, 'Type', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_label(form.name, 'Name of wallet', {'label_attr': {'class': 'form-label'}}) }}
         {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
     </div>
 </div>

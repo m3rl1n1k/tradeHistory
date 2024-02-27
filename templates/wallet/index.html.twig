@@ -4,9 +4,11 @@
 
 {% block body %}
 
-    {{ include('component/_button.html.twig', {'href': path('app_wallet_new') }) }}
+    <div class="my-3">
+        {{ include('component/_button.html.twig', {'href': path('app_wallet_new') }) }}
+    </div>
 
-    <table class="table">
+    <table class="table-responsive">
         <thead>
         <tr>
             <th>Currency</th>
@@ -21,7 +23,9 @@
                 <td>{{ wallet.currency }}</td>
                 <td>{{ wallet.amount }}</td>
                 <td>{{ wallet.name  ?? "---"}}</td>
-                <td><a href="{{ path('app_wallet_show',{'number':wallet.number}) }}">{{ wallet.number }}</a></td>
+                <td><a class="btn btn-outline-secondary" href="{{ path('app_wallet_show',{'number':wallet.number}) }}">{{ wallet
+                        .number
+                        }}</a></td>
             </tr>
         {% else %}
             <tr>

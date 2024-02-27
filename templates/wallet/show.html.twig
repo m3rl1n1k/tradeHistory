@@ -22,9 +22,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_wallet_index') }}">back to list</a>
+    {{ include('component/_link.html.twig',{'href': path('app_wallet_index'), 'aditional_class': 'mx-3'}) }}
 
-    <a href="{{ path('app_wallet_edit', {'number': wallet.number}) }}">edit</a>
-
+    <a class="btn btn-warning float-start" href="{{ path('app_wallet_edit', {'number': wallet.number}) }}">Edit</a>
     {{ include('wallet/_delete_form.html.twig') }}
+
 {% endblock %}

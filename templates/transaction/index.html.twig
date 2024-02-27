@@ -3,14 +3,13 @@
 {% block title %}Transaction{% endblock %}
 
 {% block body %}
-    <div class="mt-3 mb-3">
+    <div class="my-3">
         {{ include('component/_button.html.twig', {'href': path('app_transaction_new') }) }}
     </div>
     <div class="table-responsive">
         <table class="table table-hover">
             <thead>
             <tr>
-                <th>Type</th>
                 <th>Amount</th>
                 <th>Category</th>
                 <th>Number</th>
@@ -20,16 +19,16 @@
             <tbody>
             {% for transaction in pagerfanta.currentPageResults %}
                 <tr>
-                    <td>
-                        {{ include('component/_transaction_type.html.twig') }}
-                    </td>
                     <td class="text-center">
                         <a class="btn {{ color(transaction.type) }} text-decoration-none"
-                           href="{{ path('app_transaction_show', {'id': transaction.id}) }}">{{ transaction.amount }}</a>
+                           href="{{ path('app_transaction_show', {'id': transaction.id}) }}">
+                             {{ transaction.amount }}
+
+                        </a>
                     </td>
                     <td>{{ transaction.category ? transaction.category.name : '' }}</td>
-                    <td>{{ transaction.wallet.number }}</td>
-                    <td>{{ transaction.date ? transaction.date|date('d-m-y') : '' }}</td>
+                    <td>{{ transaction.wallet.number ?? transaction.wallet.name }}</td>
+                    <td>{{ transaction.date ? transaction.date|date('d.m') : '' }}</td>
                 </tr>
             {% else %}
                 <tr>
@@ -40,7 +39,7 @@
         </table>
         <div class="pagination">
             <div class="pagerfanta">
-                {{ pagerfanta(pagerfanta, 'twitter_bootstrap4') }}
+                {{ pagerfanta(pagerfanta, 'twitter_bootstrap5') }}
             </div>
         </div>
     </div>
