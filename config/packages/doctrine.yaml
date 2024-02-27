@@ -22,28 +22,6 @@ doctrine:
         dir: '%kernel.project_dir%/src/Entity'
         prefix: 'App\Entity'
         alias: App
-      Api:
-        is_bundle: false
-        dir: '%kernel.project_dir%/src/Api/Entity'
-        prefix: 'App\Api\Entity'
-        alias: Api
-      Transaction:
-        type: attribute
-        is_bundle: false
-        dir: '%kernel.project_dir%/src/Transaction/Entity'
-        prefix: 'App\Transaction\Entity'
-        alias: App/Transaction
-      Category:
-        is_bundle: false
-        dir: '%kernel.project_dir%/src/Category/Entity'
-        prefix: 'App\Category\Entity'
-        alias: App/Category
-      Deposit:
-        type: attribute
-        is_bundle: false
-        dir: '%kernel.project_dir%/src/Deposit/Entity'
-        prefix: 'App\Deposit\Entity'
-        alias: App/Deposit
 
 when@test:
   doctrine:
