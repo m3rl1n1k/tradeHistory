@@ -2,9 +2,13 @@
 
 namespace App\Enum;
 
-enum TransactionEnum
+use App\Trait\EnumToArrayTrait;
+
+enum TransactionEnum: int
 {
-    const INCOME = 1;
-    const EXPENSE = 2;
-    const TRANSACTION = 3;
+	
+	use EnumToArrayTrait;
+    case Income = 1;
+    case Expense = 2;
+//    case Transaction = 3;
 }

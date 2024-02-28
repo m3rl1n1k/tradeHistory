@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\Transaction;
 use App\Entity\User;
 use App\Entity\Wallet;
+use App\Enum\CurrencyEnum;
 use App\Enum\TransactionEnum;
 use DateTime;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -51,11 +52,7 @@ class TransactionType extends AbstractType
 			])
 			->add('type', ChoiceType::class,
 				[
-					'choices' => [
-						"Expense" => TransactionEnum::EXPENSE,
-						"Income" => TransactionEnum::INCOME,
-//						"Transaction" => TransactionEnum::TRANSACTION,
-					]
+					'choices' => TransactionEnum::valueAsKey(),
 				])
 			->add('date', DateType::class, [
 				'data' => new DateTime(),
