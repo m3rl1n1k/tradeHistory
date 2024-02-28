@@ -36,9 +36,6 @@ class TransactionService
 		return $this->transactionRepository->getTransactionsPerPeriod($user, $dateStart, $dateEnd);
 	}
 	
-	/**
-	 * @inheritDoc
-	 */
 	public function getTransactionsForUser(UserInterface|User $user, bool $is_array = false):
 	array|Query
 	{
@@ -127,15 +124,15 @@ class TransactionService
 		}
 	}
 	
-	public function removeTransaction(Wallet $walllet, Transaction $transaction): void
+	public function removeTransaction(Wallet $wallet, Transaction $transaction): void
 	{
 		$amount = $transaction->getAmount();
-		if ($transaction->getType() === TransactionEnum::EXPENSE) {
-			$amount = $walllet->increment($amount);
+		if ($transaction->getType() === TransactionEnum::Expense->value) {
+			$amount = $wallet->increment($amount);
 		} else {
-			$amount = $walllet->decrement($amount);
+			$amount = $wallet->decrement($amount);
 		}
-		$walllet->setAmount($amount);
+		$wallet->setAmount($amount);
 	}
 	
 	public function getSum(float|array|int|string $transactions, int $type): float

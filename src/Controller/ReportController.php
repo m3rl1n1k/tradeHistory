@@ -49,8 +49,8 @@ class ReportController extends AbstractController
 			
 			
 			$transactions = $this->transactionService->getTransactionsPerPeriod($user, $start, $end);
-			$income = $this->transactionService->getSum($transactions, TransactionEnum::INCOME);
-			$expense = $this->transactionService->getSum($transactions, TransactionEnum::EXPENSE);
+			$income = $this->transactionService->getSum($transactions, TransactionEnum::Income->value);
+			$expense = $this->transactionService->getSum($transactions, TransactionEnum::Expense->value);
 			$data = $this->transactionService->groupTransactionsByCategory($transactions);
 			
 			return $this->render('report/index.html.twig', [

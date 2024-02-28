@@ -7,6 +7,7 @@ use App\Entity\Wallet;
 use App\Form\WalletType;
 use App\Repository\WalletRepository;
 use App\Service\WalletService;
+use App\Trait\AccessTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +23,7 @@ class WalletController extends AbstractController
 	)
 	{
 	}
-	
+	use AccessTrait;
 	#[Route('/', name: 'app_wallet_index', methods: ['GET'])]
 	public function index(#[CurrentUser] ?User $user,WalletRepository $walletRepository): Response
 	{

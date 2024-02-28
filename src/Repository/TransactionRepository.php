@@ -99,7 +99,7 @@ class TransactionRepository extends ServiceEntityRepository
 			->select('max(transaction.amount)')
 			->andWhere('transaction.user = :user')
 			->andWhere('transaction.type = :type')
-			->setParameter('type', TransactionEnum::EXPENSE)
+			->setParameter('type', TransactionEnum::Expense->value)
 			->setParameter('user', $user)
 			->getQuery()
 			->getSingleScalarResult();
@@ -109,7 +109,7 @@ class TransactionRepository extends ServiceEntityRepository
 	 * @throws NonUniqueResultException
 	 * @throws NoResultException
 	 */
-	public function getTransactionSum(User $user, array $conditions = [], string $type = TransactionEnum::EXPENSE):
+	public function getTransactionSum(User $user, array $conditions = [], string $type = TransactionEnum::Expense->value):
 	float|bool|int|string|null
 	{
 		$queryBuilder = $this->createQueryBuilder('transaction')

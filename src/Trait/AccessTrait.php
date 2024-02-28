@@ -1,16 +1,14 @@
 <?php
 
-namespace App\Security;
+namespace App\Trait;
 
 use App\Entity\User;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class Access extends AbstractController
+trait AccessTrait
 {
-	
-	public function accessDenied(object $transaction, User $user): void
+	public function accessDenied(object $object, User $user): void
 	{
-		if ($user->getUserIdentifier() !== $transaction->getUserId()) {
+		if ($user->getUserIdentifier() !== $object->getUserId()) {
 			throw $this->createAccessDeniedException('You don\'t have access! ');
 		}
 	}
