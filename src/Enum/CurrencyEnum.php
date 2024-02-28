@@ -2,19 +2,17 @@
 
 namespace App\Enum;
 
-use Othyn\PhpEnumEnhancements\Traits\EnumEnhancements;
+
+
+use App\Trait\EnumToArrayTrait;
 
 enum CurrencyEnum: string
 {
-	use EnumEnhancements;
+	use EnumToArrayTrait;
 	
 	case USD = 'USD';
 	case EUR = 'EUR';
 	case UAH = 'UAH';
 	case PLN = 'PLN';
 	
-	public static function associativeArray(): array
-	{
-		return array_combine(self::valueArray(), self::valueArray());
-	}
 }
