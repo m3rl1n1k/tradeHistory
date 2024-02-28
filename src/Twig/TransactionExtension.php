@@ -21,9 +21,8 @@ class TransactionExtension extends AbstractExtension
 	public function numberToName(int $type): string
 	{
 		$types = [
-			TransactionEnum::INCOME => "Income",
-			TransactionEnum::EXPENSE => "Expense",
-			TransactionEnum::TRANSACTION => "Transaction",
+			TransactionEnum::Income->value => "Income",
+			TransactionEnum::Expense->value => "Expense",
 		];
 		return $types[$type];
 	}
@@ -31,9 +30,8 @@ class TransactionExtension extends AbstractExtension
 	public function color(int $type): string
 	{
 		return match ($type) {
-			TransactionEnum::INCOME => "btn-outline-success",
-			TransactionEnum::EXPENSE => "btn-outline-danger",
-			TransactionEnum::TRANSACTION => "btn-outline-warning",
+			TransactionEnum::Income->value => "btn-outline-success",
+			TransactionEnum::Expense->value => "btn-outline-danger",
 			default => "btn-outline-info"
 		};
 	}
@@ -41,9 +39,8 @@ class TransactionExtension extends AbstractExtension
 	public function typeTransaction(int $type): string
 	{
 		return match ($type) {
-			TransactionEnum::INCOME => "income",
-			TransactionEnum::EXPENSE => "expense",
-			TransactionEnum::TRANSACTION => "transaction",
+			TransactionEnum::Income->value => "income",
+			TransactionEnum::Expense->value => "expense",
 			default => ""
 		};
 	}

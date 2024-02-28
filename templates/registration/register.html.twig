@@ -26,6 +26,6 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Register</button>
-    <a {{ path('app_login') }} class="btn btn-outline-success float-end ">Login</a>
+    <a href="{{ path('app_login') }}" class="btn btn-outline-success float-end ">Login</a>
     {{ form_end(registrationForm) }}
 {% endblock %}

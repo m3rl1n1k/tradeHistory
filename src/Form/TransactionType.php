@@ -52,7 +52,7 @@ class TransactionType extends AbstractType
 			])
 			->add('type', ChoiceType::class,
 				[
-					'choices' => TransactionEnum::associativeArray(),
+					'choices' => TransactionEnum::valueAsKey(),
 				])
 			->add('date', DateType::class, [
 				'data' => new DateTime(),
