@@ -20,11 +20,12 @@
     <div class="mb-3">
 
         {{ form_label(registrationForm.agreeTerms, 'Agree with terms: ', {'label_attr': {'class': 'form-label'}}) }}
-        <a href="{{ path('app_registration_terms')}}">read</a>{{ form_widget(registrationForm.agreeTerms, {'attr':
+        <a href="{{ path('app_registration_terms') }}">read</a>{{ form_widget(registrationForm.agreeTerms, {'attr':
             {'class': 'form-check'}}) }}
 
     </div>
 
-    <button type="submit" class="btn btn-primary btn-lg ">Register</button>
+    <button type="submit" class="btn btn-primary">Register</button>
+    <a {{ path('app_login') }} class="btn btn-outline-success float-end ">Login</a>
     {{ form_end(registrationForm) }}
 {% endblock %}
