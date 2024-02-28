@@ -5,13 +5,13 @@
 {% block body %}
     {{ form_start(form, {'attr': {'class': 'editUser'}}) }}
     <div class="row">
-        <div class="col-6">
+        <div class="col-lg-6 col-md-12">
             <div class="mb-3">
                 {{ form_label(form.email, 'Email address', {'label_attr': {'class': 'form-label'}}) }}
                 {{ form_widget(form.email, {'attr': {'class': 'form-control edit', 'disabled': 'disabled'}}) }}
             </div>
         </div>
-        <div class="col-6">
+        <div class="col-lg-6 col-md-12">
             <div class="mb-3">
                 {{ form_label(form.currency, 'Select your currency', {'label_attr': {'class': 'form-label'}}) }}
                 {{ form_widget(form.currency, {'attr': {'class': 'form-select edit', 'id': 'currency', 'disabled': 'disabled'}}) }}

@@ -42,7 +42,7 @@
         </tbody>
     </table>
 
-    <a class="btn btn-outline-secondary" href="{{ path('app_transaction_index') }}">Back to list</a>
+    {{ include('component/_link.html.twig',{'href': path('app_transaction_index'), 'aditional_class': 'mx-3'}) }}
 
     <a class="btn btn-warning" href="{{ path('app_transaction_edit', {'id': transaction.id}) }}">Edit</a>
 

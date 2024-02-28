@@ -5,8 +5,8 @@
 {% block body %}
     <h1>Category</h1>
 
-    <a class="btn btn-outline-success" href="{{ path('app_category_new') }}">Create new</a>
-    <table class="table">
+    {{ include('component/_button.html.twig', {'href': path('app_category_new') }) }}
+    <table class="table-responsive">
         <thead>
             <tr>
                 <th>Id</th>

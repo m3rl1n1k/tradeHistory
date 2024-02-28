@@ -1,4 +1,17 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+
+<div class="row mb-4">
+    <div class="col-lg-6 col-md-12">
+        {{ form_label(form.name, 'Name of category', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+    </div>
+</div>
+{{ include('component/_button.html.twig', {
+    'href': path('app_category_new'),
+    'button_label': 'Save'
+}) }}
+{{ include('component/_link.html.twig', {
+    'href': path('app_category_index'),
+    'button_label': 'Save'
+}) }}
 {{ form_end(form) }}
