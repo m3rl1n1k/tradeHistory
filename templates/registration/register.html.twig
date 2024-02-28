@@ -6,14 +6,25 @@
     <h1>Register</h1>
 
     {{ form_errors(registrationForm) }}
-
     {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+    <div class="row mb-3 ">
+        <div class="col-lg-6 col-md-12 mt-3">
+            {{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="col-lg-6 col-md-12 mt-3">
+            {{ form_label(registrationForm.plainPassword, 'Password', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="mb-3">
 
-        <button type="submit" class="btn btn-primary btn-lg ">Register</button>
+        {{ form_label(registrationForm.agreeTerms, 'Agree with terms: ', {'label_attr': {'class': 'form-label'}}) }}
+        <a href="{{ path('app_registration_terms')}}">read</a>{{ form_widget(registrationForm.agreeTerms, {'attr':
+            {'class': 'form-check'}}) }}
+
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-lg ">Register</button>
     {{ form_end(registrationForm) }}
 {% endblock %}
