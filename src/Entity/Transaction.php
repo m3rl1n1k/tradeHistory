@@ -119,12 +119,12 @@ class Transaction
 	
 	public function isIncome(): bool
 	{
-		return $this->getType() === TransactionEnum::INCOME ?? false;
+		return $this->getType() === TransactionEnum::Income->value ?? false;
 	}
 	
 	public function isExpense(): bool
 	{
-		return $this->getType() === TransactionEnum::EXPENSE ?? false;
+		return $this->getType() === TransactionEnum::Expense->value ?? false;
 	}
 	
 	public function getCategory(): ?Category

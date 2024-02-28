@@ -8,8 +8,8 @@ use App\Form\TransactionType;
 use App\Repository\CategoryRepository;
 use App\Repository\TransactionRepository;
 use App\Repository\WalletRepository;
-use App\Security\Access;
 use App\Service\TransactionService;
+use App\Trait\AccessTrait;
 use App\Trait\TransactionTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,14 +26,13 @@ class TransactionController extends AbstractController
 	public function __construct(
 		protected TransactionRepository $transactionRepository,
 		protected TransactionService    $transactionService,
-		private readonly Access         $access,
 		protected CategoryRepository    $categoryRepository,
 		protected WalletRepository      $walletRepository
 	)
 	{
 	}
 	
-	use TransactionTrait;
+	use TransactionTrait, AccessTrait;
 	
 	#[Route('/', name: 'app_transaction_index', methods: ['GET'])]
 	public function index(#[CurrentUser] ?User $user, Request $request): Response
@@ -81,7 +80,7 @@ class TransactionController extends AbstractController
 	#[Route('/{id}', name: 'app_transaction_show', methods: ['GET'])]
 	public function show(#[CurrentUser] ?User $user, Transaction $transaction): Response
 	{
-		$this->access->accessDenied($transaction, $user);
+		$this->accessDenied($transaction, $user);
 		return $this->render('transaction/show.html.twig', [
 			'transaction' => $transaction,
 		]);
@@ -90,7 +89,7 @@ class TransactionController extends AbstractController
 	#[Route('/{id}/edit', name: 'app_transaction_edit', methods: ['GET', 'POST'])]
 	public function edit(#[CurrentUser] ?User $user, Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
 	{
-		$this->access->accessDenied($transaction, $user);
+		$this->accessDenied($transaction, $user);
 		
 		$oldAmount = $transaction->getAmount();
 		$form = $this->createForm(TransactionType::class, $transaction, [
@@ -116,7 +115,7 @@ class TransactionController extends AbstractController
 	public function delete(#[CurrentUser] ?User   $user, Request $request, Transaction $transaction,
 						   EntityManagerInterface $entityManager): Response
 	{
-		$this->access->accessDenied($transaction, $user);
+		$this->accessDenied($transaction, $user);
 		
 		if ($this->isCsrfTokenValid('delete' . $transaction->getId(), $request->request->get('_token'))) {
 			$this->transactionService->removeTransaction($transaction->getWallet(), $transaction);

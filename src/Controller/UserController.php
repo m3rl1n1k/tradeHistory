@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
-use App\Security\Access;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +15,6 @@ use Symfony\Component\Routing\Attribute\Route;
 class UserController extends AbstractController
 {
 	public function __construct(
-		protected Access $access,
 		protected UserRepository $userRepository)
 	{
 	}
