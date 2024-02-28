@@ -41,4 +41,5 @@ class IndexController extends AbstractController
 	{
 		return !$user ? $this->redirectToRoute('app_login') : $this->redirectToRoute('app_home');
 	}
+	
 }
