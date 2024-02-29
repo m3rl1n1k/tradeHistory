@@ -6,8 +6,7 @@
     <div class="my-3">
         {{ include('component/_button.html.twig', {'href': path('app_transaction_new') }) }}
     </div>
-    <div class="table-responsive">
-        <table class="table table-hover">
+        <table class="table table-hover table-responsive">
             <thead>
             <tr>
                 <th>Amount</th>
@@ -42,5 +41,4 @@
                 {{ pagerfanta(pagerfanta, 'twitter_bootstrap5') }}
             </div>
         </div>
-    </div>
 {% endblock %}

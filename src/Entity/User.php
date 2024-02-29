@@ -37,9 +37,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[ORM\Column(length: 4)]
 	private ?string $currency = null;
 	
+	#[ORM\OneToMany(mappedBy: 'user', targetEntity: Transfer::class, orphanRemoval: true)]
+	private Collection $transfers;
+	
 	public function __construct()
 	{
 		$this->wallets = new ArrayCollection();
+		$this->transfers = new ArrayCollection();
 	}
 	
 	public function getId(): ?int
@@ -116,7 +120,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		// If you store any temporary, sensitive data on the user, clear it here
 		// $this->plainPassword = null;
 	}
-
+	
 	
 	/**
 	 * @return Collection<int, Wallet>
@@ -169,4 +173,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		
 		return $this;
 	}
+	
+	/**
+	 * @return Collection<int, Transfer>
+	 */
+	public function getTransfers(): Collection
+	{
+		return $this->transfers;
+	}
+	
+	public function addTransfer(Transfer $transfer): static
+	{
+		if (!$this->transfers->contains($transfer)) {
+			$this->transfers->add($transfer);
+			$transfer->setUser($this);
+		}
+		
+		return $this;
+	}
+	
+	public function removeTransfer(Transfer $transfer): static
+	{
+		if ($this->transfers->removeElement($transfer)) {
+			// set the owning side to null (unless already changed)
+			if ($transfer->getUser() === $this) {
+				$transfer->setUser(null);
+			}
+		}
+		
+		return $this;
+	}
+	
 }

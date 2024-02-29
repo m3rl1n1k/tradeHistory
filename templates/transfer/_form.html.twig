@@ -4,22 +4,22 @@
 </div>
 <div class="row">
     <div class="col-lg-6 col-md-12 mt-3">
-        {{ form_label(form.currency, 'Currency', {'label_attr': {'class': 'form-label'}}) }}
-        {{ form_widget(form.currency, {'attr': {'class': 'form-control'}}) }}
-    </div>
-    <div class="col-lg-6 col-md-12 mt-3">
         {{ form_label(form.amount, 'Amount', {'label_attr': {'class': 'form-label'}}) }}
         {{ form_widget(form.amount, {'attr': {'class': 'form-control'}}) }}
     </div>
     <div class="col-lg-6 col-md-12 mt-3">
-        {{ form_label(form.name, 'Name of wallet', {'label_attr': {'class': 'form-label'}}) }}
-        {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+        {{ form_label(form.fromWallet, 'From', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.fromWallet, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="col-lg-6 col-md-12 mt-3">
+        {{ form_label(form.toWallet, 'To', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.toWallet, {'attr': {'class': 'form-control'}}) }}
     </div>
 </div>
 
 <br>
 <div class="mt-4">
     {{ include('component/_button.html.twig') }}
-    {{ include('component/_link.html.twig', {'href': path('app_wallet_index') }) }}
+    {{ include('component/_link.html.twig', {'href': path('app_transfer_index') }) }}
 </div>
 {{ form_end(form) }}

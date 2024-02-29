@@ -61,8 +61,7 @@ class TransactionController extends AbstractController
 			$formData->setUserId($user);
 			$id = $form->get('wallet')->getData();
 			$wallet = $this->walletRepository->find($id);
-			//todo якщо нова тразакція то інкрементувало або декрементувало баланс користтувача на суму відповідно до
-			// типу транзакції
+			
 			$this->transactionService->setAmount($wallet, $transaction);
 			
 			$entityManager->persist($transaction);
