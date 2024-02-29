@@ -10,7 +10,7 @@ use Symfony\UX\Chartjs\Model\Chart;
 
 class ChartController extends AbstractController
 {
-    #[Route('/chart', name: 'app_chart')]
+    #[Route('/charts', name: 'app_chart')]
     public function index(ChartBuilderInterface $chartBuilder): Response
     {
 		$chart = $chartBuilder->createChart(Chart::TYPE_LINE);
