@@ -125,16 +125,19 @@ class ChartService
 	 * @throws NonUniqueResultException
 	 * @throws NoResultException
 	 */
-	public function reportChart(User $user): Chart
+	public function reportChart(User $user, array $options): Chart
 	{
+		$dataset = [];
 		//select all transactions per month and build chart
 		$chart = $this->create(Chart::TYPE_LINE);
+		if ($options['expense'])
+			$dataset[] = $this->datasetReport($user, TransactionEnum::Expense->value, 'Expense', 0);
+		if ($options['income'])
+			$dataset[] = $this->datasetReport($user, TransactionEnum::Income->value, 'Income', 1);
+		
 		$chart->setData([
 			'labels' => $this->getDateArray(),
-			'datasets' => [
-				$this->datasetReport($user, TransactionEnum::Expense->value, 'Expense', 0),
-				$this->datasetReport($user, TransactionEnum::Income->value, 'Income', 1)
-			],
+			'datasets' => $dataset,
 		]);
 		
 		$chart->setOptions([
