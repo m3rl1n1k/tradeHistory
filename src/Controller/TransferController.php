@@ -6,6 +6,7 @@ use App\Entity\Transfer;
 use App\Entity\User;
 use App\Form\TransferType;
 use App\Repository\TransferRepository;
+use App\Service\TransferService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,11 +17,15 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 #[Route('/transfer')]
 class TransferController extends AbstractController
 {
+	public function __construct(protected TransferService $transferService)
+	{
+	}
+	
 	#[Route('/', name: 'app_transfer_index', methods: ['GET'])]
-	public function index(TransferRepository $transferRepository): Response
+	public function index(#[CurrentUser] ?User $user,TransferRepository $transferRepository): Response
 	{
 		return $this->render('transfer/index.html.twig', [
-			'transfers' => $transferRepository->findAll(),
+			'transfers' => $transferRepository->getAll($user),
 		]);
 	}
 	
@@ -34,6 +39,8 @@ class TransferController extends AbstractController
 		$form->handleRequest($request);
 		
 		if ($form->isSubmitted() && $form->isValid()) {
+			$transfer->setUser($user);
+			$this->transferService->calculate($transfer);
 			$entityManager->persist($transfer);
 			$entityManager->flush();
 			
@@ -51,24 +58,6 @@ class TransferController extends AbstractController
 	{
 		return $this->render('transfer/show.html.twig', [
 			'transfer' => $transfer,
-		]);
-	}
-	
-	#[Route('/{id}/edit', name: 'app_transfer_edit', methods: ['GET', 'POST'])]
-	public function edit(Request $request, Transfer $transfer, EntityManagerInterface $entityManager): Response
-	{
-		$form = $this->createForm(TransferType::class, $transfer);
-		$form->handleRequest($request);
-		
-		if ($form->isSubmitted() && $form->isValid()) {
-			$entityManager->flush();
-			
-			return $this->redirectToRoute('app_transfer_index', [], Response::HTTP_SEE_OTHER);
-		}
-		
-		return $this->render('transfer/edit.html.twig', [
-			'transfer' => $transfer,
-			'form' => $form,
 		]);
 	}
 	

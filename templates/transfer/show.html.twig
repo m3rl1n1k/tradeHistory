@@ -3,24 +3,30 @@
 {% block title %}Transfer{% endblock %}
 
 {% block body %}
-    <h1>Transfer</h1>
+<h1>Transfer</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ transfer.id }}</td>
-            </tr>
-            <tr>
-                <th>Amount</th>
-                <td>{{ transfer.amount }}</td>
-            </tr>
-        </tbody>
-    </table>
+<table class="table">
+    <tbody>
+    <tr>
+        <th>Id</th>
+        <td>{{ transfer.id }}</td>
+    </tr>
+    <tr>
+        <th>From</th>
+        <td>{{ transfer.fromWallet.number }}</td>
+    </tr>
+    <tr>
+        <th>To</th>
+        <td>{{ transfer.toWallet.number }}</td>
+    </tr>
+    <tr>
+        <th>Amount</th>
+        <td>{{ transfer.amount }}</td>
+    </tr>
+    </tbody>
+</table>
 
-    <a href="{{ path('app_transfer_index') }}">back to list</a>
+{{ include('component/_link.html.twig'), {'href':path('app_transfer_index')} }}
 
-    <a href="{{ path('app_transfer_edit', {'id': transfer.id}) }}">edit</a>
-
-    {{ include('transfer/_delete_form.html.twig') }}
+{{ include('transfer/_delete_form.html.twig') }}
 {% endblock %}

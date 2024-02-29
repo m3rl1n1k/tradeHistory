@@ -16,10 +16,10 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TransferRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Transfer::class);
-    }
+	public function __construct(ManagerRegistry $registry)
+	{
+		parent::__construct($registry, Transfer::class);
+	}
 
 //    /**
 //     * @return Transfer[] Returns an array of Transfer objects
@@ -45,4 +45,9 @@ class TransferRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+	
+	public function getAll($user): array
+	{
+		return $this->findBy(['user' => $user]);
+}
 }
