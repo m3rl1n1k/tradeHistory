@@ -21,16 +21,23 @@ class TransferType extends AbstractType
 	{
 		$user = $options['user'];
 		$wallets = $this->walletRepository->getAll($user);
+		$label = function (Wallet $wallet) {
+			if ($wallet->getName()) {
+				return $wallet->getName();
+			} else {
+				return $wallet->getNumber();
+			}
+		};
 		$builder
 			->add('amount')
 			->add('fromWallet', EntityType::class, [
 				'class' => Wallet::class,
-				'choice_label' => 'number',
+				'choice_label' => $label,
 				'choices' => $wallets
 			])
 			->add('toWallet', EntityType::class, [
 				'class' => Wallet::class,
-				'choice_label' => 'number',
+				'choice_label' => $label,
 				'choices' => $wallets
 			]);
 	}

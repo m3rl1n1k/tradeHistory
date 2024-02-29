@@ -58,6 +58,10 @@ class ChartService
 		return $categoryList;
 	}
 	
+	/**
+	 * @throws NonUniqueResultException
+	 * @throws NoResultException
+	 */
 	protected function getSumByCategory(int $id, $user): bool|float|int|string
 	{
 		return $this->transactionRepository->getTransactionSum($user, ['category' => $id]) ?? 0;
@@ -68,10 +72,15 @@ class ChartService
 	 * @throws NoResultException
 	 */
 	protected function getMax(User $user): float
-	{ $max = (float)$this->transactionRepository->getMaxAmount($user->getUserId());
-		return  $max + ($max / 100) ;
+	{
+		$max = (float)$this->transactionRepository->getMaxAmount($user->getUserId());
+		return $max + ($max / 100);
 	}
 	
+	/**
+	 * @throws NonUniqueResultException
+	 * @throws NoResultException
+	 */
 	protected function datasetDashboard($user, string $label = '', bool $categoryReturn = false, bool $singleColor =
 	false):
 	array
@@ -123,8 +132,8 @@ class ChartService
 		$chart->setData([
 			'labels' => $this->getDateArray(),
 			'datasets' => [
-				$this->datasetReport($user, TransactionEnum::EXPENSE, 'Expense', 0),
-				$this->datasetReport($user, TransactionEnum::INCOME, 'Income', 1)
+				$this->datasetReport($user, TransactionEnum::Expense->value, 'Expense', 0),
+				$this->datasetReport($user, TransactionEnum::Income->value, 'Income', 1)
 			],
 		]);
 		
@@ -158,15 +167,23 @@ class ChartService
 		return $daysArray;
 	}
 	
+	/**
+	 * @throws NonUniqueResultException
+	 * @throws NoResultException
+	 */
 	private function getSumByDay(array $days, string $type, $user): array
 	{
 		$sum = [];
 		foreach ($days as $day) {
-			$sum[] = $this->transactionRepository->getTransactionSum($user,['date' => $day], $type) ?? 0;
+			$sum[] = $this->transactionRepository->getTransactionSum($user, ['date' => $day], $type) ?? 0;
 		}
 		return $sum;
 	}
 	
+	/**
+	 * @throws NonUniqueResultException
+	 * @throws NoResultException
+	 */
 	protected function datasetReport($user, string $type, string $label = '', int $colorMax10 = 10):
 	array
 	{
@@ -180,14 +197,18 @@ class ChartService
 		];
 	}
 	
+	/**
+	 * @throws NonUniqueResultException
+	 * @throws NoResultException
+	 */
 	public function totalChart(User $user)
 	{
 		$chart = $this->create();
 		$chart->setData([
 			'labels' => $this->getDateArray(),
 			'datasets' => [
-				$this->datasetReport($user, TransactionEnum::EXPENSE, 'Expense', 0),
-				$this->datasetReport($user, TransactionEnum::INCOME, 'Income', 1)
+				$this->datasetReport($user, TransactionEnum::Expense->value, 'Expense', 0),
+				$this->datasetReport($user, TransactionEnum::Income->value, 'Income', 1)
 			],
 		]);
 		
@@ -204,7 +225,7 @@ class ChartService
 	
 	protected function create(string $type = Chart::TYPE_BAR): Chart
 	{
-		return  $this->chartBuilder->createChart($type);
+		return $this->chartBuilder->createChart($type);
 	}
 	
 }

@@ -8,24 +8,19 @@
     <table class="table table-responsive">
         <thead>
         <tr>
-            <th>Id</th>
             <th>Amount</th>
             <th>From</th>
             <th>To</th>
-            <th>actions</th>
         </tr>
         </thead>
         <tbody>
         {% for transfer in transfers %}
             <tr>
-                <td>{{ transfer.id }}</td>
-                <td>{{ transfer.amount }}</td>
+                <td><a class="btn btn-outline-warning" href="{{ path('app_transfer_show', {'id': transfer.id}) }}">{{
+                        transfer.amount
+                        }}</a></td>
                 <td>{{ transfer.fromWallet.name ?? transfer.fromWallet.number }}</td>
                 <td>{{ transfer.toWallet.name ?? transfer.toWallet.number }}</td>
-                <td>
-                    {{ include('component/_link.html.twig', {'href':path('app_transfer_show', {'id': transfer.id}),
-                    'link_label':'Show'}) }}
-                </td>
             </tr>
         {% else %}
             <tr>
