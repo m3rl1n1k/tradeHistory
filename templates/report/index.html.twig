@@ -10,17 +10,17 @@
 
     <form action="{{ path('app_report') }}" method="get">
         <div class="row offset-4 ">
-            <div class="col-lg-2 col-md-12 d-flex">
+            <div class="col d-flex">
                 <label class="form-label" for="income">Income: </label>
                 <input class="form-check mx-2" type="checkbox" id="income"
                        name="income" {{ income_check ? 'checked' : '' }} value="true">
             </div>
-            <div class="col-lg-2 col-md-12 d-flex">
+            <div class="col d-flex">
                 <label class="form-label" for="expense">Expense:</label>
                 <input class="form-check mx-2" type="checkbox" id="expense"
                        name="expense" {{ expense_check ? 'checked' :  '' }} value="true">
             </div>
-            <div class="col-lg-2 col-md-12">
+            <div class="col">
                 <button class="btn btn-sm btn-outline-info" type="submit">Show</button>
             </div>
         </div>
