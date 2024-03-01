@@ -3,22 +3,23 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block body %}
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-{#            <div class="btn-toolbar mb-2 mb-md-0">#}
-{#                <div class="btn-group me-2">#}
-{#                    <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>#}
-{#                    <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>#}
-{#                </div>#}
-{#                <button type="button"#}
-{#                        class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">#}
-{#                    <svg class="bi">#}
-{#                        <use xlink:href="#calendar3"></use>#}
-{#                    </svg>#}
-{#                    This week#}
-{#                </button>#}
-{#            </div>#}
+    <form action="{{ path('app_home') }}" method="get">
+        <div class="row ">
+            <div class="col d-flex">
+                <label class="form-label" for="income">Income: </label>
+                <input class="form-check mx-2" type="checkbox" id="income"
+                       name="income" {{ income_check ? 'checked' : '' }} value="true">
+            </div>
+            <div class="col d-flex">
+                <label class="form-label" for="expense">Expense:</label>
+                <input class="form-check mx-2" type="checkbox" id="expense"
+                       name="expense" {{ expense_check ? 'checked' :  '' }} value="true">
+            </div>
+            <div class="col">
+                <button class="btn btn-sm btn-outline-info" type="submit">Show</button>
+            </div>
         </div>
-
+    </form>
         {{ render_chart(chart) }}
 
     <h2>Last 10 transactions</h2>

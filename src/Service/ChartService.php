@@ -27,13 +27,17 @@ class ChartService
 	 * @throws NonUniqueResultException
 	 * @throws NoResultException
 	 */
-	public function dashboardChart(User $user, string $label): Chart
+	public function dashboardChart(User $user, string $label, array $options): Chart
 	{
+		dd('Dev');
+		$dataset = [];
+		if ($options['expense'])
+			$dataset[] = $this->datasetDashboard($user, $label);
 		$chart = $this->create();
 		$chart->setData([
 			'labels' => array_values($this->datasetDashboard($user, categoryReturn: true)),
 			'datasets' => [
-				$this->datasetDashboard($user, $label)
+			
 			],
 		]);
 		

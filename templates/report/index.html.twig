@@ -5,9 +5,6 @@
 {% block body %}
 
     <h1>Report</h1>
-
-    {{ render_chart(chart) }}
-
     <form action="{{ path('app_report') }}" method="get">
         <div class="row ">
             <div class="col d-flex">
@@ -25,6 +22,9 @@
             </div>
         </div>
     </form>
+    {{ render_chart(chart) }}
+
+
 
     <h3 class="mt-5">Transactions per period:</h3>
     {{ include('report/_form.html.twig') }}

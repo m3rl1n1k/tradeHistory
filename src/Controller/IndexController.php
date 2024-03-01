@@ -28,7 +28,6 @@ class IndexController extends AbstractController
 	public function home(#[CurrentUser] ?User $user, TransactionRepository $transactionRepository, ChartService $chartService):
 	Response
 	{
-//		$chartService->debug($user);
 		$chart = $chartService->dashboardChart($user, 'Expense');
 		return $this->render('index/index.html.twig', [
 			'chart' => $chart,
