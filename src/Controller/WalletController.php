@@ -24,8 +24,8 @@ class WalletController extends AbstractController
 	{
 	}
 	use AccessTrait;
-	#[Route('/', name: 'app_wallet_index', methods: ['GET'])]
-	public function index(#[CurrentUser] ?User $user,WalletRepository $walletRepository): Response
+	#[Route('/', name: 'app_wallet_index')]
+	public function index(#[CurrentUser] ?User $user, WalletRepository $walletRepository): Response
 	{
 		$this->walletService->currencyExchange($user, 'PLN');
 		return $this->render('wallet/index.html.twig', [

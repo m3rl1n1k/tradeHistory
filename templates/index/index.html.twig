@@ -5,22 +5,21 @@
 {% block body %}
     <form action="{{ path('app_home') }}" method="get">
         <div class="row ">
-            <div class="col d-flex">
-                <label class="form-label" for="income">Income: </label>
-                <input class="form-check mx-2" type="checkbox" id="income"
-                       name="income" {{ income_check ? 'checked' : '' }} value="true">
-            </div>
-            <div class="col d-flex">
-                <label class="form-label" for="expense">Expense:</label>
-                <input class="form-check mx-2" type="checkbox" id="expense"
-                       name="expense" {{ expense_check ? 'checked' :  '' }} value="true">
-            </div>
+            {% for category in categories %}
+                <div class="col d-flex">
+                    <label class="form-label" for="{{ category.name }}">{{ category.name }}:</label>
+                    {% set isChecked = categories_list is defined and category.name in categories_list %}
+                    <input  class="form-check mx-2" type="checkbox" id="{{ category.name }}"
+                           name="{{ category.name }}" {{ isChecked ? 'checked' : '' }} value="true">
+                </div>
+            {% endfor %}
+
             <div class="col">
                 <button class="btn btn-sm btn-outline-info" type="submit">Show</button>
             </div>
         </div>
     </form>
-        {{ render_chart(chart) }}
+    {{ render_chart(chart) }}
 
     <h2>Last 10 transactions</h2>
     <table class="table table-hover table-responsive">

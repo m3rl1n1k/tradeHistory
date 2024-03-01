@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Transaction;
 use App\Entity\User;
 use App\Enum\TransactionEnum;
+use DatePeriod;
+use DateTime;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -93,12 +95,15 @@ class TransactionRepository extends ServiceEntityRepository
 	 * @throws NonUniqueResultException
 	 * @throws NoResultException
 	 */
-	public function getMaxAmount(int $user): float|bool|int|string|null
+	public function getMaxAmount(int $user, DatePeriod $period): float|bool|int|string|null
 	{
 		return $this->createQueryBuilder('transaction')
 			->select('max(transaction.amount)')
+			->andWhere('transaction.date BETWEEN :startDate AND :endDate')
 			->andWhere('transaction.user = :user')
 			->andWhere('transaction.type = :type')
+			->setParameter('startDate', $period->start)
+			->setParameter('endDate', $period->end)
 			->setParameter('type', TransactionEnum::Expense->value)
 			->setParameter('user', $user)
 			->getQuery()
