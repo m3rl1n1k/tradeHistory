@@ -3,23 +3,23 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block body %}
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-{#            <div class="btn-toolbar mb-2 mb-md-0">#}
-{#                <div class="btn-group me-2">#}
-{#                    <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>#}
-{#                    <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>#}
-{#                </div>#}
-{#                <button type="button"#}
-{#                        class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">#}
-{#                    <svg class="bi">#}
-{#                        <use xlink:href="#calendar3"></use>#}
-{#                    </svg>#}
-{#                    This week#}
-{#                </button>#}
-{#            </div>#}
-        </div>
+    <form action="{{ path('app_home') }}" method="get">
+        <div class="row ">
+            {% for category in categories %}
+                <div class="col d-flex">
+                    <label class="form-label" for="{{ category.name }}">{{ category.name }}:</label>
+                    {% set isChecked = categories_list is defined and category.name in categories_list %}
+                    <input  class="form-check mx-2" type="checkbox" id="{{ category.name }}"
+                           name="{{ category.name }}" {{ isChecked ? 'checked' : '' }} value="true">
+                </div>
+            {% endfor %}
 
-        {{ render_chart(chart) }}
+            <div class="col">
+                <button class="btn btn-sm btn-outline-info" type="submit">Show</button>
+            </div>
+        </div>
+    </form>
+    {{ render_chart(chart) }}
 
     <h2>Last 10 transactions</h2>
     <table class="table table-hover table-responsive">
