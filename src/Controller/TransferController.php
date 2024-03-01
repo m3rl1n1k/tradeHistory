@@ -22,7 +22,7 @@ class TransferController extends AbstractController
 	}
 	
 	#[Route('/', name: 'app_transfer_index', methods: ['GET'])]
-	public function index(#[CurrentUser] ?User $user,TransferRepository $transferRepository): Response
+	public function index(#[CurrentUser] ?User $user, TransferRepository $transferRepository): Response
 	{
 		return $this->render('transfer/index.html.twig', [
 			'transfers' => $transferRepository->getAll($user),
@@ -40,7 +40,7 @@ class TransferController extends AbstractController
 		
 		if ($form->isSubmitted() && $form->isValid()) {
 			$transfer->setUser($user);
-			$this->transferService->calculate($transfer);
+			$this->transferService->calculate($entityManager, $transfer, $user);
 			$entityManager->persist($transfer);
 			$entityManager->flush();
 			
