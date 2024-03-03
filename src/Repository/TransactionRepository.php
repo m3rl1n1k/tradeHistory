@@ -29,8 +29,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class TransactionRepository extends ServiceEntityRepository
 {
 	
-	public function __construct(ManagerRegistry      $registry, protected CategoryRepository $categoryRepository,
-								#[CurrentUser] ?User $user)
+	public function __construct(ManagerRegistry      $registry, protected CategoryRepository $categoryRepository,)
 	{
 		parent::__construct($registry, Transaction::class);
 	}
