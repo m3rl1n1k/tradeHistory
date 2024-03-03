@@ -14,7 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
 #[Route('/wallet')]
 class WalletController extends AbstractController
 {
@@ -24,10 +26,9 @@ class WalletController extends AbstractController
 	{
 	}
 	use AccessTrait;
-	#[Route('/', name: 'app_wallet_index', methods: ['GET'])]
-	public function index(#[CurrentUser] ?User $user,WalletRepository $walletRepository): Response
+	#[Route('/', name: 'app_wallet_index')]
+	public function index(#[CurrentUser] ?User $user, WalletRepository $walletRepository): Response
 	{
-		$this->walletService->currencyExchange($user, 'PLN');
 		return $this->render('wallet/index.html.twig', [
 			'wallets' => $walletRepository->getAll($user),
 		]);

@@ -23,6 +23,7 @@ class TransactionExtension extends AbstractExtension
 		$types = [
 			TransactionEnum::Income->value => "Income",
 			TransactionEnum::Expense->value => "Expense",
+			TransactionEnum::Transaction->value => "Expense",
 		];
 		return $types[$type];
 	}
@@ -32,6 +33,7 @@ class TransactionExtension extends AbstractExtension
 		return match ($type) {
 			TransactionEnum::Income->value => "btn-outline-success",
 			TransactionEnum::Expense->value => "btn-outline-danger",
+			TransactionEnum::Transaction->value => "btn-outline-warning",
 			default => "btn-outline-info"
 		};
 	}
@@ -39,8 +41,9 @@ class TransactionExtension extends AbstractExtension
 	public function typeTransaction(int $type): string
 	{
 		return match ($type) {
-			TransactionEnum::Income->value => "income",
-			TransactionEnum::Expense->value => "expense",
+			TransactionEnum::Income->value => "Income",
+			TransactionEnum::Expense->value => "Expense",
+			TransactionEnum::Transaction->value => "Transfer",
 			default => ""
 		};
 	}

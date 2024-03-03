@@ -8,6 +8,8 @@ use App\Entity\Wallet;
 use App\Enum\TransactionEnum;
 use App\Repository\TransactionRepository;
 use App\Repository\UserRepository;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -47,13 +49,7 @@ class TransactionService
 	
 	public function calculate(Wallet $wallet, Transaction $transaction, float $oldAmount = 0): void
 	{
-		/**
-		 * @function $this->isExpenseOldMoreCurrentAmount()// якщо стара сума більше нової (від старої віднімаєм нову
-		 * і різницю на баланс)
-		 * @function isExpenseCurrentMoreOldAmount// якщо стара сума менше нової (від старої віднімаєм нову і різницю
-		 * знімаєм з балансу баланс)
-		 **/
-//юзера замінити на відповідний рахунок з яким мають проводитись зміни.  тобто в даний метод передаєм рахунок
+		
 		$this->CurrentMoreOldAmount($wallet, $transaction, $oldAmount);
 		$this->OldMoreCurrentAmount($wallet, $transaction, $oldAmount);
 		if ($transaction->getAmount() === $oldAmount && $transaction->isExpense()) {
@@ -160,5 +156,24 @@ class TransactionService
 		}
 		
 		return $groupedTransactions;
+	}
+	
+	public function newTransaction(EntityManagerInterface $em, Wallet $wallet, int $amount, User $user, array $options): void
+	{
+		$msg = 'Transfer from %s with exchange rate: %s';
+		$msg = sprintf($msg, $wallet->getNumber(), $options['rate']);
+		$date = new DateTime('now');
+		
+		$transaction = new Transaction();
+		$transaction
+			->setAmount($amount)
+			->setWallet($wallet)
+			->setType(TransactionEnum::Income->value)
+			->setDate($date)
+			->setType(TransactionEnum::Transaction->value)
+			->setDescription($msg)
+			->setUserId($user);
+		
+		$em->persist($transaction);
 	}
 }

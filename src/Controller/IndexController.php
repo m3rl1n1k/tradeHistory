@@ -3,19 +3,24 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\CategoryRepository;
 use App\Repository\TransactionRepository;
 use App\Service\ChartService;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
 class IndexController extends AbstractController
 {
-	public function __construct()
+	public function __construct(
+		protected ChartService       $chartService,
+		protected CategoryRepository $categoryRepository
+	)
 	{
 	}
 	
@@ -25,12 +30,14 @@ class IndexController extends AbstractController
 	 */
 	#[IsGranted('IS_AUTHENTICATED_FULLY')]
 	#[Route('/home', name: 'app_home')]
-	public function home(#[CurrentUser] ?User $user, TransactionRepository $transactionRepository, ChartService $chartService):
+	public function home(#[CurrentUser] ?User $user, TransactionRepository $transactionRepository, Request $request):
 	Response
 	{
-//		$chartService->debug($user);
-		$chart = $chartService->dashboardChart($user, 'Expense');
+		$categoryList = $request->query->keys();
+		$chart = $this->chartService->dashboardChart($user, ['categories' => $categoryList]);
 		return $this->render('index/index.html.twig', [
+			'categories_list' => $categoryList,
+			'categories' => $this->categoryRepository->getAll($user),
 			'chart' => $chart,
 			'last10transaction' => $transactionRepository->getUserTransactions($user->getUserId(), ['id' => 'DESC'], 10)
 		]);

@@ -24,6 +24,7 @@ class WalletType extends AbstractType
 				'required' => false,
 			])
 			->add('name', TextType::class, [
+				'required' => false,
 				'constraints' => [
 					new Length([
 						'max' => 20

@@ -17,7 +17,7 @@ class Wallet
 	private ?int $id = null;
 	#[ORM\Column(length: 15, unique: true)]
 	private ?string $number = null;
-
+	
 	#[ORM\Column(length: 4, nullable: true)]
 	private ?string $currency = null;
 	
@@ -34,9 +34,22 @@ class Wallet
 	#[ORM\OneToMany(mappedBy: 'wallet', targetEntity: Transaction::class, orphanRemoval: true)]
 	private Collection $transactions;
 	
+	#[ORM\OneToMany(mappedBy: 'fromWallet', targetEntity: Transfer::class, orphanRemoval: true)]
+	private Collection $outcomeTransfer;
+	
+	#[ORM\OneToMany(mappedBy: 'toWallet', targetEntity: Transfer::class, orphanRemoval: true)]
+	private Collection $incomeTransfer;
+	
 	public function __construct()
 	{
 		$this->transactions = new ArrayCollection();
+		$this->outcomeTransfer = new ArrayCollection();
+		$this->incomeTransfer = new ArrayCollection();
+	}
+	
+	public function getId(): ?int
+	{
+		return $this->id;
 	}
 	
 	public function getNumber(): ?string
@@ -64,8 +77,7 @@ class Wallet
 	
 	public function getCurrency(): ?string
 	{
-		$currency = $this->getNumber();
-		return substr($currency,0,3);
+		return $this->currency;
 	}
 	
 	public function setCurrency(?string $currency): static
@@ -139,11 +151,6 @@ class Wallet
 		return $this;
 	}
 	
-	public function getId(): ?int
-	{
-		return $this->id;
-	}
-	
 	public function increment(float $amount): int
 	{
 		return $this->getAmount() + $amount;
@@ -152,5 +159,65 @@ class Wallet
 	public function decrement(float $amount): int
 	{
 		return $this->getAmount() - $amount;
+	}
+	
+	/**
+	 * @return Collection<int, Transfer>
+	 */
+	public function getIncomeTransfers(): Collection
+	{
+		return $this->incomeTransfer;
+	}
+	
+	public function addIncomeTransfer(Transfer $transfer): static
+	{
+		if (!$this->incomeTransfer->contains($transfer)) {
+			$this->incomeTransfer->add($transfer);
+			$transfer->setFromWallet($this);
+		}
+		
+		return $this;
+	}
+	
+	public function removeIncomeTransfer(Transfer $transfer): static
+	{
+		if ($this->incomeTransfer->removeElement($transfer)) {
+			// set the owning side to null (unless already changed)
+			if ($transfer->getFromWallet() === $this) {
+				$transfer->setFromWallet(null);
+			}
+		}
+		
+		return $this;
+	}
+	
+	/**
+	 * @return Collection<int, Transfer>
+	 */
+	public function getOutcomeTransfers(): Collection
+	{
+		return $this->outcomeTransfer;
+	}
+	
+	public function addOutcomeTransfer(Transfer $transfer): static
+	{
+		if (!$this->outcomeTransfer->contains($transfer)) {
+			$this->outcomeTransfer->add($transfer);
+			$transfer->setFromWallet($this);
+		}
+		
+		return $this;
+	}
+	
+	public function removeOutcomeTransfer(Transfer $transfer): static
+	{
+		if ($this->outcomeTransfer->removeElement($transfer)) {
+			// set the owning side to null (unless already changed)
+			if ($transfer->getFromWallet() === $this) {
+				$transfer->setFromWallet(null);
+			}
+		}
+		
+		return $this;
 	}
 }

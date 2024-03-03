@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Transfer{% endblock %}
+
+{% block body %}
+    <h1>Transfers</h1>
+    {{ include('component/_link_succes.html.twig', {'href': path('app_transfer_new')}) }}
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th>Amount</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for transfer in transfers %}
+            <tr>
+                <td><a class="btn btn-outline-warning" href="{{ path('app_transfer_show', {'id': transfer.id}) }}">{{
+                        transfer.amount
+                        }}</a></td>
+                <td>{{ transfer.fromWallet.name ?? transfer.fromWallet.number }}</td>
+                <td>{{ transfer.toWallet.name ?? transfer.toWallet.number }}</td>
+                <td>{{ transfer.date|date('d M') }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Transfer{% endblock %}
+
+{% block body %}
+<h1>Transfer</h1>
+
+<table class="table table-responsive">
+    <tbody>
+    <tr>
+        <th>Id</th>
+        <td>{{ transfer.id }}</td>
+    </tr>
+    <tr>
+        <th>From</th>
+        <td>{{ transfer.fromWallet.number }}</td>
+    </tr>
+    <tr>
+        <th>To</th>
+        <td>{{ transfer.toWallet.number }}</td>
+    </tr>
+    <tr>
+        <th>Amount</th>
+        <td>{{ transfer.amount }}</td>
+    </tr>
+    </tbody>
+</table>
+
+{{ include('component/_link.html.twig', {'href':path('app_transfer_index')}) }}
+{% endblock %}
