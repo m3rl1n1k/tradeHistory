@@ -29,7 +29,7 @@ class IndexController extends AbstractController
 	 * @throws NoResultException
 	 */
 	#[IsGranted('IS_AUTHENTICATED_FULLY')]
-	#[Route('/home', name: 'app_home')]
+	#[Route('/home', name: 'app_home', methods: ['GET'])]
 	public function home(#[CurrentUser] ?User $user, TransactionRepository $transactionRepository, Request $request):
 	Response
 	{
