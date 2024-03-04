@@ -45,4 +45,9 @@ class SubCategoryRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+	
+	public function getAll()
+	{
+	
+	}
 }

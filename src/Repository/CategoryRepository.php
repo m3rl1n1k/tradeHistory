@@ -17,7 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CategoryRepository extends ServiceEntityRepository
 {
-	public function __construct(ManagerRegistry $registry)
+	public function __construct(ManagerRegistry $registry, protected SubCategoryRepository $subCategoryRepository)
 	{
 		parent::__construct($registry, Category::class);
 	}
@@ -69,6 +69,27 @@ class CategoryRepository extends ServiceEntityRepository
 	public function getCategories(int $user): array
 	{
 		return $this->findBy(['user' => $user]);
+	}
+	
+	public function getMainAndSubCategories(User $user): array
+	{
+		
+		/** @var Category $mainCategory */
+		$mainCategories = $this->getAll($user);
+		$categoryChoices = [];
+		
+		foreach ($mainCategories as $mainCategory) {
+			$subCategoryChoices = [];
+			$subCategories = $this->subCategoryRepository->findBy(['category' => $mainCategory->getId()]);
+			foreach ($subCategories as $subCategory) {
+				
+				$subCategoryChoices['main'] = $mainCategory;
+				$subCategoryChoices[$subCategory->getId()] = $subCategory;
+			}
+			$categoryChoices[$mainCategory->getName()] = $subCategoryChoices ? $subCategoryChoices : $mainCategory;
+		}
+//		dd($categoryChoices);
+		return $categoryChoices;
 	}
 	
 	
