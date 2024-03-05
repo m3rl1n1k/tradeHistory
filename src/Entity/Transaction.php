@@ -34,6 +34,7 @@ class Transaction
 	private ?User $user = null;
 	
 	#[ORM\ManyToOne(inversedBy: 'transactions')]
+	#[ORM\JoinColumn(onDelete: 'SET NULL')]
 	private ?Category $category = null;
 	
 	
@@ -42,6 +43,7 @@ class Transaction
 	private ?Wallet $wallet = null;
 	
 	#[ORM\ManyToOne]
+	#[ORM\JoinColumn(onDelete: 'SET NULL')]
 	private ?SubCategory $subCategory = null;
 	
 	public function getId(): ?int

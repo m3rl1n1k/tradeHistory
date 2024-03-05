@@ -21,37 +21,32 @@
 
     <div class="row mt-5">
         {% for category in categories %}
-            {% if category is not iterable %}
-                <div class="col-lg-6 col-md-12 my-3">
-                    <div class="card">
-                        <div class="card-header">
-                            {{ category.name }}
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">{{ category.name }}
-                                <a class="btn btn-sm btn-outline-warning float-end"
-                                   href="{{ path('app_category_edit' ,{'id' : category.id}) }}">Edit</a>
-                            </li>
-                        </ul>
+            <div class="col-lg-6 col-md-12 my-3">
+                <div class="card">
+                    <div class="card-header">
+                        {{ category.main.name }}
                     </div>
-                </div>
-            {% else %}
-                <div class="col-lg-6 col-md-12 my-3">
-                    <div class="card">
-                        <div class="card-header">
-                            {{ category.main.name }}
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            {% for sub in category %}
-                                <li class="list-group-item">{{ sub.name }}
+                    <ul class="list-group list-group-flush">
+                        {% for key, sub in category %}
+                            <li class="list-group-item">{{ sub.name }}
+                                {% if 'main' in key %}
+                                    <span class="float-end mx-2">{{ include('category/_delete_form.html.twig', {
+                                            'additional_class' : 'btn-sm btn-outline-danger'
+                                        })
+                                        }}</span>
                                     <a class="btn btn-sm btn-outline-warning float-end"
-                                       href="{{ path('app_category_edit' ,{'id' : sub.id}) }}">Edit</a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
+                                       href="{{ path('app_category_edit' ,{'id' : category.main.id}) }}">Edit</a>
+
+                                {% else %}
+                                    <span class="float-end mx-2">{{ include('sub_category/_delete_form.html.twig') }}</span>
+                                    <a class="btn btn-sm btn-outline-warning float-end"
+                                       href="{{ path('app_sub_category_edit' ,{'id' : sub.id}) }}">Edit</a>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
                 </div>
-            {% endif %}
+            </div>
         {% endfor %}
     </div>
 

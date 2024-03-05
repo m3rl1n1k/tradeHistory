@@ -19,13 +19,13 @@ class Category
 	private ?string $name = null;
 	
 	#[ORM\OneToMany(mappedBy: 'category', targetEntity: Transaction::class)]
-	#[ORM\JoinColumn(onDelete: 'cascade')]
 	private Collection $transactions;
 	
 	#[ORM\ManyToOne]
 	private ?User $user = null;
 	
 	#[ORM\OneToMany(mappedBy: 'category', targetEntity: SubCategory::class, orphanRemoval: true)]
+	#[ORM\JoinColumn(onDelete: 'CASCADE')]
 	private Collection $subCategories;
 	
 	public function __construct()

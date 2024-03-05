@@ -17,7 +17,7 @@ class SubCategory
     private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'subCategories')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Category $category = null;
 
     public function getId(): ?int
