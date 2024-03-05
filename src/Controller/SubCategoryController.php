@@ -13,8 +13,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
-
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
 #[Route('/sub/category')]
 class SubCategoryController extends AbstractController
 {
@@ -36,14 +37,6 @@ class SubCategoryController extends AbstractController
 		return $this->render('sub_category/new.html.twig', [
 			'sub_category' => $subCategory,
 			'form' => $form,
-		]);
-	}
-	
-	#[Route('/{id}', name: 'app_sub_category_show', methods: ['GET'])]
-	public function show(SubCategory $subCategory): Response
-	{
-		return $this->render('sub_category/show.html.twig', [
-			'sub_category' => $subCategory,
 		]);
 	}
 	
