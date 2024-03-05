@@ -47,7 +47,7 @@
                 </td>
                 <td>{{ transaction.category ? transaction.category.name : '' }}</td>
                 <td>{{ transaction.wallet ? transaction.wallet.number : '' }}</td>
-                <td>{{ transaction.date ? transaction.date|date('d-M') : '' }}</td>
+                <td>{{ transaction.date ? transaction.date|date('d M') : '' }}</td>
             </tr>
         {% else %}
             <tr>
