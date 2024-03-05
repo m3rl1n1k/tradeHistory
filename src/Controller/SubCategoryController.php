@@ -18,18 +18,6 @@ use Symfony\Component\Serializer\SerializerInterface;
 #[Route('/sub/category')]
 class SubCategoryController extends AbstractController
 {
-	#[Route('/get/{id}', name: 'app_sub_category_index', methods: ['GET'])]
-	public function index(int $id, SubCategoryRepository $subCategoryRepository, SerializerInterface  $serializer):	Response
-	{
-		$subCategories = $subCategoryRepository->getAll($id);
-		foreach ($subCategories as $subCategory) {
-			$category = $subCategory->getCategory();
-			$category->setUser(null);
-		}
-//		dd($subCategories);
-		$subCategories = $serializer->serialize($subCategories, 'json');
-		return $this->json($subCategories, Response::HTTP_OK);
-	}
 	
 	#[Route('/new', name: 'app_sub_category_new', methods: ['GET', 'POST'])]
 	public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -42,7 +30,7 @@ class SubCategoryController extends AbstractController
 			$entityManager->persist($subCategory);
 			$entityManager->flush();
 			
-			return $this->redirectToRoute('app_sub_category_index', [], Response::HTTP_SEE_OTHER);
+			return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
 		}
 		
 		return $this->render('sub_category/new.html.twig', [
@@ -68,7 +56,7 @@ class SubCategoryController extends AbstractController
 		if ($form->isSubmitted() && $form->isValid()) {
 			$entityManager->flush();
 			
-			return $this->redirectToRoute('app_sub_category_index', [], Response::HTTP_SEE_OTHER);
+			return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
 		}
 		
 		return $this->render('sub_category/edit.html.twig', [
@@ -85,6 +73,6 @@ class SubCategoryController extends AbstractController
 			$entityManager->flush();
 		}
 		
-		return $this->redirectToRoute('app_sub_category_index', [], Response::HTTP_SEE_OTHER);
+		return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
 	}
 }

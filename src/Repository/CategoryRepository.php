@@ -53,7 +53,7 @@ class CategoryRepository extends ServiceEntityRepository
 		
 		foreach ($mainCategories as $mainCategory) {
 			$subCategoryChoices = [];
-			$subCategories = $this->subCategoryRepository->findBy(['category' => $mainCategory->getId()]);
+			$subCategories = $this->subCategoryRepository->getAll($mainCategory->getId());
 			$subCategoryChoices['main'] = $mainCategory;
 			foreach ($subCategories as $subCategory) {
 				

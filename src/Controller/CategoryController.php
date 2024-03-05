@@ -3,11 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\SubCategory;
 use App\Entity\User;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
+use App\Repository\SubCategoryRepository;
 use App\Trait\AccessTrait;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +22,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/category')]
 class CategoryController extends AbstractController
 {
+	public function __construct(protected SubCategoryRepository $subCategoryRepository)
+	{
+	}
+	
 	use AccessTrait;
 	
 	#[Route('/', name: 'app_category_index', methods: ['GET'])]
@@ -75,8 +82,20 @@ class CategoryController extends AbstractController
 	{
 		$this->accessDenied($category, $user);
 		if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
-			$entityManager->remove($category);
-			$entityManager->flush();
+			
+			try {
+				$entityManager->beginTransaction();
+				foreach ($this->subCategoryRepository->getAll($category->getId())  as $subCategory) {
+					$entityManager->remove($subCategory);
+				}
+				
+				$entityManager->remove($category);
+				$entityManager->commit();
+				$entityManager->flush();
+			}catch (Exception $e){
+				echo($e->getMessage());
+				$entityManager->rollback();
+			}
 		}
 		
 		return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
