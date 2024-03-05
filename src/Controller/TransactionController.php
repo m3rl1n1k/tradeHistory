@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\SubCategory;
 use App\Entity\Transaction;
 use App\Entity\User;
 use App\Form\TransactionType;
 use App\Repository\CategoryRepository;
+use App\Repository\SubCategoryRepository;
 use App\Repository\TransactionRepository;
 use App\Repository\WalletRepository;
 use App\Service\TransactionService;
@@ -27,7 +29,8 @@ class TransactionController extends AbstractController
 		protected TransactionRepository $transactionRepository,
 		protected TransactionService    $transactionService,
 		protected CategoryRepository    $categoryRepository,
-		protected WalletRepository      $walletRepository
+		protected WalletRepository      $walletRepository,
+		protected SubCategoryRepository $subCategoryRepository
 	)
 	{
 	}
@@ -49,8 +52,9 @@ class TransactionController extends AbstractController
 	{
 		$transaction = new Transaction();
 		$form = $this->createForm(TransactionType::class, $transaction, [
-			'category' => $this->categoryRepository->getAll($user),
-			'wallet' => $this->walletRepository->getAll($user)
+			'category' => $this->categoryRepository->getMainAndSubCategories($user),
+			'wallet' => $this->walletRepository->getAll($user),
+			'user' => $user
 		]);
 		
 		$form->handleRequest($request);
@@ -59,6 +63,7 @@ class TransactionController extends AbstractController
 			
 			$formData = $form->getData();
 			$formData->setUserId($user);
+			
 			$id = $form->get('wallet')->getData();
 			$wallet = $this->walletRepository->find($id);
 			
@@ -92,7 +97,7 @@ class TransactionController extends AbstractController
 		
 		$oldAmount = $transaction->getAmount();
 		$form = $this->createForm(TransactionType::class, $transaction, [
-			'category' => $this->categoryRepository->getAll($user),
+			'category' => $this->categoryRepository->getMainAndSubCategories($user),
 			'wallet' => $this->walletRepository->getAll($user)
 		]);
 		$form->handleRequest($request);

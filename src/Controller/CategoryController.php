@@ -25,7 +25,7 @@ class CategoryController extends AbstractController
 	public function index(#[CurrentUser] ?User $user, CategoryRepository $categoryRepository): Response
 	{
 		return $this->render('category/index.html.twig', [
-			'categories' => $categoryRepository->getAll($user),
+			'categories' => $categoryRepository->getMainAndSubCategories($user),
 		]);
 	}
 	

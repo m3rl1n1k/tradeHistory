@@ -20,4 +20,5 @@ trait EnumToArrayTrait
 		}
 		return $values;
 	}
+
 }
