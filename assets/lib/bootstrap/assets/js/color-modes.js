@@ -19,26 +19,14 @@
         } else {
             document.documentElement.setAttribute('data-bs-theme', theme)
         }
-        updateSVGIconColors(theme); // Call function to update SVG icon colors
         updateMenuColors(theme)
     }
-
-    const updateSVGIconColors = theme => {
-        const svgIcons = document.querySelectorAll('.bi'); // Replace '.svg-icon' with the appropriate class selector for
-        // your SVG icons
-        const iconColor = theme === 'dark' ? '#b7b7b7' : '#595959'
-        svgIcons.forEach(icon => {
-            icon.style.fill = iconColor; // Apply the color to the SVG icon
-        });
-    }
     const updateMenuColors = theme => {
-        const links = document.querySelectorAll('a.nav-link, span.nav-link, div.nav-link'); // Replace '.svg-icon'
-        // with the appropriate
-        // class
-        const textColor = theme === 'dark' ? '#b7b7b7' : '#595959'
+        const links = document.querySelectorAll('a.nav-link, span.nav-link, div.nav-link');
+        const textColor = theme === 'dark' ? "text-white" : 'text-black'
         links.forEach(link => {
             if (!link.closest('a.active'))
-                link.style.color = textColor; // Apply the color to the SVG icon
+                link.classList.add(textColor);
         });
     }
 
@@ -52,9 +40,7 @@
         }
 
         const themeSwitcherText = document.querySelector('#bd-theme-text')
-        const activeThemeIcon = document.querySelector('.theme-icon-active use')
         const btnToActive = document.querySelector(`[data-bs-theme-value="${theme}"]`)
-        const svgOfActiveBtn = btnToActive.querySelector('svg use').getAttribute('href')
 
         document.querySelectorAll('[data-bs-theme-value]').forEach(element => {
             element.classList.remove('active')
