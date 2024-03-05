@@ -22,15 +22,14 @@
         </div>
         <div class="col-lg-6 col-md-12 mt-3">
             {{ form_label(form.description, 'Desription', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+            {{ form_widget(form.description, {'attr': {'class': 'form-control '}}) }}
         </div>
         <div class="col-lg-6 col-md-12 mt-3">
             {{ form_label(form.category, 'Category', {'label_attr': {'class': 'form-label'}}) }}
             {{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
-
         </div>
-
     </div>
+
     <div class="mt-4">
         <button class="btn btn-success">{{ button_label|default('Save') }}</button>
         <a class="btn btn-outline-secondary float-end" href="{{ path('app_transaction_index') }}">back to list</a>

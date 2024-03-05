@@ -9,8 +9,8 @@ enum TransactionEnum: int
 	
 	use EnumToArrayTrait;
 	
-	case Income = 1;
 	case Expense = 2;
+	case Income = 1;
 	
 	case Transaction = 3;
 }

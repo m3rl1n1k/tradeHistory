@@ -22,32 +22,6 @@ class CategoryRepository extends ServiceEntityRepository
 		parent::__construct($registry, Category::class);
 	}
 
-//    /**
-//     * @return Category[] Returns an array of Category objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Category
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
-	
-	
 	public function getAll($user): array
 	{
 		return $this->findBy(['user' => $user]);
@@ -73,7 +47,6 @@ class CategoryRepository extends ServiceEntityRepository
 	
 	public function getMainAndSubCategories(User $user): array
 	{
-		
 		/** @var Category $mainCategory */
 		$mainCategories = $this->getAll($user);
 		$categoryChoices = [];
@@ -81,14 +54,14 @@ class CategoryRepository extends ServiceEntityRepository
 		foreach ($mainCategories as $mainCategory) {
 			$subCategoryChoices = [];
 			$subCategories = $this->subCategoryRepository->findBy(['category' => $mainCategory->getId()]);
+			$subCategoryChoices['main'] = $mainCategory;
 			foreach ($subCategories as $subCategory) {
 				
 				$subCategoryChoices['main'] = $mainCategory;
 				$subCategoryChoices[$subCategory->getId()] = $subCategory;
 			}
-			$categoryChoices[$mainCategory->getName()] = $subCategoryChoices ? $subCategoryChoices : $mainCategory;
+			$categoryChoices[$mainCategory->getName()] = $subCategoryChoices ?? $mainCategory;
 		}
-//		dd($categoryChoices);
 		return $categoryChoices;
 	}
 	

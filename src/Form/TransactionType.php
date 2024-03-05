@@ -45,12 +45,13 @@ class TransactionType extends AbstractType
 			->add('amount', MoneyType::class, [
 				'currency' => '' ?? $user->getCurrency()
 			])
-			->add('category', null, [
+			->add('category', ChoiceType::class, [
 				'required' => false,
 				'choices' => $category,
 				'choice_label' => 'name',
 				'choice_value' => 'id',
-				'label' => 'Category'
+				'label' => 'Category',
+				'placeholder' => "Select category"
 			])
 			->add('type', ChoiceType::class,
 				[
@@ -63,6 +64,7 @@ class TransactionType extends AbstractType
 				'required' => false,
 				'attr' => [
 					'max' => 255,
+					'height' => 140
 				]
 			]);
 	}

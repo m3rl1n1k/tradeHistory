@@ -46,8 +46,8 @@ class SubCategoryRepository extends ServiceEntityRepository
     //        ;
     //    }
 	
-	public function getAll()
+	public function getAll(int $category): array
 	{
-	
+		return $this->findBy(['category'=>$category]);
 	}
 }
