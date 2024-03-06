@@ -20,11 +20,11 @@
     </div>
 
     <div class="row mt-5">
-        {% for category in categories %}
+        {% for key, category in categories %}
             <div class="col-lg-6 col-md-12 my-3">
                 <div class="card">
                     <div class="card-header">
-                        {{ category.main.name }}
+                        {{ key }}
                     </div>
                     <ul class="list-group list-group-flush">
                         {% for key, sub in category %}
@@ -32,8 +32,7 @@
                                 {% if 'main' in key %}
                                     <span class="float-end mx-2">{{ include('category/_delete_form.html.twig', {
                                             'additional_class' : 'btn-sm btn-outline-danger'
-                                        })
-                                        }}</span>
+                                        }) }}</span>
                                     <a class="btn btn-sm btn-outline-warning float-end"
                                        href="{{ path('app_category_edit' ,{'id' : category.main.id}) }}">Edit</a>
 
