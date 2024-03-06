@@ -136,16 +136,7 @@ class TransactionRepository extends ServiceEntityRepository
 		return $queryBuilder->getQuery()
 			->getSingleScalarResult() ?? 0;
 	}
-	
-	private function matchConditions(array $conditions): string
-	{
-		return match (true) {
-			isset($conditions['date']) => 'transaction.date = :date',
-			isset($conditions['category']) => 'transaction.category = :category',
-			isset($conditions['id']) => 'transaction.id = :id',
-			default => '',
-		};
-	}
+
 }
 
 

@@ -46,6 +46,7 @@ class TransactionType extends AbstractType
 				'currency' => '' ?? $user->getCurrency()
 			])
 			->add('category', ChoiceType::class, [
+				'duplicate_preferred_choices' => false,
 				'required' => false,
 				'choices' => $category,
 				'choice_label' => 'name',
