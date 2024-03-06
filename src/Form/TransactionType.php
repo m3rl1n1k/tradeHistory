@@ -32,6 +32,7 @@ class TransactionType extends AbstractType
 	{
 		$category = $options['category'];
 		$wallets = $options['wallet'];
+		
 		$builder
 			->add('wallet', ChoiceType::class, [
 				'choice_label' => function (Wallet $wallet) {
@@ -52,7 +53,7 @@ class TransactionType extends AbstractType
 			])
 			->add('type', ChoiceType::class,
 				[
-					'choices' => TransactionEnum::valueAsKey(),
+					'choices' => TransactionEnum::transactionTypes(),
 				])
 			->add('date', DateType::class, [
 				'data' => new DateTime(),

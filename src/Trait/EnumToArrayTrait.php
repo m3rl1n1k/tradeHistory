@@ -2,6 +2,7 @@
 
 namespace App\Trait;
 
+use App\Enum\TransactionEnum;
 use Othyn\PhpEnumEnhancements\Traits\EnumEnhancements;
 
 trait EnumToArrayTrait
@@ -19,5 +20,12 @@ trait EnumToArrayTrait
 			$values[$enum->name] = $enum->value;
 		}
 		return $values;
+	}
+	
+	public static function transactionTypes(): array
+	{
+		$types = TransactionEnum::valueAsKey();
+		unset($types[TransactionEnum::Transaction->name]);
+		return $types;
 	}
 }
