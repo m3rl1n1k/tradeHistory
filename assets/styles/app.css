@@ -1,3 +1,7 @@
 .sr-only {
     display: none;
 }
+
+svg.text-white{
+    fill: #ffffff;
+}
