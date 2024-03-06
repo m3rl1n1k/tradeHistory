@@ -53,14 +53,10 @@ class TransactionService
 		$this->CurrentMoreOldAmount($wallet, $transaction, $oldAmount);
 		$this->OldMoreCurrentAmount($wallet, $transaction, $oldAmount);
 		if ($transaction->getAmount() === $oldAmount && $transaction->isExpense()) {
-			$wallet->setAmount(
-				$wallet->getAmount() - $transaction->getAmount()
-			);
+			$wallet->setAmount($wallet->getAmount());
 		}
 		if ($transaction->getAmount() === $oldAmount && $transaction->isIncome()) {
-			$wallet->setAmount(
-				$wallet->getAmount() + $transaction->getAmount()
-			);
+			$wallet->setAmount($wallet->getAmount());
 		}
 		
 		
