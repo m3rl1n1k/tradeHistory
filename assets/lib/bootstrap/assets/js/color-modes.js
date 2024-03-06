@@ -22,8 +22,8 @@
         updateMenuColors(theme)
     }
     const updateMenuColors = theme => {
-        const links = document.querySelectorAll('a.nav-link, span.nav-link, div.nav-link');
-        const textColor = theme === 'dark' ? "text-white" : 'text-black'
+        const links = document.querySelectorAll('a.nav-link, span.nav-link, div.nav-link, svg.bi');
+        const textColor = theme === 'dark' ? "text-white" : 'text-secondary'
         links.forEach(link => {
             if (!link.closest('a.active'))
                 link.classList.add(textColor);
