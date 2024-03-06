@@ -53,7 +53,7 @@ class ChartService
 	protected function getCategories(User $user): array
 	{
 		$categoryList = [];
-		$categories = $this->categoryRepository->getCategories($user->getUserId());
+		$categories = $this->categoryRepository->getAll($user);
 		foreach ($categories as $category) {
 			$categoryList[$category->getId()] = $category->getName();
 		}
@@ -86,11 +86,10 @@ class ChartService
 	 */
 	protected function datasetDashboard(User $user, array $categoriesToShow, string $label = '', bool $categoryLabel = false, bool $singleColor = false): array
 	{
-//		$categories = $this->getCategories($user);
-		$categories = $this->categoryRepository->getCategories($user->getUserId());
+		$categories = $this->categoryRepository->getAll($user);
 		foreach ($categories as $category) {
 			$sum = $this->getSumByCategory($category->getId(), $user);
-			if ($sum > 0 && in_array((string)$category->getName(), $categoriesToShow)) {
+			if (in_array((string)$category->getName(), $categoriesToShow)) {
 				$categoriesList[] = $category->getName();
 				$result[] = $sum;
 			}

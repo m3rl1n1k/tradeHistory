@@ -21,49 +21,38 @@ class CategoryRepository extends ServiceEntityRepository
 	{
 		parent::__construct($registry, Category::class);
 	}
-
+	
 	public function getAll($user): array
 	{
 		return $this->findBy(['user' => $user]);
 	}
-	
-	public function getOneBy(int $id): Category
-	{
-		return $this->findOneBy(['id' => $id]);
-	}
-	
-	public function categoryUpdate(Category $category, Category $update, ?User $user, int $id): void
-	{
-		$category->setUser($user);
-		$category->setName($update->getName());
-		$category->setId($id);
-		
-	}
-	
-	public function getCategories(int $user): array
-	{
-		return $this->findBy(['user' => $user]);
-	}
-	
+
 	public function getMainAndSubCategories(User $user): array
 	{
 		/** @var Category $mainCategory */
 		$mainCategories = $this->getAll($user);
 		$categoryChoices = [];
-		
+
 		foreach ($mainCategories as $mainCategory) {
+			
 			$subCategoryChoices = [];
 			$subCategories = $this->subCategoryRepository->getAll($mainCategory->getId());
-			$subCategoryChoices['main'] = $mainCategory;
+			
 			foreach ($subCategories as $subCategory) {
-				
-				$subCategoryChoices['main'] = $mainCategory;
 				$subCategoryChoices[$subCategory->getId()] = $subCategory;
 			}
+			
 			$categoryChoices[$mainCategory->getName()] = $subCategoryChoices ?? $mainCategory;
 		}
 		return $categoryChoices;
 	}
+	
+//	public function getMainAndSubCategories(User $user): array
+//	{
+//		$mainCategories = $this->getAll($user);
+//		$subCategories = $this->subCategoryRepository->findAll();
+//		return array_merge($mainCategories, $subCategories);
+//	}
 	
 	
 }
