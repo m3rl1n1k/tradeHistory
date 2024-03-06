@@ -10,6 +10,7 @@ use App\Service\TransactionService;
 use App\Trait\TransactionTrait;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use phpDocumentor\Reflection\Types\True_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,9 +38,16 @@ class ReportController extends AbstractController
 	public function index(#[CurrentUser] ?User $user, Request $request):
 	Response
 	{
+//		dd($request);
+		$incomeCheck = $request->query->get('income', false);
+		$expenseCheck = $request->query->get('expense', false);
 		$form = $this->createForm(ReportPeriodType::class);
 		$form->handleRequest($request);
-		$chart = $this->chartService->reportChart($user);
+		
+		$chart = $this->chartService->reportChart($user, [
+			'income' => $incomeCheck,
+			'expense' => $expenseCheck
+		]);
 		
 		if ($form->isSubmitted() && $form->isValid()) {
 			$formDate = $form->getData();
@@ -58,7 +66,9 @@ class ReportController extends AbstractController
 				'expense' => $expense,
 				'form' => $form,
 				'transactionsList' => $data,
-				'chart' => $chart
+				'chart' => $chart,
+				'expense_check' => $expenseCheck,
+				'income_check' =>$incomeCheck
 			]);
 		}
 		return $this->render('report/index.html.twig', [
@@ -66,7 +76,9 @@ class ReportController extends AbstractController
 			'expense' => null,
 			'form' => $form,
 			'transactionsList' => null,
-			'chart' => $chart
+			'chart' => $chart,
+			'expense_check' => $expenseCheck,
+			'income_check' =>$incomeCheck
 		]);
 	}
 	

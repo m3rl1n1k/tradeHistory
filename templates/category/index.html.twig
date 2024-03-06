@@ -5,33 +5,49 @@
 {% block body %}
     <h1>Category</h1>
 
-    {{ include('component/_button.html.twig', {'href': path('app_category_new') }) }}
-    <table class="table-responsive">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="row">
+        <h4>Create:</h4>
+        <div class="col">
+            {{ include('component/_link_succes.html.twig', {
+                'href': path('app_category_new'),
+                'link_label':'Main category'}) }}
+            {{ include('component/_link_succes.html.twig', {
+                'href': path('app_sub_category_new'),
+                'link_label': 'Sub category',
+                'aditional_class':'mx-4'
+            }) }}
+        </div>
+    </div>
+
+    <div class="row mt-5">
         {% for category in categories %}
-            <tr>
-                <td>{{ category.id }}</td>
-                <td class="text-capitalize">{{ category.name }}</td>
-                <td>
-                    <div class="d-flex flex-row">
-                        <a class="btn btn-warning me-2" href="{{ path('app_category_edit', {'id': category.id}) }}">Edit</a>
-                        {{ include('category/_delete_form.html.twig') }}
+            <div class="col-lg-6 col-md-12 my-3">
+                <div class="card">
+                    <div class="card-header">
+                        {{ category.main.name }}
                     </div>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
+                    <ul class="list-group list-group-flush">
+                        {% for key, sub in category %}
+                            <li class="list-group-item">{{ sub.name }}
+                                {% if 'main' in key %}
+                                    <span class="float-end mx-2">{{ include('category/_delete_form.html.twig', {
+                                            'additional_class' : 'btn-sm btn-outline-danger'
+                                        })
+                                        }}</span>
+                                    <a class="btn btn-sm btn-outline-warning float-end"
+                                       href="{{ path('app_category_edit' ,{'id' : category.main.id}) }}">Edit</a>
+
+                                {% else %}
+                                    <span class="float-end mx-2">{{ include('sub_category/_delete_form.html.twig') }}</span>
+                                    <a class="btn btn-sm btn-outline-warning float-end"
+                                       href="{{ path('app_sub_category_edit' ,{'id' : sub.id}) }}">Edit</a>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         {% endfor %}
-        </tbody>
-    </table>
+    </div>
 
 {% endblock %}

@@ -12,7 +12,7 @@ RUN docker-php-ext-install opcache
 
 RUN pecl install apcu && docker-php-ext-enable apcu
 RUN pecl install xdebug && docker-php-ext-enable xdebug;
-#COPY ./docker/configs/php/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+COPY ./docker/configs/php/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
 ENV TERM xterm-256color
 

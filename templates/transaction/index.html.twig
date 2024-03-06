@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="my-3">
-        {{ include('component/_button.html.twig', {'href': path('app_transaction_new') }) }}
+        {{ include('component/_link_succes.html.twig', {'href': path('app_transaction_new') }) }}
     </div>
         <table class="table table-hover table-responsive">
             <thead>
@@ -27,7 +27,7 @@
                     </td>
                     <td>{{ transaction.category ? transaction.category.name : '' }}</td>
                     <td>{{ transaction.wallet.number ?? transaction.wallet.name }}</td>
-                    <td>{{ transaction.date ? transaction.date|date('d.m') : '' }}</td>
+                    <td>{{ transaction.date ? transaction.date|date('d M') : '' }}</td>
                 </tr>
             {% else %}
                 <tr>

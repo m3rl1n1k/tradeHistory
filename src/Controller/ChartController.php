@@ -5,12 +5,13 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
-
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
 class ChartController extends AbstractController
 {
-    #[Route('/chart', name: 'app_chart')]
+    #[Route('/charts', name: 'app_chart')]
     public function index(ChartBuilderInterface $chartBuilder): Response
     {
 		$chart = $chartBuilder->createChart(Chart::TYPE_LINE);

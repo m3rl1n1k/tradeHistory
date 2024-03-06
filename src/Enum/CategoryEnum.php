@@ -4,13 +4,11 @@ namespace App\Enum;
 
 use App\Trait\EnumToArrayTrait;
 
-enum TransactionEnum: int
+enum CategoryEnum: int
 {
-	
 	use EnumToArrayTrait;
 	
-	case Expense = 2;
-	case Income = 1;
+	case Main = 1;
+	case Sub = 2;
 	
-	case Transaction = 3;
 }
