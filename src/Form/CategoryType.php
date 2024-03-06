@@ -15,7 +15,9 @@ class CategoryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class);
+            ->add('name', TextType::class,[
+				'trim' => true,
+			]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
