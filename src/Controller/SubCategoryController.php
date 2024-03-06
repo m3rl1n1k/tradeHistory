@@ -5,26 +5,32 @@ namespace App\Controller;
 use App\Entity\SubCategory;
 use App\Entity\User;
 use App\Form\SubCategoryType;
-use App\Repository\SubCategoryRepository;
+use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Serializer\SerializerInterface;
+
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 #[Route('/sub/category')]
 class SubCategoryController extends AbstractController
 {
+	public function __construct(
+		protected CategoryRepository $category
+	)
+	{
+	}
 	
 	#[Route('/new', name: 'app_sub_category_new', methods: ['GET', 'POST'])]
-	public function new(Request $request, EntityManagerInterface $entityManager): Response
+	public function new(#[CurrentUser] ?User $user, Request $request, EntityManagerInterface $entityManager): Response
 	{
 		$subCategory = new SubCategory();
-		$form = $this->createForm(SubCategoryType::class, $subCategory);
+		$form = $this->createForm(SubCategoryType::class, $subCategory, [
+			'main_category' => $this->category->getAll($user)
+		]);
 		$form->handleRequest($request);
 		
 		if ($form->isSubmitted() && $form->isValid()) {
@@ -41,9 +47,12 @@ class SubCategoryController extends AbstractController
 	}
 	
 	#[Route('/{id}/edit', name: 'app_sub_category_edit', methods: ['GET', 'POST'])]
-	public function edit(Request $request, SubCategory $subCategory, EntityManagerInterface $entityManager): Response
+	public function edit(#[CurrentUser] ?User $user, Request $request, SubCategory $subCategory, EntityManagerInterface $entityManager):
+	Response
 	{
-		$form = $this->createForm(SubCategoryType::class, $subCategory);
+		$form = $this->createForm(SubCategoryType::class, $subCategory, [
+			'main_category' => $this->category->getAll($user)
+		]);
 		$form->handleRequest($request);
 		
 		if ($form->isSubmitted() && $form->isValid()) {

@@ -18,6 +18,7 @@ class SubCategoryType extends AbstractType
 			->add('name', TextType::class)
 			->add('category', EntityType::class, [
 				'class' => Category::class,
+				'choices' => $options['main_category'],
 				'choice_label' => 'name',
 				'label' => 'Parent category:'
 			]);
@@ -27,6 +28,7 @@ class SubCategoryType extends AbstractType
 	{
 		$resolver->setDefaults([
 			'data_class' => SubCategory::class,
+			'main_category' => Category::class
 		]);
 	}
 }
