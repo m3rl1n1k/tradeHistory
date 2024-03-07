@@ -19,23 +19,6 @@ class WalletService
 		return $currency . substr($number, 3);
 	}
 	
-	public function currencyExchange(User $user, string $currency): array
-	{
-		
-		$currencyPrice = [];
-		$mainCurrency = $user->getCurrency();
-		$api_key = "eRVGMTQwnLrBZJUprzDC";
-		$quandl = new Quandl($api_key);
-		$currencies = $quandl->getSymbol("CURRFX/$mainCurrency.$currency", [
-			"sort_order" => "desc",
-			"rows" => 1,
-		]);
-		if ($currencies){
-			foreach ($currencies as $currency) {
-				$array = array_shift($currency->data);
-				$currencyPrice[$currency->dataset_code] = next($array);
-			}
-		}
-		return $currencyPrice;
-	}
+	
+
 }

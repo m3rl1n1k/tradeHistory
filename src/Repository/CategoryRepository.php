@@ -17,59 +17,42 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CategoryRepository extends ServiceEntityRepository
 {
-	public function __construct(ManagerRegistry $registry)
+	public function __construct(ManagerRegistry $registry, protected SubCategoryRepository $subCategoryRepository)
 	{
 		parent::__construct($registry, Category::class);
 	}
-
-//    /**
-//     * @return Category[] Returns an array of Category objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Category
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
-	
 	
 	public function getAll($user): array
 	{
 		return $this->findBy(['user' => $user]);
 	}
-	
-	public function getOneBy(int $id): Category
+
+	public function getMainAndSubCategories(User $user): array
 	{
-		return $this->findOneBy(['id' => $id]);
+		/** @var Category $mainCategory */
+		$mainCategories = $this->getAll($user);
+		$categoryChoices = [];
+
+		foreach ($mainCategories as $mainCategory) {
+			
+			$subCategoryChoices = [];
+			$subCategories = $this->subCategoryRepository->getAll($mainCategory->getId());
+			
+			foreach ($subCategories as $subCategory) {
+				$subCategoryChoices[$subCategory->getId()] = $subCategory;
+			}
+			
+			$categoryChoices[$mainCategory->getName()] = $subCategoryChoices ?? $mainCategory;
+		}
+		return $categoryChoices;
 	}
 	
-	public function categoryUpdate(Category $category, Category $update, ?User $user, int $id): void
-	{
-		$category->setUser($user);
-		$category->setName($update->getName());
-		$category->setId($id);
-		
-	}
-	
-	public function getCategories(int $user): array
-	{
-		return $this->findBy(['user' => $user]);
-	}
+//	public function getMainAndSubCategories(User $user): array
+//	{
+//		$mainCategories = $this->getAll($user);
+//		$subCategories = $this->subCategoryRepository->findAll();
+//		return array_merge($mainCategories, $subCategories);
+//	}
 	
 	
 }

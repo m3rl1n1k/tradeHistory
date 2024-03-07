@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Category;
+use App\Entity\SubCategory;
 use App\Entity\Transaction;
 use App\Entity\User;
 use App\Entity\Wallet;
@@ -32,6 +33,7 @@ class TransactionType extends AbstractType
 	{
 		$category = $options['category'];
 		$wallets = $options['wallet'];
+		$user = $options['user'];
 		$builder
 			->add('wallet', ChoiceType::class, [
 				'choice_label' => function (Wallet $wallet) {
@@ -41,14 +43,16 @@ class TransactionType extends AbstractType
 				'choices' => $wallets
 			])
 			->add('amount', MoneyType::class, [
-				'currency' => 'CP'
-			])->add('category', ChoiceType::class, [
+				'currency' => '' ?? $user->getCurrency()
+			])
+			->add('category', ChoiceType::class, [
+				'duplicate_preferred_choices' => false,
 				'required' => false,
-				'placeholder' => '',
 				'choices' => $category,
-				'choice_label' => function (Category $category): string {
-					return $category->getName();
-				}
+				'choice_label' => 'name',
+				'choice_value' => 'id',
+				'label' => 'Category',
+				'placeholder' => "Select category"
 			])
 			->add('type', ChoiceType::class,
 				[
@@ -61,6 +65,7 @@ class TransactionType extends AbstractType
 				'required' => false,
 				'attr' => [
 					'max' => 255,
+					'height' => 140
 				]
 			]);
 	}
@@ -70,7 +75,8 @@ class TransactionType extends AbstractType
 		$resolver->setDefaults([
 			'data_class' => Transaction::class,
 			'category' => null,
-			'wallet' => User::class
+			'wallet' => Wallet::class,
+			'user' => User::class
 		]);
 	}
 }

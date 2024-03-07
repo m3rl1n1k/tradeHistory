@@ -34,12 +34,17 @@ class Transaction
 	private ?User $user = null;
 	
 	#[ORM\ManyToOne(inversedBy: 'transactions')]
+	#[ORM\JoinColumn(onDelete: 'SET NULL')]
 	private ?Category $category = null;
 	
 	
 	#[ORM\ManyToOne(inversedBy: 'transactions')]
 	#[ORM\JoinColumn(nullable: false)]
 	private ?Wallet $wallet = null;
+	
+	#[ORM\ManyToOne]
+	#[ORM\JoinColumn(onDelete: 'SET NULL')]
+	private ?SubCategory $subCategory = null;
 	
 	public function getId(): ?int
 	{
@@ -127,21 +132,35 @@ class Transaction
 		return $this->getType() === TransactionEnum::Expense->value ?? false;
 	}
 	
-	public function getCategory(): ?Category
+	public function getCategory(): null|Category|SubCategory
 	{
-		return $this->category;
+		if ($this->category === null) {
+			return $this->getSubCategory();
+		} else
+			return $this->category;
+		
 	}
 	
-	public function setCategory(?Category $category): static
+	public function setCategory(null|Category|SubCategory $category): static
 	{
-		$this->category = $category;
+		if ($category instanceof SubCategory) {
+			$this->setSubCategory($category);
+		} else
+			$this->category = $category;
 		
 		return $this;
 	}
 	
-	public function setId(?int $id): void
+	public function getSubCategory(): ?SubCategory
 	{
-		$this->id = $id;
+		return $this->subCategory;
+	}
+	
+	public function setSubCategory(?SubCategory $subCategory): static
+	{
+		$this->subCategory = $subCategory;
+		
+		return $this;
 	}
 	
 	
