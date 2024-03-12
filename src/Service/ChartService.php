@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\User;
 use App\Enum\TransactionEnum;
 use App\Repository\CategoryRepository;
+use App\Repository\SubCategoryRepository;
 use App\Repository\TransactionRepository;
 use DateInterval;
 use DatePeriod;
@@ -18,6 +19,7 @@ class ChartService
 {
 	public function __construct(protected ChartBuilderInterface $chartBuilder,
 								protected CategoryRepository    $categoryRepository,
+								protected SubCategoryRepository $subCategoryRepository,
 								protected TransactionRepository $transactionRepository
 	)
 	{
@@ -66,7 +68,7 @@ class ChartService
 	 */
 	protected function getSumByCategory(int $id, $user): bool|float|int|string
 	{
-		return $this->transactionRepository->getTransactionSum($user, ['category' => $id]) ?? 0;
+		return $this->transactionRepository->getTransactionSum($user, ['sub_category' => $id]) ?? 0;
 	}
 	
 	/**
@@ -88,10 +90,14 @@ class ChartService
 	{
 		$categories = $this->categoryRepository->getAll($user);
 		foreach ($categories as $category) {
-			$sum = $this->getSumByCategory($category->getId(), $user);
-			if (in_array((string)$category->getName(), $categoriesToShow)) {
-				$categoriesList[] = $category->getName();
-				$result[] = $sum;
+			$subCategories = $this->subCategoryRepository->getAll($category->getId());
+			
+			foreach ($subCategories as $subCategory) {
+				$sum = $this->getSumByCategory($subCategory->getId(), $user);
+				if (in_array($subCategory->getId(), $categoriesToShow)) {
+					$categoriesList[] = $subCategory->getName();
+					$result[] = $sum;
+				}
 			}
 		}
 		if ($categoryLabel) {
@@ -162,7 +168,7 @@ class ChartService
 		$end->modify('last day of this month');
 		$interval = new DateInterval('P1D');
 		$month = new DatePeriod($start, $interval, $end);
-		if ($getMonth){
+		if ($getMonth) {
 			return $month;
 		}
 		$daysArray = [];

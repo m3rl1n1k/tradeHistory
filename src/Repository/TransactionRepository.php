@@ -122,7 +122,7 @@ class TransactionRepository extends ServiceEntityRepository
 			->setParameter('user', $user);
 		
 		foreach ($conditions as $key => $value) {
-			if (in_array($key, ['date', 'category', 'user'])) {
+			if (in_array($key, ['date', 'category','sub_category_id', 'user'])) {
 				$queryBuilder->andWhere("transaction.$key = :$key")
 					->setParameter($key, $value);
 			}
