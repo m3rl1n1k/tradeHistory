@@ -151,12 +151,12 @@ class Wallet
 		return $this;
 	}
 	
-	public function increment(float $amount): int
+	public function increment(float $amount): float
 	{
 		return $this->getAmount() + $amount;
 	}
 	
-	public function decrement(float $amount): int
+	public function decrement(float $amount): float
 	{
 		return $this->getAmount() - $amount;
 	}

@@ -22,17 +22,18 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/category')]
 class CategoryController extends AbstractController
 {
-	public function __construct(protected SubCategoryRepository $subCategoryRepository)
+	public function __construct(protected SubCategoryRepository $subCategoryRepository,
+								protected CategoryRepository    $categoryRepository)
 	{
 	}
 	
 	use AccessTrait;
 	
 	#[Route('/', name: 'app_category_index', methods: ['GET'])]
-	public function index(#[CurrentUser] ?User $user, CategoryRepository $categoryRepository): Response
+	public function index(#[CurrentUser] ?User $user): Response
 	{
 		return $this->render('category/index.html.twig', [
-			'categories' => $categoryRepository->getMainAndSubCategories($user),
+			'categories' => $this->categoryRepository->getMainAndSubCategories($user),
 		]);
 	}
 	
@@ -51,7 +52,9 @@ class CategoryController extends AbstractController
 			return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
 		}
 		
+		$categories = $this->categoryRepository->getAll($user);
 		return $this->render('category/new.html.twig', [
+			'categories' => $categories,
 			'category' => $category,
 			'form' => $form,
 		]);
@@ -85,14 +88,14 @@ class CategoryController extends AbstractController
 			
 			try {
 				$entityManager->beginTransaction();
-				foreach ($this->subCategoryRepository->getAll($category->getId())  as $subCategory) {
+				foreach ($this->subCategoryRepository->getAll($category->getId()) as $subCategory) {
 					$entityManager->remove($subCategory);
 				}
 				
 				$entityManager->remove($category);
 				$entityManager->commit();
 				$entityManager->flush();
-			}catch (Exception $e){
+			} catch (Exception $e) {
 				echo($e->getMessage());
 				$entityManager->rollback();
 			}

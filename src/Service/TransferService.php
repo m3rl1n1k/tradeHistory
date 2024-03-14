@@ -47,6 +47,7 @@ class TransferService
 		} else {
 			$outWallet->setAmount($outWallet->decrement($transfer->getAmount()));
 			$inWallet->setAmount($inWallet->increment($transfer->getAmount()));
+			$this->transactionService->newTransaction($em, $inWallet, $transfer->getAmount(), $user);
 		}
 		
 	}

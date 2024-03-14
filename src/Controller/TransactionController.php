@@ -67,7 +67,7 @@ class TransactionController extends AbstractController
 			$id = $form->get('wallet')->getData();
 			$wallet = $this->walletRepository->find($id);
 			
-			$this->transactionService->setAmount($wallet, $transaction);
+			$this->transactionService->calculate($wallet, $transaction, new: true);
 			
 			$entityManager->persist($transaction);
 			$entityManager->flush();
@@ -103,7 +103,7 @@ class TransactionController extends AbstractController
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
 			$wallet = $form->get('wallet')->getData();
-			$this->transactionService->calculate($wallet, $transaction, $oldAmount);
+			$this->transactionService->calculate($wallet, $transaction, $oldAmount, false);
 			
 			$entityManager->flush();
 			

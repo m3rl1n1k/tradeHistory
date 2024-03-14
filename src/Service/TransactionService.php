@@ -23,15 +23,6 @@ class TransactionService
 	{
 	}
 	
-	private function summaryTransactions(array $transactions): float
-	{
-		$summary = 0;
-		foreach ($transactions as $transaction) {
-			$summary = $summary + $transaction->getAmount();
-		}
-		return $summary;
-	}
-	
 	public function getTransactionsPerPeriod(User $user, $dateStart, $dateEnd):
 	array|float|int|string
 	{
@@ -47,34 +38,26 @@ class TransactionService
 		return $this->transactionRepository->getUserTransactionsQuery($user);
 	}
 	
-	public function calculate(Wallet $wallet, Transaction $transaction, float $oldAmount = 0): void
+	public function calculate(Wallet $wallet, Transaction $transaction, float $oldAmount = 0, bool $new = false): void
 	{
-		
-		$this->CurrentMoreOldAmount($wallet, $transaction, $oldAmount);
-		$this->OldMoreCurrentAmount($wallet, $transaction, $oldAmount);
-		if ($transaction->getAmount() === $oldAmount && $transaction->isExpense()) {
-			$wallet->setAmount($wallet->getAmount());
+		if ($new) {
+			if ($transaction->isIncome()) {
+				$wallet->setAmount($wallet->increment($transaction->getAmount()));
+			}
+			if ($transaction->isExpense()) {
+				$wallet->setAmount($wallet->decrement($transaction->getAmount()));
+			}
+		} else {
+			$this->CurrentMoreOldAmount($wallet, $transaction, $oldAmount);
+			if ($transaction->getAmount() === $oldAmount && $transaction->isExpense()) {
+				$wallet->setAmount($wallet->getAmount());
+			}
+			if ($transaction->getAmount() === $oldAmount && $transaction->isIncome()) {
+				$wallet->setAmount($wallet->getAmount());
+			}
 		}
-		if ($transaction->getAmount() === $oldAmount && $transaction->isIncome()) {
-			$wallet->setAmount($wallet->getAmount());
-		}
 		
 		
-	}
-	
-	public function getTransactionById(int $id): array
-	{
-		return $this->transactionRepository->findBy(['id' => $id]);
-	}
-	
-	public function getTransactionByType(UserInterface|User $user, int $type): array
-	{
-		return $this->transactionRepository->findBy(
-			[
-				'type' => $type,
-				'user' => $user->getId()
-			]
-		);
 	}
 	
 	private function CurrentMoreOldAmount(Wallet $wallet, Transaction $transaction, float $oldAmount): void
@@ -84,35 +67,18 @@ class TransactionService
 			$newAmount = ($difference > 0) ? $wallet->getAmount() - $difference : $wallet->getAmount() + abs
 				($difference);
 			$wallet->setAmount($newAmount);
+		} else {
+			$amount = $wallet->getAmount() + ($oldAmount - $transaction->getAmount());
+			$wallet->setAmount($amount);
 		}
 		if ($transaction->isIncome() && $transaction->getAmount() > $oldAmount) {
 			$wallet->setAmount(
 				$wallet->getAmount() + abs($transaction->getAmount() - $oldAmount)
 			);
-		}
-	}
-	
-	private function OldMoreCurrentAmount(Wallet $wallet, Transaction $transaction, float $oldAmount,): void
-	{
-		if ($transaction->isExpense() && $transaction->getAmount() < $oldAmount) {
-			$amount = $wallet->getAmount() + ($oldAmount - $transaction->getAmount());
-			$wallet->setAmount($amount);
-		}
-		if ($transaction->isIncome() && $transaction->getAmount() < $oldAmount) {
+		} else {
 			$wallet->setAmount(
 				$wallet->getAmount() - abs($transaction->getAmount() - $oldAmount)
 			);
-		}
-	}
-	
-	public function setAmount(Wallet $wallet, Transaction $transaction): void
-	{
-		if ($transaction->isIncome()) {
-			$wallet->setAmount($wallet->increment($transaction->getAmount()));
-		}
-		
-		if ($transaction->isExpense()) {
-			$wallet->setAmount($wallet->decrement($transaction->getAmount()));
 		}
 	}
 	
@@ -154,19 +120,23 @@ class TransactionService
 		return $groupedTransactions;
 	}
 	
-	public function newTransaction(EntityManagerInterface $em, Wallet $wallet, int $amount, User $user, array $options): void
+	public function newTransaction(EntityManagerInterface $em, Wallet $wallet, int $amount, User $user, array $options = []): void
 	{
-		$msg = 'Transfer from %s with exchange rate: %s';
-		$msg = sprintf($msg, $wallet->getNumber(), $options['rate']);
+		$msg = 'Transfer from %s';
+		$msg = sprintf($msg, $wallet->getName() ?? $wallet->getNumber());
+		
+		if (isset($options['rate'])) {
+			$msg = 'Transfer from %s with exchange rate: %s';
+			$msg = sprintf($msg, $wallet->getNumber(), $options['rate']);
+		}
 		$date = new DateTime('now');
 		
 		$transaction = new Transaction();
 		$transaction
 			->setAmount($amount)
 			->setWallet($wallet)
-			->setType(TransactionEnum::Income->value)
 			->setDate($date)
-			->setType(TransactionEnum::Transaction->value)
+			->setType(TransactionEnum::Transfer->value)
 			->setDescription($msg)
 			->setUserId($user);
 		

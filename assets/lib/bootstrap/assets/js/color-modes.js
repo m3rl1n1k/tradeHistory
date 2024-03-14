@@ -26,7 +26,14 @@
         const textColor = theme === 'dark' ? "text-white" : 'text-secondary'
         links.forEach(link => {
             if (!link.closest('a.active'))
-                link.classList.add(textColor);
+                if (theme !== 'dark') {
+                    link.classList.add(textColor);
+                    link.classList.remove('text-white')
+                } else {
+                    link.classList.add(textColor);
+                    link.classList.remove('text-secondary')
+                }
+
         });
     }
 

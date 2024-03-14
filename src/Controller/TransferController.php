@@ -35,14 +35,14 @@ class TransferController extends AbstractController
 	#[Route('/new', name: 'app_transfer_new', methods: ['GET', 'POST'])]
 	public function new(#[CurrentUser] ?User $user, Request $request, EntityManagerInterface $entityManager): Response
 	{
-		try {
-			$transfer = new Transfer();
-			$form = $this->createForm(TransferType::class, $transfer, [
-				'user' => $user
-			]);
-			$form->handleRequest($request);
-			
-			if ($form->isSubmitted() && $form->isValid()) {
+		$transfer = new Transfer();
+		$form = $this->createForm(TransferType::class, $transfer, [
+			'user' => $user
+		]);
+		$form->handleRequest($request);
+		
+		if ($form->isSubmitted() && $form->isValid()) {
+			try {
 				$entityManager->beginTransaction();
 				$transfer->setUser($user);
 				$transfer->setDate();
@@ -52,11 +52,11 @@ class TransferController extends AbstractController
 				$entityManager->commit();
 				
 				return $this->redirectToRoute('app_transfer_index', [], Response::HTTP_SEE_OTHER);
+			} catch (Exception $exception) {
+				$entityManager->rollback();
 			}
-			
-		} catch (Exception $exception) {
-			$entityManager->rollback();
 		}
+		
 		return $this->render('transfer/new.html.twig', [
 			'transfer' => $transfer,
 			'form' => $form,

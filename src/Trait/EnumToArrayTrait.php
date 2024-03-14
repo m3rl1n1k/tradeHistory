@@ -16,6 +16,7 @@ trait EnumToArrayTrait
 	
 	public static function valueAsKey(): array
 	{
+		$values = [];
 		foreach (self::cases() as $enum) {
 			$values[$enum->name] = $enum->value;
 		}
@@ -25,7 +26,7 @@ trait EnumToArrayTrait
 	public static function transactionTypes(): array
 	{
 		$types = TransactionEnum::valueAsKey();
-		unset($types[TransactionEnum::Transaction->name]);
+		unset($types[TransactionEnum::Transfer->name]);
 		return $types;
 	}
 }

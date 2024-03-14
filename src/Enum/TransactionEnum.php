@@ -12,5 +12,5 @@ enum TransactionEnum: int
 	case Expense = 2;
 	case Income = 1;
 	
-	case Transaction = 3;
+	case Transfer = 3;
 }
