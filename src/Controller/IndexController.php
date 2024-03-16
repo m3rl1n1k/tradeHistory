@@ -23,23 +23,18 @@ class IndexController extends AbstractController
 	)
 	{
 	}
-	
-	/**
-	 * @throws NonUniqueResultException
-	 * @throws NoResultException
-	 */
 	#[IsGranted('IS_AUTHENTICATED_FULLY')]
 	#[Route('/home', name: 'app_home', methods: ['GET'])]
 	public function home(#[CurrentUser] ?User $user, TransactionRepository $transactionRepository, Request $request):
 	Response
 	{
 		$categoryList = $request->query->keys();
-		$chart = $this->chartService->dashboardChart($user, ['categories' => $categoryList]);
+//		$chart = $this->chartService->dashboardChart($user, ['categories' => $categoryList]);
 		return $this->render('index/index.html.twig', [
 			'categories_list' => $categoryList,
 			'categories' => $this->categoryRepository->getAll($user),
-			'chart' => $chart,
-			'last10transaction' => $transactionRepository->getUserTransactions($user->getUserId(), ['id' => 'DESC'], 10)
+//			'chart' => $chart,
+			'last10transaction' => $transactionRepository->getUserTransactions(['id' => 'DESC'], 10)
 		]);
 	}
 	

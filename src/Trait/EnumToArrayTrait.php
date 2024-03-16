@@ -2,7 +2,7 @@
 
 namespace App\Trait;
 
-use App\Enum\TransactionEnum;
+use App\Transaction\TransactionEnum;
 use Othyn\PhpEnumEnhancements\Traits\EnumEnhancements;
 
 trait EnumToArrayTrait

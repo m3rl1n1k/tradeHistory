@@ -1,46 +1,48 @@
 <?php
 
-namespace App\Service;
+namespace App\Transaction;
 
 use App\Entity\Transaction;
 use App\Entity\User;
 use App\Entity\Wallet;
-use App\Enum\TransactionEnum;
 use App\Repository\TransactionRepository;
 use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
-use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\Security\Core\User\UserInterface;
 
-class TransactionService
+class TransactionService implements TransactionServiceInterface
 {
-	public function __construct(protected Security              $security,
-								protected UserRepository        $userRepository,
+	/**
+	 * @var Transaction[]
+	 */
+	private array $transactions;
+	
+	public function __construct(protected UserRepository        $userRepository,
 								protected TransactionRepository $transactionRepository,
 	)
 	{
+		$this->transactions = $this->transactionRepository->getAll();
 	}
 	
-	public function getTransactionsPerPeriod(User $user, $dateStart, $dateEnd):
-	array|float|int|string
+	public function getTransactionsPerPeriod($dateStart, $dateEnd): array
 	{
-		return $this->transactionRepository->getTransactionsPerPeriod($user, $dateStart, $dateEnd);
+		return $this->transactionRepository->getTransactionsPerPeriod($dateStart, $dateEnd);
 	}
 	
-	public function getTransactionsForUser(UserInterface|User $user, bool $is_array = false):
-	array|Query
+	public function getTransactions(bool $is_array = false): array|Query
 	{
 		if ($is_array) {
-			return $this->transactionRepository->findBy(['user' => $user->getId()], ['id' => 'DESC']);
+			return $this->transactions;
 		}
-		return $this->transactionRepository->getUserTransactionsQuery($user);
+		return $this->transactionRepository->getUserTransactionsQuery();
 	}
 	
-	public function calculate(Wallet $wallet, Transaction $transaction, float $oldAmount = 0, bool $new = false): void
+	public function calculate(Wallet $wallet, Transaction $transaction, float $oldAmount = 0, bool $newTransaction =
+	false):
+	void
 	{
-		if ($new) {
+		if ($newTransaction) {
 			if ($transaction->isIncome()) {
 				$wallet->setAmount($wallet->increment($transaction->getAmount()));
 			}
@@ -109,8 +111,8 @@ class TransactionService
 		$groupedTransactions = [];
 		
 		foreach ($transactions as $transaction) {
-			$category = $transaction->getCategory();
-			if (!$transaction->getCategory()) {
+			$category = $transaction->getSubCategory();
+			if (!$transaction->getSubCategory()) {
 				$groupedTransactions['No category'][] = $transaction;
 			} else {
 				$groupedTransactions[$category->getName()][] = $transaction;
@@ -132,8 +134,7 @@ class TransactionService
 		$date = new DateTime('now');
 		
 		$transaction = new Transaction();
-		$transaction
-			->setAmount($amount)
+		$transaction->setAmount($amount)
 			->setWallet($wallet)
 			->setDate($date)
 			->setType(TransactionEnum::Transfer->value)
