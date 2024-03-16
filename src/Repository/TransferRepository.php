@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Transfer;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bundle\SecurityBundle\Security;
 
 /**
  * @extends ServiceEntityRepository<Transfer>
@@ -16,9 +18,13 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TransferRepository extends ServiceEntityRepository
 {
-	public function __construct(ManagerRegistry $registry)
+	private ?User $user;
+	
+	public function __construct(ManagerRegistry $registry,
+	protected Security $security)
 	{
 		parent::__construct($registry, Transfer::class);
+		$this->user = $this->security->getUser();
 	}
 
 //    /**
@@ -46,8 +52,8 @@ class TransferRepository extends ServiceEntityRepository
 //        ;
 //    }
 	
-	public function getAll($user): array
+	public function getAll(): array
 	{
-		return $this->findBy(['user' => $user]);
+		return $this->findBy(['user' => $this->user->getUserId()]);
 }
 }

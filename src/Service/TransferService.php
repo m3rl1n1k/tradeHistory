@@ -2,12 +2,9 @@
 
 namespace App\Service;
 
-use App\Entity\Transaction;
 use App\Entity\Transfer;
-use App\Entity\User;
 use App\Entity\Wallet;
-use App\Enum\TransactionEnum;
-use DateTime;
+use App\Transaction\TransactionService;
 use Doctrine\ORM\EntityManagerInterface;
 use LogicException;
 

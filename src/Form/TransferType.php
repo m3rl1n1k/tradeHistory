@@ -8,6 +8,7 @@ use App\Entity\Wallet;
 use App\Repository\WalletRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,17 +20,12 @@ class TransferType extends AbstractType
 	
 	public function buildForm(FormBuilderInterface $builder, array $options): void
 	{
-		$user = $options['user'];
-		$wallets = $this->walletRepository->getAll($user);
+		$wallets = $this->walletRepository->getAll();
 		$label = function (Wallet $wallet) {
-			if ($wallet->getName()) {
-				return $wallet->getName();
-			} else {
-				return $wallet->getNumber();
-			}
+			return $wallet->getName() ?? $wallet->getNumber();
 		};
 		$builder
-			->add('amount')
+			->add('amount', NumberType::class,['required' => false])
 			->add('fromWallet', EntityType::class, [
 				'class' => Wallet::class,
 				'choice_label' => $label,
@@ -46,7 +42,6 @@ class TransferType extends AbstractType
 	{
 		$resolver->setDefaults([
 			'data_class' => Transfer::class,
-			'user' => User::class,
 		]);
 	}
 }

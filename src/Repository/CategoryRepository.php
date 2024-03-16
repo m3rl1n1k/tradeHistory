@@ -6,6 +6,8 @@ use App\Entity\Category;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @extends ServiceEntityRepository<Category>
@@ -17,22 +19,28 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CategoryRepository extends ServiceEntityRepository
 {
-	public function __construct(ManagerRegistry $registry, protected SubCategoryRepository $subCategoryRepository)
+	private ?User $user;
+	
+	public function __construct(
+		ManagerRegistry                 $registry,
+		protected SubCategoryRepository $subCategoryRepository,
+		protected Security              $security)
 	{
 		parent::__construct($registry, Category::class);
+		$this->user = $this->security->getUser();
 	}
 	
-	public function getAll($user): array
+	public function getAll(): array
 	{
-		return $this->findBy(['user' => $user]);
+		return $this->findBy(['user' => $this->user->getUserId()]);
 	}
-
-	public function getMainAndSubCategories(User $user): array
+	
+	public function getMainAndSubCategories(): array
 	{
 		/** @var Category $mainCategory */
-		$mainCategories = $this->getAll($user);
+		$mainCategories = $this->getAll();
 		$categoryChoices = [];
-
+		
 		foreach ($mainCategories as $mainCategory) {
 			
 			$subCategoryChoices = [];
@@ -46,13 +54,6 @@ class CategoryRepository extends ServiceEntityRepository
 		}
 		return $categoryChoices;
 	}
-	
-//	public function getMainAndSubCategories(User $user): array
-//	{
-//		$mainCategories = $this->getAll($user);
-//		$subCategories = $this->subCategoryRepository->findAll();
-//		return array_merge($mainCategories, $subCategories);
-//	}
 	
 	
 }

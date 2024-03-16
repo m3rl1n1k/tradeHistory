@@ -2,111 +2,66 @@
 
 namespace App\Service;
 
-use App\Entity\User;
-use App\Enum\TransactionEnum;
-use App\Repository\CategoryRepository;
-use App\Repository\SubCategoryRepository;
+use App\Entity\Transaction;
 use App\Repository\TransactionRepository;
-use DateInterval;
-use DatePeriod;
-use DateTime;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
+use App\Transaction\TransactionEnum;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
 class ChartService
 {
+	/**
+	 * @var Transaction[]
+	 */
+	private array $transactions;
+	
 	public function __construct(protected ChartBuilderInterface $chartBuilder,
-								protected CategoryRepository    $categoryRepository,
-								protected SubCategoryRepository $subCategoryRepository,
-								protected TransactionRepository $transactionRepository
+								protected TransactionRepository $transactionRepository,
+								protected DateService           $dateService
 	)
 	{
+		$this->transactions = $this->transactionRepository->getAllPerCurrentMonth();
 	}
 	
-	/**
-	 * @throws NonUniqueResultException
-	 * @throws NoResultException
-	 */
-	public function dashboardChart(User $user, array $options = []): Chart
+	public function reportChart(array $options): Chart
 	{
-		$categoriesToShow = $options['categories'];
-		$chart = $this->create();
+		$dataset = [];
+		$chart = $this->create(Chart::TYPE_LINE);
+		if ($options['expense'])
+			$dataset[] = $this->datasetReport(TransactionEnum::Expense->value, 'Expense', 0);
+		if ($options['income'])
+			$dataset[] = $this->datasetReport(TransactionEnum::Income->value, 'Income', 1);
+		
 		$chart->setData([
-			'labels' => array_values($this->datasetDashboard($user, $categoriesToShow, categoryLabel: true)),
-			'datasets' => [
-				$this->datasetDashboard($user, $categoriesToShow)
-			],
+			'labels' => $this->dateService->getCurrentDate(),
+			'datasets' => $dataset,
 		]);
 		
 		$chart->setOptions([
 			'scales' => [
 				'y' => [
 					'suggestedMin' => 0,
-					'suggestedMax' => $this->getMax($user),
+					'suggestedMax' => 100
 				],
 			],
 		]);
 		return $chart;
 	}
 	
-	
-	protected function getCategories(User $user): array
-	{
-		$categoryList = [];
-		$categories = $this->categoryRepository->getAll($user);
-		foreach ($categories as $category) {
-			$categoryList[$category->getId()] = $category->getName();
-		}
-		return $categoryList;
-	}
-	
 	/**
-	 * @throws NonUniqueResultException
-	 * @throws NoResultException
+	 * @param string $type
+	 * @param string $label
+	 * @param int $colorMax10
+	 * @return array
 	 */
-	protected function getSumByCategory(int $id, $user): bool|float|int|string
+	protected function datasetReport(string $type, string $label = '', int $colorMax10 = 10):
+	array
 	{
-		return $this->transactionRepository->getTransactionSum($user, ['sub_category' => $id]) ?? 0;
-	}
-	
-	/**
-	 * @throws NonUniqueResultException
-	 * @throws NoResultException
-	 */
-	protected function getMax(User $user): float
-	{
-		$period = $this->getDateArray(true);
-		$max = (float)$this->transactionRepository->getMaxAmount($user->getUserId(), $period);
-		return $max + ($max / 100);
-	}
-	
-	/**
-	 * @throws NonUniqueResultException
-	 * @throws NoResultException
-	 */
-	protected function datasetDashboard(User $user, array $categoriesToShow, string $label = '', bool $categoryLabel = false, bool $singleColor = false): array
-	{
-		$categories = $this->categoryRepository->getAll($user);
-		foreach ($categories as $category) {
-			$subCategories = $this->subCategoryRepository->getAll($category->getId());
-			
-			foreach ($subCategories as $subCategory) {
-				$sum = $this->getSumByCategory($subCategory->getId(), $user);
-				if (in_array($subCategory->getId(), $categoriesToShow)) {
-					$categoriesList[] = $subCategory->getName();
-					$result[] = $sum;
-				}
-			}
-		}
-		if ($categoryLabel) {
-			return $categoriesList ?? [];
-		}
+		$result = $this->getSumByCurrentMonth($type);
 		return [
 			'label' => $label,
-			'backgroundColor' => $this->colors(),
-			'borderColor' => $singleColor ? $this->colors()[0] : $this->colors(),
+			'backgroundColor' => $this->colors()[$colorMax10],
+			'borderColor' => $this->colors()[$colorMax10],
 			'data' => $result ?? [],
 		];
 	}
@@ -129,111 +84,30 @@ class ChartService
 	
 	
 	/**
-	 * @throws NonUniqueResultException
-	 * @throws NoResultException
+	 * @param string $type
+	 * @return array
 	 */
-	public function reportChart(User $user, array $options): Chart
+	private function getSumByCurrentMonth(string $type = TransactionEnum::Expense->value): array
 	{
-		$dataset = [];
-		//select all transactions per month and build chart
-		$chart = $this->create(Chart::TYPE_LINE);
-		if ($options['expense'])
-			$dataset[] = $this->datasetReport($user, TransactionEnum::Expense->value, 'Expense', 0);
-		if ($options['income'])
-			$dataset[] = $this->datasetReport($user, TransactionEnum::Income->value, 'Income', 1);
+		$list = [];
+		$days = $this->dateService->getCurrentDate();
 		
-		$chart->setData([
-			'labels' => $this->getDateArray(),
-			'datasets' => $dataset,
-		]);
-		
-		$chart->setOptions([
-			'scales' => [
-				'y' => [
-					'suggestedMin' => 0,
-					'suggestedMax' => $this->getMax($user),
-				],
-			],
-		]);
-		return $chart;
-	}
-	
-	private function getDateArray(bool $getMonth = false): array|DatePeriod
-	{
-		$currentYear = date("Y");
-		$currentMonth = date("m");
-		
-		$start = new DateTime("$currentYear-$currentMonth-01");
-		$end = new DateTime("$currentYear-$currentMonth-01");
-		$end->modify('last day of this month');
-		$interval = new DateInterval('P1D');
-		$month = new DatePeriod($start, $interval, $end);
-		if ($getMonth) {
-			return $month;
-		}
-		$daysArray = [];
-		foreach ($month as $date) {
-			$daysArray[] = $date->format('y-m-d');
-		}
-		
-		return $daysArray;
-	}
-	
-	/**
-	 * @throws NonUniqueResultException
-	 * @throws NoResultException
-	 */
-	private function getSumByDay(array $days, string $type, $user): array
-	{
-		$sum = [];
 		foreach ($days as $day) {
-			$sum[] = $this->transactionRepository->getTransactionSum($user, ['date' => $day], $type) ?? 0;
+			$list[$day] = 0;
+			foreach ($this->transactions as $transaction) {
+				
+				/** @var Transaction $transaction */
+				$transactionType = $transaction->getType();
+				$transactionDate = $transaction->getDate()->format('d M y');
+				
+				if ($transactionType == $type && $transactionDate == $day) {
+					$list[$day] = +$transaction->getAmount();
+				}
+			}
 		}
-		return $sum;
+		return $list;
 	}
 	
-	/**
-	 * @throws NonUniqueResultException
-	 * @throws NoResultException
-	 */
-	protected function datasetReport($user, string $type, string $label = '', int $colorMax10 = 10):
-	array
-	{
-		$days = $this->getDateArray();
-		$result = $this->getSumByDay($days, $type, $user);
-		return [
-			'label' => $label,
-			'backgroundColor' => $this->colors()[$colorMax10],
-			'borderColor' => $this->colors()[$colorMax10],
-			'data' => $result ?? [],
-		];
-	}
-	
-	/**
-	 * @throws NonUniqueResultException
-	 * @throws NoResultException
-	 */
-	public function totalChart(User $user)
-	{
-		$chart = $this->create();
-		$chart->setData([
-			'labels' => $this->getDateArray(),
-			'datasets' => [
-				$this->datasetReport($user, TransactionEnum::Expense->value, 'Expense', 0),
-				$this->datasetReport($user, TransactionEnum::Income->value, 'Income', 1)
-			],
-		]);
-		
-		$chart->setOptions([
-			'scales' => [
-				'y' => [
-					'suggestedMin' => 0,
-					'suggestedMax' => $this->getMax($user),
-				],
-			],
-		]);
-		return $chart;
-	}
 	
 	protected function create(string $type = Chart::TYPE_BAR): Chart
 	{

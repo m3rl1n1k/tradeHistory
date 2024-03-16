@@ -2,7 +2,7 @@
 
 namespace App\Twig;
 
-use App\Enum\TransactionEnum;
+use App\Transaction\TransactionEnum;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 

@@ -27,10 +27,10 @@ class WalletController extends AbstractController
 	}
 	use AccessTrait;
 	#[Route('/', name: 'app_wallet_index')]
-	public function index(#[CurrentUser] ?User $user, WalletRepository $walletRepository): Response
+	public function index(WalletRepository $walletRepository): Response
 	{
 		return $this->render('wallet/index.html.twig', [
-			'wallets' => $walletRepository->getAll($user),
+			'wallets' => $walletRepository->getAll(),
 		]);
 	}
 	

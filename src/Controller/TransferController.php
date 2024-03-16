@@ -25,10 +25,10 @@ class TransferController extends AbstractController
 	}
 	
 	#[Route('/', name: 'app_transfer_index', methods: ['GET'])]
-	public function index(#[CurrentUser] ?User $user, TransferRepository $transferRepository): Response
+	public function index(TransferRepository $transferRepository): Response
 	{
 		return $this->render('transfer/index.html.twig', [
-			'transfers' => $transferRepository->getAll($user),
+			'transfers' => $transferRepository->getAll(),
 		]);
 	}
 	
@@ -36,9 +36,7 @@ class TransferController extends AbstractController
 	public function new(#[CurrentUser] ?User $user, Request $request, EntityManagerInterface $entityManager): Response
 	{
 		$transfer = new Transfer();
-		$form = $this->createForm(TransferType::class, $transfer, [
-			'user' => $user
-		]);
+		$form = $this->createForm(TransferType::class, $transfer);
 		$form->handleRequest($request);
 		
 		if ($form->isSubmitted() && $form->isValid()) {

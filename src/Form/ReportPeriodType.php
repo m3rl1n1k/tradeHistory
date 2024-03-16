@@ -19,7 +19,7 @@ class ReportPeriodType extends AbstractType
             ->add('dateEnd', DateType::class,[
                 'data' => new DateTime(),
                 'attr' => [
-                    'max' => (new DateTime())->format('Y-m-d'), // Set the max attribute to the current date
+                    'max' => (new DateTime())->format('Y-m-d'),
                 ],
             ]);
         $builder->setAttribute('id', 'report_period');

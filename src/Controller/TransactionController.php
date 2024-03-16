@@ -2,17 +2,14 @@
 
 namespace App\Controller;
 
-use App\Entity\SubCategory;
 use App\Entity\Transaction;
 use App\Entity\User;
 use App\Form\TransactionType;
 use App\Repository\CategoryRepository;
-use App\Repository\SubCategoryRepository;
-use App\Repository\TransactionRepository;
 use App\Repository\WalletRepository;
-use App\Service\TransactionService;
 use App\Trait\AccessTrait;
 use App\Trait\TransactionTrait;
+use App\Transaction\TransactionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,11 +23,9 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class TransactionController extends AbstractController
 {
 	public function __construct(
-		protected TransactionRepository $transactionRepository,
 		protected TransactionService    $transactionService,
 		protected CategoryRepository    $categoryRepository,
 		protected WalletRepository      $walletRepository,
-		protected SubCategoryRepository $subCategoryRepository
 	)
 	{
 	}
@@ -38,9 +33,9 @@ class TransactionController extends AbstractController
 	use TransactionTrait, AccessTrait;
 	
 	#[Route('/', name: 'app_transaction_index', methods: ['GET'])]
-	public function index(#[CurrentUser] ?User $user, Request $request): Response
+	public function index(Request $request): Response
 	{
-		$query = $this->transactionService->getTransactionsForUser($user);
+		$query = $this->transactionService->getTransactions();
 		return $this->render('transaction/index.html.twig', [
 			'pagerfanta' => $this->paginate($query, $request),
 		]);
@@ -52,7 +47,7 @@ class TransactionController extends AbstractController
 	{
 		$transaction = new Transaction();
 		$form = $this->createForm(TransactionType::class, $transaction, [
-			'category' => $this->categoryRepository->getMainAndSubCategories($user),
+			'category' => $this->categoryRepository->getMainAndSubCategories(),
 			'wallet' => $this->walletRepository->getAll($user),
 			'user' => $user
 		]);
@@ -67,7 +62,7 @@ class TransactionController extends AbstractController
 			$id = $form->get('wallet')->getData();
 			$wallet = $this->walletRepository->find($id);
 			
-			$this->transactionService->calculate($wallet, $transaction, new: true);
+			$this->transactionService->calculate($wallet, $transaction, newTransaction: true);
 			
 			$entityManager->persist($transaction);
 			$entityManager->flush();
@@ -97,13 +92,13 @@ class TransactionController extends AbstractController
 		
 		$oldAmount = $transaction->getAmount();
 		$form = $this->createForm(TransactionType::class, $transaction, [
-			'category' => $this->categoryRepository->getMainAndSubCategories($user),
+			'category' => $this->categoryRepository->getMainAndSubCategories(),
 			'wallet' => $this->walletRepository->getAll($user)
 		]);
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
 			$wallet = $form->get('wallet')->getData();
-			$this->transactionService->calculate($wallet, $transaction, $oldAmount, false);
+			$this->transactionService->calculate($wallet, $transaction, $oldAmount);
 			
 			$entityManager->flush();
 			

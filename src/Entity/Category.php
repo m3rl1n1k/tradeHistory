@@ -18,9 +18,6 @@ class Category
 	#[ORM\Column(length: 255)]
 	private ?string $name = null;
 	
-	#[ORM\OneToMany(mappedBy: 'category', targetEntity: Transaction::class)]
-	private Collection $transactions;
-	
 	#[ORM\ManyToOne]
 	private ?User $user = null;
 	
@@ -30,23 +27,12 @@ class Category
 	
 	public function __construct()
 	{
-		$this->transactions = new ArrayCollection();
 		$this->subCategories = new ArrayCollection();
 	}
 	
 	public function getId(): ?int
 	{
 		return $this->id;
-	}
-	
-	public function getUser(): ?User
-	{
-		return $this->user;
-	}
-	
-	public function getUserId(): string
-	{
-		return $this->user->getUserIdentifier();
 	}
 	
 	public function setUser(?User $user): static
@@ -66,19 +52,6 @@ class Category
 		$this->name = $name;
 		
 		return $this;
-	}
-	
-	/**
-	 * @return Collection<int, Transaction>
-	 */
-	public function getTransactions(): Collection
-	{
-		return $this->transactions;
-	}
-	
-	public function setId(?int $id): void
-	{
-		$this->id = $id;
 	}
 	
 	/**

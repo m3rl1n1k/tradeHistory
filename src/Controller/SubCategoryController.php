@@ -25,11 +25,11 @@ class SubCategoryController extends AbstractController
 	}
 	
 	#[Route('/new', name: 'app_sub_category_new', methods: ['GET', 'POST'])]
-	public function new(#[CurrentUser] ?User $user, Request $request, EntityManagerInterface $entityManager): Response
+	public function new(Request $request, EntityManagerInterface $entityManager): Response
 	{
 		$subCategory = new SubCategory();
 		$form = $this->createForm(SubCategoryType::class, $subCategory, [
-			'main_category' => $this->category->getAll($user)
+			'main_category' => $this->category->getAll()
 		]);
 		$form->handleRequest($request);
 		
@@ -47,11 +47,11 @@ class SubCategoryController extends AbstractController
 	}
 	
 	#[Route('/{id}/edit', name: 'app_sub_category_edit', methods: ['GET', 'POST'])]
-	public function edit(#[CurrentUser] ?User $user, Request $request, SubCategory $subCategory, EntityManagerInterface $entityManager):
+	public function edit(Request $request, SubCategory $subCategory, EntityManagerInterface $entityManager):
 	Response
 	{
 		$form = $this->createForm(SubCategoryType::class, $subCategory, [
-			'main_category' => $this->category->getAll($user)
+			'main_category' => $this->category->getAll()
 		]);
 		$form->handleRequest($request);
 		

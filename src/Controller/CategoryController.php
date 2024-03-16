@@ -30,10 +30,10 @@ class CategoryController extends AbstractController
 	use AccessTrait;
 	
 	#[Route('/', name: 'app_category_index', methods: ['GET'])]
-	public function index(#[CurrentUser] ?User $user): Response
+	public function index(): Response
 	{
 		return $this->render('category/index.html.twig', [
-			'categories' => $this->categoryRepository->getMainAndSubCategories($user),
+			'categories' => $this->categoryRepository->getMainAndSubCategories(),
 		]);
 	}
 	
@@ -52,28 +52,9 @@ class CategoryController extends AbstractController
 			return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
 		}
 		
-		$categories = $this->categoryRepository->getAll($user);
+		$categories = $this->categoryRepository->getAll();
 		return $this->render('category/new.html.twig', [
 			'categories' => $categories,
-			'category' => $category,
-			'form' => $form,
-		]);
-	}
-	
-	#[Route('/{id}/edit', name: 'app_category_edit', methods: ['GET', 'POST'])]
-	public function edit(#[CurrentUser] ?User $user, Request $request, Category $category, EntityManagerInterface $entityManager):
-	Response
-	{
-		$this->accessDenied($category, $user);
-		$form = $this->createForm(CategoryType::class, $category);
-		$form->handleRequest($request);
-		
-		if ($form->isSubmitted() && $form->isValid()) {
-			$entityManager->flush();
-			return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
-		}
-		
-		return $this->render('category/edit.html.twig', [
 			'category' => $category,
 			'form' => $form,
 		]);

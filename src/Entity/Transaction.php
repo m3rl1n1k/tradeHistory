@@ -3,8 +3,8 @@
 
 namespace App\Entity;
 
-use App\Enum\TransactionEnum;
 use App\Repository\TransactionRepository;
+use App\Transaction\TransactionEnum;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -32,11 +32,6 @@ class Transaction
 	#[ORM\ManyToOne]
 	#[ORM\JoinColumn(nullable: false)]
 	private ?User $user = null;
-	
-	#[ORM\ManyToOne(inversedBy: 'transactions')]
-	#[ORM\JoinColumn(onDelete: 'SET NULL')]
-	private ?Category $category = null;
-	
 	
 	#[ORM\ManyToOne(inversedBy: 'transactions')]
 	#[ORM\JoinColumn(nullable: false)]
@@ -110,11 +105,6 @@ class Transaction
 		return $this;
 	}
 	
-	public function getUserId(): ?string
-	{
-		return $this->user->getUserIdentifier();
-	}
-	
 	public function setUserId(?User $user): static
 	{
 		$this->user = $user;
@@ -130,25 +120,6 @@ class Transaction
 	public function isExpense(): bool
 	{
 		return $this->getType() === TransactionEnum::Expense->value ?? false;
-	}
-	
-	public function getCategory(): null|Category|SubCategory
-	{
-		if ($this->category === null) {
-			return $this->getSubCategory();
-		} else
-			return $this->category;
-		
-	}
-	
-	public function setCategory(null|Category|SubCategory $category): static
-	{
-		if ($category instanceof SubCategory) {
-			$this->setSubCategory($category);
-		} else
-			$this->category = $category;
-		
-		return $this;
 	}
 	
 	public function getSubCategory(): ?SubCategory

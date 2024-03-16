@@ -4,19 +4,14 @@ namespace App\Repository;
 
 use App\Entity\Transaction;
 use App\Entity\User;
-use App\Enum\TransactionEnum;
-use DatePeriod;
-use DateTime;
+use App\Transaction\TransactionEnum;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Bundle\SecurityBundle\Security;
 
 /**
  * @extends ServiceEntityRepository<Transaction>
@@ -29,28 +24,33 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class TransactionRepository extends ServiceEntityRepository
 {
 	
-	public function __construct(ManagerRegistry      $registry, protected CategoryRepository $categoryRepository,)
+	private ?User $user;
+	
+	public function __construct(ManagerRegistry              $registry,
+								protected CategoryRepository $categoryRepository,
+								protected Security           $security)
 	{
 		parent::__construct($registry, Transaction::class);
+		$this->user = $this->security->getUser();
 	}
 	
 	
-	public function getUserTransactionsQuery(UserInterface $user): Query
+	public function getUserTransactionsQuery(): Query
 	{
 		return $this->createQueryBuilder('transaction')
 			->where('transaction.user = :user')
 			->orderBy('transaction.id', 'DESC')
-			->setParameter('user', $user)
+			->setParameter('user', $this->user->getId())
 			->getQuery();
 	}
 	
-	public function getUserTransactions(int $user, array $orderBy = [], int $limit = null): array
+	public function getUserTransactions(array $orderBy = [], int $limit = null): array
 	{
-		return $this->findBy(['user' => $user], $orderBy, $limit);
+		return $this->findBy(['user' => $this->user->getId()], $orderBy, $limit);
 	}
 	
 	
-	public function getTransactionsPerPeriod(UserInterface $user, DateTimeInterface $dateStart, DateTimeInterface $dateEnd):
+	public function getTransactionsPerPeriod(DateTimeInterface $dateStart, DateTimeInterface $dateEnd):
 	string|array|int|float
 	{
 		return $this->createQueryBuilder('transaction')
@@ -58,55 +58,9 @@ class TransactionRepository extends ServiceEntityRepository
 			->andWhere('transaction.user = :user')
 			->setParameter('startDate', $dateStart)
 			->setParameter('endDate', $dateEnd)
-			->setParameter('user', $user)
+			->setParameter('user', $this->user->getId())
 			->getQuery()
 			->getResult();
-	}
-	
-	protected function notFoundedTransaction($data): bool
-	{
-		if (empty($data)) {
-			throw new NotFoundHttpException('Transaction not found!', null, Response::HTTP_NOT_FOUND);
-		}
-		return false;
-	}
-	
-	public function getOneBy(int $id): ?object
-	{
-		$record = $this->find($id);
-		$this->notFoundedTransaction($record);
-		return $record;
-	}
-	
-	public function updateDataTransaction(Transaction|null $transaction, mixed $update, User $user, $category_id): void
-	{
-		$category = $this->categoryRepository->findOneBy(['id' => $category_id]);
-		
-		$transaction->setAmount($update->getAmount());
-		$transaction->setType($update->getType());
-		$transaction->setDate($update->getDate());
-		$transaction->setDescription($update->getDescription());
-		$transaction->setUserId($user);
-		$transaction->setCategory($category);
-	}
-	
-	/**
-	 * @throws NonUniqueResultException
-	 * @throws NoResultException
-	 */
-	public function getMaxAmount(int $user, DatePeriod $period): float|bool|int|string|null
-	{
-		return $this->createQueryBuilder('transaction')
-			->select('max(transaction.amount)')
-			->andWhere('transaction.date BETWEEN :startDate AND :endDate')
-			->andWhere('transaction.user = :user')
-			->andWhere('transaction.type = :type')
-			->setParameter('startDate', $period->start)
-			->setParameter('endDate', $period->end)
-			->setParameter('type', TransactionEnum::Expense->value)
-			->setParameter('user', $user)
-			->getQuery()
-			->getSingleScalarResult();
 	}
 	
 	/**
@@ -122,7 +76,7 @@ class TransactionRepository extends ServiceEntityRepository
 			->setParameter('user', $user);
 		
 		foreach ($conditions as $key => $value) {
-			if (in_array($key, ['date', 'category','sub_category_id', 'user'])) {
+			if (in_array($key, ['date', 'category', 'sub_category_id', 'user'])) {
 				$queryBuilder->andWhere("transaction.$key = :$key")
 					->setParameter($key, $value);
 			}
@@ -136,7 +90,23 @@ class TransactionRepository extends ServiceEntityRepository
 		return $queryBuilder->getQuery()
 			->getSingleScalarResult() ?? 0;
 	}
-
+	
+	public function getAll(): array
+	{
+		return $this->findBy(['user' => $this->user->getUserId()]);
+	}
+	
+	public function getAllPerCurrentMonth(): array
+	{
+		$list = [];
+		$month = date("m");
+		foreach ($this->getAll() as $transaction) {
+		$transactionDate = $transaction->getDate();
+			if ($month === $transactionDate->format('m'))
+				$list[$transactionDate->format('d')] = $transaction;
+		}
+		return $list;
+	}
 }
 
 

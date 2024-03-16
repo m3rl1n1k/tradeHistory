@@ -68,13 +68,6 @@ class Wallet
 		return $this;
 	}
 	
-	public function setCustomNumber(string $number): static
-	{
-		$this->number = $number;
-		
-		return $this;
-	}
-	
 	public function getCurrency(): ?string
 	{
 		return $this->currency;
