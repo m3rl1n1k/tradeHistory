@@ -93,7 +93,9 @@ class TransactionRepository extends ServiceEntityRepository
 	
 	public function getAll(): array
 	{
-		return $this->findBy(['user' => $this->user->getUserId()]);
+		if ($this->user)
+			return $this->findBy(['user' => $this->user->getId()]);
+		return [];
 	}
 	
 	public function getAllPerCurrentMonth(): array
@@ -101,7 +103,7 @@ class TransactionRepository extends ServiceEntityRepository
 		$list = [];
 		$month = date("m");
 		foreach ($this->getAll() as $transaction) {
-		$transactionDate = $transaction->getDate();
+			$transactionDate = $transaction->getDate();
 			if ($month === $transactionDate->format('m'))
 				$list[$transactionDate->format('d')] = $transaction;
 		}

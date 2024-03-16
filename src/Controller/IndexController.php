@@ -25,23 +25,20 @@ class IndexController extends AbstractController
 	}
 	#[IsGranted('IS_AUTHENTICATED_FULLY')]
 	#[Route('/home', name: 'app_home', methods: ['GET'])]
-	public function home(#[CurrentUser] ?User $user, TransactionRepository $transactionRepository, Request $request):
+	public function home(TransactionRepository $transactionRepository, Request $request):
 	Response
 	{
+		if(!$this->getUser()){
+			$this->redirectToRoute('app_login');
+		}
 		$categoryList = $request->query->keys();
 //		$chart = $this->chartService->dashboardChart($user, ['categories' => $categoryList]);
 		return $this->render('index/index.html.twig', [
 			'categories_list' => $categoryList,
-			'categories' => $this->categoryRepository->getAll($user),
+			'categories' => $this->categoryRepository->getAll(),
 //			'chart' => $chart,
 			'last10transaction' => $transactionRepository->getUserTransactions(['id' => 'DESC'], 10)
 		]);
-	}
-	
-	#[Route('/', name: 'app_index')]
-	public function index(#[CurrentUser] ?User $user): Response
-	{
-		return !$user ? $this->redirectToRoute('app_login') : $this->redirectToRoute('app_home');
 	}
 	
 }
