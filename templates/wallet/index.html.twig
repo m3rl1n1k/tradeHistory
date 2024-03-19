@@ -11,21 +11,19 @@
     <table class="table table-responsive">
         <thead>
         <tr>
-            <th>Currency</th>
+            <th>Number</th>
             <th>Amount</th>
             <th>Name</th>
-            <th>Number</th>
         </tr>
         </thead>
         <tbody>
         {% for wallet in wallets %}
             <tr>
-                <td>{{ wallet.currency }}</td>
-                <td>{{ wallet.amount }}</td>
-                <td>{{ wallet.name  ?? "---"}}</td>
                 <td><a class="btn btn-outline-secondary" href="{{ path('app_wallet_show',{'number':wallet.number}) }}">{{ wallet
                         .number
                         }}</a></td>
+                <td>{{ wallet.amount }}</td>
+                <td>{{ wallet.name  ?? "---"}}</td>
             </tr>
         {% else %}
             <tr>

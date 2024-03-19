@@ -68,7 +68,6 @@ class TransactionType extends AbstractType
 		$resolver->setDefaults([
 			'data_class' => Transaction::class,
 			'wallet' => Wallet::class,
-			'user' => User::class,
 			'category' => null
 		]);
 	}

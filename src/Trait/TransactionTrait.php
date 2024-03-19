@@ -16,11 +16,7 @@ trait TransactionTrait
 		
 		$pagerfanta->setCurrentPage($request->query->getInt('page', 1));
 		
-		if ($inf) {
-			$pagerfanta->setMaxPerPage($pagerfanta->count());
-		} else {
-			$pagerfanta->setMaxPerPage($maxRecords);
-		}
+		$pagerfanta->setMaxPerPage(!$inf ? $maxRecords : $pagerfanta->count());
 		
 		return $pagerfanta;
 	}

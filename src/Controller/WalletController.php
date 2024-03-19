@@ -73,13 +73,7 @@ class WalletController extends AbstractController
 		$form->handleRequest($request);
 		
 		if ($form->isSubmitted() && $form->isValid()) {
-			
-			$formData = $form->getData();
-			$currency = $form->get('currency')->getData();
-			$number = $this->walletService->editWallet($wallet, $currency);
-			$formData->setCustomNumber($number);
 			$entityManager->flush();
-			
 			return $this->redirectToRoute('app_wallet_index', [], Response::HTTP_SEE_OTHER);
 		}
 		

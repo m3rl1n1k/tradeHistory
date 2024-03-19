@@ -48,8 +48,7 @@ class TransactionController extends AbstractController
 		$transaction = new Transaction();
 		$form = $this->createForm(TransactionType::class, $transaction, [
 			'category' => $this->categoryRepository->getMainAndSubCategories(),
-			'wallet' => $this->walletRepository->getAll($user),
-			'user' => $user
+			'wallet' => $this->walletRepository->getAll(),
 		]);
 		
 		$form->handleRequest($request);
