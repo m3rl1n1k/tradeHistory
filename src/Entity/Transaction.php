@@ -134,5 +134,10 @@ class Transaction
 		return $this;
 	}
 	
+	public function getUserId(): int
+	{
+		return $this->user->getId();
+	}
+	
 	
 }
