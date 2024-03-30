@@ -45,11 +45,12 @@ class CategoryController extends AbstractController
 		$form->handleRequest($request);
 		
 		if ($form->isSubmitted() && $form->isValid()) {
+            $this->categoryRepository->isSimilar($category);
 			$category->setUser($user);
 			$entityManager->persist($category);
 			$entityManager->flush();
 			
-			return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
+			return $this->redirectToRoute('app_category_new', [], Response::HTTP_SEE_OTHER);
 		}
 		
 		$categories = $this->categoryRepository->getAll();

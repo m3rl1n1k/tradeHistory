@@ -1,0 +1,29 @@
+<form class="my-4 " action="{{ path('app_home') }}" method="get">
+    <div class="row">
+        <div class="col-4">
+            <div class="btn-group dropend">
+                <button type="submit" class="btn btn-outline-info btn-sm">
+                    Show
+                </button>
+                <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split btn-sm"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="visually-hidden">Toggle Dropend</span>
+                </button>
+                <ul class="dropdown-menu">
+                    {% for category in categories %}
+                        <div class="form-check w-100">
+                            {% set isChecked = categories_list is defined and category.name in categories_list %}
+                            <input class="form-check-input mx-2" type="checkbox" id="{{ category.name }}"
+                                   name="{{ category.name }}" {{ isChecked ? 'checked' : '' }}
+                                   value="{{ category.id }}">
+                            <label class="form-check-label" for="{{ category.name }}">{{ category.name }}</label>
+                        </div>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="my-3">
+    {{ render_chart(chart) }}
+</div>
