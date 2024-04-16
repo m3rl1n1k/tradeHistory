@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="generator" content="Hugo 0.118.2">
     <title>{{ Welcome|default("Trade History") }}</title>
-
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
     {% block stylesheets %} {{ encore_entry_link_tags('app') }}{% endblock %}
 </head>
@@ -52,7 +52,7 @@
 
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center {{ isActive(path('app_home')) }} gap-2"
+                            <a class="nav-link d-flex align-items-center gap-2 {{ isActive(path('app_home')) }} "
                                aria-current="page"
                                href="{{ path('app_home') }}">
                                 <svg class="bi">
@@ -62,7 +62,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center {{ isActive(path('app_transaction_index')) }} gap-2"
+                            <a class="nav-link d-flex align-items-center gap-2 {{ isActive(path('app_transaction_index')) }} "
                                href="{{ path('app_transaction_index') }}">
                                 <svg class="bi">
                                     <use xlink:href="#cart"/>
@@ -71,7 +71,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center {{ isActive(path('app_transfer_index')) }} gap-2"
+                            <a class="nav-link d-flex align-items-center gap-2 {{ isActive(path('app_transfer_index')) }} "
                                href="{{ path('app_transfer_index') }}">
                                 <svg class="bi">
                                     <use xlink:href="#transfer"/>
@@ -80,7 +80,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center {{ isActive(path('app_category_index')) }} gap-2"
+                            <a class="nav-link d-flex align-items-center gap-2 {{ isActive(path('app_category_index')) }} "
                                href="{{ path('app_category_index') }}">
                                 <svg class="bi">
                                     <use xlink:href="#file-earmark"/>
@@ -103,7 +103,7 @@
 
                     <ul class="nav flex-column mb-auto">
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center {{ isActive(path('app_wallet_index')) }} gap-2"
+                            <a class="nav-link d-flex align-items-center gap-2 {{ isActive(path('app_wallet_index')) }} "
                                href="{{ path('app_wallet_index') }}">
                                 <svg class="bi">
                                     <use xlink:href="#wallet"/>
@@ -131,9 +131,9 @@
                                 Sign out
                             </a>
                         </li>
-                        <li class="nav-item">
-                            {{ include('component/_theme.html.twig') }}
-                        </li>
+{#                        <li class="nav-item">#}
+{#                            {{ include('component/_theme.html.twig') }}#}
+{#                        </li>#}
                     </ul>
                 </div>
             </div>

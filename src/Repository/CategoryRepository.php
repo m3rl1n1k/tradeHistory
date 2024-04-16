@@ -7,6 +7,7 @@ use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Config\Definition\Exception\DuplicateKeyException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -54,6 +55,13 @@ class CategoryRepository extends ServiceEntityRepository
 		}
 		return $categoryChoices;
 	}
+
+    public function isSimilar(Category $category): void
+    {
+        if( $this->findBy(['name'=>$category->getName()])){
+            throw new DuplicateKeyException('You have same category!');
+        }
+    }
 	
 	
 }

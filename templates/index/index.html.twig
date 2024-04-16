@@ -3,35 +3,38 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block body %}
-    <form class="my-4 " action="{{ path('app_home') }}" method="get">
-        <div class="row">
-            <div class="col-4">
-                <div class="btn-group dropend">
-                    <button type="submit" class="btn btn-outline-info btn-sm">
-                        Show
-                    </button>
-                    <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split btn-sm"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="visually-hidden">Toggle Dropend</span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        {% for category in categories %}
-                            <div class="form-check w-100">
-                                {% set isChecked = categories_list is defined and category.name in categories_list %}
-                                <input class="form-check-input mx-2" type="checkbox" id="{{ category.name }}"
-                                       name="{{ category.name }}" {{ isChecked ? 'checked' : '' }} value="{{ category.id }}">
-                                <label class="form-check-label" for="{{ category.name }}">{{ category.name }}</label>
-                            </div>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
+    {% if app.user.currency() is empty %}
+        <div class="row mt-3">
+            <a href="{{ path('app_user_index', { 'id':app.user.id() }) }}" class="btn btn-lg btn-danger">Set
+                currency!</a>
         </div>
-    </form>
-    <div class="my-3">
-        <h4 class="text-info">Chart temporary not available!</h4>
-{#        {{ render_chart(chart) }}#}
+    {% endif %}
+    <div class="row mt-3">
+        <div class="col"><a href="{{ path('app_transaction_new') }}" class="btn btn-outline-success">Transaction
+                <svg class="bi">
+                    <use xlink:href="#plus"></use>
+                </svg>
+            </a>
+        </div>
+        <div class="col"><a href="{{ path('app_transfer_new') }}" class="btn btn-outline-success">Transfer
+                <svg class="bi">
+                    <use xlink:href="#plus"></use>
+                </svg>
+            </a></div>
+        <div class="col"><a href="{{ path('app_category_new') }}" class="btn btn-outline-success">Category
+                <svg class="bi">
+                    <use xlink:href="#plus"></use>
+                </svg>
+            </a></div>
     </div>
+    {% if  chart is not null %}
+        {{ include('component/_chart.html.twig') }}
+    {% else %}
+        <div class="my-3">
+            <h4 class="text-info">Chart temporary not available!</h4>
+        </div>
+    {% endif %}
+
 
     <div class="row mt-5">
         <h2>Last transactions: </h2>

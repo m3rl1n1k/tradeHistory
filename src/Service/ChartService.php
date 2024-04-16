@@ -100,8 +100,8 @@ class ChartService
 				$transactionType = $transaction->getType();
 				$transactionDate = $transaction->getDate()->format('d M y');
 				
-				if ($transactionType == $type && $transactionDate == $day) {
-					$list[$day] = +$transaction->getAmount();
+				if ($transactionType === $type && $transactionDate === $day) {
+					$list[$day] = $transaction ;
 				}
 			}
 		}

@@ -6,6 +6,7 @@ use App\Entity\SubCategory;
 use App\Entity\User;
 use App\Form\SubCategoryType;
 use App\Repository\CategoryRepository;
+use App\Repository\SubCategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +20,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class SubCategoryController extends AbstractController
 {
 	public function __construct(
-		protected CategoryRepository $category
+		protected CategoryRepository $category,
+		protected SubCategoryRepository $subCategory
 	)
 	{
 	}
@@ -34,6 +36,7 @@ class SubCategoryController extends AbstractController
 		$form->handleRequest($request);
 		
 		if ($form->isSubmitted() && $form->isValid()) {
+            $this->subCategory->isSimilar($subCategory);
 			$entityManager->persist($subCategory);
 			$entityManager->flush();
 			

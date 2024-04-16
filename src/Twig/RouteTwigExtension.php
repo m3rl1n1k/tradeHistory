@@ -28,6 +28,6 @@ class RouteTwigExtension extends AbstractExtension
 	
 	public function activePage(string $route, $activeClass = "active")
 	{
-		return$this->requestStack->getCurrentRequest()->getPathInfo() == $route ? $activeClass : "-";
+		return$this->requestStack->getCurrentRequest()->getPathInfo() == $route ? $activeClass : "";
 	}
 }

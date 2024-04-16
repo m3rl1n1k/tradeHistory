@@ -34,7 +34,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[ORM\OneToMany(mappedBy: 'user', targetEntity: Wallet::class, orphanRemoval: true)]
 	private Collection $wallets;
 	
-	#[ORM\Column(length: 4)]
+	#[ORM\Column(length: 4, nullable: true)]
 	private ?string $currency = null;
 	
 	#[ORM\OneToMany(mappedBy: 'user', targetEntity: Transfer::class, orphanRemoval: true)]
