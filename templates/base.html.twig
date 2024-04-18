@@ -6,7 +6,8 @@
     <meta name="description" content="">
     <meta name="generator" content="Hugo 0.118.2">
     <title>{{ Welcome|default("Trade History") }}</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+    <link rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
     {% block stylesheets %} {{ encore_entry_link_tags('app') }}{% endblock %}
 </head>
@@ -97,6 +98,15 @@
                                 Reports
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center {{ isActive(path('app_budget_index')) }} gap-2"
+                               href="{{ path('app_budget_index') }}">
+                                <svg class="bi">
+                                    <use xlink:href="#kanban"/>
+                                </svg>
+                                Budgets
+                            </a>
+                        </li>
                     </ul>
 
                     <hr class="my-3">
@@ -124,6 +134,18 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center {{ isActive(path('app_feedback')) }} gap-2"
+                               href="{{ path('app_feedback') }}">
+                                <svg class="bi">
+                                    <use xlink:href="#envelope"/>
+                                </svg>
+                                Feedback
+                            </a>
+                        </li>
+                    </ul>
+                    <hr class="my-3">
+                    <ul class="nav flex-column mb-auto">
+                        <li class="nav-item">
                             <a class="nav-link d-flex align-items-center gap-2" href="{{ path('app_logout') }}">
                                 <svg class="bi">
                                     <use xlink:href="#door-closed"/>
@@ -131,14 +153,12 @@
                                 Sign out
                             </a>
                         </li>
-{#                        <li class="nav-item">#}
-{#                            {{ include('component/_theme.html.twig') }}#}
-{#                        </li>#}
                     </ul>
                 </div>
             </div>
         </div>
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            {{ include('component/_flash.html.twig') }}
             {% block body %} {% endblock body %}
         </main>
     </div>

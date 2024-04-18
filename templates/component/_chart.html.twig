@@ -9,14 +9,14 @@
                         data-bs-toggle="dropdown" aria-expanded="false">
                     <span class="visually-hidden">Toggle Dropend</span>
                 </button>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu" style="min-width: 20em">
                     {% for category in categories %}
                         <div class="form-check w-100">
                             {% set isChecked = categories_list is defined and category.name in categories_list %}
-                            <input class="form-check-input mx-2" type="checkbox" id="{{ category.name }}"
+                            <input class="form-check-input mx-2" type="checkbox" id="{{ category.id }}"
                                    name="{{ category.name }}" {{ isChecked ? 'checked' : '' }}
                                    value="{{ category.id }}">
-                            <label class="form-check-label" for="{{ category.name }}">{{ category.name }}</label>
+                            <label class="form-check-label" for="{{ category.id }}">{{ category.name }}</label>
                         </div>
                     {% endfor %}
                 </ul>
@@ -25,5 +25,5 @@
     </div>
 </form>
 <div class="my-3">
-    {{ render_chart(chart) }}
+    Chart
 </div>

@@ -10,30 +10,38 @@
         </div>
     {% endif %}
     <div class="row mt-3">
-        <div class="col"><a href="{{ path('app_transaction_new') }}" class="btn btn-outline-success">Transaction
+        <div class="mt-2 col-md-4 col-sm-12 col-lg-3"><a href="{{ path('app_transaction_new') }}" class="btn btn-outline-success w-100">Transaction
                 <svg class="bi">
                     <use xlink:href="#plus"></use>
                 </svg>
             </a>
         </div>
-        <div class="col"><a href="{{ path('app_transfer_new') }}" class="btn btn-outline-success">Transfer
+        <div class="mt-2 col-md-4 col-sm-12 col-lg-3"><a href="{{ path('app_transfer_new') }}" class="btn btn-outline-success w-100">Transfer
                 <svg class="bi">
                     <use xlink:href="#plus"></use>
                 </svg>
-            </a></div>
-        <div class="col"><a href="{{ path('app_category_new') }}" class="btn btn-outline-success">Category
-                <svg class="bi">
-                    <use xlink:href="#plus"></use>
-                </svg>
-            </a></div>
-    </div>
-    {% if  chart is not null %}
-        {{ include('component/_chart.html.twig') }}
-    {% else %}
-        <div class="my-3">
-            <h4 class="text-info">Chart temporary not available!</h4>
+            </a>
         </div>
-    {% endif %}
+        <div class="mt-2 col-md-4 col-sm-12 col-lg-3"><a href="{{ path('app_category_new') }}" class="btn btn-outline-success w-100">Category
+                <svg class="bi">
+                    <use xlink:href="#plus"></use>
+                </svg>
+            </a>
+        </div>
+        <div class="mt-2 col-md-4 col-sm-12 col-lg-3"><a href="{{ path('app_budget_new') }}" class="btn btn-outline-success w-100">Budget
+                <svg class="bi">
+                    <use xlink:href="#plus"></use>
+                </svg>
+            </a>
+        </div>
+    </div>
+{#    {% if  chart is not null %}#}
+{#        {{ include('component/_chart.html.twig') }}#}
+{#    {% else %}#}
+{#        <div class="my-3">#}
+{#            <h4 class="text-info">Chart temporary not available!</h4>#}
+{#        </div>#}
+{#    {% endif %}#}
 
 
     <div class="row mt-5">

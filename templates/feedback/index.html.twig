@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Feedback{% endblock %}
+
+{% block body %}
+    <div class="row">
+        {{ form_start(form) }}
+        <div class="alert-danger">
+            {{ form_errors(form) }}
+        </div>
+        <div class="row">
+            <div class="offset-lg-2 col-lg-7 col-md-12 mt-3">
+                {{ form_label(form.name, 'From (email)', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="offset-lg-2 col-lg-7 col-md-12 mt-3">
+                {{ form_label(form.message, 'Message', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.message, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <button class="btn btn-success">{{ button_label|default('Send') }}</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}

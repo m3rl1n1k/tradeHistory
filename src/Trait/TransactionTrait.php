@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 trait TransactionTrait
 {
-	public function paginate(Query $query, Request $request, int $maxRecords = 10, bool $inf = false): Pagerfanta
+	public function paginate(Query $query, Request $request, int $maxRecords = 50, bool $inf = false): Pagerfanta
 	{
 		$adapter = new QueryAdapter($query);
 		$pagerfanta = new Pagerfanta($adapter);
