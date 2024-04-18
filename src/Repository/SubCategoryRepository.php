@@ -28,7 +28,7 @@ class SubCategoryRepository extends ServiceEntityRepository
 	}
     public function isSimilar(SubCategory $category): void
     {
-        if( $this->findBy(['name'=>$category->getName()])){
+        if ($this->findBy(['name' => $category->getName()])) {
             throw new DuplicateKeyException('You have same category!');
         }
     }
