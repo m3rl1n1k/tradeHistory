@@ -64,7 +64,6 @@ class CategoryController extends AbstractController
 	public function delete(#[CurrentUser] ?User $user, Request $request, Category $category, EntityManagerInterface $entityManager):
 	Response
 	{
-//		$this->accessDenied($category, $user);
 		if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
 			
 			try {

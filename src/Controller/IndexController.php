@@ -9,9 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 class IndexController extends AbstractController
@@ -43,7 +42,7 @@ class IndexController extends AbstractController
         $categoryList = $request->query->keys();
         return $this->render('index/index.html.twig', [
             'categories_list' => $categoryList,
-            'categories' => $this->chartService->getCategoriesList(),
+//            'categories' => $this->chartService->getCategoriesList(),
             'last10transaction' => $transactionRepository->getUserTransactions(['date' => 'DESC'], 10)
         ]);
     }
