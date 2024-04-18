@@ -98,18 +98,26 @@ class TransactionRepository extends ServiceEntityRepository
         return [];
     }
 
-    public function getAllPerCurrentMonth(): array
+    public function getAllPerCurrentMonth(): ?array
     {
-        $date = null;
-        $sum = null;
-        $currentMonth = date("m");
+//        $date = null;
+//        $sum = null;
+//        $currentMonth = date("m");
+//        foreach ($this->getAll() as $transaction) {
+//            $transactionDate = $transaction->getDate();
+//            if ($currentMonth === $transactionDate->format('m'))
+//                $date = $transactionDate->format('d');
+//            $sum = $transaction->getAmount() + $sum;
+//        }
+//        return $sum;
+        $list = [];
+        $month = date("m");
         foreach ($this->getAll() as $transaction) {
             $transactionDate = $transaction->getDate();
-            if ($currentMonth === $transactionDate->format('m'))
-                $date = $transactionDate->format('d');
-            $sum = $transaction->getAmount() + $sum;
+            if ($month === $transactionDate->format('m'))
+                $list[$transactionDate->format('d').".".$transaction->getId()] = $transaction;
         }
-        return $sum;
+        return $list;
     }
 }
 
