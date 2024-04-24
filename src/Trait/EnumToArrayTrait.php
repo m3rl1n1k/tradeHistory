@@ -23,10 +23,5 @@ trait EnumToArrayTrait
 		return $values;
 	}
 	
-	public static function transactionTypes(): array
-	{
-		$types = TransactionEnum::valueAsKey();
-		unset($types[TransactionEnum::Transfer->name]);
-		return $types;
-	}
+
 }
