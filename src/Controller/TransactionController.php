@@ -92,7 +92,7 @@ class TransactionController extends AbstractController
 		$oldAmount = $transaction->getAmount();
 		$form = $this->createForm(TransactionType::class, $transaction, [
 			'category' => $this->categoryRepository->getMainAndSubCategories(),
-			'wallet' => $this->walletRepository->getAll($user)
+			'wallet' => $this->walletRepository->getAll()
 		]);
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {

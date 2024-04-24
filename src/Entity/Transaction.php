@@ -37,7 +37,6 @@ class Transaction
     #[ORM\JoinColumn(nullable: false)]
     private ?Wallet $wallet = null;
 
-//    #[ORM\Column('sub_category ')]
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?SubCategory $subCategory = null;

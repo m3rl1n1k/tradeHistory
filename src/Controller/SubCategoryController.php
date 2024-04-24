@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\SubCategory;
 use App\Entity\User;
+use App\Enum\ColorEnum;
 use App\Form\SubCategoryType;
 use App\Repository\CategoryRepository;
 use App\Repository\SubCategoryRepository;
