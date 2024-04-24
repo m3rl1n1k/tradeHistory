@@ -8,7 +8,7 @@ trait AccessTrait
 {
 	public function accessDenied(object $object, User $user): void
 	{
-		if ($user->getUserId() !== $object->getUserId()) {
+		if ($user->getId() !== $object->getUserId()) {
 			throw $this->createAccessDeniedException('You don\'t have access! ');
 		}
 	}

@@ -10,7 +10,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
 #[Route('/budget')]
 class BudgetController extends AbstractController
 {
@@ -18,7 +20,7 @@ class BudgetController extends AbstractController
     public function index(BudgetRepository $budgetRepository): Response
     {
         return $this->render('budget/index.html.twig', [
-            'budgets' => $budgetRepository->findAll(),
+            'budgets' => $budgetRepository->getAll(),
         ]);
     }
 

@@ -5,11 +5,12 @@
 {% block body %}
     <h1>Budget index</h1>
 
-    <table class="table">
+    <table class="table table-responsive">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Amout</th>
+                <th>Amount</th>
+                <th>Category</th>
                 <th>Total</th>
                 <th>Public</th>
                 <th>actions</th>
@@ -19,7 +20,8 @@
         {% for budget in budgets %}
             <tr>
                 <td>{{ budget.id }}</td>
-                <td>{{ budget.amout }}</td>
+                <td>{{ budget.amount }}</td>
+                <td>{{ budget.category.name }}</td>
                 <td>{{ budget.total }}</td>
                 <td>{{ budget.public ? 'Yes' : 'No' }}</td>
                 <td>

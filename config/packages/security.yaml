@@ -31,7 +31,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
 #        - { path: ^/api,       roles: ROLE_USER }
-#        - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 
 when@test:
     security:

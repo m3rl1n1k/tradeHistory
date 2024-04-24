@@ -35,13 +35,13 @@
 {#            </a>#}
 {#        </div>#}
     </div>
-{#    {% if  chart is not null %}#}
-{#        {{ include('component/_chart.html.twig') }}#}
-{#    {% else %}#}
-{#        <div class="my-3">#}
-{#            <h4 class="text-info">Chart temporary not available!</h4>#}
-{#        </div>#}
-{#    {% endif %}#}
+    {% if  chart is not null %}
+        {{ include('component/_chart.html.twig') }}
+    {% else %}
+        <div class="my-3">
+            <h4 class="text-info">Chart temporary not available!</h4>
+        </div>
+    {% endif %}
 
 
     <div class="row mt-5">

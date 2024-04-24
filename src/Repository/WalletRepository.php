@@ -55,7 +55,7 @@ class WalletRepository extends ServiceEntityRepository
 	public function getAll(): array
 	{
 		$result = [];
-		foreach ($this->findBy(['user' => $this->user->getUserId()]) as $wallet) {
+		foreach ($this->findBy(['user' => $this->user->getId()]) as $wallet) {
 			$result[$wallet->getId()] = $wallet;
 		}
 		return $result;

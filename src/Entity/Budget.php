@@ -16,7 +16,7 @@ class Budget
     private ?int $id = null;
 
     #[ORM\Column(nullable: true)]
-    private ?float $amout = null;
+    private ?float $amount = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -44,14 +44,14 @@ class Budget
         return $this->id;
     }
 
-    public function getAmout(): ?float
+    public function getAmount(): ?float
     {
-        return $this->amout;
+        return $this->amount;
     }
 
-    public function setAmout(?float $amout): static
+    public function setAmount(?float $amount): static
     {
-        $this->amout = $amout;
+        $this->amount = $amount;
 
         return $this;
     }
