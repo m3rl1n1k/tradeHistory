@@ -51,6 +51,35 @@ class ChartService
         return $chart;
     }
 
+    public function dashboardChart(array $options): Chart
+    {
+        $chart = $this->create(); // or 'line', 'pie', etc.
+
+        $chart->setData([
+            'labels' => $options,
+            'datasets' => [
+                [
+                    'label' => 'Expense',
+                    'data' => $this->datasetDashboard(TransactionEnum::Expense->value, $options),
+                    'backgroundColor' => $this->colors(),
+                    'borderColor' => $this->colors(),
+                    'borderWidth' => 1,
+                ],
+            ],
+        ]);
+
+// Set the chart options
+        $chart->setOptions([
+            'scales' => [
+                'y' => [
+                    'suggestedMin' => 0,
+                ],
+            ],
+        ]);
+
+        return $chart;
+    }
+
     /**
      * @param string $type
      * @param string $label

@@ -33,7 +33,7 @@ class CategoryRepository extends ServiceEntityRepository
 	
 	public function getAll(): array
 	{
-		return $this->findBy(['user' => $this->user->getUserId()]);
+		return $this->findBy(['user' => $this->user->getId()]);
 	}
 	
 	public function getMainAndSubCategories(): array

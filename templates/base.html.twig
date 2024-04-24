@@ -38,17 +38,16 @@
                             aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
                             <span class="nav-link d-flex align-items-center gap-2 text-decoration-underline">
                                 <svg class="bi">
-                                    <use xlink:href="#cash"/>
+                                    <use xlink:href="#cash"></use>
                                 </svg>
                                 Amount: {{ app.user.walletByCurrency ?? "0" }} {{ app.user.currency }}
                             </span>
-                        </li>
-                    </ul>
-
+                            </li>
+                        </ul>
                     <hr class="my-3">
 
                     <ul class="nav flex-column">
@@ -57,7 +56,7 @@
                                aria-current="page"
                                href="{{ path('app_home') }}">
                                 <svg class="bi">
-                                    <use xlink:href="#house-fill"/>
+                                    <use xlink:href="#house-fill"></use>
                                 </svg>
                                 Dashboard
                             </a>
@@ -66,7 +65,7 @@
                             <a class="nav-link d-flex align-items-center gap-2 {{ isActive(path('app_transaction_index')) }} "
                                href="{{ path('app_transaction_index') }}">
                                 <svg class="bi">
-                                    <use xlink:href="#cart"/>
+                                    <use xlink:href="#cart"></use>
                                 </svg>
                                 Transactions
                             </a>
@@ -75,7 +74,7 @@
                             <a class="nav-link d-flex align-items-center gap-2 {{ isActive(path('app_transfer_index')) }} "
                                href="{{ path('app_transfer_index') }}">
                                 <svg class="bi">
-                                    <use xlink:href="#transfer"/>
+                                    <use xlink:href="#transfer"></use>
                                 </svg>
                                 Transfers
                             </a>
@@ -84,7 +83,7 @@
                             <a class="nav-link d-flex align-items-center gap-2 {{ isActive(path('app_category_index')) }} "
                                href="{{ path('app_category_index') }}">
                                 <svg class="bi">
-                                    <use xlink:href="#file-earmark"/>
+                                    <use xlink:href="#file-earmark"></use>
                                 </svg>
                                 Category
                             </a>
@@ -93,7 +92,7 @@
                             <a class="nav-link d-flex align-items-center {{ isActive(path('app_report')) }} gap-2"
                                href="{{ path('app_report') }}">
                                 <svg class="bi">
-                                    <use xlink:href="#graph-up"/>
+                                    <use xlink:href="#graph-up"></use>
                                 </svg>
                                 Reports
                             </a>
@@ -102,7 +101,7 @@
                             <a class="nav-link d-flex align-items-center {{ isActive(path('app_budget_index')) }} gap-2"
                                href="{{ path('app_budget_index') }}">
                                 <svg class="bi">
-                                    <use xlink:href="#kanban"/>
+                                    <use xlink:href="#kanban"></use>
                                 </svg>
                                 Budgets
                             </a>
@@ -116,7 +115,7 @@
                             <a class="nav-link d-flex align-items-center gap-2 {{ isActive(path('app_wallet_index')) }} "
                                href="{{ path('app_wallet_index') }}">
                                 <svg class="bi">
-                                    <use xlink:href="#wallet"/>
+                                    <use xlink:href="#wallet"></use>
                                 </svg>
                                 Wallets
                             </a>
@@ -128,7 +127,7 @@
                             <a class="nav-link d-flex align-items-center {{ isActive(path('app_user_index',{'id':app.user.id})) }}
                             gap-2" href="{{ path('app_user_index', {'id':app.user.id}) }}">
                                 <svg class="bi">
-                                    <use xlink:href="#person"/>
+                                    <use xlink:href="#person"></use>
                                 </svg>
                                 Profile
                             </a>
@@ -137,7 +136,7 @@
                             <a class="nav-link d-flex align-items-center {{ isActive(path('app_feedback')) }} gap-2"
                                href="{{ path('app_feedback') }}">
                                 <svg class="bi">
-                                    <use xlink:href="#envelope"/>
+                                    <use xlink:href="#envelope"></use>
                                 </svg>
                                 Feedback
                             </a>
@@ -148,7 +147,7 @@
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center gap-2" href="{{ path('app_logout') }}">
                                 <svg class="bi">
-                                    <use xlink:href="#door-closed"/>
+                                    <use xlink:href="#door-closed"></use>
                                 </svg>
                                 Sign out
                             </a>

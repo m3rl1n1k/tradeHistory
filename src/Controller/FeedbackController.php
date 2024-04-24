@@ -27,9 +27,8 @@ class FeedbackController extends AbstractController
 
             $entityManager->persist($feedback);
             $entityManager->flush();
-
-            $this->addFlash("success", 'Message was successfully sent!');
             $this->redirectToRoute('app_home');
+            $this->addFlash("success", 'Message was successfully sent!');
         }
 
         return $this->render('feedback/index.html.twig', [

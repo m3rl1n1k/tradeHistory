@@ -54,6 +54,6 @@ class TransferRepository extends ServiceEntityRepository
 	
 	public function getAll(): array
 	{
-		return $this->findBy(['user' => $this->user->getUserId()]);
+		return $this->findBy(['user' => $this->user->getId()]);
 }
 }
