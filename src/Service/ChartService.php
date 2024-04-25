@@ -50,16 +50,14 @@ class ChartService
         return $chart;
     }
 
-    public function dashboardChart(array $options): Chart
+    public function dashboardChart(): Chart
     {
-        $chart = $this->create(); // or 'line', 'pie', etc.
-
+        $chart = $this->create(Chart::TYPE_DOUGHNUT);
         $chart->setData([
-            'labels' => $options,
+            'labels' => $this->getCategoriesList(),
             'datasets' => [
                 [
-                    'label' => 'Expense',
-                    'data' => $this->datasetDashboard(TransactionEnum::Expense->value, $options),
+                    'data' => $this->datasetDashboard(TransactionEnum::Expense->value),
                     'backgroundColor' => $this->colors(),
                     'borderColor' => $this->colors(),
                     'borderWidth' => 1,
@@ -69,10 +67,10 @@ class ChartService
 
 // Set the chart options
         $chart->setOptions([
-            'scales' => [
-                'y' => [
-                    'suggestedMin' => 0,
-                ],
+            'plugins' => [
+                'legend' => [
+                    'display' => false,
+                ]
             ],
         ]);
 
@@ -151,17 +149,14 @@ class ChartService
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
-    protected function datasetDashboard(int $type, $categories): array
+    protected function datasetDashboard(int $type): array
     {
         $dataset = [];
         foreach ($this->transactions as $transaction) {
             $subCategory = $transaction->getSubCategory();
-            if (!$subCategory) {
-                break;
-            }
-            if ($transaction->getType() === $type && in_array($subCategory->getName(), $categories)) {
-                $dataset[] = $this->transactionRepository->getTransactionSum([
-                    'subCategory' => $transaction->getSubCategory()->getId()
+            if ($transaction->getType() === $type) {
+                $dataset[$subCategory->getId()] = $this->transactionRepository->getTransactionSum([
+                    'subCategory' => $subCategory->getId()
                 ]);
             }
         }
@@ -178,7 +173,7 @@ class ChartService
             }
             $name = $subCategory->getName();
             if (!array_keys($list, $name))
-                $list[$name] = $transaction->getSubCategory();
+                $list[] = $transaction->getSubCategory()->getName();
         }
         return $list;
     }

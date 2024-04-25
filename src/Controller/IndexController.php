@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 class IndexController extends AbstractController
@@ -36,19 +37,12 @@ class IndexController extends AbstractController
 
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/home', name: 'app_home', methods: ['GET'])]
-    public function home(TransactionRepository $transactionRepository, Request $request):
+    public function home(TransactionRepository $transactionRepository, TranslatorInterface $translator):
     Response
     {
-        $categoryList = $request->query->keys();
-        $categoryList = array_map(function ($value){
-            return str_replace('_', ' ', $value);
-        },$categoryList);
-
         return $this->render('index/index.html.twig', [
-            'categories_list' => $categoryList,
-            'categories' => $this->chartService->getCategoriesList(),
             'last10transaction' => $transactionRepository->getUserTransactions(['date' => 'DESC'], 20),
-            'chart' => $this->chartService->dashboardChart($categoryList)
+            'chart' => $this->chartService->dashboardChart(),
         ]);
     }
 
