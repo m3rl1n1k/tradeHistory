@@ -9,9 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 class IndexController extends AbstractController
@@ -24,9 +23,8 @@ class IndexController extends AbstractController
     }
 
     #[Route('/', name: 'app_index')]
-    public function index(Request $request): RedirectResponse
+    public function index(): RedirectResponse
     {
-        define("App\Controller\LOCALE", $request->getLocale());
         if (!$this->getUser()) {
             $uri = $this->redirectToRoute('app_login');
         } else {
@@ -37,11 +35,11 @@ class IndexController extends AbstractController
 
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/home', name: 'app_home', methods: ['GET'])]
-    public function home(TransactionRepository $transactionRepository, TranslatorInterface $translator):
+    public function home(TransactionRepository $transactionRepository):
     Response
     {
         return $this->render('index/index.html.twig', [
-            'last10transaction' => $transactionRepository->getUserTransactions(['date' => 'DESC'], 20),
+            'last10transaction' => $transactionRepository->getUserTransactions(['date' => 'DESC'], 10),
             'chart' => $this->chartService->dashboardChart(),
         ]);
     }

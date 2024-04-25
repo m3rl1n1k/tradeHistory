@@ -90,7 +90,7 @@ class ChartService
             'label' => $label,
             'backgroundColor' => $this->colors()[$colorMax10],
             'borderColor' => $this->colors()[$colorMax10],
-            'data' => $result ?? [],
+            'data' => $result,
         ];
     }
 
@@ -155,8 +155,9 @@ class ChartService
         foreach ($this->transactions as $transaction) {
             $subCategory = $transaction->getSubCategory();
             if ($transaction->getType() === $type) {
-                $dataset[$subCategory->getId()] = $this->transactionRepository->getTransactionSum([
-                    'subCategory' => $subCategory->getId()
+                $subCategory = $subCategory ? $subCategory->getId() : "";
+                $dataset[$subCategory] = $this->transactionRepository->getTransactionSum([
+                    'subCategory' => $subCategory
                 ]);
             }
         }
