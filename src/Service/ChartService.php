@@ -73,11 +73,6 @@ class ChartService
                     'display' => false,
                 ]
             ],
-            'scales' => [
-                'y' => [
-                    'suggestedMin' => 0,
-                ],
-            ],
         ]);
 
         return $chart;

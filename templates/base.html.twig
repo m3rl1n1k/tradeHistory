@@ -16,7 +16,7 @@
 {{ include('component/_icons.html.twig') }}
 
 <header class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow" data-bs-theme="dark">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="{{ path('app_home') }}">Trade History</a>
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="{{ path('app_home') }}">{{ 'index.title'|trans({}, 'translation') }}</a>
 
     {{ include('component/_mobile_version_menu.html.twig') }}
 
@@ -43,7 +43,7 @@
                                 <svg class="bi">
                                     <use xlink:href="#cash"></use>
                                 </svg>
-                                Amount: {{ app.user.walletByCurrency ?? "0" }} {{ app.user.currency }}
+                                {{ 'menu.amount'|trans({}, 'translation') }}: {{ app.user.walletByCurrency ?? "0" }} {{ app.user.currency }}
                             </span>
                             </li>
                         </ul>
@@ -57,7 +57,7 @@
                                 <svg class="bi">
                                     <use xlink:href="#house-fill"></use>
                                 </svg>
-                                Dashboard
+                                {{ 'menu.dashboard'|trans({}, 'translation') }}
                             </a>
                         </li>
                         <li class="nav-item">
@@ -66,7 +66,7 @@
                                 <svg class="bi">
                                     <use xlink:href="#cart"></use>
                                 </svg>
-                                Transactions
+                                {{ 'menu.transaction'|trans({}, 'translation') }}
                             </a>
                         </li>
                         <li class="nav-item">
@@ -75,7 +75,7 @@
                                 <svg class="bi">
                                     <use xlink:href="#transfer"></use>
                                 </svg>
-                                Transfers
+                                {{ 'menu.transfer'|trans({}, 'translation') }}
                             </a>
                         </li>
                         <li class="nav-item">
@@ -84,7 +84,7 @@
                                 <svg class="bi">
                                     <use xlink:href="#file-earmark"></use>
                                 </svg>
-                                Category
+                                {{ 'menu.category'|trans({}, 'translation') }}
                             </a>
                         </li>
                         <li class="nav-item">
@@ -93,7 +93,7 @@
                                 <svg class="bi">
                                     <use xlink:href="#graph-up"></use>
                                 </svg>
-                                Reports
+                                {{ 'menu.report'|trans({}, 'translation') }}
                             </a>
                         </li>
                         <li class="nav-item">
@@ -102,7 +102,7 @@
                                 <svg class="bi">
                                     <use xlink:href="#kanban"></use>
                                 </svg>
-                                Budgets
+                                {{ 'menu.budget'|trans({}, 'translation') }}
                             </a>
                         </li>
                     </ul>
@@ -116,7 +116,7 @@
                                 <svg class="bi">
                                     <use xlink:href="#wallet"></use>
                                 </svg>
-                                Wallets
+                                {{ 'menu.wallet'|trans({}, 'translation') }}
                             </a>
                         </li>
                     </ul>
@@ -128,7 +128,7 @@
                                 <svg class="bi">
                                     <use xlink:href="#person"></use>
                                 </svg>
-                                Profile
+                                {{ 'menu.profile'|trans({}, 'translation') }}
                             </a>
                         </li>
                         <li class="nav-item">
@@ -137,7 +137,7 @@
                                 <svg class="bi">
                                     <use xlink:href="#envelope"></use>
                                 </svg>
-                                Feedback
+                                {{ 'menu.feedback'|trans({}, 'translation') }}
                             </a>
                         </li>
                     </ul>
@@ -148,7 +148,7 @@
                                 <svg class="bi">
                                     <use xlink:href="#door-closed"></use>
                                 </svg>
-                                Sign out
+                                {{ 'menu.sing_out'|trans({}, 'translation') }}
                             </a>
                         </li>
                     </ul>
