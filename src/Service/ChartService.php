@@ -154,14 +154,13 @@ class ChartService
         $dataset = [];
         foreach ($this->transactions as $transaction) {
             $subCategory = $transaction->getSubCategory();
-            if ($transaction->getType() === $type) {
-                $subCategory = $subCategory ? $subCategory->getId() : "";
-                $dataset[$subCategory] = $this->transactionRepository->getTransactionSum([
-                    'subCategory' => $subCategory
+            if ($transaction->getType() === $type && $subCategory !== null) {
+                $dataset[$subCategory->getId()] = $this->transactionRepository->getTransactionSum([
+                    'subCategory' => $subCategory->getId()
                 ]);
             }
         }
-        return $dataset;
+        return array_values($dataset);
     }
 
     public function getCategoriesList(): array
@@ -169,14 +168,10 @@ class ChartService
         $list = [];
         foreach ($this->transactions as $transaction) {
             $subCategory = $transaction->getSubCategory();
-            if (!$subCategory) {
-                break;
-            }
-            $name = $subCategory->getName();
-            if (!array_keys($list, $name))
+            if ($subCategory !== null)
                 $list[] = $transaction->getSubCategory()->getName();
         }
-        return $list;
+        return array_unique($list);
     }
 
 
