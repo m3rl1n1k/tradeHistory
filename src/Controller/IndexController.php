@@ -11,9 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[IsGranted('IS_AUTHENTICATED_FULLY')]
 class IndexController extends AbstractController
 {
     public function __construct(
@@ -37,7 +35,7 @@ class IndexController extends AbstractController
 
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/home', name: 'app_home', methods: ['GET'])]
-    public function home(TransactionRepository $transactionRepository, TranslatorInterface $translator):
+    public function home(TransactionRepository $transactionRepository):
     Response
     {
         return $this->render('index/index.html.twig', [
