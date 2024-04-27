@@ -159,7 +159,7 @@ class ChartService
                 $dataset[$subCategory->getId()] = $this->transactionRepository->getTransactionSum([
                     'subCategory' => $subCategory->getId()
                 ]);
-            } else {
+            } elseif($transaction->getType() === $type) {
                 $dataset['no_category'] += $transaction->getAmount();
             }
         }
