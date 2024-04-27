@@ -152,12 +152,15 @@ class ChartService
     protected function datasetDashboard(int $type): array
     {
         $dataset = [];
+        $dataset['no_category'] = 0;
         foreach ($this->transactions as $transaction) {
             $subCategory = $transaction->getSubCategory();
             if ($transaction->getType() === $type && $subCategory !== null) {
                 $dataset[$subCategory->getId()] = $this->transactionRepository->getTransactionSum([
                     'subCategory' => $subCategory->getId()
                 ]);
+            } else {
+                $dataset['no_category'] += $transaction->getAmount();
             }
         }
         return array_values($dataset);
@@ -166,12 +169,13 @@ class ChartService
     public function getCategoriesList(): array
     {
         $list = [];
+        $list[] = "No category";
         foreach ($this->transactions as $transaction) {
             $subCategory = $transaction->getSubCategory();
             if ($subCategory !== null)
                 $list[] = $transaction->getSubCategory()->getName();
         }
-        return array_unique($list);
+        return array_values(array_unique($list));
     }
 
 

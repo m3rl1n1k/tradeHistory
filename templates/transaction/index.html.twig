@@ -17,7 +17,7 @@
             </thead>
             <tbody>
             {% for transaction in pagerfanta.currentPageResults %}
-                <tr class="table-{{ transaction.subCategory.color }}">
+                <tr class="table-{{ transaction.subCategory.color|default('') }}">
                     <td class="text-center">
                         <a class="btn {{ color(transaction.type) }} text-decoration-none"
                            href="{{ path('app_transaction_show', {'id': transaction.id}) }}">
