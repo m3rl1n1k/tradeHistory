@@ -70,6 +70,13 @@ class ChartService
             'plugins' => [
                 'legend' => [
                     'display' => false,
+                ],
+                'title' => [
+                    'display' => true,
+                    'text' => $this->totalExpense(),
+                    'font' => [
+                        'size' => 40
+                    ],
                 ]
             ],
         ]);
@@ -176,6 +183,16 @@ class ChartService
                 $list[] = $transaction->getSubCategory()->getName();
         }
         return array_values(array_unique($list));
+    }
+
+    protected function totalExpense()
+    {
+        $sum = 0;
+        foreach ($this->transactions as $transaction) {
+            if ($transaction->getType() === TransactionEnum::Expense->value)
+                $sum += $transaction->getAmount();
+        }
+        return $sum ;
     }
 
 
