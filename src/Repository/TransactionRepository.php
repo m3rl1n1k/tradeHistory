@@ -69,27 +69,27 @@ class TransactionRepository extends ServiceEntityRepository
 	 */
 	public function getTransactionSum(array $conditions = [], string $type = TransactionEnum::Expense->value):
 	float|bool|int|string|null
-	{
-		$queryBuilder = $this->createQueryBuilder('transaction')
-			->select('SUM(transaction.amount)')
-			->andWhere('transaction.user = :user')
-			->setParameter('user', $this->user);
+    {
+        $queryBuilder = $this->createQueryBuilder('transaction')
+            ->select('SUM(transaction.amount)')
+            ->andWhere('transaction.user = :user')
+            ->setParameter('user', $this->user);
 
-		foreach ($conditions as $key => $value) {
-			if (in_array($key, ['date', 'subCategory', 'user'])) {
-				$queryBuilder->andWhere("transaction.$key = :$key")
-					->setParameter($key, $value);
-			}
-		}
+        foreach ($conditions as $key => $value) {
+            if (in_array($key, ['date', 'subCategory', 'user'])) {
+                $queryBuilder->andWhere("transaction.$key = :$key")
+                    ->setParameter($key, $value);
+            }
+        }
 
-		if ($type) {
-			$queryBuilder->andWhere('transaction.type = :type')
-				->setParameter('type', $type);
-		}
+        if ($type) {
+            $queryBuilder->andWhere('transaction.type = :type')
+                ->setParameter('type', $type);
+        }
 
-		return $queryBuilder->getQuery()
-			->getSingleScalarResult() ?? 0;
-	}
+        return $queryBuilder->getQuery()
+            ->getSingleScalarResult() ?? 0;
+    }
 
 	public function getAll(): array
 	{

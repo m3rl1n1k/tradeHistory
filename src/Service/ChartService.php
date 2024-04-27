@@ -9,7 +9,6 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
-use function PHPUnit\Framework\arrayHasKey;
 
 class ChartService
 {
@@ -53,6 +52,7 @@ class ChartService
 
     public function dashboardChart(): Chart
     {
+//        dd($this->getCategoriesList(), $this->datasetDashboard(TransactionEnum::Expense->value),);
         $chart = $this->create(Chart::TYPE_DOUGHNUT);
         $chart->setData([
             'labels' => $this->getCategoriesList(),
@@ -91,7 +91,7 @@ class ChartService
             'label' => $label,
             'backgroundColor' => $this->colors()[$colorMax10],
             'borderColor' => $this->colors()[$colorMax10],
-            'data' => $result ?? [],
+            'data' => $result,
         ];
     }
 
@@ -153,30 +153,30 @@ class ChartService
     protected function datasetDashboard(int $type): array
     {
         $dataset = [];
+        $dataset['no_category'] = 0;
         foreach ($this->transactions as $transaction) {
             $subCategory = $transaction->getSubCategory();
-            if ($transaction->getType() === $type) {
+            if ($transaction->getType() === $type && $subCategory !== null) {
                 $dataset[$subCategory->getId()] = $this->transactionRepository->getTransactionSum([
                     'subCategory' => $subCategory->getId()
                 ]);
+            } else {
+                $dataset['no_category'] += $transaction->getAmount();
             }
         }
-        return $dataset;
+        return array_values($dataset);
     }
 
     public function getCategoriesList(): array
     {
         $list = [];
+        $list[] = "No category";
         foreach ($this->transactions as $transaction) {
             $subCategory = $transaction->getSubCategory();
-            if (!$subCategory) {
-                break;
-            }
-            $name = $subCategory->getName();
-            if (!array_keys($list, $name))
+            if ($subCategory !== null)
                 $list[] = $transaction->getSubCategory()->getName();
         }
-        return $list;
+        return array_values(array_unique($list));
     }
 
 
