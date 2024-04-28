@@ -42,8 +42,7 @@ class ChartService
         $chart->setOptions([
             'scales' => [
                 'y' => [
-                    'suggestedMin' => 0,
-                    'suggestedMax' => 100
+                    'suggestedMin' => 0
                 ],
             ],
         ]);
@@ -73,7 +72,7 @@ class ChartService
                 ],
                 'title' => [
                     'display' => true,
-                    'text' => $this->totalExpense(),
+                    'text' => "Expense: {$this->totalExpense()}",
                     'font' => [
                         'size' => 40
                     ],
@@ -166,7 +165,7 @@ class ChartService
                 $dataset[$subCategory->getId()] = $this->transactionRepository->getTransactionSum([
                     'subCategory' => $subCategory->getId()
                 ]);
-            } elseif($transaction->getType() === $type) {
+            } elseif ($transaction->getType() === $type) {
                 $dataset['no_category'] += $transaction->getAmount();
             }
         }
@@ -185,14 +184,14 @@ class ChartService
         return array_values(array_unique($list));
     }
 
-    protected function totalExpense(): float
+    protected function totalExpense():float
     {
         $sum = 0;
         foreach ($this->transactions as $transaction) {
             if ($transaction->getType() === TransactionEnum::Expense->value)
                 $sum += $transaction->getAmount();
         }
-        return round($sum, 2) ;
+        return round($sum, 2);
     }
 
 

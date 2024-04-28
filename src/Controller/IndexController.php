@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\SubCategoryRepository;
 use App\Repository\TransactionRepository;
 use App\Service\ChartService;
+use App\Service\WalletService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +17,8 @@ class IndexController extends AbstractController
 {
     public function __construct(
         protected ChartService          $chartService,
-        protected SubCategoryRepository $subCategoryRepository
+        protected SubCategoryRepository $subCategoryRepository,
+        protected WalletService $walletService
     )
     {
     }
@@ -40,6 +42,7 @@ class IndexController extends AbstractController
         return $this->render('index/index.html.twig', [
             'last10transaction' => $transactionRepository->getUserTransactions(['date' => 'DESC'], 10),
             'chart' => $this->chartService->dashboardChart(),
+            'amount' => $this->walletService->getTotal()
         ]);
     }
 
