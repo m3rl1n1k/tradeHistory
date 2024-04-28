@@ -11,6 +11,12 @@ menu.wallet: Wallet
 menu.profile: Profile
 menu.feedback: Feedback
 menu.sing_out: 'Sing out'
-index.title: Home
-index.chart_not_available: 'Chart temporary not available'
-index.last_transaction: 'Last transactions'
+index:
+  card:
+    total: "Total on your account:"
+    description: ""
+  title: Home
+  chart_not_available: 'Chart temporary not available'
+  last_transaction: 'Last transactions:'
+  not_found_records: 'No records'
+
