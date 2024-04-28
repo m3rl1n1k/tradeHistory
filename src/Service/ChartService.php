@@ -185,14 +185,14 @@ class ChartService
         return array_values(array_unique($list));
     }
 
-    protected function totalExpense()
+    protected function totalExpense(): float
     {
         $sum = 0;
         foreach ($this->transactions as $transaction) {
             if ($transaction->getType() === TransactionEnum::Expense->value)
                 $sum += $transaction->getAmount();
         }
-        return $sum ;
+        return round($sum, 2) ;
     }
 
 
