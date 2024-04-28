@@ -1,12 +1,32 @@
 <ul class="navbar-nav flex-row d-md-none">
     <li class="nav-item">
-        <a class=" nav-link text-white" href="{{ path('app_transaction_new') }}">
-            <svg class="bi">
-                <use xlink:href="#plus"/>
-            </svg>
-        </a>
+        <div class="btn-group dropstart">
+            <button class="dropdown-toggle nav-link px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                New
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark" style="position: absolute !important;">
+                <li><a href="{{ path('app_transaction_new') }}"
+                       class="dropdown-item btn btn-outline-success w-100">{{ 'menu.transaction'|trans({}, 'translation') }}
+                        <svg class="bi">
+                            <use xlink:href="#plus"></use>
+                        </svg>
+                    </a></li>
+                <li><a href="{{ path('app_transfer_new') }}"
+                       class="dropdown-item btn btn-outline-success w-100">{{ 'menu.transfer'|trans({}, 'translation') }}
+                        <svg class="bi">
+                            <use xlink:href="#plus"></use>
+                        </svg>
+                    </a></li>
+                <li><a href="{{ path('app_sub_category_new') }}"
+                       class="dropdown-item btn btn-outline-success w-100">{{ 'menu.category'|trans({}, 'translation') }}
+                        <svg class="bi">
+                            <use xlink:href="#plus"></use>
+                        </svg>
+                    </a></li>
+            </ul>
+        </div>
     </li>
-{#    <li class="nav-item text-nowrap"> #}
+    {#    <li class="nav-item text-nowrap"> #}
     {#        <button class="nav-link px-3 text-white" type="button" data-bs-toggle="collapse" #}
     {#                data-bs-target="#navbarSearch" aria-controls="navbarSearch" aria-expanded="false" #}
     {#                aria-label="Toggle search"> #}
@@ -14,7 +34,7 @@
     {#                <use xlink:href="#search"/> #}
     {#            </svg> #}
     {#        </button> #}
-    {#    </li>#}
+    {#    </li> #}
     <li class="nav-item text-nowrap">
         <button class="nav-link px-3 text-white" type="button" data-bs-toggle="offcanvas"
                 data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"

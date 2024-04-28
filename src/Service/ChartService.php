@@ -74,7 +74,7 @@ class ChartService
                     'display' => true,
                     'text' => "Expense: {$this->totalExpense()}",
                     'font' => [
-                        'size' => 40
+                        'size' => 20
                     ],
                 ]
             ],
