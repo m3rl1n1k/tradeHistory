@@ -54,7 +54,7 @@ class CategoryController extends AbstractController
 		
 		$categories = $this->categoryRepository->getAll();
 		return $this->render('category/new.html.twig', [
-			'categories' => $categories,
+			'parent_categories' => $categories,
 			'category' => $category,
 			'form' => $form,
 		]);
