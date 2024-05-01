@@ -27,13 +27,13 @@
                         </div>
                         <ul class="list-group list-group-flush">
                             {% for key, sub in category %}
-                                <li class="list-group-item">
+                                <li class="list-group-item" style="background: {{ sub.color }}; color: {{ contrast(sub.color|default('')) }}">
                                     <svg class="bi">
                                         <use xlink:href="#arrow-return-right"></use>
                                     </svg>
                                     {{ sub.name }}
                                     <span class="float-end mx-2">{{ include('sub_category/_delete_form.html.twig') }}</span>
-                                    <a class="btn btn-sm btn-outline-warning float-end"
+                                    <a class="btn btn-sm btn-warning float-end"
                                        href="{{ path('app_sub_category_edit' ,{'id' : sub.id}) }}">Edit</a>
                                 </li>
                             {% endfor %}
