@@ -14,15 +14,16 @@ class TransactionExtension extends AbstractExtension
 		return [
 			new TwigFunction('type', [$this, 'type']),
 			new TwigFunction('color', [$this, 'color']),
+			new TwigFunction('contrast', [$this, 'tableColorContrast']),
 		];
 	}
 	
 	public function color(int $type): string
 	{
 		return match ($type) {
-			TransactionEnum::Income->value => "btn-outline-success",
-			TransactionEnum::Expense->value => "btn-outline-danger",
-			TransactionEnum::Transfer->value => "btn-outline-warning",
+			TransactionEnum::Income->value => "btn-success",
+			TransactionEnum::Expense->value => "btn-danger",
+			TransactionEnum::Transfer->value => "btn-warning",
 			default => "btn-outline-info"
 		};
 	}
@@ -36,4 +37,18 @@ class TransactionExtension extends AbstractExtension
 			default => ""
 		};
 	}
+    public function tableColorContrast($color):string
+    {
+        if (empty($color)){
+            return '';
+        }
+        // Convert hex color to RGB
+        list($r, $g, $b) = sscanf($color, "#%02x%02x%02x");
+
+        // Calculate perceived brightness (Luma)
+        $brightness = ($r * 0.299 + $g * 0.587 + $b * 0.114) / 255;
+
+        // Return white or black based on background brightness
+        return $brightness > 0.5 ? '#000000' : '#ffffff';
+    }
 }

@@ -14,7 +14,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for category in categories %}
+            {% for category in parent_categories %}
                 <tr>
                     <td>{{ category.name }}</td>
                     <td>{{ include('category/_delete_form.html.twig') }}</td>

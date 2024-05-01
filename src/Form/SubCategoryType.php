@@ -8,6 +8,7 @@ use App\Enum\ColorEnum;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -26,9 +27,11 @@ class SubCategoryType extends AbstractType
                 'choice_label' => 'name',
                 'label' => 'Parent category:'
             ])
-            ->add('color', ChoiceType::class, [
-                'placeholder' => "Select color",
-                'choices' => ColorEnum::colors()
+            ->add('color', ColorType::class, [
+                'required' => false,
+                'attr' => [
+                    'style' => 'min-height:2.375rem'
+                ]
             ]);
     }
 

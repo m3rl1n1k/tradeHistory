@@ -29,7 +29,7 @@ class TransactionType extends AbstractType
 			->add('wallet', ChoiceType::class, [
 				'placeholder' => "Select wallet",
 				'choice_label' => function (Wallet $wallet) {
-					return $wallet->getName() ?? $wallet->getNumber();
+					return !empty($wallet->getName()) ? $wallet->getName() : $wallet->getNumber();
 				},
 				'choice_value' => 'id',
 				'choices' => $wallets

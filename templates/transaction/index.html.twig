@@ -6,39 +6,39 @@
     <div class="my-3">
         {{ include('component/_link_succes.html.twig', {'href': path('app_transaction_new') }) }}
     </div>
-        <table class="table table-hover table-responsive">
-            <thead>
-            <tr>
-                <th>Amount</th>
-                <th>Category</th>
-                <th>Number</th>
-                <th>Date</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for transaction in pagerfanta.currentPageResults %}
-                <tr class="table-{{ transaction.subCategory.color|default('') }}">
-                    <td class="text-center">
-                        <a class="btn {{ color(transaction.type) }} text-decoration-none"
-                           href="{{ path('app_transaction_show', {'id': transaction.id}) }}">
-                            {{ transaction.amount }}
+    <table class="table table-hover table-responsive">
+        <thead>
+        <tr>
+            <th>Amount</th>
+            <th>Category</th>
+            <th>Number</th>
+            <th>Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for transaction in pagerfanta.currentPageResults %}
+            <tr style="--bs-table-color: {{ contrast(transaction.subCategory.color|default('')) }};--bs-table-bg: {{ transaction.subCategory.color|default('') }};">
+                <td class="text-center">
+                    <a class="btn {{ color(transaction.type) }} text-decoration-none"
+                       href="{{ path('app_transaction_show', {'id': transaction.id}) }}">
+                        {{ transaction.amount }}
 
-                        </a>
-                    </td>
-                    <td>{{ transaction.subCategory ? transaction.subCategory.name : '' }}</td>
-                    <td>{{ transaction.wallet.number ?? transaction.wallet.name }}</td>
-                    <td>{{ transaction.date ? transaction.date|date('d M') : '' }}</td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="6">no records found</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        <div class="pagination">
-            <div class="pagerfanta">
-                {{ pagerfanta(pagerfanta, 'twitter_bootstrap5') }}
-            </div>
+                    </a>
+                </td>
+                <td>{{ transaction.subCategory ? transaction.subCategory.name : '' }}</td>
+                <td>{{ transaction.wallet.number ?? transaction.wallet.name }}</td>
+                <td>{{ transaction.date ? transaction.date|date('d M') : '' }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination">
+        <div class="pagerfanta">
+            {{ pagerfanta(pagerfanta, 'twitter_bootstrap5') }}
         </div>
+    </div>
 {% endblock %}

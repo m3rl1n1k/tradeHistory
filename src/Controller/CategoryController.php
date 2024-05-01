@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Category;
-use App\Entity\SubCategory;
 use App\Entity\User;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
@@ -14,7 +13,7 @@ use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -55,7 +54,7 @@ class CategoryController extends AbstractController
 		
 		$categories = $this->categoryRepository->getAll();
 		return $this->render('category/new.html.twig', [
-			'categories' => $categories,
+			'parent_categories' => $categories,
 			'category' => $category,
 			'form' => $form,
 		]);
