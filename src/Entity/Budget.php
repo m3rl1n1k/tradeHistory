@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
+use App\IUser;
 use App\Repository\BudgetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BudgetRepository::class)]
-class Budget
+class Budget implements IUser
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -19,7 +20,7 @@ class Budget
     private ?float $amount = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'cascade')]
     private ?SubCategory $category = null;
 
     #[ORM\Column(nullable: true)]
@@ -114,5 +115,10 @@ class Budget
         $this->public = $public;
 
         return $this;
+    }
+
+    public function getUserId(): string
+    {
+        return $this->getUser();
     }
 }

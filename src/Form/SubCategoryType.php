@@ -7,6 +7,7 @@ use App\Entity\SubCategory;
 use App\Enum\ColorEnum;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -29,9 +30,11 @@ class SubCategoryType extends AbstractType
             ])
             ->add('color', ColorType::class, [
                 'required' => false,
-                'attr' => [
-                    'style' => 'min-height:2.375rem'
-                ]
+            ])
+            ->add('no_color', CheckboxType::class, [
+                'mapped' => false,
+                'required' => false,
+                'label' => "With out color"
             ]);
     }
 

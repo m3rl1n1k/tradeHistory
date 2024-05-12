@@ -3,6 +3,7 @@
 
 namespace App\Entity;
 
+use App\IUser;
 use App\Repository\TransactionRepository;
 use App\Transaction\TransactionEnum;
 use DateTimeInterface;
@@ -10,7 +11,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TransactionRepository::class)]
-class Transaction
+class Transaction implements IUser
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -105,7 +106,7 @@ class Transaction
         return $this;
     }
 
-    public function setUserId(?User $user): static
+    public function setUser(?User $user): static
     {
         $this->user = $user;
 
@@ -134,10 +135,14 @@ class Transaction
         return $this;
     }
 
-    public function getUserId(): int
+    public function getUserId(): string
     {
-        return $this->user->getId();
+        return $this->getUser()->getId();
     }
 
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
 
 }

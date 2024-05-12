@@ -30,11 +30,8 @@ class TransactionService implements TransactionServiceInterface
         return $this->transactionRepository->getTransactionsPerPeriod($dateStart, $dateEnd);
     }
 
-    public function getTransactions(bool $is_array = false): array|Query
+    public function getTransactions(): Query
     {
-        if ($is_array) {
-            return $this->transactions;
-        }
         return $this->transactionRepository->getUserTransactionsQuery();
     }
 
@@ -132,7 +129,7 @@ class TransactionService implements TransactionServiceInterface
 
         if (isset($options['rate'])) {
             $msg = 'Transfer from %s with exchange rate: %s';
-            $msg = sprintf($msg, $wallet->getNumber(), $options['rate']);
+            $msg = sprintf($msg, $wallet->getName() ?? $wallet->getNumber(), $options['rate']);
         }
         $date = new DateTime('now');
 
@@ -142,7 +139,7 @@ class TransactionService implements TransactionServiceInterface
             ->setDate($date)
             ->setType(TransactionEnum::Transfer->value)
             ->setDescription($msg)
-            ->setUserId($user);
+            ->setUser($user);
 
         $em->persist($transaction);
     }

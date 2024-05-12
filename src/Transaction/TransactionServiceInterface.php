@@ -8,7 +8,7 @@ use Doctrine\ORM\Query;
 
 interface TransactionServiceInterface
 {
-	public function getTransactions(bool $is_array = false): array|Query;
+	public function getTransactions(): Query;
 	
 	public function getTransactionsPerPeriod($dateStart, $dateEnd): array;
 	

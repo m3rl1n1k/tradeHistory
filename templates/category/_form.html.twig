@@ -5,6 +5,26 @@
         {{ form_label(form.name, 'Name of category', {'label_attr': {'class': 'form-label'}}) }}
         {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
     </div>
+    <div class="col-lg-6 col-md-12 mt-3 d-flex align-content-center justify-content-between">
+        <div class="mx-2">
+            {{ form_label(form.color, 'Color', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.color, {'attr': {'class': 'form-control form-control-color'}}) }}
+        </div>
+        <div class="">
+            {{ form_widget(form.no_color, {
+                'attr':
+                {
+                    'class': 'btn-check',
+                    'autocomplete': 'off'
+                }
+            }) }}
+            {{ form_label(form.no_color, 'With out color',{
+                'label_attr':{
+                    'class': 'btn btn-outline-success'
+                }
+            }) }}
+        </div>
+    </div>
 </div>
 {{ include('component/_button.html.twig', {
     'href': path('app_category_new'),
