@@ -98,4 +98,8 @@ class Transfer
 		
 		return $this;
 	}
+    public function getUserId(): string
+    {
+        return $this->getUser()->getId();
+    }
 }

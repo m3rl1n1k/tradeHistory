@@ -11,11 +11,12 @@ use Symfony\Bundle\SecurityBundle\Security;
 class WalletService
 {
     public function __construct(protected WalletRepository $walletRepository,
-    protected Security $security, protected ExchangeService $exchangeService)
+                                protected Security         $security,
+                                protected ExchangeService  $exchangeService)
     {
     }
 
-    public function getTotal():float
+    public function getTotal(): float
     {
         /** @var User $user */
         $user = $this->security->getUser();

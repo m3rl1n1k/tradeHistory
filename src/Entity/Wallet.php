@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
+use App\IUser;
 use App\Repository\WalletRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: WalletRepository::class)]
-class Wallet
+class Wallet implements IUser
 {
 	const LENGTH = 9;
 	#[ORM\Id]
@@ -213,4 +214,9 @@ class Wallet
 		
 		return $this;
 	}
+
+    public function getUserId(): string
+    {
+        return $this->getUser()->getId();
+    }
 }

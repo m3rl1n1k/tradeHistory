@@ -12,13 +12,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 class IndexController extends AbstractController
 {
     public function __construct(
         protected ChartService          $chartService,
         protected SubCategoryRepository $subCategoryRepository,
-        protected WalletService $walletService
+        protected WalletService $walletService,
     )
     {
     }

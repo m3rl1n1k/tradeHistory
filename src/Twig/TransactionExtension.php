@@ -49,6 +49,7 @@ class TransactionExtension extends AbstractExtension
         $brightness = ($r * 0.299 + $g * 0.587 + $b * 0.114) / 255;
 
         // Return white or black based on background brightness
-        return $brightness > 0.5 ? '#000000' : '#ffffff';
+        $contrast = $brightness > 0.5 ? '#0a0a0a' : '#eeeeee';
+        return "style=background:$color;color:$contrast";
     }
 }

@@ -6,12 +6,17 @@ use App\Entity\Feedback;
 use App\Form\FeedbackType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class FeedbackController extends AbstractController
 {
+    public function __construct(protected Security $security)
+    {
+    }
+
     #[Route('/feedback', name: 'app_feedback')]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -24,6 +29,7 @@ class FeedbackController extends AbstractController
             $formData = $form->getData();
             $date = new \DateTime();
             $formData->setDate($date);
+            $formData->setName($this->security->getUser()->getUserIdentifier());
 
             $entityManager->persist($feedback);
             $entityManager->flush();

@@ -11,19 +11,22 @@ use App\Trait\AccessTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 #[Route('/category')]
 class CategoryController extends AbstractController
 {
+    protected ?User $user;
 	public function __construct(protected SubCategoryRepository $subCategoryRepository,
-								protected CategoryRepository    $categoryRepository)
+								protected CategoryRepository    $categoryRepository,
+    protected Security $security)
 	{
+        $this->user = $this->security->getUser();
 	}
 	
 	use AccessTrait;
@@ -37,7 +40,7 @@ class CategoryController extends AbstractController
 	}
 	
 	#[Route('/new', name: 'app_category_new', methods: ['GET', 'POST'])]
-	public function new(#[CurrentUser] ?User $user, Request $request, EntityManagerInterface $entityManager): Response
+	public function new(Request $request, EntityManagerInterface $entityManager): Response
 	{
 		$category = new Category();
 		$form = $this->createForm(CategoryType::class, $category);
@@ -45,7 +48,7 @@ class CategoryController extends AbstractController
 		
 		if ($form->isSubmitted() && $form->isValid()) {
             $this->categoryRepository->isSimilar($category);
-			$category->setUser($user);
+			$category->setUser($this->user);
 			$entityManager->persist($category);
 			$entityManager->flush();
 			
@@ -61,10 +64,10 @@ class CategoryController extends AbstractController
 	}
 	
 	#[Route('/{id}', name: 'app_category_delete', methods: ['POST'])]
-	public function delete(#[CurrentUser] ?User $user, Request $request, Category $category, EntityManagerInterface $entityManager):
+	public function delete(Request $request, Category $category, EntityManagerInterface $entityManager):
 	Response
 	{
-		$this->accessDenied($category, $user);
+		$this->accessDenied($category, $this->user);
 		if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
 			
 			try {
@@ -82,6 +85,6 @@ class CategoryController extends AbstractController
 			}
 		}
 		
-		return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
+		return $this->redirectToRoute('app_category_new', [], Response::HTTP_SEE_OTHER);
 	}
 }
