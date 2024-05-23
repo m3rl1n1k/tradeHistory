@@ -24,19 +24,19 @@
                 </svg>
             </a>
         </div>
-        <div class="mt-2 col-md-4 col-sm-12 col-lg-3"><a href="{{ path('app_sub_category_new') }}"
+        <div class="mt-2 col-md-4 col-sm-12 col-lg-3"><a href="{{ path('app_category_new') }}"
                                                          class="btn btn-outline-success w-100">{{ 'menu.category'|trans({}, 'translation') }}
                 <svg class="bi">
                     <use xlink:href="#plus"></use>
                 </svg>
             </a>
         </div>
-{#        <div class="mt-2 col-md-4 col-sm-12 col-lg-3"><a href="{{ path('app_budget_new') }}" class="btn btn-outline-success w-100">Budget#}
-{#                <svg class="bi">#}
-{#                    <use xlink:href="#plus"></use>#}
-{#                </svg>#}
-{#            </a>#}
-{#        </div>#}
+        {#        <div class="mt-2 col-md-4 col-sm-12 col-lg-3"><a href="{{ path('app_budget_new') }}" class="btn btn-outline-success w-100">Budget #}
+        {#                <svg class="bi"> #}
+        {#                    <use xlink:href="#plus"></use> #}
+        {#                </svg> #}
+        {#            </a> #}
+        {#        </div> #}
     </div>
     {% if  chart is not null %}
         <div class="row">
@@ -64,30 +64,31 @@
         </div>
     {% endif %}
 
-
-    <div class="row mt-5">
-        <h2>{{ 'index.last_transaction'|trans({}, 'translation') }} </h2>
-        <table class="table table-hover table-responsive">
-            <thead>
-            </thead>
-            <tbody>
-            {% for  transaction in last10transaction %}
-                <tr>
-                    <td>{{ include('component/_transaction_type.html.twig') }}</td>
-                    <td class="text-center">
-                        <a class="btn {{ color(transaction.type) }} text-decoration-none"
-                           href="{{ path('app_transaction_show', {'id': transaction.id}) }}">{{ transaction.amount }}</a>
-                    </td>
-                    <td>{{ transaction.subCategory ? transaction.subCategory.name : '' }}</td>
-                    <td>{{ transaction.wallet ? transaction.wallet.number : '' }}</td>
-                    <td>{{ transaction.date ? transaction.date|date('d M') : '' }}</td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="6">{{ 'index.not_found_records'|trans({}, 'translation') }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+    {% if last10transaction|length > 0 %}
+        <div class="row mt-5">
+            <h2>{{ 'index.last_transaction'|trans({}, 'translation') }} </h2>
+            <table class="table table-hover table-responsive">
+                <thead>
+                </thead>
+                <tbody>
+                {% for  transaction in last10transaction %}
+                    <tr>
+                        <td>{{ include('component/_transaction_type.html.twig') }}</td>
+                        <td class="text-center">
+                            <a class="btn {{ color(transaction.type) }} text-decoration-none"
+                               href="{{ path('app_transaction_show', {'id': transaction.id}) }}">{{ transaction.amount }}</a>
+                        </td>
+                        <td>{{ transaction.Category ? transaction.Category.name : '' }}</td>
+                        <td>{{ transaction.wallet ? transaction.wallet.number : '' }}</td>
+                        <td>{{ transaction.date ? transaction.date|date('d M') : '' }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">{{ 'index.not_found_records'|trans({}, 'translation') }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
 {% endblock %}

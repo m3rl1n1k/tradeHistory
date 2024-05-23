@@ -40,7 +40,7 @@ class Transaction implements IUser
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
-    private ?SubCategory $subCategory = null;
+    private ?Category $category = null;
 
     public function getId(): ?int
     {
@@ -123,14 +123,14 @@ class Transaction implements IUser
         return $this->getType() === TransactionEnum::Expense->value ?? false;
     }
 
-    public function getSubCategory(): ?SubCategory
+    public function getCategory(): ?Category
     {
-        return $this->subCategory;
+        return $this->category;
     }
 
-    public function setSubCategory(?SubCategory $subCategory): static
+    public function setCategory(?Category $category): static
     {
-        $this->subCategory = $subCategory;
+        $this->category = $category;
 
         return $this;
     }

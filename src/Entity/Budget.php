@@ -21,7 +21,7 @@ class Budget implements IUser
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'cascade')]
-    private ?SubCategory $category = null;
+    private ?Category $category = null;
 
     #[ORM\Column(nullable: true)]
     private ?float $total = null;
@@ -57,12 +57,12 @@ class Budget implements IUser
         return $this;
     }
 
-    public function getCategory(): ?SubCategory
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
 
-    public function setCategory(SubCategory $category): static
+    public function setCategory(Category $category): static
     {
         $this->category = $category;
 

@@ -111,8 +111,8 @@ class TransactionService implements TransactionServiceInterface
         $groupedTransactions = [];
 
         foreach ($transactions as $transaction) {
-            $category = $transaction->getSubCategory();
-            if (!$transaction->getSubCategory()) {
+            $category = $transaction->getCategory();
+            if (!$transaction->getCategory()) {
                 $groupedTransactions['No category'][] = $transaction;
             } else {
                 $groupedTransactions[$category->getName()][] = $transaction;

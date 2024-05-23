@@ -18,14 +18,14 @@ use Symfony\Bundle\SecurityBundle\Security;
  */
 class TransferRepository extends ServiceEntityRepository
 {
-	private ?User $user;
-	
-	public function __construct(ManagerRegistry $registry,
-	protected Security $security)
-	{
-		parent::__construct($registry, Transfer::class);
-		$this->user = $this->security->getUser();
-	}
+    private ?User $user;
+
+    public function __construct(ManagerRegistry    $registry,
+                                protected Security $security)
+    {
+        parent::__construct($registry, Transfer::class);
+        $this->user = $this->security->getUser();
+    }
 
 //    /**
 //     * @return Transfer[] Returns an array of Transfer objects
@@ -51,9 +51,9 @@ class TransferRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-	
-	public function getAll(): array
-	{
-		return $this->findBy(['user' => $this->user->getId()]);
-}
+
+    public function getAll(): array
+    {
+        return $this->findBy(['user' => $this->user->getId()], ['date' => 'ASC']);
+    }
 }

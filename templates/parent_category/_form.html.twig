@@ -1,14 +1,8 @@
 {{ form_start(form) }}
-<div class="alert-danger">
-    {{ form_errors(form) }}
-</div>
-<div class="row">
-    <div class="col-lg-6 col-md-12 mt-3">
-        {{ form_label(form.category, 'Parent category:', {'label_attr': {'class': 'form-label'}}) }}
-        {{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
-    </div>
-    <div class="col-lg-6 col-md-12 mt-3">
-        {{ form_label(form.name, 'Name', {'label_attr': {'class': 'form-label'}}) }}
+
+<div class="row mb-4">
+    <div class="col-lg-6 col-md-12">
+        {{ form_label(form.name, 'Name of category', {'label_attr': {'class': 'form-label'}}) }}
         {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
     </div>
     <div class="col-lg-6 col-md-12 mt-3 d-flex align-content-center justify-content-between">
@@ -32,10 +26,12 @@
         </div>
     </div>
 </div>
-
-<br>
-<div class="mt-4">
-    {{ include('component/_button.html.twig') }}
-    {{ include('component/_link.html.twig', {'href' : path('app_category_index') }) }}
-</div>
+{{ include('component/_button.html.twig', {
+    'href': path('app_category_new'),
+    'button_label': 'Save'
+}) }}
+{{ include('component/_link.html.twig', {
+    'href': path('app_parent_category_index'),
+    'button_label': 'Save'
+}) }}
 {{ form_end(form) }}

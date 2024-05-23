@@ -1,9 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Category{% endblock %}
+{% block title %}Edit Category{% endblock %}
 
 {% block body %}
-    <h3>Edit category</h3>
+    <h1>Edit Category</h1>
 
-    {{ include('category/_form.html.twig') }}
+    {{ include('category/_form.html.twig', {'button_label': 'Update'}) }}
+
+
+
 {% endblock %}

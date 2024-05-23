@@ -15,10 +15,10 @@
             <th>Amount</th>
             <td>{{ transaction.amount }}</td>
         </tr>
-        {% if transaction.subCategory %}
+        {% if transaction.Category %}
             <tr>
                 <th>Category</th>
-                <td>{{ transaction.subCategory.name }}</td>
+                <td>{{ transaction.Category.name }}</td>
             </tr>
         {% endif %}
         <tr>

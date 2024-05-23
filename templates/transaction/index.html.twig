@@ -17,7 +17,7 @@
         </thead>
         <tbody>
         {% for transaction in pagerfanta.currentPageResults %}
-            <tr style="--bs-table-color: {{ contrast(transaction.subCategory.color|default('')) }};--bs-table-bg: {{ transaction.subCategory.color|default('') }};">
+            <tr style="--bs-table-color: {{ contrast(transaction.Category.color|default('')) }};--bs-table-bg: {{ transaction.Category.color|default('') }};">
                 <td class="text-center">
                     <a class="btn {{ color(transaction.type) }} text-decoration-none"
                        href="{{ path('app_transaction_show', {'id': transaction.id}) }}">
@@ -25,7 +25,7 @@
 
                     </a>
                 </td>
-                <td>{{ transaction.subCategory ? transaction.subCategory.name : '' }}</td>
+                <td>{{ transaction.Category ? transaction.Category.name : '' }}</td>
                 <td>{{ transaction.wallet.number ?? transaction.wallet.name }}</td>
                 <td>{{ transaction.date ? transaction.date|date('d M') : '' }}</td>
             </tr>

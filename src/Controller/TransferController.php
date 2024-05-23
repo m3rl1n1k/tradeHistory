@@ -20,52 +20,53 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/transfer')]
 class TransferController extends AbstractController
 {
-	public function __construct(protected TransferService $transferService)
-	{
-	}
-	
-	#[Route('/', name: 'app_transfer_index', methods: ['GET'])]
-	public function index(TransferRepository $transferRepository): Response
-	{
-		return $this->render('transfer/index.html.twig', [
-			'transfers' => $transferRepository->getAll(),
-		]);
-	}
-	
-	#[Route('/new', name: 'app_transfer_new', methods: ['GET', 'POST'])]
-	public function new(#[CurrentUser] ?User $user, Request $request, EntityManagerInterface $entityManager): Response
-	{
-		$transfer = new Transfer();
-		$form = $this->createForm(TransferType::class, $transfer);
-		$form->handleRequest($request);
-		
-		if ($form->isSubmitted() && $form->isValid()) {
-			try {
-				$entityManager->beginTransaction();
-				$transfer->setUser($user);
-				$transfer->setDate();
-				$this->transferService->calculate($entityManager, $transfer, $user);
-				$entityManager->persist($transfer);
-				$entityManager->flush();
-				$entityManager->commit();
-				
-				return $this->redirectToRoute('app_transfer_index', [], Response::HTTP_SEE_OTHER);
-			} catch (Exception $exception) {
-				$entityManager->rollback();
-			}
-		}
-		
-		return $this->render('transfer/new.html.twig', [
-			'transfer' => $transfer,
-			'form' => $form,
-		]);
-	}
-	
-	#[Route('/{id}', name: 'app_transfer_show', methods: ['GET'])]
-	public function show(Transfer $transfer): Response
-	{
-		return $this->render('transfer/show.html.twig', [
-			'transfer' => $transfer,
-		]);
-	}
+    public function __construct(protected TransferService $transferService)
+    {
+    }
+
+    #[Route('/', name: 'app_transfer_index', methods: ['GET'])]
+    public function index(TransferRepository $transferRepository): Response
+    {
+        return $this->render('transfer/index.html.twig', [
+            'transfers' => $transferRepository->getAll(),
+        ]);
+    }
+
+    #[Route('/new', name: 'app_transfer_new', methods: ['GET', 'POST'])]
+    public function new(#[CurrentUser] ?User $user, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $transfer = new Transfer();
+        $form = $this->createForm(TransferType::class, $transfer);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $entityManager->beginTransaction();
+                $transfer->setUser($user);
+                $transfer->setDate();
+                $this->transferService->calculate($entityManager, $transfer, $user);
+                $entityManager->persist($transfer);
+                $entityManager->flush();
+                $entityManager->commit();
+
+                return $this->redirectToRoute('app_transfer_index', [], Response::HTTP_SEE_OTHER);
+            } catch (Exception $exception) {
+                $this->addFlash('error', $exception->getMessage());
+                $entityManager->rollback();
+            }
+        }
+
+        return $this->render('transfer/new.html.twig', [
+            'transfer' => $transfer,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}', name: 'app_transfer_show', methods: ['GET'])]
+    public function show(Transfer $transfer): Response
+    {
+        return $this->render('transfer/show.html.twig', [
+            'transfer' => $transfer,
+        ]);
+    }
 }

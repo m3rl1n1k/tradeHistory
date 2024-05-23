@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Budget;
-use App\Entity\SubCategory;
+use App\Entity\Category;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -17,23 +17,22 @@ class BudgetType extends AbstractType
     {
         $builder
             ->add('amount', NumberType::class, [
-                'attr' =>[
+                'attr' => [
                     'readonly' => true
                 ],
             ])
-            ->add('total', NumberType::class,[
+            ->add('total', NumberType::class, [
                 'required' => true
             ])
             ->add('category', EntityType::class, [
-                'class' => SubCategory::class,
+                'class' => Category::class,
                 'choice_label' => 'name',
             ])
             ->add('user', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'email',
                 'multiple' => true,
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

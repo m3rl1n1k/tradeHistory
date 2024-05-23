@@ -3,11 +3,11 @@
 namespace App\Service;
 
 use App\Entity\Category;
-use App\Entity\SubCategory;
+use App\Entity\ParentCategory;
 
-class SubCategoryService
+class CategoryService
 {
-    public function mainColor(Category $parent, SubCategory $category, $noColor): SubCategory|string|null
+    public function mainColor(ParentCategory $parent, Category $category, $noColor): Category|string|null
     {
         // if parent set & category set -> set category.color
         // if parent not set & category set -> set category.color
@@ -15,7 +15,7 @@ class SubCategoryService
         $parentColor = $parent->getColor();
         $categoryColor = $category->getColor();
         $result = 'Error in set color!';
-        if ($noColor){
+        if ($noColor) {
             return $category->setColor($parentColor);
         }
         if ($parentColor !== null && $categoryColor === null) {
@@ -24,8 +24,7 @@ class SubCategoryService
         if ($parentColor === null && $categoryColor !== null) {
             $result = $category->setColor($categoryColor);
         }
-        if ($parentColor !== null && $categoryColor !== null)
-        {
+        if ($parentColor !== null && $categoryColor !== null) {
             $result = $category->setColor($categoryColor);
         }
         return $result;

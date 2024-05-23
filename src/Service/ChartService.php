@@ -160,10 +160,10 @@ class ChartService
         $dataset = [];
         $dataset['no_category'] = 0;
         foreach ($this->transactions as $transaction) {
-            $subCategory = $transaction->getSubCategory();
-            if ($transaction->getType() === $type && $subCategory !== null) {
-                $dataset[$subCategory->getId()] = $this->transactionRepository->getTransactionSum([
-                    'subCategory' => $subCategory->getId()
+            $category = $transaction->getCategory();
+            if ($transaction->getType() === $type && $category !== null) {
+                $dataset[$category->getId()] = $this->transactionRepository->getTransactionSum([
+                    'category' => $category->getId()
                 ]);
             } elseif ($transaction->getType() === $type) {
                 $dataset['no_category'] += $transaction->getAmount();
@@ -177,14 +177,14 @@ class ChartService
         $list = [];
         $list[] = "No category";
         foreach ($this->transactions as $transaction) {
-            $subCategory = $transaction->getSubCategory();
-            if ($subCategory !== null)
-                $list[] = $transaction->getSubCategory()->getName();
+            $category = $transaction->getCategory();
+            if ($category !== null)
+                $list[] = $transaction->getCategory()->getName();
         }
         return array_values(array_unique($list));
     }
 
-    protected function totalExpense():float
+    protected function totalExpense(): float
     {
         $sum = 0;
         foreach ($this->transactions as $transaction) {

@@ -24,51 +24,51 @@ use Symfony\Bundle\SecurityBundle\Security;
 class TransactionRepository extends ServiceEntityRepository
 {
 
-	private ?User $user;
+    private ?User $user;
 
-	public function __construct(ManagerRegistry              $registry,
-								protected CategoryRepository $categoryRepository,
-								protected Security           $security)
-	{
-		parent::__construct($registry, Transaction::class);
-		$this->user = $this->security->getUser();
-	}
-
-
-	public function getUserTransactionsQuery(): Query
-	{
-		return $this->createQueryBuilder('transaction')
-			->where('transaction.user = :user')
-			->orderBy('transaction.date', 'DESC')
-			->setParameter('user', $this->user->getId())
-			->getQuery();
-	}
-
-	public function getUserTransactions(array $orderBy = [], int $limit = null): array
-	{
-		return $this->findBy(['user' => $this->user->getId()], $orderBy, $limit);
-	}
+    public function __construct(ManagerRegistry                    $registry,
+                                protected ParentCategoryRepository $categoryRepository,
+                                protected Security                 $security)
+    {
+        parent::__construct($registry, Transaction::class);
+        $this->user = $this->security->getUser();
+    }
 
 
-	public function getTransactionsPerPeriod(DateTimeInterface $dateStart, DateTimeInterface $dateEnd):
-	string|array|int|float
-	{
-		return $this->createQueryBuilder('transaction')
-			->andWhere('transaction.date BETWEEN :startDate AND :endDate')
-			->andWhere('transaction.user = :user')
-			->setParameter('startDate', $dateStart)
-			->setParameter('endDate', $dateEnd)
-			->setParameter('user', $this->user->getId())
-			->getQuery()
-			->getResult();
-	}
+    public function getUserTransactionsQuery(): Query
+    {
+        return $this->createQueryBuilder('transaction')
+            ->where('transaction.user = :user')
+            ->orderBy('transaction.date', 'DESC')
+            ->setParameter('user', $this->user->getId())
+            ->getQuery();
+    }
 
-	/**
-	 * @throws NonUniqueResultException
-	 * @throws NoResultException
-	 */
-	public function getTransactionSum(array $conditions = [], string $type = TransactionEnum::Expense->value):
-	float|bool|int|string|null
+    public function getUserTransactions(array $orderBy = [], int $limit = null): array
+    {
+        return $this->findBy(['user' => $this->user->getId()], $orderBy, $limit);
+    }
+
+
+    public function getTransactionsPerPeriod(DateTimeInterface $dateStart, DateTimeInterface $dateEnd):
+    string|array|int|float
+    {
+        return $this->createQueryBuilder('transaction')
+            ->andWhere('transaction.date BETWEEN :startDate AND :endDate')
+            ->andWhere('transaction.user = :user')
+            ->setParameter('startDate', $dateStart)
+            ->setParameter('endDate', $dateEnd)
+            ->setParameter('user', $this->user->getId())
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function getTransactionSum(array $conditions = [], string $type = TransactionEnum::Expense->value):
+    float|bool|int|string|null
     {
         $queryBuilder = $this->createQueryBuilder('transaction')
             ->select('SUM(transaction.amount)')
@@ -76,7 +76,7 @@ class TransactionRepository extends ServiceEntityRepository
             ->setParameter('user', $this->user);
 
         foreach ($conditions as $key => $value) {
-            if (in_array($key, ['date', 'subCategory', 'user'])) {
+            if (in_array($key, ['date', 'category', 'user'])) {
                 $queryBuilder->andWhere("transaction.$key = :$key")
                     ->setParameter($key, $value);
             }
@@ -91,24 +91,24 @@ class TransactionRepository extends ServiceEntityRepository
             ->getSingleScalarResult() ?? 0;
     }
 
-	public function getAll(): array
-	{
-		if ($this->user)
-			return $this->findBy(['user' => $this->user->getId()]);
-		return [];
-	}
+    public function getAll(): array
+    {
+        if ($this->user)
+            return $this->findBy(['user' => $this->user->getId()]);
+        return [];
+    }
 
-	public function getAllPerCurrentMonth(): ?array
-	{
-		$list = [];
-		$month = date("m");
-		foreach ($this->getAll() as $transaction) {
-			$transactionDate = $transaction->getDate();
-			if ($month === $transactionDate->format('m'))
-				$list[$transactionDate->format('d').".".$transaction->getId()] = $transaction;
-		}
-		return $list;
-	}
+    public function getAllPerCurrentMonth(): ?array
+    {
+        $list = [];
+        $month = date("m");
+        foreach ($this->getAll() as $transaction) {
+            $transactionDate = $transaction->getDate();
+            if ($month === $transactionDate->format('m'))
+                $list[$transactionDate->format('d') . "." . $transaction->getId()] = $transaction;
+        }
+        return $list;
+    }
 }
 
 
