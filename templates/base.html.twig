@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ua" data-bs-theme="auto">
+<html lang="en" data-bs-theme="auto">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -96,15 +96,15 @@
                                 {{ 'menu.report'|trans({}, 'translation') }}
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center {{ isActive(path('app_budget_index')) }} gap-2"
-                               href="{{ path('app_budget_index') }}">
-                                <svg class="bi">
-                                    <use xlink:href="#kanban"></use>
-                                </svg>
-                                {{ 'menu.budget'|trans({}, 'translation') }}
-                            </a>
-                        </li>
+{#                        <li class="nav-item">#}
+{#                            <a class="nav-link d-flex align-items-center {{ isActive(path('app_budget_index')) }} gap-2"#}
+{#                               href="{{ path('app_budget_index') }}">#}
+{#                                <svg class="bi">#}
+{#                                    <use xlink:href="#kanban"/>#}
+{#                                </svg>#}
+{#                                Budgets#}
+{#                            </a>#}
+{#                        </li>#}
                     </ul>
 
                     <hr class="my-3">

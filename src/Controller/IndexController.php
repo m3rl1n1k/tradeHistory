@@ -25,9 +25,8 @@ class IndexController extends AbstractController
     }
 
     #[Route('/', name: 'app_index')]
-    public function index(Request $request): RedirectResponse
+    public function index(): RedirectResponse
     {
-        define("App\Controller\LOCALE", $request->getLocale());
         if (!$this->getUser()) {
             $uri = $this->redirectToRoute('app_login');
         } else {

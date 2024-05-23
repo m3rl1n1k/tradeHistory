@@ -159,7 +159,6 @@ class ChartService
     {
         $dataset = [];
         $dataset['no_category'] = 0;
-
         foreach ($this->transactions as $transaction) {
             $subCategory = $transaction->getSubCategory();
             if ($transaction->getType() === $type && $subCategory !== null) {
