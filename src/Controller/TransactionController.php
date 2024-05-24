@@ -12,9 +12,11 @@ use App\Trait\TransactionTrait;
 use App\Transaction\TransactionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -22,12 +24,16 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/transaction')]
 class TransactionController extends AbstractController
 {
+    private ?UserInterface $user;
+
     public function __construct(
         protected TransactionService       $transactionService,
         protected ParentCategoryRepository $parentCategoryRepository,
         protected WalletRepository         $walletRepository,
+        protected Security                 $security
     )
     {
+        $this->user = $this->security->getUser();
     }
 
     use TransactionTrait, AccessTrait;
@@ -42,8 +48,7 @@ class TransactionController extends AbstractController
     }
 
     #[Route('/new', name: 'app_transaction_new', methods: ['GET', 'POST'])]
-    public function new(#[CurrentUser] ?User $user, Request $request, EntityManagerInterface $entityManager):
-    Response
+    public function new(#[CurrentUser] ?User $user, Request $request, EntityManagerInterface $entityManager): Response
     {
         $transaction = new Transaction();
         $form = $this->createForm(TransactionType::class, $transaction, [
@@ -63,7 +68,7 @@ class TransactionController extends AbstractController
             $id = $form->get('wallet')->getData();
             $wallet = $this->walletRepository->find($id);
 
-            $this->transactionService->calculate($wallet, $transaction, newTransaction: true);
+            $this->transactionService->newTransaction($wallet, $transaction);
 
             $entityManager->persist($transaction);
             $entityManager->flush();
@@ -99,7 +104,7 @@ class TransactionController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $wallet = $form->get('wallet')->getData();
-            $this->transactionService->calculate($wallet, $transaction, $oldAmount);
+            $this->transactionService->editTransaction($wallet, $transaction, $oldAmount);
 
             $entityManager->flush();
 
@@ -112,8 +117,7 @@ class TransactionController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_transaction_delete', methods: ['POST'])]
-    public function delete(Request                $request, Transaction $transaction,
-                           EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
     {
         $this->accessDenied($transaction, $this->user);
 

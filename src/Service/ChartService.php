@@ -49,6 +49,10 @@ class ChartService
         return $chart;
     }
 
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
     public function dashboardChart(): Chart
     {
         $chart = $this->create(Chart::TYPE_DOUGHNUT);
@@ -192,6 +196,31 @@ class ChartService
                 $sum += $transaction->getAmount();
         }
         return round($sum, 2);
+    }
+
+    public function historyChart(array $transactionsHistory): Chart
+    {
+        $chart = $this->create();
+        $chart->setData([
+            'labels' => array_keys($transactionsHistory),
+            'datasets' => [
+                [
+                    'data' => array_values($transactionsHistory),
+                    'backgroundColor' => $this->colors(),
+                    'borderColor' => $this->colors(),
+                    'borderWidth' => 1,
+                ],
+            ],
+        ]);
+
+        $chart->setOptions([
+            'plugins' => [
+                'legend' => [
+                    'display' => false,
+                ]
+            ],
+        ]);
+        return $chart;
     }
 
 

@@ -44,7 +44,7 @@ class TransferController extends AbstractController
                 $entityManager->beginTransaction();
                 $transfer->setUser($user);
                 $transfer->setDate();
-                $this->transferService->calculate($entityManager, $transfer, $user);
+                $this->transferService->calculate($transfer, $user);
                 $entityManager->persist($transfer);
                 $entityManager->flush();
                 $entityManager->commit();

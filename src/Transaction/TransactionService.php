@@ -18,8 +18,9 @@ class TransactionService implements TransactionServiceInterface
      */
     private array $transactions;
 
-    public function __construct(protected UserRepository        $userRepository,
-                                protected TransactionRepository $transactionRepository,
+    public function __construct(protected UserRepository         $userRepository,
+                                protected TransactionRepository  $transactionRepository,
+                                protected EntityManagerInterface $em
     )
     {
         $this->transactions = $this->transactionRepository->getAll();
@@ -35,28 +36,26 @@ class TransactionService implements TransactionServiceInterface
         return $this->transactionRepository->getUserTransactionsQuery();
     }
 
-    public function calculate(Wallet $wallet, Transaction $transaction, float $oldAmount = 0, bool $newTransaction =
-    false):
+    public function newTransaction(Wallet $wallet, Transaction $transaction): void
+    {
+        if ($transaction->isIncome()) {
+            $wallet->setAmount($wallet->increment($transaction->getAmount()));
+        }
+        if ($transaction->isExpense()) {
+            $wallet->setAmount($wallet->decrement($transaction->getAmount()));
+        }
+    }
+
+    public function editTransaction(Wallet $wallet, Transaction $transaction, float $oldAmount = 0):
     void
     {
-        if ($newTransaction) {
-            if ($transaction->isIncome()) {
-                $wallet->setAmount($wallet->increment($transaction->getAmount()));
-            }
-            if ($transaction->isExpense()) {
-                $wallet->setAmount($wallet->decrement($transaction->getAmount()));
-            }
-        } else {
-            $this->CurrentMoreOldAmount($wallet, $transaction, $oldAmount);
-            if ($transaction->getAmount() === $oldAmount && $transaction->isExpense()) {
-                $wallet->setAmount($wallet->getAmount());
-            }
-            if ($transaction->getAmount() === $oldAmount && $transaction->isIncome()) {
-                $wallet->setAmount($wallet->getAmount());
-            }
+        $this->CurrentMoreOldAmount($wallet, $transaction, $oldAmount);
+        if ($transaction->getAmount() === $oldAmount && $transaction->isExpense()) {
+            $wallet->setAmount($wallet->getAmount());
         }
-
-
+        if ($transaction->getAmount() === $oldAmount && $transaction->isIncome()) {
+            $wallet->setAmount($wallet->getAmount());
+        }
     }
 
     private function CurrentMoreOldAmount(Wallet $wallet, Transaction $transaction, float $oldAmount): void
@@ -108,21 +107,25 @@ class TransactionService implements TransactionServiceInterface
 
     public function groupTransactionsByCategory(array $transactions): array
     {
-        $groupedTransactions = [];
+        $groupedTransactions = $result = [];
 
         foreach ($transactions as $transaction) {
             $category = $transaction->getCategory();
             if (!$transaction->getCategory()) {
-                $groupedTransactions['No category'][] = $transaction;
+                $groupedTransactions['No category'][] = $transaction->getAmount();
             } else {
-                $groupedTransactions[$category->getName()][] = $transaction;
+                $groupedTransactions[$category->getName()][] = $transaction->getAmount();
             }
         }
 
-        return $groupedTransactions;
+        foreach ($groupedTransactions as $key => $groupedTransaction) {
+            $result[$key] = array_sum($groupedTransaction);
+        }
+
+        return $result;
     }
 
-    public function newTransaction(EntityManagerInterface $em, Wallet $wallet, int $amount, User $user, array $options = []): void
+    public function createTransaction(Wallet $wallet, int $amount, User $user, array $options = []): void
     {
         $msg = 'Transfer from %s';
         $msg = sprintf($msg, $wallet->getName() ?? $wallet->getNumber());
@@ -141,6 +144,6 @@ class TransactionService implements TransactionServiceInterface
             ->setDescription($msg)
             ->setUser($user);
 
-        $em->persist($transaction);
+        $this->em->persist($transaction);
     }
 }

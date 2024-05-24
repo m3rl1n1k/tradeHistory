@@ -2,21 +2,14 @@
 
 namespace App\Trait;
 
-use App\Entity\User;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 trait AccessTrait
 {
 
-    public function accessDenied($object, User $user): void
+    public function accessDenied($object, ?UserInterface $user): void
     {
         if ($user->getId() != $object->getUserId()) {
-            throw $this->createAccessDeniedException('You don\'t have access! ');
-        }
-    }
-
-    public function accessCustom($condition): void
-    {
-        if ($condition) {
             throw $this->createAccessDeniedException('You don\'t have access! ');
         }
     }

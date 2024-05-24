@@ -24,7 +24,7 @@ class TransferType extends AbstractType
             return (!empty($wallet->getName()) ? $wallet->getName() : $wallet->getNumber()) . " | " . $wallet->getAmount() . " " . $wallet->getCurrency();
         };
         $builder
-            ->add('amount', NumberType::class, ['required' => false])
+            ->add('amount', NumberType::class)
             ->add('fromWallet', EntityType::class, [
                 'class' => Wallet::class,
                 'choice_label' => $label,
