@@ -16,7 +16,7 @@
             <tbody>
             {% for parent_category in parent_categories %}
                 <tr>
-                    <td>{{ parent_category.name }}</td>
+                    <td {{ contrast(parent_category.color) }}>{{ parent_category.name }}</td>
                     <td>{{ include('parent_category/_delete_form.html.twig') }}</td>
                 </tr>
             {% endfor %}
