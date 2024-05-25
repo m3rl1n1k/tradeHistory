@@ -24,7 +24,7 @@ class Transaction implements IUser
     #[ORM\Column]
     private ?int $type = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private DateTimeInterface $date;
 
     #[ORM\Column(length: 255, nullable: true)]
