@@ -24,9 +24,6 @@ class Transaction implements IUser
     #[ORM\Column]
     private ?int $type = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private DateTimeInterface $date;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
@@ -41,6 +38,9 @@ class Transaction implements IUser
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Category $category = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?DateTimeInterface $date = null;
 
     public function getId(): ?int
     {
@@ -79,18 +79,6 @@ class Transaction implements IUser
     public function setType(int $type): static
     {
         $this->type = $type;
-        return $this;
-    }
-
-    public function getDate(): ?DateTimeInterface
-    {
-        return $this->date;
-    }
-
-    public function setDate(DateTimeInterface $date): static
-    {
-        $this->date = $date;
-
         return $this;
     }
 
@@ -143,6 +131,18 @@ class Transaction implements IUser
     public function getUser(): ?User
     {
         return $this->user;
+    }
+
+    public function getDate(): ?DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(DateTimeInterface $date): static
+    {
+        $this->date = $date;
+
+        return $this;
     }
 
 }
