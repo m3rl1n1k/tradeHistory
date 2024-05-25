@@ -1,38 +1,41 @@
-<div class="row">
-    {{ form_start(form) }}
-    <div class="alert-danger">
-        {{ form_errors(form) }}
-    </div>
-    <div class="row">
-        <div class="col-lg-4 col-md-12 mt-3">
-            {{ form_label(form.wallet, 'From/To', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.wallet, {'attr': {'class': 'form-control'}}) }}
-        </div>
-        <div class="col-lg-4 col-md-12 mt-3">
-            {{ form_label(form.amount, 'Amount', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.amount, {'attr': {'class': 'form-control'}}) }}
-        </div>
-        <div class="col-lg-4 col-md-12 mt-3">
-            {{ form_label(form.type, 'Type', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
-        </div>
-        <div class="col-lg-6 col-md-12 mt-3">
-            {{ form_label(form.date, 'Date', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
-        </div>
-        <div class="col-lg-6 col-md-12 mt-3">
-            {{ form_label(form.Category, 'Category', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.Category, {'attr': {'class': 'form-control'}}) }}
-        </div>
-        <div class="col-12 mt-3">
-            {{ form_label(form.description, 'Desription', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.description, {'attr': {'class': 'form-control '}}) }}
-        </div>
-    </div>
-
-    <div class="mt-4">
-        <button class="btn btn-success">{{ button_label|default('Save') }}</button>
-        <a class="btn btn-outline-secondary float-end" href="{{ path('app_transaction_index') }}">Back to list</a>
-    </div>
-    {{ form_end(form) }}
+{{ form_start(form) }}
+<div class="alert-danger">
+    {{ form_errors(form) }}
 </div>
+<div class="row">
+    <div class="col-md-4 mt-3">
+        {{ form_label(form.wallet, 'From/To', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.wallet, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="col-md-4 col-sm-6 mt-3">
+        {{ form_label(form.amount, 'Amount', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.amount, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="col-md-4 col-sm-6 mt-3">
+        {{ form_label(form.Category, 'Category', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.Category, {'attr': {'class': 'form-control'}}) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 mt-3">
+        {{ form_label(form.description, 'Desription', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-control '}}) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6 mt-3">
+        {{ form_label(form.type, 'Type', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="col-sm-6 mt-3">
+        {{ form_label(form.date, 'Date', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+    </div>
+</div>
+
+<div class="mt-4">
+    <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+    <a class="btn btn-outline-secondary float-end" href="{{ path('app_transaction_index') }}">Back to list</a>
+</div>
+{{ form_end(form) }}
+

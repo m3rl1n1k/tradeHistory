@@ -6,6 +6,8 @@ use App\Repository\CategoryRepository;
 use App\Repository\TransactionRepository;
 use App\Service\ChartService;
 use App\Service\WalletService;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,6 +35,10 @@ class IndexController extends AbstractController
         return $uri;
     }
 
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/home', name: 'app_home', methods: ['GET'])]
     public function home(TransactionRepository $transactionRepository):

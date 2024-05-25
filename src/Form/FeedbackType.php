@@ -14,7 +14,9 @@ class FeedbackType extends AbstractType
     {
         $builder
             ->add('message', TextareaType::class,[
-                'data' => ''
+                'attr' => [
+                    'placeholder' => "Write your message. This can be all you want! Suggestions, problems with the site, and more... So, I will try to fix this as quickly as I can =)"
+                ]
             ])
         ;
     }

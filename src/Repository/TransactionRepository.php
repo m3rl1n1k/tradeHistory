@@ -37,9 +37,9 @@ class TransactionRepository extends ServiceEntityRepository
 
     public function getUserTransactionsQuery(): Query
     {
-        return $this->createQueryBuilder('transaction')
-            ->where('transaction.user = :user')
-            ->orderBy('transaction.date', 'DESC')
+        return $this->createQueryBuilder('t')
+            ->where('t.user = :user')
+            ->orderBy('t.date', 'DESC')
             ->setParameter('user', $this->user->getId())
             ->getQuery();
     }
@@ -70,20 +70,20 @@ class TransactionRepository extends ServiceEntityRepository
     public function getTransactionSum(array $conditions = [], string $type = TransactionEnum::Expense->value):
     float|bool|int|string|null
     {
-        $queryBuilder = $this->createQueryBuilder('transaction')
-            ->select('SUM(transaction.amount)')
-            ->andWhere('transaction.user = :user')
+        $queryBuilder = $this->createQueryBuilder('t')
+            ->select('SUM(t.amount)')
+            ->andWhere('t.user = :user')
             ->setParameter('user', $this->user);
 
         foreach ($conditions as $key => $value) {
             if (in_array($key, ['date', 'category', 'user'])) {
-                $queryBuilder->andWhere("transaction.$key = :$key")
+                $queryBuilder->andWhere("t.$key = :$key")
                     ->setParameter($key, $value);
             }
         }
 
         if ($type) {
-            $queryBuilder->andWhere('transaction.type = :type')
+            $queryBuilder->andWhere('t.type = :type')
                 ->setParameter('type', $type);
         }
 
