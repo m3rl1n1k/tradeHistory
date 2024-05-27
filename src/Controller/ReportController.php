@@ -47,7 +47,7 @@ class ReportController extends AbstractController
 
 
             $transactions = $this->transactionService->getTransactionsPerPeriod($start, $end);
-            $income = $this->transactionService->getSum($transactions, TransactionEnum::Income->value);
+            $income = $this->transactionService->getSum($transactions, TransactionEnum::Profit->value);
             $expense = $this->transactionService->getSum($transactions, TransactionEnum::Expense->value);
             $transactionsHistory = $this->transactionService->groupTransactionsByCategory($transactions);
             $historyChart = $this->chartService->historyChart($transactionsHistory);

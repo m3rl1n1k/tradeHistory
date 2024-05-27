@@ -16,6 +16,7 @@ class UserFixtures extends Fixture
         $user->setCurrency("PLN");
         $user->setEmail('emailTestUser@email.com');
         $user->setPassword('$2y$13$Fp7wIggTVeaSGnGVqUIpveqSswNqGo7VMEERcXHOCv6ugx2Ccb796');
+        $user->setSetting(null);
         $this->addReference(self::USER_REFERENCE, $user);
         $manager->persist($user);
         $manager->flush();

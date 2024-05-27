@@ -20,6 +20,9 @@ class ParentCategoryType extends AbstractType
             ])
             ->add('color', ColorType::class, [
                 'required' => false,
+                'attr' => [
+                    "value" => "#1c6263"
+                ]
             ])
             ->add('no_color', CheckboxType::class, [
                 'mapped' => false,

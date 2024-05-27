@@ -14,7 +14,6 @@
                     <a class="btn {{ color(transaction.type) }} text-decoration-none"
                        href="{{ path('app_transaction_show', {'id': transaction.id}) }}">{{ transaction.amount }}</a>
                 </td>
-                {#                <td>{{ transaction.Category ? transaction.Category.name : '' }}</td> #}
                 <td>{{ transaction.date ? transaction.date|date('Y-m-d') : '' }}</td>
                 <td>{{ transaction.description }}</td>
             </tr>

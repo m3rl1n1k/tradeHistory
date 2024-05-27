@@ -9,7 +9,8 @@ trait AccessTrait
 
     public function accessDenied($object, ?UserInterface $user): void
     {
-        if ($user->getId() != $object->getUserId()) {
+//        dd($object, $user->getId());
+        if ($user->getId() !== $object) {
             throw $this->createAccessDeniedException('You don\'t have access! ');
         }
     }

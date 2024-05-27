@@ -1,0 +1,54 @@
+{{ form_start(form) }}
+{% if form_errors(form) %}
+    <div class="alert alert-danger">
+        {{ form_errors(form) }}
+    </div>
+{% endif %}
+<div class="row">
+    <div class="col-md-4 col-sm-6 mt-3">
+        <div class="form-check form-switch">
+            {{ form_widget(form.categoriesWithoutColor, {'attr': {'class': 'form-check-input'}}) }}
+            {{ form_label(form.categoriesWithoutColor, 'Both categories with out color', {'label_attr': {'class': 'form-check-label'}}) }}
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-6 mt-3">
+        <div class="form-check form-switch">
+            {{ form_widget(form.coloredCategories, {'attr': {'class': 'form-check-input'}}) }}
+            {{ form_label(form.coloredCategories, 'Category with color', {'label_attr': {'class': 'form-check-label'}}) }}
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-6 mt-3">
+        <div class="form-check form-switch">
+            {{ form_widget(form.coloredParentCategories, {'attr': {'class': 'form-check-input'}}) }}
+            {{ form_label(form.coloredParentCategories, 'Parent category with color', {'label_attr': {'class': 'form-check-label'}}) }}
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3 col-sm-6 mt-3">
+        {{ form_label(form.defaultColorForCategoryAndParent, 'Default color for both categories', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.defaultColorForCategoryAndParent, {'attr': {'class': 'form-control form-control-color'}}) }}
+    </div>
+    <div class="col-md-3 col-sm-6 mt-3">
+        {{ form_label(form.colorExpenseChart, 'Color for expence chart', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.colorExpenseChart, {'attr': {'class': 'form-control form-control-color'}}) }}
+    </div>
+    <div class="col-md-3 col-sm-6 mt-3">
+        {{ form_label(form.colorIncomeChart, 'Color for profit chart', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.colorIncomeChart, {'attr': {'class': 'form-control  form-control-color'}}) }}
+    </div>
+    <div class="col-md-3 col-sm-6 mt-3">
+        {{ form_label(form.transactionsPerPage, 'Count transactions to show per page', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.transactionsPerPage, {'attr': {'class': 'form-control'}}) }}
+    </div>
+</div>
+
+<div class="mt-4">
+    <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+    <a class="btn btn-outline-secondary float-end" href="{{ path('app_transaction_index') }}">Back to list</a>
+</div>
+{{ form_end(form) }}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('settings') }}
+{% endblock %}

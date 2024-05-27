@@ -1,7 +1,9 @@
 {{ form_start(form) }}
-<div class="alert-danger">
-    {{ form_errors(form) }}
-</div>
+{% if form_errors(form) %}
+    <div class="alert alert-danger">
+        {{ form_errors(form) }}
+    </div>
+{% endif %}
 <div class="row">
     <div class="col-md-4 mt-3">
         {{ form_label(form.wallet, 'From/To', {'label_attr': {'class': 'form-label'}}) }}
