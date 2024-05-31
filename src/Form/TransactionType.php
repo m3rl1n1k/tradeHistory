@@ -6,6 +6,7 @@ use App\Entity\Transaction;
 use App\Entity\Wallet;
 use App\Transaction\TransactionEnum;
 use DateTime;
+use Exception;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -20,8 +21,11 @@ class TransactionType extends AbstractType
 
     public function __construct()
     {
-        $this->date = (new DateTime())->format('Y-m-d\TH:i');
     }
+
+    /**
+     * @throws Exception
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $category = $options['category'];
@@ -59,8 +63,8 @@ class TransactionType extends AbstractType
             ->add('date', DateTimeType::class, [
                 'data' => new DateTime(),
                 'attr' => [
-                    'max' => $this->date,
-                ]
+                    'max' => (new DateTime())->format('Y-m-d'),
+                ],
             ])
             ->add('description', TextareaType::class, [
                 'required' => false,

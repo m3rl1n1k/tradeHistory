@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
-use App\IUser;
 use App\Repository\BudgetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BudgetRepository::class)]
-class Budget implements IUser
+class Budget
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -81,14 +80,6 @@ class Budget implements IUser
         return $this;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUser(): Collection
-    {
-        return $this->user;
-    }
-
     public function addUser(User $user): static
     {
         if (!$this->user->contains($user)) {
@@ -120,5 +111,13 @@ class Budget implements IUser
     public function getUserId(): string
     {
         return $this->getUser();
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUser(): Collection
+    {
+        return $this->user;
     }
 }

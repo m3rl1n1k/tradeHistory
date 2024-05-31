@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\IUser;
 use App\Repository\WalletRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use LogicException;
 
 #[ORM\Entity(repositoryClass: WalletRepository::class)]
-class Wallet implements IUser
+class Wallet
 {
     const LENGTH = 9;
     #[ORM\Id]
@@ -82,18 +81,6 @@ class Wallet implements IUser
         return $this;
     }
 
-    public function getAmount(): ?float
-    {
-        return $this->amount;
-    }
-
-    public function setAmount(?float $amount): static
-    {
-        $this->amount = $amount;
-
-        return $this;
-    }
-
     public function getUser(): ?User
     {
         return $this->user;
@@ -150,6 +137,25 @@ class Wallet implements IUser
     {
         $this->amountNotNull($amount);
         return $this->getAmount() + $amount;
+    }
+
+    protected function amountNotNull($amount)
+    {
+        if ($amount === null) {
+            throw new LogicException('You forget enter amount!?');
+        }
+    }
+
+    public function getAmount(): ?float
+    {
+        return $this->amount;
+    }
+
+    public function setAmount(?float $amount): static
+    {
+        $this->amount = $amount;
+
+        return $this;
     }
 
     public function decrement(?float $amount): float
@@ -216,17 +222,5 @@ class Wallet implements IUser
         }
 
         return $this;
-    }
-
-    public function getUserId(): string
-    {
-        return $this->getUser()->getId();
-    }
-
-    protected function amountNotNull($amount)
-    {
-        if ($amount === null) {
-            throw new LogicException('You forget enter amount!?');
-        }
     }
 }

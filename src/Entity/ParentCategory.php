@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
-use App\IUser;
 use App\Repository\ParentCategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ParentCategoryRepository::class)]
-class ParentCategory implements IUser
+class ParentCategory
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -37,13 +36,6 @@ class ParentCategory implements IUser
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function setUser(?User $user): static
-    {
-        $this->user = $user;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -100,13 +92,15 @@ class ParentCategory implements IUser
         return $this;
     }
 
-    public function getUserId(): string
-    {
-        return $this->getUser()->getId();
-    }
-
     public function getUser(): ?User
     {
         return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }

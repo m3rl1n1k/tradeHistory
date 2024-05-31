@@ -1,21 +1,16 @@
 {{ form_start(form) }}
-{% if form_errors(form) %}
-    <div class="alert alert-danger">
-        {{ form_errors(form) }}
-    </div>
-{% endif %}
+{{ include('component/_alert.html.twig') }}
 <div class="row">
     <div class="col-md-4 mt-3">
-        {{ form_label(form.wallet, 'From/To', {'label_attr': {'class': 'form-label'}}) }}
-        {{ form_widget(form.wallet, {'attr': {'class': 'form-control'}}) }}
-    </div>
-    <div class="col-md-4 col-sm-6 mt-3">
-        {{ form_label(form.amount, 'Amount', {'label_attr': {'class': 'form-label'}}) }}
-        {{ form_widget(form.amount, {'attr': {'class': 'form-control'}}) }}
-    </div>
-    <div class="col-md-4 col-sm-6 mt-3">
-        {{ form_label(form.Category, 'Category', {'label_attr': {'class': 'form-label'}}) }}
-        {{ form_widget(form.Category, {'attr': {'class': 'form-control'}}) }}
+        <div class="input-group">
+            <span class="input-group-text" id="basic-addon1">
+                {{ form_label(form.wallet, 'From/To', {'label_attr': {'class': 'form-label'}}) }}
+            </span>
+            {{ form_widget(form.wallet, {'attr': {'class': 'form-control'}}) }}
+            {{ form_widget(form.amount, {'attr': {'class': 'form-control', 'placeholder': 'Amount'}}) }}
+            <span class="input-group-text">{{ app.user.currency }}</span>
+            {{ form_widget(form.Category, {'attr': {'class': 'form-control'}}) }}
+        </div>
     </div>
 </div>
 <div class="row">
@@ -30,8 +25,9 @@
         {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
     </div>
     <div class="col-sm-6 mt-3">
+        {#        {{ dump(form.date.vars.value) }} #}
         {{ form_label(form.date, 'Date', {'label_attr': {'class': 'form-label'}}) }}
-        {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+        {{ form_widget(form.date, {'attr': {'class': 'form-control', 'max': form.date.vars.value}}) }}
     </div>
 </div>
 
