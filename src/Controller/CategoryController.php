@@ -36,9 +36,7 @@ class CategoryController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->category->isSimilar($category);
-            $parent = $form->getData()->getParentCategory();
-            $noColor = $form->get('no_color')->getData();
-            $this->categoryService->mainColor($parent, $category, $noColor);
+            $this->categoryService->mainColor($category, $form);
             $entityManager->persist($category);
             $entityManager->flush();
 

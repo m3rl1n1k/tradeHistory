@@ -17,34 +17,34 @@ class SettingUserType extends AbstractType
             ->add('coloredCategories', CheckboxType::class, [
                 'label' => 'Colored Categories',
                 'required' => false,
-                'data' => $options['data']['colored_categories']
+                'data' => $options['data']['coloredCategories']
 
             ])
             ->add('coloredParentCategories', CheckboxType::class, [
                 'label' => 'Colored Parent Categories',
                 'required' => false,
-                'data' => $options['data']['colored_parent_categories']
+                'data' => $options['data']['coloredParentCategories']
             ])
             ->add('colorExpenseChart', ColorType::class, [
                 'label' => 'Color Expense Chart',
-                'data' => $options['data']['color_expense_chart']
+                'data' => $options['data']['colorExpenseChart']
             ])
             ->add('colorIncomeChart', ColorType::class, [
                 'label' => 'Color Income Chart',
-                'data' => $options['data']['color_income_chart']
+                'data' => $options['data']['colorIncomeChart']
             ])
             ->add('transactionsPerPage', IntegerType::class, [
                 'label' => 'Transactions Per Page',
-                'data' => $options['data']['transactions_per_page']
+                'data' => $options['data']['transactionsPerPage']
             ])
             ->add('defaultColorForCategoryAndParent', ColorType::class, [
                 'label' => 'Default Color For Category And Parent',
-                'data' => $options['data']['default_color_for_category_and_parent']
+                'data' => $options['data']['defaultColorForCategoryAndParent']
             ])
             ->add('categoriesWithoutColor', CheckboxType::class, [
                 'label' => 'Categories Without Color',
                 'required' => false,
-                'data' => $options['data']['categories_without_color']
+                'data' => $options['data']['categoriesWithoutColor']
             ]);
     }
 

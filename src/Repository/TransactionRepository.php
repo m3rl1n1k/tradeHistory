@@ -91,13 +91,6 @@ class TransactionRepository extends ServiceEntityRepository
             ->getSingleScalarResult() ?? 0;
     }
 
-    public function getAll(): array
-    {
-        if ($this->user)
-            return $this->findBy(['user' => $this->user->getId()]);
-        return [];
-    }
-
     public function getAllPerCurrentMonth(): ?array
     {
         $list = [];
@@ -108,6 +101,13 @@ class TransactionRepository extends ServiceEntityRepository
                 $list[$transactionDate->format('d') . "." . $transaction->getId()] = $transaction;
         }
         return $list;
+    }
+
+    public function getAll(): array
+    {
+        if ($this->user)
+            return $this->findBy(['user' => $this->user->getId()]);
+        return [];
     }
 }
 

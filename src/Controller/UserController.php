@@ -60,12 +60,20 @@ class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_settings');
+            return $this->redirectToRoute('app_user_settings', ['id' => $id]);
         }
 
         return $this->render('user/setting_user.html.twig', [
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/remove/{id}', name: 'app_remove_account', methods: ['GET', 'POST'])]
+    public function removeAccount(int $id): void
+    {
+        $this->accessDenied($id, $this->getUser());
+
+    }
+
 
 }

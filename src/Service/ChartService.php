@@ -19,7 +19,8 @@ class ChartService
 
     public function __construct(protected ChartBuilderInterface $chartBuilder,
                                 protected TransactionRepository $transactionRepository,
-                                protected DateService           $dateService
+                                protected DateService           $dateService,
+                                protected SettingService        $userSettings
     )
     {
         $this->transactions = $this->transactionRepository->getAllPerCurrentMonth();
@@ -28,7 +29,7 @@ class ChartService
     public function reportChart(array $options): Chart
     {
         $chart = $this->create(Chart::TYPE_LINE);
-        $dataset[] = $this->matchOptions($options);
+        $dataset = $this->matchOptions($options);
 
         $chart->setData([
             'labels' => $this->dateService->currentMonthDates,
@@ -45,12 +46,17 @@ class ChartService
         return $chart;
     }
 
+    protected function create(string $type = Chart::TYPE_BAR): Chart
+    {
+        return $this->chartBuilder->createChart($type);
+    }
+
     protected function matchOptions(array $options): array
     {
         if ($options['expense'])
-            $res = $this->datasetReport(TransactionEnum::Expense->value, 'Expense');
+            $res[] = $this->datasetReport(TransactionEnum::Expense->value, 'Expense');
         if ($options['income'])
-            $res = $this->datasetReport(TransactionEnum::Profit->value, 'Income');
+            $res[] = $this->datasetReport(TransactionEnum::Profit->value, 'Income');
         return $res ?? [];
     }
 
@@ -59,15 +65,67 @@ class ChartService
      * @param string $label
      * @return array
      */
-    protected function datasetReport(string $type, string $label = ''): array
+    protected function datasetReport(string $type, string $label): array
     {
+
+//        $color = $this->colors($type);
         $result = $this->getSumByCurrentMonth($type);
         return [
             'label' => $label,
-            'backgroundColor' => $this->colors(),
-            'borderColor' => $this->colors(),
+            'backgroundColor' => $this->colors($type),
+            'borderColor' => $this->colors($type),
             'data' => $result,
         ];
+    }
+
+    /**
+     * @param string $type
+     * @return array
+     */
+    protected function getSumByCurrentMonth(string $type = TransactionEnum::Expense->value): array
+    {
+        $list = [];
+        $days = $this->dateService->currentMonthDates;
+
+        foreach ($days as $day) {
+            $sum = null;
+            $list[$day] = 0;
+            foreach ($this->transactions as $transaction) {
+
+                /** @var Transaction $transaction */
+                $transactionType = $transaction->getType();
+                $transactionDate = $transaction->getDate()->format('d M y');
+
+                if ($transactionType == $type && $transactionDate == $day) {
+                    $sum = $sum + $transaction->getAmount();
+                    $list[$day] = $sum;
+                }
+            }
+        }
+        return $list;
+    }
+
+    protected function colors($type = ''): string
+    {
+        if ($type == TransactionEnum::Expense->value) {
+            return $this->userSettings::getSettings()['colorExpenseChart'];
+        }
+        if ($type == TransactionEnum::Profit->value) {
+            return $this->userSettings->getSettings()['colorIncomeChart'];
+        }
+        $colorDataset = [
+            'rgb(255, 99, 132, 0.6)',
+            'rgb(225, 204, 079, 0.6)',
+            'rgb(042, 046, 075, 0.6)',
+            'rgb(230, 214, 144, 0.6)',
+            'rgb(134, 115, 161, 0.6)',
+            'rgb(037, 109, 123, 0.6)',
+            'rgb(162, 035, 029, 0.6)',
+            'rgb(048, 132, 070, 0.6)',
+            'rgb(034, 113, 179, 0.6)',
+            'rgb(234, 230, 202, 0.6)',
+        ];
+        return $colorDataset[array_rand($colorDataset)];
     }
 
     /**
@@ -108,58 +166,17 @@ class ChartService
         return $chart;
     }
 
-
-    protected function colors(): string
-    {
-        $colorDataset = [
-            'rgb(255, 99, 132, 0.6)',
-            'rgb(225, 204, 079, 0.6)',
-            'rgb(042, 046, 075, 0.6)',
-            'rgb(230, 214, 144, 0.6)',
-            'rgb(134, 115, 161, 0.6)',
-            'rgb(037, 109, 123, 0.6)',
-            'rgb(162, 035, 029, 0.6)',
-            'rgb(048, 132, 070, 0.6)',
-            'rgb(034, 113, 179, 0.6)',
-            'rgb(234, 230, 202, 0.6)',
-        ];
-        return $colorDataset[array_rand($colorDataset)];
-    }
-
-
-    /**
-     * @param string $type
-     * @return array
-     */
-    protected function getSumByCurrentMonth(string $type = TransactionEnum::Expense->value): array
+    public function getCategoriesList(): array
     {
         $list = [];
-        $days = $this->dateService->currentMonthDates;
-
-        foreach ($days as $day) {
-            $sum = null;
-            $list[$day] = 0;
-            foreach ($this->transactions as $transaction) {
-
-                /** @var Transaction $transaction */
-                $transactionType = $transaction->getType();
-                $transactionDate = $transaction->getDate()->format('d M y');
-
-                if ($transactionType == $type && $transactionDate == $day) {
-                    $sum = $sum + $transaction->getAmount();
-                    $list[$day] = $sum;
-                }
-            }
+        $list[] = "No category";
+        foreach ($this->transactions as $transaction) {
+            $category = $transaction->getCategory();
+            if ($category !== null)
+                $list[] = $transaction->getCategory()->getName();
         }
-        return $list;
+        return array_values(array_unique($list));
     }
-
-
-    protected function create(string $type = Chart::TYPE_BAR): Chart
-    {
-        return $this->chartBuilder->createChart($type);
-    }
-
 
     /**
      * @throws NonUniqueResultException
@@ -180,18 +197,6 @@ class ChartService
             }
         }
         return array_values($dataset);
-    }
-
-    public function getCategoriesList(): array
-    {
-        $list = [];
-        $list[] = "No category";
-        foreach ($this->transactions as $transaction) {
-            $category = $transaction->getCategory();
-            if ($category !== null)
-                $list[] = $transaction->getCategory()->getName();
-        }
-        return array_values(array_unique($list));
     }
 
     protected function totalExpense(): float

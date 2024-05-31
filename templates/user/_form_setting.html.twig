@@ -1,9 +1,5 @@
 {{ form_start(form) }}
-{% if form_errors(form) %}
-    <div class="alert alert-danger">
-        {{ form_errors(form) }}
-    </div>
-{% endif %}
+{{ include('component/_alert.html.twig') }}
 <div class="row">
     <div class="col-md-4 col-sm-6 mt-3">
         <div class="form-check form-switch">

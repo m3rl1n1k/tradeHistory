@@ -7,10 +7,14 @@ use App\Entity\User;
 use App\Form\TransactionType;
 use App\Repository\ParentCategoryRepository;
 use App\Repository\WalletRepository;
+use App\Service\SettingService;
 use App\Trait\AccessTrait;
-use App\Trait\TransactionTrait;
 use App\Transaction\TransactionService;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query;
+use Exception;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,11 +29,12 @@ class TransactionController extends AbstractController
     public function __construct(
         protected TransactionService       $transactionService,
         protected ParentCategoryRepository $parentCategoryRepository,
-        protected WalletRepository         $walletRepository)
+        protected WalletRepository         $walletRepository,
+        protected SettingService           $settingService)
     {
     }
 
-    use TransactionTrait, AccessTrait;
+    use  AccessTrait;
 
     #[Route('/', name: 'app_transaction_index', methods: ['GET'])]
     public function index(Request $request): Response
@@ -40,6 +45,21 @@ class TransactionController extends AbstractController
         ]);
     }
 
+    public function paginate(Query $query, Request $request, bool $inf = false): Pagerfanta
+    {
+        $adapter = new QueryAdapter($query);
+        $pagerfanta = new Pagerfanta($adapter);
+
+        $pagerfanta->setCurrentPage($request->query->getInt('page', 1));
+
+        $pagerfanta->setMaxPerPage(!$inf ? $this->settingService::getSettings()['transactionsPerPage'] : $pagerfanta->count());
+
+        return $pagerfanta;
+    }
+
+    /**
+     * @throws Exception
+     */
     #[Route('/new', name: 'app_transaction_new', methods: ['GET', 'POST'])]
     public function new(#[CurrentUser] ?User $user, Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -60,9 +80,9 @@ class TransactionController extends AbstractController
 
             $id = $form->get('wallet')->getData();
             $wallet = $this->walletRepository->find($id);
-
             $this->transactionService->newTransaction($wallet, $transaction);
-
+//            $transaction->setDate();
+            dd($transaction);
             $entityManager->persist($transaction);
             $entityManager->flush();
 
@@ -78,7 +98,7 @@ class TransactionController extends AbstractController
     #[Route('/{id}', name: 'app_transaction_show', methods: ['GET'])]
     public function show(Transaction $transaction): Response
     {
-        $this->accessDenied($transaction, $this->getUser());
+        $this->accessDenied($transaction->getUser()->getId(), $this->getUser());
         return $this->render('transaction/show.html.twig', [
             'transaction' => $transaction,
         ]);
@@ -87,7 +107,7 @@ class TransactionController extends AbstractController
     #[Route('/{id}/edit', name: 'app_transaction_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
     {
-        $this->accessDenied($transaction, $this->getUser());
+        $this->accessDenied($transaction->getUser()->getId(), $this->getUser());
 
         $oldAmount = $transaction->getAmount();
         $form = $this->createForm(TransactionType::class, $transaction, [
@@ -112,7 +132,7 @@ class TransactionController extends AbstractController
     #[Route('/{id}', name: 'app_transaction_delete', methods: ['POST'])]
     public function delete(Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
     {
-        $this->accessDenied($transaction, $this->getUser());
+        $this->accessDenied($transaction->getUser()->getId(), $this->getUser());
 
         if ($this->isCsrfTokenValid('delete' . $transaction->getId(), $request->request->get('_token'))) {
             $this->transactionService->removeTransaction($transaction->getWallet(), $transaction);
