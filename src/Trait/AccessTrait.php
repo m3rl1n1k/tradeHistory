@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 trait AccessTrait
 {
 
-    public function accessDenied($object, ?UserInterface $user): void
+    public function accessDenied(int $object, ?UserInterface $user): void
     {
 //        dd($object, $user->getId());
         if ($user->getId() !== $object) {

@@ -3,7 +3,6 @@
 
 namespace App\Entity;
 
-use App\IUser;
 use App\Repository\TransactionRepository;
 use App\Transaction\TransactionEnum;
 use DateTimeInterface;
@@ -11,7 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TransactionRepository::class)]
-class Transaction implements IUser
+class Transaction
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -28,7 +27,7 @@ class Transaction implements IUser
     private ?string $description = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'transactions')]
@@ -71,17 +70,6 @@ class Transaction implements IUser
         return $this;
     }
 
-    public function getType(): ?int
-    {
-        return $this->type;
-    }
-
-    public function setType(int $type): static
-    {
-        $this->type = $type;
-        return $this;
-    }
-
     public function getDescription(): ?string
     {
         return $this->description;
@@ -94,16 +82,20 @@ class Transaction implements IUser
         return $this;
     }
 
-    public function setUser(?User $user): static
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
     public function isIncome(): bool
     {
         return $this->getType() === TransactionEnum::Profit->value ?? false;
+    }
+
+    public function getType(): ?int
+    {
+        return $this->type;
+    }
+
+    public function setType(int $type): static
+    {
+        $this->type = $type;
+        return $this;
     }
 
     public function isExpense(): bool
@@ -123,14 +115,16 @@ class Transaction implements IUser
         return $this;
     }
 
-    public function getUserId(): string
-    {
-        return $this->getUser()->getId();
-    }
-
     public function getUser(): ?User
     {
         return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
     }
 
     public function getDate(): ?DateTimeInterface

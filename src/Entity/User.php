@@ -245,13 +245,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($setting === null) {
             $setting = [
-                'colored_categories' => true,
-                'colored_parent_categories' => true,
-                'color_expense_chart' => "#eeeeee",
-                'color_income_chart' => "#ffffff",
-                'transactions_per_page' => 20,
-                'default_color_for_category_and_parent' => "#1c6263",
-                'categories_without_color' => false,
+                'coloredCategories' => true,
+                'coloredParentCategories' => true,
+                'colorExpenseChart' => "#eeeeee",
+                'colorIncomeChart' => "#ffffff",
+                'transactionsPerPage' => 20,
+                'defaultColorForCategoryAndParent' => "#1c6263",
+                'categoriesWithoutColor' => false,
             ];
         }
         $this->setting = $setting;

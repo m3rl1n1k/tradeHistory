@@ -3,12 +3,14 @@
 namespace App\Service;
 
 use App\Entity\Category;
-use App\Entity\ParentCategory;
 
 class CategoryService
 {
-    public function mainColor(ParentCategory $parent, Category $category, $noColor): Category|string|null
+    public function mainColor(Category $category, $form): Category|string|null
     {
+
+        $parent = $this->getParent($form);
+        $noColor = $this->getNoColor($form);
         // if parent set & category set -> set category.color
         // if parent not set & category set -> set category.color
         // if parent set color & category not set color -> set category.color = parent.color
@@ -28,5 +30,18 @@ class CategoryService
             $result = $category->setColor($categoryColor);
         }
         return $result;
+    }
+
+    protected function getParent($form)
+    {
+        return $form->getData()->getParentCategory();
+    }
+
+    protected function getNoColor($form)
+    {
+        if ($form->get('no_color') === null) {
+            return "no set color";
+        }
+        return $form->get('no_color')->getData();
     }
 }

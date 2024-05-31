@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Form\ReportPeriodType;
 use App\Service\ChartService;
-use App\Trait\TransactionTrait;
 use App\Transaction\TransactionEnum;
 use App\Transaction\TransactionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,7 +22,6 @@ class ReportController extends AbstractController
     {
     }
 
-    use TransactionTrait;
 
     #[Route('/report', name: 'app_report', methods: ['GET', 'POST'])]
     public function index(Request $request):
