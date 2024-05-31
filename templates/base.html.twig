@@ -44,7 +44,7 @@
                                 <svg class="bi">
                                     <use xlink:href="#cash"></use>
                                 </svg>
-                                {{ 'menu.amount'|trans({}, 'translation') }}: {{ app.user.walletByCurrency ?? "0" }} {{ app.user.currency }}
+                                {{ 'amount'|trans({}, ' menu') }}: {{ app.user.walletByCurrency ?? "0" }} {{ app.user.currency }}
                             </span>
                         </li>
                     </ul>
@@ -58,7 +58,7 @@
                                 <svg class="bi">
                                     <use xlink:href="#house-fill"></use>
                                 </svg>
-                                {{ 'menu.dashboard'|trans({}, 'translation') }}
+                                {{ 'dashboard'|trans({}, ' menu') }}
                             </a>
                         </li>
                         <li class="nav-item">
@@ -67,7 +67,7 @@
                                 <svg class="bi">
                                     <use xlink:href="#cart"></use>
                                 </svg>
-                                {{ 'menu.transaction'|trans({}, 'translation') }}
+                                {{ 'transaction'|trans({}, ' menu') }}
                             </a>
                         </li>
                         <li class="nav-item">
@@ -76,7 +76,7 @@
                                 <svg class="bi">
                                     <use xlink:href="#transfer"></use>
                                 </svg>
-                                {{ 'menu.transfer'|trans({}, 'translation') }}
+                                {{ 'transfer'|trans({}, ' menu') }}
                             </a>
                         </li>
                         <li class="nav-item">
@@ -85,7 +85,7 @@
                                 <svg class="bi">
                                     <use xlink:href="#file-earmark"></use>
                                 </svg>
-                                {{ 'menu.category'|trans({}, 'translation') }}
+                                {{ 'category'|trans({}, ' menu') }}
                             </a>
                         </li>
                         <li class="nav-item">
@@ -94,18 +94,9 @@
                                 <svg class="bi">
                                     <use xlink:href="#graph-up"></use>
                                 </svg>
-                                {{ 'menu.report'|trans({}, 'translation') }}
+                                {{ 'report'|trans({}, ' menu') }}
                             </a>
                         </li>
-                        {#                        <li class="nav-item"> #}
-                        {#                            <a class="nav-link d-flex align-items-center {{ isActive(path('app_budget_index')) }} gap-2" #}
-                        {#                               href="{{ path('app_budget_index') }}"> #}
-                        {#                                <svg class="bi"> #}
-                        {#                                    <use xlink:href="#kanban"/> #}
-                        {#                                </svg> #}
-                        {#                                Budgets #}
-                        {#                            </a> #}
-                        {#                        </li> #}
                     </ul>
 
                     <hr class="my-3">
@@ -117,7 +108,7 @@
                                 <svg class="bi">
                                     <use xlink:href="#wallet"></use>
                                 </svg>
-                                {{ 'menu.wallet'|trans({}, 'translation') }}
+                                {{ 'wallet'|trans({}, ' menu') }}
                             </a>
                         </li>
                     </ul>
@@ -129,7 +120,16 @@
                                 <svg class="bi">
                                     <use xlink:href="#person"></use>
                                 </svg>
-                                {{ 'menu.profile'|trans({}, 'translation') }}
+                                {{ 'profile'|trans({}, ' menu') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center {{ isActive(path('app_user_settings',{'id':app.user.id})) }}
+                            gap-2" href="{{ path('app_user_settings',{'id':app.user.id}) }}">
+                                <svg class="bi">
+                                    <use xlink:href="#setting"></use>
+                                </svg>
+                                {{ 'setting'|trans({}, ' menu') }}
                             </a>
                         </li>
                         <li class="nav-item">
@@ -138,7 +138,7 @@
                                 <svg class="bi">
                                     <use xlink:href="#envelope"></use>
                                 </svg>
-                                {{ 'menu.feedback'|trans({}, 'translation') }}
+                                {{ 'feedback'|trans({}, ' menu') }}
                             </a>
                         </li>
                     </ul>
@@ -149,7 +149,7 @@
                                 <svg class="bi">
                                     <use xlink:href="#door-closed"></use>
                                 </svg>
-                                {{ 'menu.sing_out'|trans({}, 'translation') }}
+                                {{ 'sing_out'|trans({}, ' menu') }}
                             </a>
                         </li>
                     </ul>

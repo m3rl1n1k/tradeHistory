@@ -36,7 +36,10 @@ class TransactionType extends AbstractType
                 'choices' => $wallets
             ])
             ->add('amount', NumberType::class, [
+                'error_bubbling' => true,
+                'invalid_message' => 'Not walid data for amount!',
                 'attr' => [
+                    'type' => 'number',
                     'step' => 0.01
                 ]
             ])

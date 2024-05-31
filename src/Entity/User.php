@@ -29,7 +29,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
-    private ?string $password = null;
+    private string $password;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Wallet::class, orphanRemoval: true)]
     private Collection $wallets;
@@ -45,6 +45,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\ManyToMany(targetEntity: Budget::class, mappedBy: 'user')]
     private Collection $budgets;
+
+    #[ORM\Column(nullable: true)]
+    private ?array $setting = null;
 
     public function __construct()
     {
@@ -229,6 +232,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->budgets->removeElement($budget)) {
             $budget->removeUser($this);
         }
+
+        return $this;
+    }
+
+    public function getSetting(): ?array
+    {
+        return $this->setting;
+    }
+
+    public function setSetting(?array $setting): static
+    {
+        if ($setting === null) {
+            $setting = [
+                'colored_categories' => true,
+                'colored_parent_categories' => true,
+                'color_expense_chart' => "#eeeeee",
+                'color_income_chart' => "#ffffff",
+                'transactions_per_page' => 20,
+                'default_color_for_category_and_parent' => "#1c6263",
+                'categories_without_color' => false,
+            ];
+        }
+        $this->setting = $setting;
 
         return $this;
     }

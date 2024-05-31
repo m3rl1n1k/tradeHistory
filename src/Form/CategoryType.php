@@ -28,6 +28,9 @@ class CategoryType extends AbstractType
             ])
             ->add('color', ColorType::class, [
                 'required' => false,
+                'attr' => [
+                    "value" => "#563d7c"
+                ]
             ])
             ->add('no_color', CheckboxType::class, [
                 'mapped' => false,

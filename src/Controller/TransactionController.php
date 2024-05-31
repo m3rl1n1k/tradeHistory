@@ -12,11 +12,9 @@ use App\Trait\TransactionTrait;
 use App\Transaction\TransactionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -24,16 +22,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/transaction')]
 class TransactionController extends AbstractController
 {
-    private ?UserInterface $user;
-
     public function __construct(
         protected TransactionService       $transactionService,
         protected ParentCategoryRepository $parentCategoryRepository,
-        protected WalletRepository         $walletRepository,
-        protected Security                 $security
-    )
+        protected WalletRepository         $walletRepository)
     {
-        $this->user = $this->security->getUser();
     }
 
     use TransactionTrait, AccessTrait;
@@ -85,7 +78,7 @@ class TransactionController extends AbstractController
     #[Route('/{id}', name: 'app_transaction_show', methods: ['GET'])]
     public function show(Transaction $transaction): Response
     {
-        $this->accessDenied($transaction, $this->user);
+        $this->accessDenied($transaction, $this->getUser());
         return $this->render('transaction/show.html.twig', [
             'transaction' => $transaction,
         ]);
@@ -94,7 +87,7 @@ class TransactionController extends AbstractController
     #[Route('/{id}/edit', name: 'app_transaction_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
     {
-        $this->accessDenied($transaction, $this->user);
+        $this->accessDenied($transaction, $this->getUser());
 
         $oldAmount = $transaction->getAmount();
         $form = $this->createForm(TransactionType::class, $transaction, [
@@ -119,7 +112,7 @@ class TransactionController extends AbstractController
     #[Route('/{id}', name: 'app_transaction_delete', methods: ['POST'])]
     public function delete(Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
     {
-        $this->accessDenied($transaction, $this->user);
+        $this->accessDenied($transaction, $this->getUser());
 
         if ($this->isCsrfTokenValid('delete' . $transaction->getId(), $request->request->get('_token'))) {
             $this->transactionService->removeTransaction($transaction->getWallet(), $transaction);

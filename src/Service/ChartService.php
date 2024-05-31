@@ -27,15 +27,11 @@ class ChartService
 
     public function reportChart(array $options): Chart
     {
-        $dataset = [];
         $chart = $this->create(Chart::TYPE_LINE);
-        if ($options['expense'])
-            $dataset[] = $this->datasetReport(TransactionEnum::Expense->value, 'Expense', 0);
-        if ($options['income'])
-            $dataset[] = $this->datasetReport(TransactionEnum::Income->value, 'Income', 1);
+        $dataset[] = $this->matchOptions($options);
 
         $chart->setData([
-            'labels' => $this->dateService->getCurrentDate(),
+            'labels' => $this->dateService->currentMonthDates,
             'datasets' => $dataset,
         ]);
 
@@ -47,6 +43,31 @@ class ChartService
             ],
         ]);
         return $chart;
+    }
+
+    protected function matchOptions(array $options): array
+    {
+        if ($options['expense'])
+            $res = $this->datasetReport(TransactionEnum::Expense->value, 'Expense');
+        if ($options['income'])
+            $res = $this->datasetReport(TransactionEnum::Profit->value, 'Income');
+        return $res ?? [];
+    }
+
+    /**
+     * @param string $type
+     * @param string $label
+     * @return array
+     */
+    protected function datasetReport(string $type, string $label = ''): array
+    {
+        $result = $this->getSumByCurrentMonth($type);
+        return [
+            'label' => $label,
+            'backgroundColor' => $this->colors(),
+            'borderColor' => $this->colors(),
+            'data' => $result,
+        ];
     }
 
     /**
@@ -87,26 +108,10 @@ class ChartService
         return $chart;
     }
 
-    /**
-     * @param string $type
-     * @param string $label
-     * @param int $colorMax10
-     * @return array
-     */
-    protected function datasetReport(string $type, string $label = '', int $colorMax10 = 10): array
-    {
-        $result = $this->getSumByCurrentMonth($type);
-        return [
-            'label' => $label,
-            'backgroundColor' => $this->colors()[$colorMax10],
-            'borderColor' => $this->colors()[$colorMax10],
-            'data' => $result,
-        ];
-    }
 
-    protected function colors(): array
+    protected function colors(): string
     {
-        return [
+        $colorDataset = [
             'rgb(255, 99, 132, 0.6)',
             'rgb(225, 204, 079, 0.6)',
             'rgb(042, 046, 075, 0.6)',
@@ -118,6 +123,7 @@ class ChartService
             'rgb(034, 113, 179, 0.6)',
             'rgb(234, 230, 202, 0.6)',
         ];
+        return $colorDataset[array_rand($colorDataset)];
     }
 
 
@@ -128,7 +134,7 @@ class ChartService
     protected function getSumByCurrentMonth(string $type = TransactionEnum::Expense->value): array
     {
         $list = [];
-        $days = $this->dateService->getCurrentDate();
+        $days = $this->dateService->currentMonthDates;
 
         foreach ($days as $day) {
             $sum = null;

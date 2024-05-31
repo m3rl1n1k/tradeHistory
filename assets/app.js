@@ -4,6 +4,7 @@ import './lib/bootstrap/assets/js/color-modes.js'
 
 import './js/userEdit.js'
 import './js/blockButton.js'
+import './js/user_setting.js'
 /*
  * Welcome to your app's main JavaScript file!
  *

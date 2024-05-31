@@ -103,7 +103,7 @@ class Transaction implements IUser
 
     public function isIncome(): bool
     {
-        return $this->getType() === TransactionEnum::Income->value ?? false;
+        return $this->getType() === TransactionEnum::Profit->value ?? false;
     }
 
     public function isExpense(): bool
