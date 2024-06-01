@@ -6,26 +6,26 @@
     {% if app.user.currency() is empty %}
         <div class="row mt-3">
             <a href="{{ path('app_user_index', { 'id':app.user.id() }) }}"
-               class="btn btn-lg btn-danger">{{ 'menu.set_currency'|trans({}, 'translation') }}</a>
+               class="btn btn-lg btn-danger">{{ 'set_currency'|trans({}, 'menu') }}</a>
         </div>
     {% endif %}
     <div class="row mt-3 d-none d-md-flex">
         <div class="mt-2 col-md-4 col-sm-12 col-lg-3"><a href="{{ path('app_transaction_new') }}"
-                                                         class="btn btn-outline-success w-100">{{ 'menu.transaction'|trans({}, 'translation') }}
+                                                         class="btn btn-outline-success w-100">{{ 'transaction'|trans({}, 'menu') }}
                 <svg class="bi">
                     <use xlink:href="#plus"></use>
                 </svg>
             </a>
         </div>
         <div class="mt-2 col-md-4 col-sm-12 col-lg-3"><a href="{{ path('app_transfer_new') }}"
-                                                         class="btn btn-outline-success w-100">{{ 'menu.transfer'|trans({}, 'translation') }}
+                                                         class="btn btn-outline-success w-100">{{ 'transfer'|trans({}, 'menu') }}
                 <svg class="bi">
                     <use xlink:href="#plus"></use>
                 </svg>
             </a>
         </div>
         <div class="mt-2 col-md-4 col-sm-12 col-lg-3"><a href="{{ path('app_category_new') }}"
-                                                         class="btn btn-outline-success w-100">{{ 'menu.category'|trans({}, 'translation') }}
+                                                         class="btn btn-outline-success w-100">{{ 'category'|trans({}, 'menu') }}
                 <svg class="bi">
                     <use xlink:href="#plus"></use>
                 </svg>
@@ -64,14 +64,14 @@
         </div>
     {% endif %}
 
-    {% if last10transaction|length > 0 %}
+    {% if last_transaction|length > 0 %}
         <div class="row mt-5">
             <h2>{{ 'index.last_transaction'|trans({}, 'translation') }} </h2>
             <table class="table table-hover table-responsive">
                 <thead>
                 </thead>
                 <tbody>
-                {% for  transaction in last10transaction %}
+                {% for  transaction in last_transaction %}
                     <tr>
                         <td>{{ include('component/_transaction_type.html.twig') }}</td>
                         <td class="text-center">

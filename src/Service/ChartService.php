@@ -23,7 +23,7 @@ class ChartService
                                 protected SettingService        $userSettings
     )
     {
-        $this->transactions = $this->transactionRepository->getAllPerCurrentMonth();
+        $this->transactions = $this->transactionRepository->getAllPerMonth();
     }
 
     public function reportChart(array $options): Chart
@@ -107,6 +107,7 @@ class ChartService
 
     protected function colors($type = ''): string
     {
+        // == because $type return string and TransactionEnum::Expense->value return int
         if ($type == TransactionEnum::Expense->value) {
             return $this->userSettings::getSettings()['colorExpenseChart'];
         }

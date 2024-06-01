@@ -18,7 +18,20 @@ class UserFixtures extends Fixture
         $user->setPassword('$2y$13$Fp7wIggTVeaSGnGVqUIpveqSswNqGo7VMEERcXHOCv6ugx2Ccb796');
         $user->setSetting(null);
         $this->addReference(self::USER_REFERENCE, $user);
+        $feedbackUser = $this->feedbackUser();
         $manager->persist($user);
+        $manager->persist($feedbackUser);
         $manager->flush();
+    }
+
+    protected function feedbackUser(): User
+    {
+        $user = new User();
+        $user->setCurrency("PLN");
+        $user->setEmail('feedback@email.com');
+        $user->setPassword('$2y$13$Fp7wIggTVeaSGnGVqUIpveqSswNqGo7VMEERcXHOCv6ugx2Ccb796');
+        $user->setSetting(null);
+        $user->setRoles(['ROLE_FEEDBACK_CHECKER']);
+        return $user;
     }
 }

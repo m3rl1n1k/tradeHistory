@@ -81,8 +81,6 @@ class TransactionController extends AbstractController
             $id = $form->get('wallet')->getData();
             $wallet = $this->walletRepository->find($id);
             $this->transactionService->newTransaction($wallet, $transaction);
-//            $transaction->setDate();
-            dd($transaction);
             $entityManager->persist($transaction);
             $entityManager->flush();
 

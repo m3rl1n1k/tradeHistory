@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\FeedbackRepository;
+use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -21,7 +22,10 @@ class Feedback
     private ?string $message = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date = null;
+    private ?DateTimeInterface $date = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $isFixed = null;
 
     public function getId(): ?int
     {
@@ -52,15 +56,33 @@ class Feedback
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): ?DateTimeInterface
     {
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): static
+    public function setDate(DateTimeInterface $date): static
     {
         $this->date = $date;
 
+        return $this;
+    }
+
+    public function isFixed(): ?bool
+    {
+        return $this->isFixed;
+    }
+
+    public function setFixed(?bool $isFixed): static
+    {
+        $this->isFixed = $isFixed;
+
+        return $this;
+    }
+
+    public function setStatusClose(): static
+    {
+        $this->isFixed = true;
         return $this;
     }
 }

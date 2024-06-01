@@ -12,6 +12,7 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
  * @extends ServiceEntityRepository<Transaction>
@@ -21,6 +22,7 @@ use Symfony\Bundle\SecurityBundle\Security;
  * @method Transaction[]    findAll()
  * @method Transaction[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
 class TransactionRepository extends ServiceEntityRepository
 {
 
@@ -44,14 +46,7 @@ class TransactionRepository extends ServiceEntityRepository
             ->getQuery();
     }
 
-    public function getUserTransactions(array $orderBy = [], int $limit = null): array
-    {
-        return $this->findBy(['user' => $this->user->getId()], $orderBy, $limit);
-    }
-
-
-    public function getTransactionsPerPeriod(DateTimeInterface $dateStart, DateTimeInterface $dateEnd):
-    string|array|int|float
+    public function getTransactionsPerPeriod(DateTimeInterface $dateStart, DateTimeInterface $dateEnd): mixed
     {
         return $this->createQueryBuilder('transaction')
             ->andWhere('transaction.date BETWEEN :startDate AND :endDate')
@@ -67,8 +62,7 @@ class TransactionRepository extends ServiceEntityRepository
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
-    public function getTransactionSum(array $conditions = [], string $type = TransactionEnum::Expense->value):
-    float|bool|int|string|null
+    public function getTransactionSum(array $conditions = [], string $type = TransactionEnum::Expense->value): mixed
     {
         $queryBuilder = $this->createQueryBuilder('t')
             ->select('SUM(t.amount)')
@@ -91,11 +85,11 @@ class TransactionRepository extends ServiceEntityRepository
             ->getSingleScalarResult() ?? 0;
     }
 
-    public function getAllPerCurrentMonth(): ?array
+    public function getAllPerMonth(): ?array
     {
         $list = [];
         $month = date("m");
-        foreach ($this->getAll() as $transaction) {
+        foreach ($this->getUserTransactionsResult() as $transaction) {
             $transactionDate = $transaction->getDate();
             if ($month === $transactionDate->format('m'))
                 $list[$transactionDate->format('d') . "." . $transaction->getId()] = $transaction;
@@ -103,11 +97,22 @@ class TransactionRepository extends ServiceEntityRepository
         return $list;
     }
 
-    public function getAll(): array
+    public function getUserTransactionsResult()
     {
-        if ($this->user)
-            return $this->findBy(['user' => $this->user->getId()]);
-        return [];
+        if ($this->user === null) {
+            return [];
+        }
+        return $this->createQueryBuilder('t')
+            ->where('t.user = :user')
+            ->orderBy('t.date', 'DESC')
+            ->setParameter('user', $this->user->getId())
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getLastUserTransactions(): array
+    {
+        return array_slice($this->getUserTransactionsResult(), 0, 10);
     }
 }
 
