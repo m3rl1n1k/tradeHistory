@@ -6,19 +6,19 @@
             </button>
             <ul class="dropdown-menu dropdown-menu-dark" style="position: absolute !important;">
                 <li><a href="{{ path('app_transaction_new') }}"
-                       class="dropdown-item btn btn-outline-success w-100">{{ 'menu.transaction'|trans({}, 'translation') }}
+                       class="dropdown-item btn btn-outline-success w-100">{{ 'transaction'|trans({}, 'menu') }}
                         <svg class="bi">
                             <use xlink:href="#plus"></use>
                         </svg>
                     </a></li>
                 <li><a href="{{ path('app_transfer_new') }}"
-                       class="dropdown-item btn btn-outline-success w-100">{{ 'menu.transfer'|trans({}, 'translation') }}
+                       class="dropdown-item btn btn-outline-success w-100">{{ 'transfer'|trans({}, 'menu') }}
                         <svg class="bi">
                             <use xlink:href="#plus"></use>
                         </svg>
                     </a></li>
                 <li><a href="{{ path('app_category_new') }}"
-                       class="dropdown-item btn btn-outline-success w-100">{{ 'menu.category'|trans({}, 'translation') }}
+                       class="dropdown-item btn btn-outline-success w-100">{{ 'category'|trans({}, 'menu') }}
                         <svg class="bi">
                             <use xlink:href="#plus"></use>
                         </svg>
@@ -39,7 +39,7 @@
         <button class="nav-link px-3 text-white" type="button" data-bs-toggle="offcanvas"
                 data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
                 aria-label="Toggle navigation">
-            <svg class="bi">
+            <svg class="bi text-white">
                 <use xlink:href="#list"></use>
             </svg>
         </button>
