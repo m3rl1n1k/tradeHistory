@@ -1,0 +1,36 @@
+<table class="table table-responsive">
+    <tr>
+        <th>
+            Message
+        </th>
+        <th>
+            Fixed
+        </th>
+        <th>
+            Change status
+        </th>
+    </tr>
+    {% for feedback in feedback_list %}
+        <tr class="{{ feedback.fixed ? "table-success" : "table-danger" }}">
+            <td>
+                {{ feedback.date|date('d-m-Y') }}
+            </td>
+            <td>
+                {{ feedback.message }}
+            </td>
+            <td>
+                {{ feedback.fixed ? "yes" : "no" }}
+            </td>
+            <td>
+                {% if feedback.fixed == false %}
+                    <form action="{{ path('app_close_feedback', {'id':feedback.id}) }}" method="post">
+                        <input type="hidden" name="_token" value="{{ csrf_token('close' ~ feedback.id) }}">
+                        <button class="btn btn-primary" type="submit">
+                            Close
+                        </button>
+                    </form>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+</table>

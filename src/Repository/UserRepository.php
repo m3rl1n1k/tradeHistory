@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -23,7 +24,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 {
     protected ?User $user;
 
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, protected Security $security)
     {
         parent::__construct($registry, User::class);
     }
@@ -66,6 +67,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function getUser(): ?User
+    {
+        $user = $this->security->getUser();
+        if ($user === null)
+            return null;
+        return $this->find($user->getId());
+    }
 
 
 }

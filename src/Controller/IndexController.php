@@ -27,7 +27,7 @@ class IndexController extends AbstractController
     #[Route('/', name: 'app_index')]
     public function index(): RedirectResponse
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             $uri = $this->redirectToRoute('app_login');
         } else {
             $uri = $this->redirectToRoute('app_home');
