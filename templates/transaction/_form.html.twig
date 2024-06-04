@@ -1,7 +1,7 @@
 {{ form_start(form) }}
 {{ include('component/_alert.html.twig') }}
 <div class="row">
-    <div class="col-md-4 mt-3">
+    <div class="col-md-12 mt-3">
         <div class="input-group">
             <span class="input-group-text" id="basic-addon1">
                 {{ form_label(form.wallet, 'From/To', {'label_attr': {'class': 'form-label'}}) }}
@@ -20,12 +20,11 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-6 mt-3">
+    <div class="col-6 mt-3">
         {{ form_label(form.type, 'Type', {'label_attr': {'class': 'form-label'}}) }}
         {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
     </div>
-    <div class="col-sm-6 mt-3">
-        {#        {{ dump(form.date.vars.value) }} #}
+    <div class="col-6 mt-3">
         {{ form_label(form.date, 'Date', {'label_attr': {'class': 'form-label'}}) }}
         {{ form_widget(form.date, {'attr': {'class': 'form-control', 'max': form.date.vars.value}}) }}
     </div>

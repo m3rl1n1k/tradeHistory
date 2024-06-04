@@ -45,4 +45,9 @@ class FeedbackRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function getAll(): array
+    {
+        return $this->findBy([], ['date'=> 'DESC']);
+    }
 }

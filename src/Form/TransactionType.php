@@ -30,6 +30,7 @@ class TransactionType extends AbstractType
     {
         $category = $options['category'];
         $wallets = $options['wallet'];
+        $transaction = $builder->getData();
         $builder
             ->add('wallet', ChoiceType::class, [
                 'placeholder' => "Select wallet",
@@ -61,7 +62,7 @@ class TransactionType extends AbstractType
                     'choices' => TransactionEnum::transactionTypes(),
                 ])
             ->add('date', DateTimeType::class, [
-                'data' => new DateTime(),
+                'data' => $transaction && $transaction->getDate() ? $transaction->getDate() : new DateTime(),
                 'attr' => [
                     'max' => (new DateTime())->format('Y-m-d'),
                 ],
