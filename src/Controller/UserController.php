@@ -61,7 +61,7 @@ class UserController extends AbstractController
             $user->setSetting($form->getData());
             $entityManager->persist($user);
             $entityManager->flush();
-
+            $this->addFlash('success', 'Settings is saved');
             return $this->redirectToRoute('app_user_settings', ['id' => $id], Response::HTTP_SEE_OTHER);
         }
 

@@ -64,14 +64,14 @@
         </div>
     {% endif %}
 
-    {% if last10transaction|length > 0 %}
+    {% if last_transaction|length > 0 %}
         <div class="row mt-5">
             <h2>{{ 'index.last_transaction'|trans({}, 'translation') }} </h2>
             <table class="table table-hover table-responsive">
                 <thead>
                 </thead>
                 <tbody>
-                {% for  transaction in last10transaction %}
+                {% for  transaction in last_transaction %}
                     <tr>
                         <td>{{ include('component/_transaction_type.html.twig') }}</td>
                         <td class="text-center">

@@ -13,17 +13,12 @@ use Doctrine\ORM\Query;
 
 class TransactionService implements TransactionServiceInterface
 {
-    /**
-     * @var Transaction[]
-     */
-    private array $transactions;
 
     public function __construct(protected UserRepository         $userRepository,
                                 protected TransactionRepository  $transactionRepository,
                                 protected EntityManagerInterface $em
     )
     {
-        $this->transactions = $this->transactionRepository->getAll();
     }
 
     public function getTransactionsPerPeriod($dateStart, $dateEnd): array
@@ -94,7 +89,7 @@ class TransactionService implements TransactionServiceInterface
         $wallet->setAmount($amount);
     }
 
-    public function getSum(float|array|int|string $transactions, int $type): float
+    public function getSum(array $transactions, int $type): float
     {
         $sum = 0;
         foreach ($transactions as $transaction) {
