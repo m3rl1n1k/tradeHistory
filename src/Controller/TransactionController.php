@@ -40,19 +40,20 @@ class TransactionController extends AbstractController
     public function index(Request $request): Response
     {
         $query = $this->transactionService->getTransactions();
+        $pagerfanta = $this->paginate($query, $request);
         return $this->render('transaction/index.html.twig', [
-            'pagerfanta' => $this->paginate($query, $request),
+            'pagerfanta' => $pagerfanta
         ]);
     }
 
-    public function paginate(Query $query, Request $request, bool $inf = false): Pagerfanta
+    public function paginate(Query $query, Request $request): Pagerfanta
     {
         $adapter = new QueryAdapter($query);
         $pagerfanta = new Pagerfanta($adapter);
 
-        $pagerfanta->setCurrentPage($request->query->getInt('page', 1));
-
-        $pagerfanta->setMaxPerPage(!$inf ? $this->settingService::getSettings()['transactionsPerPage'] : $pagerfanta->count());
+        $currentPage = $request->query->getInt('page', 1);
+        $pagerfanta->setMaxPerPage(SettingService::getTransactionsPerPage());
+        $pagerfanta->setCurrentPage($currentPage);
 
         return $pagerfanta;
     }

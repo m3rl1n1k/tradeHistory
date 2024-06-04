@@ -8,7 +8,13 @@ use stdClass;
 class SettingService
 {
     public static mixed $user;
-
+//{"colorIncomeChart": "#8aff93",
+// "colorExpenseChart": "#ff6b6b",
+// "coloredCategories": false,
+// "transactionsPerPage": 100,
+// "categoriesWithoutColor": true,
+// "coloredParentCategories": false,
+// "defaultColorForCategoryAndParent": "#1c6263"}
     public function __construct(protected UserRepository $userEntity)
     {
 
@@ -39,5 +45,10 @@ class SettingService
     public static function getDefaultColorForCategory(): string
     {
         return self::$user->getSetting()['defaultColorForCategoryAndParent'];
+    }
+
+    public static function getTransactionsPerPage()
+    {
+    return self::$user->getSetting()['transactionsPerPage'];
     }
 }
