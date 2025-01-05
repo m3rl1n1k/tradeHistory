@@ -17,13 +17,6 @@
                 </svg>
             </a>
         </div>
-        <div class="mt-2 col-md-4 col-sm-12 col-lg-3"><a href="{{ path('app_transfer_new') }}"
-                                                         class="btn btn-outline-success w-100">{{ 'transfer'|trans({}, 'menu') }}
-                <svg class="bi">
-                    <use xlink:href="#plus"></use>
-                </svg>
-            </a>
-        </div>
         <div class="mt-2 col-md-4 col-sm-12 col-lg-3"><a href="{{ path('app_category_new') }}"
                                                          class="btn btn-outline-success w-100">{{ 'category'|trans({}, 'menu') }}
                 <svg class="bi">
@@ -31,17 +24,15 @@
                 </svg>
             </a>
         </div>
-        {#        <div class="mt-2 col-md-4 col-sm-12 col-lg-3"><a href="{{ path('app_budget_new') }}" class="btn btn-outline-success w-100">Budget #}
-        {#                <svg class="bi"> #}
-        {#                    <use xlink:href="#plus"></use> #}
-        {#                </svg> #}
-        {#            </a> #}
-        {#        </div> #}
     </div>
     {% if  chart is not null %}
         <div class="row">
             <div class="col-md-6 col-sm-12">
-                {{ include('component/_chart.html.twig') }}
+                <div class="col-6 offset-3">
+                    <div class="my-3">
+                        {{ render_chart(chart) }}
+                    </div>
+                </div>
             </div>
             <div class="col-md-6 col-sm-12 mt-5">
                 <div class="row">
@@ -71,7 +62,7 @@
                 <thead>
                 </thead>
                 <tbody>
-                {% for  transaction in last_transaction %}
+                {% for transaction in last_transaction %}
                     <tr>
                         <td>{{ include('component/_transaction_type.html.twig') }}</td>
                         <td class="text-center">

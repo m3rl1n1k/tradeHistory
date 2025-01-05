@@ -19,15 +19,16 @@
         </div>
     </div>
     <div class="row mt-5">
-        {% for key, categories in parent_categories %}
+        {% for categories in parent_categories %}
             {% if categories is not empty %}
                 <div class="col-lg-6 col-md-12 my-3">
                     <div class="card">
-                        <div class="card-header">
-                            {{ key }}
+                        <div class="card-header" {{ contrast(categories['parentCategory'].color) }}>
+                            {{ categories['parentCategory'].name }}
+                            {{ include('parent_category/_delete_form.html.twig') }}
                         </div>
                         <ul class="list-group list-group-flush">
-                            {% for key, category in categories %}
+                            {% for category in categories['categories'] %}
                                 <li class="list-group-item" {{ contrast(category.color) }}>
                                     <svg class="bi">
                                         <use xlink:href="#arrow-return-right"></use>
