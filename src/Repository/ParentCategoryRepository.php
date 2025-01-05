@@ -20,39 +20,33 @@ use Symfony\Component\Config\Definition\Exception\DuplicateKeyException;
 class ParentCategoryRepository extends ServiceEntityRepository
 {
     private ?User $user;
+    private array $parentCategories;
 
     public function __construct(
         ManagerRegistry              $registry,
-        protected CategoryRepository $CategoryRepository,
+        protected CategoryRepository $categoryRepository,
         protected Security           $security)
     {
         parent::__construct($registry, ParentCategory::class);
         $this->user = $this->security->getUser();
+        $this->parentCategories = $this->findBy(['user' => $this->user->getId()]);
+    }
+
+    public function getMainAndSubCategories(): array
+    {
+        $categoryChoices = [];
+        foreach ($this->parentCategories as $mainCategory) {
+            $categoryChoices[$mainCategory->getName()] = [
+                'parentCategory' => $mainCategory,
+                'categories' => $mainCategory->getCategories()->toArray()
+            ];
+        }
+        return $categoryChoices;
     }
 
     public function getAll(): array
     {
         return $this->findBy(['user' => $this->user->getId()]);
-    }
-
-    public function getMainAndSubCategories(): array
-    {
-        /** @var ParentCategory $mainCategory */
-        $mainCategories = $this->getAll();
-        $categoryChoices = [];
-
-        foreach ($mainCategories as $mainCategory) {
-
-            $CategoryChoices = [];
-            $subCategories = $this->CategoryRepository->getAll($mainCategory->getId());
-
-            foreach ($subCategories as $Category) {
-                $CategoryChoices[$Category->getId()] = $Category;
-            }
-
-            $categoryChoices[$mainCategory->getName()] = $CategoryChoices ?? $mainCategory;
-        }
-        return $categoryChoices;
     }
 
     public function isSimilar(ParentCategory $category): void

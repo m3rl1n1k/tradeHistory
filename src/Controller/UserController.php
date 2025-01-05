@@ -6,7 +6,6 @@ use App\Entity\User;
 use App\Form\SettingUserType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
-use App\Service\SettingService;
 use App\Trait\AccessTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,8 +21,7 @@ class UserController extends AbstractController
     use AccessTrait;
 
     public function __construct(
-        protected UserRepository $userRepository,
-        protected SettingService $settingService)
+        protected UserRepository $userRepository)
     {
     }
 
@@ -50,30 +48,37 @@ class UserController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $this->accessDenied($id, $user);
 
-        $settings = SettingService::getSettings();
-
-        $form = $this->createForm(SettingUserType::class, $settings);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user->setSetting($form->getData());
+        $settings = $user->getSetting();
+        if (is_null($settings)) {
+            $user->setSetting(null);
             $entityManager->persist($user);
             $entityManager->flush();
-            $this->addFlash('success', 'Settings is saved');
-            return $this->redirectToRoute('app_user_settings', ['id' => $id], Response::HTTP_SEE_OTHER);
-        }
+            $this->addFlash('success', 'Refresh page');
+        } else {
+            $form = $this->createForm(SettingUserType::class, $settings);
+            $form->handleRequest($request);
 
+            if ($form->isSubmitted() && $form->isValid()) {
+                $user->setSetting($form->getData());
+                $entityManager->persist($user);
+                $entityManager->flush();
+                $this->addFlash('success', 'Settings is saved');
+                return $this->redirectToRoute('app_user_settings', ['id' => $id], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('user/setting_user.html.twig', [
+                'form' => $form->createView(),
+            ]);
+        }
         return $this->render('user/setting_user.html.twig', [
-            'form' => $form->createView(),
+            'form' => null,
         ]);
     }
 
     #[Route('/remove/{id}', name: 'app_remove_account', methods: ['GET', 'POST'])]
     public function removeAccount(int $id): void
     {
-        $this->accessDenied($id, $this->getUser());
 
     }
 

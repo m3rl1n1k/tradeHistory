@@ -9,27 +9,27 @@ services:
         WORKDIR: ${WORKDIR}
     environment:
       WORKDIR: ${WORKDIR}
-      XDEBUG_CONFIG: remote_host={{YOUR_IP_ADDRESS}}
-      PHP_IDE_CONFIG: serverName=docker
+      PHP_IDE_CONFIG: serverName=tradeHistory
     volumes:
       - ./:${WORKDIR}
-    links:
-      - db_mysql
+    networks:
+      - tradehistory_network
 
-  db_mysql:
+  postgres:
     restart: always
-    image: mysql:latest
-    container_name: mysql_${PROJECT_NAME}
+    image: postgres:17
+    container_name: postgres_${PROJECT_NAME}
     ports:
-      - ${MYSQL_PORT}:3306
+      - ${POSTGRES_PORT}:5432
     environment:
-      WORKDIR: ${WORKDIR}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpass}
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-project_db}
-      MYSQL_USER: ${MYSQL_USER:-dbuser}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-pass4dbuser}
+      POSTGRES_ROOT_PASSWORD: ${POSTGRES_ROOT_PASSWORD:-rootpass}
+      POSTGRES_DB: ${POSTGRES_DB:-project_db}
+      POSTGRES_USER: ${POSTGRES_USER:-user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
     volumes:
-      - ./docker/databases/mysql_dump:/docker-entrypoint-initdb.d
+      - database:/var/lib/postgresql/data
+    networks:
+      - tradehistory_network
 
   nginx:
     restart: always
@@ -48,5 +48,12 @@ services:
       - ./docker/configs/nginx/project.conf.template:/etc/nginx/templates/project.conf.template
       - ./logs/nginx:/var/log/nginx
       - ./logs/cache:/var/cache/nginx
-    links:
-      - php
+    networks:
+      - tradehistory_network
+
+volumes:
+  database:
+
+networks:
+  tradehistory_network:
+    driver: bridge

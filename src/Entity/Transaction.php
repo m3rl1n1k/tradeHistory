@@ -3,8 +3,8 @@
 
 namespace App\Entity;
 
+use App\Enum\TransactionEnum;
 use App\Repository\TransactionRepository;
-use App\Transaction\TransactionEnum;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,8 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Transaction
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\Column(type: "integer")]
     private ?int $id = null;
 
     #[ORM\Column]
@@ -31,7 +31,7 @@ class Transaction
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'transactions')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false,)]
     private ?Wallet $wallet = null;
 
     #[ORM\ManyToOne]

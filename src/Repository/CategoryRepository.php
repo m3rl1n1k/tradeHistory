@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\Category;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Config\Definition\Exception\DuplicateKeyException;
 
 /**
  * @extends ServiceEntityRepository<Category>
@@ -25,12 +24,5 @@ class CategoryRepository extends ServiceEntityRepository
     public function getAll(int $parentCategory): array
     {
         return $this->findBy(['parentCategory' => $parentCategory]);
-    }
-
-    public function isSimilar(Category $category): void
-    {
-        if ($this->findBy(['name' => $category->getName()])) {
-            throw new DuplicateKeyException('You have same category!');
-        }
     }
 }

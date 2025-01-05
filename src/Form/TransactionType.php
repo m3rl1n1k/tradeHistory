@@ -4,7 +4,7 @@ namespace App\Form;
 
 use App\Entity\Transaction;
 use App\Entity\Wallet;
-use App\Transaction\TransactionEnum;
+use App\Enum\TransactionEnum;
 use DateTime;
 use Exception;
 use Symfony\Component\Form\AbstractType;

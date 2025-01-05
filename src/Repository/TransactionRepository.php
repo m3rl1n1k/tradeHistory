@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Transaction;
 use App\Entity\User;
-use App\Transaction\TransactionEnum;
+use App\Enum\TransactionEnum;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -12,7 +12,6 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
  * @extends ServiceEntityRepository<Transaction>
@@ -22,7 +21,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
  * @method Transaction[]    findAll()
  * @method Transaction[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-#[IsGranted('IS_AUTHENTICATED_FULLY')]
 class TransactionRepository extends ServiceEntityRepository
 {
 
@@ -37,20 +35,11 @@ class TransactionRepository extends ServiceEntityRepository
     }
 
 
-    public function getUserTransactionsQuery(): Query
-    {
-        return $this->createQueryBuilder('t')
-            ->where('t.user = :user')
-            ->orderBy('t.date', 'DESC')
-            ->setParameter('user', $this->user->getId())
-            ->getQuery();
-    }
-
     public function getTransactionsPerPeriod(DateTimeInterface $dateStart, DateTimeInterface $dateEnd): mixed
     {
-        return $this->createQueryBuilder('transaction')
-            ->andWhere('transaction.date BETWEEN :startDate AND :endDate')
-            ->andWhere('transaction.user = :user')
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.date BETWEEN :startDate AND :endDate')
+            ->andWhere('t.user = :user')
             ->setParameter('startDate', $dateStart)
             ->setParameter('endDate', $dateEnd)
             ->setParameter('user', $this->user->getId())
@@ -59,8 +48,13 @@ class TransactionRepository extends ServiceEntityRepository
     }
 
     /**
-     * @throws NonUniqueResultException
+     * conditions ['date', 'category', 'user']
+     *
+     * @param string $type
+     * @param array $conditions
+     * @return mixed
      * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function getTransactionSum(array $conditions = [], string $type = TransactionEnum::Expense->value): mixed
     {
@@ -89,7 +83,7 @@ class TransactionRepository extends ServiceEntityRepository
     {
         $list = [];
         $month = date("m");
-        foreach ($this->getUserTransactionsResult() as $transaction) {
+        foreach ($this->getUserTransactions() as $transaction) {
             $transactionDate = $transaction->getDate();
             if ($month === $transactionDate->format('m'))
                 $list[$transactionDate->format('d') . "." . $transaction->getId()] = $transaction;
@@ -97,22 +91,27 @@ class TransactionRepository extends ServiceEntityRepository
         return $list;
     }
 
-    public function getUserTransactionsResult()
+    /**
+     *
+     * @param bool $rawQuery
+     * @param int|null $max
+     * @return Query|array
+     */
+    public function getUserTransactions(bool $rawQuery = false, ?int $max = null): Query|array
     {
         if ($this->user === null) {
             return [];
         }
-        return $this->createQueryBuilder('t')
+        $query = $this->createQueryBuilder('t')
+            ->leftJoin('t.user', 'r')
+            ->addSelect('r')
             ->where('t.user = :user')
             ->orderBy('t.date', 'DESC')
-            ->setParameter('user', $this->user->getId())
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function getLastUserTransactions(): array
-    {
-        return array_slice($this->getUserTransactionsResult(), 0, 10);
+            ->setParameter('user', $this->user->getId());
+        if ($max !== null) {
+            $query->setMaxResults(abs((int)$max));
+        }
+        return $rawQuery ? $query->getQuery() : $query->getQuery()->getResult();
     }
 }
 
