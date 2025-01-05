@@ -11,7 +11,7 @@ use Doctrine\Persistence\ObjectManager;
 class CategoryFixture extends Fixture implements DependentFixtureInterface
 {
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         for ($i = 0; $i < 10; $i++) {
             $category = new Category();
