@@ -4,10 +4,10 @@ namespace App\Repository;
 
 use App\Entity\ParentCategory;
 use App\Entity\User;
+use App\Trait\RepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\Config\Definition\Exception\DuplicateKeyException;
 
 /**
  * @extends ServiceEntityRepository<ParentCategory>
@@ -19,6 +19,8 @@ use Symfony\Component\Config\Definition\Exception\DuplicateKeyException;
  */
 class ParentCategoryRepository extends ServiceEntityRepository
 {
+    use RepositoryTrait;
+
     private ?User $user;
     private array $parentCategories;
 
@@ -29,7 +31,9 @@ class ParentCategoryRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ParentCategory::class);
         $this->user = $this->security->getUser();
-        $this->parentCategories = $this->findBy(['user' => $this->user->getId()]);
+        if ($this->user !== null) {
+            $this->parentCategories = $this->findBy(['user' => $this->user->getId()]);
+        }
     }
 
     public function getMainAndSubCategories(): array
@@ -43,18 +47,4 @@ class ParentCategoryRepository extends ServiceEntityRepository
         }
         return $categoryChoices;
     }
-
-    public function getAll(): array
-    {
-        return $this->findBy(['user' => $this->user->getId()]);
-    }
-
-    public function isSimilar(ParentCategory $category): void
-    {
-        if ($this->findBy(['name' => $category->getName()])) {
-            throw new DuplicateKeyException('You have same category!');
-        }
-    }
-
-
 }

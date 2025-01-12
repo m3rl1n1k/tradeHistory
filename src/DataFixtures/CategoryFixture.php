@@ -14,10 +14,14 @@ class CategoryFixture extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         for ($i = 0; $i < 10; $i++) {
+            $color = 'rgb(' . rand(1, 255) . ',' . rand(1, 255) . ',' . rand(1, 255) . ')';
+
             $category = new Category();
+
             $category->setName('Category ' . $i);
             $category->setParentCategory($this->getReference('parentCategory' . rand(1, 9), ParentCategory::class));
             $manager->persist($category);
+            $category->setColor($color);
             $this->addReference('category-' . $i, $category);
         }
         $manager->flush();

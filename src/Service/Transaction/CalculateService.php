@@ -16,16 +16,15 @@ class CalculateService implements CalculationInterface
     /**
      * @param string $flag
      * @param Transaction|null $transaction
-     * @param Wallet|null $wallet
      * @param array $options
      * @return void
      */
-    public function calculate(string $flag, ?Transaction $transaction = null, ?Wallet $wallet = null, array $options = []): void
+    public function calculate(string $flag, ?Transaction $transaction = null, array $options = []): void
     {
         match ($flag) {
             'new' => $this->newTransaction($transaction->getWallet(), $transaction),
             'edit' => $this->editTransaction($transaction->getWallet(), $transaction, $options['oldAmount']),
-            'remove' => $this->removeTransaction($wallet, $transaction),
+            'remove' => $this->removeTransaction($transaction->getWallet(), $transaction),
             'default' => throw new ParameterNotFoundException("Flag $flag not found!")
         };
     }

@@ -67,6 +67,7 @@ class TransactionController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_transaction_show', methods: ['GET'])]
+    #[IsGranted('show', 'transaction')]
     public function show(Transaction $transaction): Response
     {
         return $this->render('transaction/show.html.twig', [
@@ -75,6 +76,7 @@ class TransactionController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_transaction_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('edit', 'transaction')]
     public function edit(Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
     {
         $oldAmount = $transaction->getAmount();

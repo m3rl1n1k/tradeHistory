@@ -32,6 +32,7 @@ class CategoryController extends AbstractController
     #[Route('/new', name: 'app_category_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category, [
             'parent_categories' => $this->parentCategories
@@ -52,6 +53,7 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_category_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('edit', 'category')]
     public function edit(Request $request, Category $category, EntityManagerInterface $entityManager):
     Response
     {

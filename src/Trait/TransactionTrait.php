@@ -11,7 +11,9 @@ trait TransactionTrait
     protected function getForm(Transaction $transaction): FormInterface
     {
         return $this->createForm(TransactionType::class, $transaction, [
-            'category' => $this->parentCategoryRepository->getMainAndSubCategories(),
+            'category' => array_map(function ($category) {
+                return $category['categories'];
+            }, $this->parentCategoryRepository->getMainAndSubCategories()),
             'wallet' => $this->walletRepository->getAll(),
         ]);
     }

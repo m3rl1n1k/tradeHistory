@@ -55,18 +55,17 @@ class ParentCategoryController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_parent_category_delete', methods: ['POST'])]
-    public function delete(Request $request, ParentCategory $category, EntityManagerInterface $entityManager):
+    public function delete(Request $request, ParentCategory $parentCategory, EntityManagerInterface $entityManager):
     Response
     {
-        if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
-
+        if ($this->isCsrfTokenValid('delete' . $parentCategory->getId(), $request->request->get('_token'))) {
             try {
                 $entityManager->beginTransaction();
-                foreach ($this->CategoryRepository->getAll($category->getId()) as $category) {
+                foreach ($this->CategoryRepository->getAll($parentCategory->getId()) as $category) {
                     $entityManager->remove($category);
                 }
 
-                $entityManager->remove($category);
+                $entityManager->remove($parentCategory);
                 $entityManager->commit();
                 $entityManager->flush();
             } catch (Exception $e) {

@@ -8,6 +8,7 @@ use App\Form\UserType;
 use App\Repository\UserRepository;
 use App\Trait\AccessTrait;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,17 +30,17 @@ class UserController extends AbstractController
     public function index(int $id, Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(UserType::class, $user);
+        $removeUser = $this->createFormBuilder();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
             return $this->redirectToRoute('app_user_index', ['id' => $id], Response::HTTP_SEE_OTHER);
         }
-
         return $this->render('user/index.html.twig', [
             'user' => $user,
             'form' => $form,
+            'remove_user' => $removeUser->getForm(),
         ]);
     }
 
@@ -76,11 +77,19 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/remove/{id}', name: 'app_remove_account', methods: ['GET', 'POST'])]
-    public function removeAccount(int $id): void
+    #[Route('/remove/{id}', name: 'app_remove_account', methods: ['POST'])]
+    public function removeAccount(User $user, EntityManagerInterface $entityManager, Request $request): Response
     {
-
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
+            try {
+                $entityManager->beginTransaction();
+                $entityManager->remove($user);
+                $entityManager->flush();
+                $entityManager->commit();
+            } catch (Exception $e) {
+                $entityManager->rollback();
+            }
+        }
+        return $this->redirectToRoute('app_login');
     }
-
-
 }

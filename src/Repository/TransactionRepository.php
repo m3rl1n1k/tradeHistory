@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Transaction;
-use App\Entity\User;
 use App\Enum\TransactionEnum;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -23,15 +22,11 @@ use Symfony\Bundle\SecurityBundle\Security;
  */
 class TransactionRepository extends ServiceEntityRepository
 {
-
-    private ?User $user;
-
     public function __construct(ManagerRegistry                    $registry,
                                 protected ParentCategoryRepository $categoryRepository,
                                 protected Security                 $security)
     {
         parent::__construct($registry, Transaction::class);
-        $this->user = $this->security->getUser();
     }
 
 
@@ -42,7 +37,7 @@ class TransactionRepository extends ServiceEntityRepository
             ->andWhere('t.user = :user')
             ->setParameter('startDate', $dateStart)
             ->setParameter('endDate', $dateEnd)
-            ->setParameter('user', $this->user->getId())
+            ->setParameter('user', $this->security->getUser())
             ->getQuery()
             ->getResult();
     }
@@ -61,7 +56,7 @@ class TransactionRepository extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder('t')
             ->select('SUM(t.amount)')
             ->andWhere('t.user = :user')
-            ->setParameter('user', $this->user);
+            ->setParameter('user', $this->security->getUser());
 
         foreach ($conditions as $key => $value) {
             if (in_array($key, ['date', 'category', 'user'])) {
@@ -99,19 +94,29 @@ class TransactionRepository extends ServiceEntityRepository
      */
     public function getUserTransactions(bool $rawQuery = false, ?int $max = null): Query|array
     {
-        if ($this->user === null) {
-            return [];
-        }
         $query = $this->createQueryBuilder('t')
-            ->leftJoin('t.user', 'r')
-            ->addSelect('r')
             ->where('t.user = :user')
             ->orderBy('t.date', 'DESC')
-            ->setParameter('user', $this->user->getId());
+            ->setParameter('user', $this->security->getUser());
         if ($max !== null) {
             $query->setMaxResults(abs((int)$max));
         }
         return $rawQuery ? $query->getQuery() : $query->getQuery()->getResult();
+    }
+
+    public function getLastTransaction(): array
+    {
+        return $this->createQueryBuilder('t')
+            ->where('t.user = :user')
+            ->setParameter('user', $this->security->getUser())
+            ->orderBy('t.date', 'DESC')
+            ->setMaxResults(10)
+            ->getQuery()->getResult();
+
+//        return array_map(function ($row) {
+//            $mapper = new TransactionMapper();
+//            return $mapper->mapToDTO($row);
+//        }, $data);
     }
 }
 

@@ -16,19 +16,33 @@ class TransactionFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        for ($i = 0; $i < 4100; $i++) {
-            $transaction = new Transaction();
-            $transaction->setUser($this->getReference('user-' . rand(1, 2), User::class));
-            $transaction->setDate(new DateTime());
-            $transaction->setDescription("Description transaction " . $i);
-            $transaction->setWallet($this->getReference("wallet-" . rand(1, 4), Wallet::class));
-            $transaction->setCategory($this->getReference("category-" . rand(1, 9), Category::class));
-            $price = rand(1, 10000) . ',' . rand(0, 99);
-            $transaction->setAmount((float)$price);
-            $transaction->setType(rand(1, 2));
-            $manager->persist($transaction);
+        for ($i = 0; $i < 3000; $i++) {
+            $wallet = $this->getReference("wallet-" . rand(1, 2), Wallet::class);
+            $category = $this->getReference("category-" . rand(1, 5), Category::class);
+            $user = $this->getReference('user-1', User::class);
+            $this->createTransaction($i, $user, $wallet, $category, $manager);
+        }
+        for ($i = 0; $i < 3000; $i++) {
+            $wallet = $this->getReference("wallet-" . rand(3, 4), Wallet::class);
+            $category = $this->getReference("category-" . rand(5, 9), Category::class);
+            $user = $this->getReference('user-2', User::class);
+            $this->createTransaction($i, $user, $wallet, $category, $manager);
         }
         $manager->flush();
+    }
+
+    private function createTransaction($i, $user, $wallet, $category, $manager): void
+    {
+        $transaction = new Transaction();
+        $transaction->setUser($user);
+        $transaction->setDate(new DateTime());
+        $transaction->setDescription("Description transaction " . $i);
+        $transaction->setWallet($wallet);
+        $transaction->setCategory($category);
+        $price = rand(1, $wallet->getAmount()) . '.' . rand(0, 99);
+        $transaction->setAmount((float)$price);
+        $transaction->setType(rand(1, 2));
+        $manager->persist($transaction);
     }
 
     public function getDependencies(): array
