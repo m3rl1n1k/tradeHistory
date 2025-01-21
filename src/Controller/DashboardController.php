@@ -32,7 +32,7 @@ class DashboardController extends AbstractController
     public function home(TransactionRepository $transactionRepository): Response
     {
         return $this->render('dashboard/index.html.twig', [
-            'last_transaction' => $transactionRepository->getLastUserTransactions(),
+            'last_transaction' => $transactionRepository->getLastTransaction(),
             'chart' => $this->chartService->dashboardChart(),
             'amount' => $this->walletService->getTotal()
         ]);

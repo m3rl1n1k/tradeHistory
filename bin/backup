@@ -1,3 +1,0 @@
-#!/usr/bin/env php
-<?php
-exec("docker exec -it mysql_Production /usr/bin/mysqldump -u root --password=root Production > Backup_Production.sql");

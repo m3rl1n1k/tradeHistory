@@ -8,18 +8,17 @@ class CategoryService
 {
     public function mainColor(Category $category, $form): Category|string|null
     {
-
         $parent = $this->getParent($form);
-        $noColor = $this->getNoColor($form);
+//        $noColor = $this->getNoColor($form);
         // if parent set & category set -> set category.color
         // if parent not set & category set -> set category.color
         // if parent set color & category not set color -> set category.color = parent.color
         $parentColor = $parent->getColor();
         $categoryColor = $category->getColor();
         $result = 'Error in set color!';
-        if ($noColor) {
-            return $category->setColor($parentColor);
-        }
+//        if ($noColor) {
+//            return $category->setColor($parentColor);
+//        }
         if ($parentColor !== null && $categoryColor === null) {
             $result = $category->setColor($parentColor);
         }
@@ -39,7 +38,7 @@ class CategoryService
 
     protected function getNoColor($form)
     {
-        if ($form->get('no_color') === null) {
+        if (null === $form->get('no_color')) {
             return "no set color";
         }
         return $form->get('no_color')->getData();

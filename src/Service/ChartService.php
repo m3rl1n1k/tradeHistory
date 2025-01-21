@@ -3,8 +3,8 @@
 namespace App\Service;
 
 use App\Entity\Transaction;
+use App\Enum\TransactionEnum;
 use App\Repository\TransactionRepository;
-use App\Transaction\TransactionEnum;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
@@ -108,12 +108,12 @@ class ChartService
     protected function colors($type = ''): string
     {
         // == because $type return string and TransactionEnum::Expense->value return int
-        if ($type == TransactionEnum::Expense->value) {
-            return $this->userSettings::getSettings()['colorExpenseChart'];
-        }
-        if ($type == TransactionEnum::Profit->value) {
-            return $this->userSettings->getSettings()['colorIncomeChart'];
-        }
+//        if ($type == TransactionEnum::Expense->value) {
+//            return $this->userSettings::getSettings()['colorExpenseChart'];
+//        }
+//        if ($type == TransactionEnum::Profit->value) {
+//            return $this->userSettings->getSettings()['colorIncomeChart'];
+//        }
         $colorDataset = [
             'rgb(255, 99, 132, 0.6)',
             'rgb(225, 204, 079, 0.6)',
@@ -154,13 +154,13 @@ class ChartService
                 'legend' => [
                     'display' => false,
                 ],
-                'title' => [
-                    'display' => true,
-                    'text' => "Expense: {$this->totalExpense()}",
-                    'font' => [
-                        'size' => 20
-                    ],
-                ]
+//                'title' => [
+//                    'display' => true,
+//                    'text' => "Expense: {$this->totalExpense()}",
+//                    'font' => [
+//                        'size' => 20
+//                    ],
+//                ]
             ],
         ]);
 
@@ -200,16 +200,6 @@ class ChartService
         return array_values($dataset);
     }
 
-    protected function totalExpense(): float
-    {
-        $sum = 0;
-        foreach ($this->transactions as $transaction) {
-            if ($transaction->getType() === TransactionEnum::Expense->value)
-                $sum += $transaction->getAmount();
-        }
-        return round($sum, 2);
-    }
-
     public function historyChart(array $transactionsHistory): Chart
     {
         $chart = $this->create();
@@ -233,6 +223,16 @@ class ChartService
             ],
         ]);
         return $chart;
+    }
+
+    protected function totalExpense(): float
+    {
+        $sum = 0;
+        foreach ($this->transactions as $transaction) {
+            if ($transaction->getType() === TransactionEnum::Expense->value)
+                $sum += $transaction->getAmount();
+        }
+        return round($sum, 2);
     }
 
 

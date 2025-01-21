@@ -18,24 +18,27 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/category')]
 class CategoryController extends AbstractController
 {
+    private array $parentCategories;
+
     public function __construct(
         protected ParentCategoryRepository $parentCategoryRepository,
         protected CategoryRepository       $category,
         protected CategoryService          $categoryService
     )
     {
+        $this->parentCategories = $this->parentCategoryRepository->getMainAndSubCategories();
     }
 
     #[Route('/new', name: 'app_category_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category, [
-            'main_ParentCategory' => $this->parentCategoryRepository->getAll()
+            'parent_categories' => $this->parentCategories
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->category->isSimilar($category);
             $this->categoryService->mainColor($category, $form);
             $entityManager->persist($category);
             $entityManager->flush();
@@ -50,11 +53,12 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_category_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('edit', 'category')]
     public function edit(Request $request, Category $category, EntityManagerInterface $entityManager):
     Response
     {
         $form = $this->createForm(CategoryType::class, $category, [
-            'main_ParentCategory' => $this->parentCategoryRepository->getAll()
+            'parent_categories' => $this->parentCategories
         ]);
         $form->handleRequest($request);
 

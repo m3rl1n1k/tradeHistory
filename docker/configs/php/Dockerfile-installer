@@ -1,10 +1,10 @@
-FROM php:8.1-fpm
+FROM php:8.3-fpm
 WORKDIR ${WORKDIR}
 
 RUN apt-get -y update && apt-get -y install git unzip rsync
 
-RUN git config --global user.email "bisix21@gmail.com"
-RUN git config --global user.name "Bisix21"
+RUN git config --global user.email "m3rl1n1k@gmail.com"
+RUN git config --global user.name "m3rl1n1k"
 
 ENV TERM xterm-256color
 

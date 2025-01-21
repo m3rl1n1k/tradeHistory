@@ -21,6 +21,15 @@
     </div>
     <button type="button" class="btn btn-primary" id="user_edit">Edit</button>
     {{ form_end(form) }}
+
+    {% if remove_user is not null %}
+        {{ form_start(remove_user, {'action': path('app_remove_account', {'id': user.id})}) }}
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+        <button class="btn btn-primary" id="user_delete"
+                onsubmit="return confirm('Are you sure you want to delete this item?');">Remove Account
+        </button>
+        {{ form_end(remove_user) }}
+    {% endif %}
     {% block javascripts %}
         {{ encore_entry_script_tags('user') }}
     {% endblock %}

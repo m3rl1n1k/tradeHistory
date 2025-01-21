@@ -26,7 +26,9 @@ class CategoryType extends AbstractType
             ])
             ->add('ParentCategory', EntityType::class, [
                 'class' => ParentCategory::class,
-                'choices' => $options['main_ParentCategory'],
+                'choices' => array_map(function ($category) {
+                    return $category['parentCategory'];
+                }, $options['parent_categories']),
                 'choice_label' => 'name',
                 'label' => 'Parent category:'
             ]);
@@ -45,7 +47,7 @@ class CategoryType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Category::class,
-            'main_ParentCategory' => Category::class,
+            'parent_categories' => Category::class,
             'values' => null
         ]);
     }

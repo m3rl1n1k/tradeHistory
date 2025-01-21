@@ -2,7 +2,7 @@
 
 namespace App\Twig;
 
-use App\Transaction\TransactionEnum;
+use App\Enum\TransactionEnum;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -23,7 +23,6 @@ class TransactionExtension extends AbstractExtension
         return match ($type) {
             TransactionEnum::Profit->value => "btn-success",
             TransactionEnum::Expense->value => "btn-danger",
-            TransactionEnum::Transfer->value => "btn-warning",
             default => "btn-outline-info"
         };
     }
@@ -33,7 +32,6 @@ class TransactionExtension extends AbstractExtension
         return match ($type) {
             TransactionEnum::Profit->value => "Income",
             TransactionEnum::Expense->value => "Expense",
-            TransactionEnum::Transfer->value => "Transfer",
             default => ""
         };
     }

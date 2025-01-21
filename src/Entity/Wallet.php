@@ -13,8 +13,8 @@ class Wallet
 {
     const LENGTH = 9;
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\Column(type: "integer")]
     private ?int $id = null;
     #[ORM\Column(length: 15, unique: true)]
     private ?string $number = null;
@@ -29,23 +29,16 @@ class Wallet
     private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'wallets')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?User $user = null;
 
     #[ORM\OneToMany(mappedBy: 'wallet', targetEntity: Transaction::class, orphanRemoval: true)]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private Collection $transactions;
-
-    #[ORM\OneToMany(mappedBy: 'fromWallet', targetEntity: Transfer::class, orphanRemoval: true)]
-    private Collection $outcomeTransfer;
-
-    #[ORM\OneToMany(mappedBy: 'toWallet', targetEntity: Transfer::class, orphanRemoval: true)]
-    private Collection $incomeTransfer;
 
     public function __construct()
     {
         $this->transactions = new ArrayCollection();
-        $this->outcomeTransfer = new ArrayCollection();
-        $this->incomeTransfer = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -58,7 +51,7 @@ class Wallet
         return $this->number;
     }
 
-    public function setNumber(string $currency): static
+    public function setNumber(?string $currency): static
     {
         $number = null;
         for ($i = 1; $i <= self::LENGTH; $i++) {
@@ -139,7 +132,7 @@ class Wallet
         return $this->getAmount() + $amount;
     }
 
-    protected function amountNotNull($amount)
+    protected function amountNotNull($amount): void
     {
         if ($amount === null) {
             throw new LogicException('You forget enter amount!?');
@@ -162,65 +155,5 @@ class Wallet
     {
         $this->amountNotNull($amount);
         return $this->getAmount() - $amount;
-    }
-
-    /**
-     * @return Collection<int, Transfer>
-     */
-    public function getIncomeTransfers(): Collection
-    {
-        return $this->incomeTransfer;
-    }
-
-    public function addIncomeTransfer(Transfer $transfer): static
-    {
-        if (!$this->incomeTransfer->contains($transfer)) {
-            $this->incomeTransfer->add($transfer);
-            $transfer->setFromWallet($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIncomeTransfer(Transfer $transfer): static
-    {
-        if ($this->incomeTransfer->removeElement($transfer)) {
-            // set the owning side to null (unless already changed)
-            if ($transfer->getFromWallet() === $this) {
-                $transfer->setFromWallet(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Transfer>
-     */
-    public function getOutcomeTransfers(): Collection
-    {
-        return $this->outcomeTransfer;
-    }
-
-    public function addOutcomeTransfer(Transfer $transfer): static
-    {
-        if (!$this->outcomeTransfer->contains($transfer)) {
-            $this->outcomeTransfer->add($transfer);
-            $transfer->setFromWallet($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOutcomeTransfer(Transfer $transfer): static
-    {
-        if ($this->outcomeTransfer->removeElement($transfer)) {
-            // set the owning side to null (unless already changed)
-            if ($transfer->getFromWallet() === $this) {
-                $transfer->setFromWallet(null);
-            }
-        }
-
-        return $this;
     }
 }

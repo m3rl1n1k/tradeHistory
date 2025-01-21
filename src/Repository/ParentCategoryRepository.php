@@ -4,10 +4,10 @@ namespace App\Repository;
 
 use App\Entity\ParentCategory;
 use App\Entity\User;
+use App\Trait\RepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\Config\Definition\Exception\DuplicateKeyException;
 
 /**
  * @extends ServiceEntityRepository<ParentCategory>
@@ -19,48 +19,32 @@ use Symfony\Component\Config\Definition\Exception\DuplicateKeyException;
  */
 class ParentCategoryRepository extends ServiceEntityRepository
 {
+    use RepositoryTrait;
+
     private ?User $user;
+    private array $parentCategories;
 
     public function __construct(
         ManagerRegistry              $registry,
-        protected CategoryRepository $CategoryRepository,
+        protected CategoryRepository $categoryRepository,
         protected Security           $security)
     {
         parent::__construct($registry, ParentCategory::class);
         $this->user = $this->security->getUser();
-    }
-
-    public function getAll(): array
-    {
-        return $this->findBy(['user' => $this->user->getId()]);
+        if ($this->user !== null) {
+            $this->parentCategories = $this->findBy(['user' => $this->user->getId()]);
+        }
     }
 
     public function getMainAndSubCategories(): array
     {
-        /** @var ParentCategory $mainCategory */
-        $mainCategories = $this->getAll();
         $categoryChoices = [];
-
-        foreach ($mainCategories as $mainCategory) {
-
-            $CategoryChoices = [];
-            $subCategories = $this->CategoryRepository->getAll($mainCategory->getId());
-
-            foreach ($subCategories as $Category) {
-                $CategoryChoices[$Category->getId()] = $Category;
-            }
-
-            $categoryChoices[$mainCategory->getName()] = $CategoryChoices ?? $mainCategory;
+        foreach ($this->parentCategories as $mainCategory) {
+            $categoryChoices[$mainCategory->getName()] = [
+                'parentCategory' => $mainCategory,
+                'categories' => $mainCategory->getCategories()->toArray()
+            ];
         }
         return $categoryChoices;
     }
-
-    public function isSimilar(ParentCategory $category): void
-    {
-        if ($this->findBy(['name' => $category->getName()])) {
-            throw new DuplicateKeyException('You have same category!');
-        }
-    }
-
-
 }
