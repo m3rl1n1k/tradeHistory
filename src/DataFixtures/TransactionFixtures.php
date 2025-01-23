@@ -16,13 +16,13 @@ class TransactionFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        for ($i = 0; $i < 3000; $i++) {
+        for ($i = 0; $i < 500; $i++) {
             $wallet = $this->getReference("wallet-" . rand(1, 2), Wallet::class);
             $category = $this->getReference("category-" . rand(1, 5), Category::class);
             $user = $this->getReference('user-1', User::class);
             $this->createTransaction($i, $user, $wallet, $category, $manager);
         }
-        for ($i = 0; $i < 3000; $i++) {
+        for ($i = 0; $i < 500; $i++) {
             $wallet = $this->getReference("wallet-" . rand(3, 4), Wallet::class);
             $category = $this->getReference("category-" . rand(5, 9), Category::class);
             $user = $this->getReference('user-2', User::class);
