@@ -8,11 +8,9 @@ use App\Repository\TransactionRepository;
 use App\Repository\WalletRepository;
 use App\Service\Pagination\PaginateInterface;
 use App\Service\Transaction\CalculationInterface;
-use App\Trait\AccessTrait;
 use App\Trait\TransactionTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -29,7 +27,7 @@ class TransactionController extends AbstractController
     {
     }
 
-    use  AccessTrait, TransactionTrait;
+    use TransactionTrait;
 
     #[Route('/', name: 'app_transaction_index', methods: ['GET'])]
     public function index(Request $request, TransactionRepository $transactionRepository, PaginateInterface $paginate): Response

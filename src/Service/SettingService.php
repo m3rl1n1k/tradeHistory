@@ -2,53 +2,35 @@
 
 namespace App\Service;
 
+use App\Entity\UserSetting;
 use App\Repository\UserRepository;
-use stdClass;
 
 class SettingService
 {
-    public static mixed $user;
-//{"colorIncomeChart": "#8aff93",
-// "colorExpenseChart": "#ff6b6b",
-// "coloredCategories": false,
-// "transactionsPerPage": 100,
-// "categoriesWithoutColor": true,
-// "coloredParentCategories": false,
-// "defaultColorForCategoryAndParent": "#1c6263"}
+    public static UserSetting $setting;
+
     public function __construct(protected UserRepository $userEntity)
     {
-
-        self::setUser($this->userEntity->getUser());
+        self::$setting = $this->userEntity->getUser()->getSetting();
     }
 
-    public static function setUser(mixed $user): void
+    public static function isColoredCategories(): bool
     {
-        self::$user = $user;
+        return self::$setting->isColoredCategories();
     }
 
-    public static function getSettings(): ?array
+    public static function isColoredParentCategories(): bool
     {
-        return self::$user->getSetting();
-//        return json_decode(self::$user->settings, true);
+        return self::$setting->isColoredParentCategories();
     }
 
-    public static function isCategoryWithColor(): bool
+    public static function getDefaultColorForCategoryAndParent(): string
     {
-        return self::$user->getSetting()['coloredCategories'];
+        return self::$setting->getDefaultColorForCategoryAndParent();
     }
 
-    public static function isParentCategoryWithColor(): bool
+    public static function getTransactionsPerPage(): ?int
     {
-        return self::$user->getSetting()['coloredParentCategories'];
-    }
-
-    public static function getDefaultColorForCategory(): string
-    {
-        return self::$user->getSetting()['defaultColorForCategoryAndParent'];
-    }
-
-    public static function getTransactionsPerPage()
-    {
-    return self::$user->getSetting()['transactionsPerPage'];
+        return self::$setting->getTransactionsPerPage();
     }
 }

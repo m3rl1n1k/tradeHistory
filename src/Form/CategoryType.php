@@ -32,11 +32,11 @@ class CategoryType extends AbstractType
                 'choice_label' => 'name',
                 'label' => 'Parent category:'
             ]);
-        if ($this->settingService::isCategoryWithColor()) {
+        if ($this->settingService::isColoredCategories()) {
             $builder->add('color', ColorType::class, [
                 'required' => false,
                 'attr' => [
-                    "value" => $this->settingService::getDefaultColorForCategory()
+                    "value" => $this->settingService::getDefaultColorForCategoryAndParent()
                 ]
             ]);
         }

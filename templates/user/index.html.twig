@@ -23,44 +23,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-4 col-sm-6 mt-3">
-            <div class="form-check form-switch">
-                {{ form_widget(form_user.categoriesWithoutColor, {'attr': {'class': 'form-check-input'}}) }}
-                {{ form_label(form_user.categoriesWithoutColor, 'Both categories with out color', {'label_attr': {'class': 'form-check-label'}}) }}
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-6 mt-3">
-            <div class="form-check form-switch">
-                {{ form_widget(form_user.coloredCategories, {'attr': {'class': 'form-check-input'}}) }}
-                {{ form_label(form_user.coloredCategories, 'Category with color', {'label_attr': {'class': 'form-check-label'}}) }}
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-6 mt-3">
-            <div class="form-check form-switch">
-                {{ form_widget(form_user.coloredParentCategories, {'attr': {'class': 'form-check-input'}}) }}
-                {{ form_label(form_user.coloredParentCategories, 'Parent category with color', {'label_attr': {'class': 'form-check-label'}}) }}
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-3 col-sm-6 mt-3">
-            {{ form_label(form_user.defaultColorForCategoryAndParent, 'Default color for both categories', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form_user.defaultColorForCategoryAndParent, {'attr': {'class': 'form-control form-control-color'}}) }}
-        </div>
-        <div class="col-md-3 col-sm-6 mt-3">
-            {{ form_label(form_user.colorExpenseChart, 'Color for expence chart', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form_user.colorExpenseChart, {'attr': {'class': 'form-control form-control-color'}}) }}
-        </div>
-        <div class="col-md-3 col-sm-6 mt-3">
-            {{ form_label(form_user.colorIncomeChart, 'Color for profit chart', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form_user.colorIncomeChart, {'attr': {'class': 'form-control  form-control-color'}}) }}
-        </div>
-        <div class="col-md-3 col-sm-6 mt-3">
-            {{ form_label(form_user.transactionsPerPage, 'Count transactions to show per page', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form_user.transactionsPerPage, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    </div>
+   
 
     <button type="button" class="btn btn-primary" id="user_edit">Edit</button>
     {{ form_end(form_user) }}

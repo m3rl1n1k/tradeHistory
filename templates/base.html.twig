@@ -45,7 +45,7 @@
                                 <svg class="bi">
                                     <use xlink:href="#cash"></use>
                                 </svg>
-                                {{ 'amount'|trans({}, 'menu') }}: {{ app.user.walletByCurrency ?? "0" }} {{ app.user.currency }}
+                                {{ 'amount'|trans({}, 'menu') }}: {{ app.user.currency }}
                             </span>
                         </li>
                     </ul>
@@ -116,6 +116,15 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center {{ isActive(path('app_user_setting_index')) }}
+                            gap-2" href="{{ path('app_user_setting_index') }}">
+                                <svg class="bi">
+                                    <use xlink:href="#setting"></use>
+                                </svg>
+                                {{ 'setting'|trans({}, 'menu') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link d-flex align-items-center {{ isActive(path('app_feedback')) }} gap-2"
                                href="{{ path('app_feedback') }}">
                                 <svg class="bi">
@@ -148,5 +157,14 @@
 {{ encore_entry_script_tags('app') }}
 {% block javascripts %} {% endblock %}
 
+<script type="application/javascript">
+    const button = document.querySelector('button.btn');
+    const form = document.querySelector('form')
+    if (form != null) {
+        form.addEventListener('submit', function () {
+            button.disabled = true
+        })
+    }
+</script>
 </body>
 </html>

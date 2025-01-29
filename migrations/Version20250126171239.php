@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250112121824 extends AbstractMigration
+final class Version20250126171239 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,6 +20,13 @@ final class Version20250112121824 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
+        $this->addSql('CREATE SEQUENCE category_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE feedback_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE parent_category_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE transaction_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE "user_id_seq" INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE user_setting_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE wallet_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE category (id INT NOT NULL, parent_category_id INT NOT NULL, name VARCHAR(255) NOT NULL, color VARCHAR(20) DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_64C19C1796A8F92 ON category (parent_category_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_IDENTIFIER_CATEGORY_NAME ON category (name)');
@@ -31,8 +38,10 @@ final class Version20250112121824 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_723705D1A76ED395 ON transaction (user_id)');
         $this->addSql('CREATE INDEX IDX_723705D1712520F3 ON transaction (wallet_id)');
         $this->addSql('CREATE INDEX IDX_723705D112469DE2 ON transaction (category_id)');
-        $this->addSql('CREATE TABLE "user" (id INT NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, currency VARCHAR(4) DEFAULT NULL, setting JSON DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE "user" (id INT NOT NULL, setting_id INT NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, currency VARCHAR(4) DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649EE35BD72 ON "user" (setting_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_IDENTIFIER_EMAIL ON "user" (email)');
+        $this->addSql('CREATE TABLE user_setting (id INT NOT NULL, colored_categories BOOLEAN DEFAULT NULL, colored_parent_categories BOOLEAN DEFAULT NULL, color_expense_chart VARCHAR(13) DEFAULT NULL, color_income_chart VARCHAR(13) DEFAULT NULL, transactions_per_page INT DEFAULT NULL, default_color_for_category_and_parent VARCHAR(13) DEFAULT NULL, color_picker_in_form BOOLEAN DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE wallet (id INT NOT NULL, user_id INT NOT NULL, number VARCHAR(15) NOT NULL, currency VARCHAR(4) DEFAULT NULL, amount DOUBLE PRECISION DEFAULT NULL, name VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_7C68921F96901F54 ON wallet (number)');
         $this->addSql('CREATE INDEX IDX_7C68921FA76ED395 ON wallet (user_id)');
@@ -56,6 +65,7 @@ final class Version20250112121824 extends AbstractMigration
         $this->addSql('ALTER TABLE transaction ADD CONSTRAINT FK_723705D1A76ED395 FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE transaction ADD CONSTRAINT FK_723705D1712520F3 FOREIGN KEY (wallet_id) REFERENCES wallet (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE transaction ADD CONSTRAINT FK_723705D112469DE2 FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE "user" ADD CONSTRAINT FK_8D93D649EE35BD72 FOREIGN KEY (setting_id) REFERENCES user_setting (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE wallet ADD CONSTRAINT FK_7C68921FA76ED395 FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
@@ -63,17 +73,26 @@ final class Version20250112121824 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
+        $this->addSql('DROP SEQUENCE category_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE feedback_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE parent_category_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE transaction_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE "user_id_seq" CASCADE');
+        $this->addSql('DROP SEQUENCE user_setting_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE wallet_id_seq CASCADE');
         $this->addSql('ALTER TABLE category DROP CONSTRAINT FK_64C19C1796A8F92');
         $this->addSql('ALTER TABLE parent_category DROP CONSTRAINT FK_9981B510A76ED395');
         $this->addSql('ALTER TABLE transaction DROP CONSTRAINT FK_723705D1A76ED395');
         $this->addSql('ALTER TABLE transaction DROP CONSTRAINT FK_723705D1712520F3');
         $this->addSql('ALTER TABLE transaction DROP CONSTRAINT FK_723705D112469DE2');
+        $this->addSql('ALTER TABLE "user" DROP CONSTRAINT FK_8D93D649EE35BD72');
         $this->addSql('ALTER TABLE wallet DROP CONSTRAINT FK_7C68921FA76ED395');
         $this->addSql('DROP TABLE category');
         $this->addSql('DROP TABLE feedback');
         $this->addSql('DROP TABLE parent_category');
         $this->addSql('DROP TABLE transaction');
         $this->addSql('DROP TABLE "user"');
+        $this->addSql('DROP TABLE user_setting');
         $this->addSql('DROP TABLE wallet');
         $this->addSql('DROP TABLE messenger_messages');
     }
