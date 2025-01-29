@@ -6,10 +6,8 @@ use App\Entity\ParentCategory;
 use App\Form\ParentCategoryType;
 use App\Repository\CategoryRepository;
 use App\Repository\ParentCategoryRepository;
-use App\Trait\AccessTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -24,8 +22,6 @@ class ParentCategoryController extends AbstractController
     {
     }
 
-    use AccessTrait;
-
     #[Route('/', name: 'app_parent_category_index', methods: ['GET'])]
     public function index(): Response
     {
@@ -37,13 +33,14 @@ class ParentCategoryController extends AbstractController
     #[Route('/new', name: 'app_parent_category_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $category = new ParentCategory();
-        $form = $this->createForm(ParentCategoryType::class, $category);
+        $parentCategory = new ParentCategory();
+        $form = $this->createForm(ParentCategoryType::class, $parentCategory);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $category->setUser($this->getUser());
-            $entityManager->persist($category);
+            $this->validateSimilarName(ParentCategory::class, $parentCategory, $entityManager);
+            $parentCategory->setUser($this->getUser());
+            $entityManager->persist($parentCategory);
             $entityManager->flush();
             $this->addFlash('success', 'Category created.');
             return $this->redirectToRoute('app_parent_category_index', [], Response::HTTP_SEE_OTHER);

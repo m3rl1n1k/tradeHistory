@@ -22,11 +22,11 @@ class ParentCategoryType extends AbstractType
             ->add('name', TextType::class, [
                 'trim' => true,
             ]);
-        if ($this->settingService::isParentCategoryWithColor()) {
+        if ($this->settingService::isColoredParentCategories()) {
             $builder->add('color', ColorType::class, [
                 'required' => false,
                 'attr' => [
-                    "value" => $this->settingService::getDefaultColorForCategory()
+                    "value" => $this->settingService::getDefaultColorForCategoryAndParent()
                 ]
             ]);
         }

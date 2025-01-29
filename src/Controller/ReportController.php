@@ -6,7 +6,6 @@ use App\Enum\TransactionEnum;
 use App\Form\ReportPeriodType;
 use App\Service\ChartService;
 use App\Service\Transaction\TransactionService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

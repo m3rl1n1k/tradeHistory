@@ -1,7 +1,7 @@
 {% for key, messages in app.flashes %}
     {% if key is same as 'success' %}
         {% for message in messages %}
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <div class="alert alert-success alert-dismissible fade show position-absolute z-3 w-auto" role="alert">
                 {{ message }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
@@ -9,7 +9,7 @@
     {% endif %}
     {% if key is same as 'info' %}
         {% for message in messages %}
-            <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <div class="alert alert-info alert-dismissible fade show position-absolute w-auto z-3" role="alert">
                 {{ message }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
@@ -17,7 +17,7 @@
     {% endif %}
     {% if key is same as 'error' %}
         {% for message in messages %}
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <div class="alert alert-danger alert-dismissible fade show position-absolute w-auto z-3" role="alert">
                 {{ message }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>

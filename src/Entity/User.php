@@ -32,13 +32,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $password;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Wallet::class, orphanRemoval: true)]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private Collection $wallets;
 
     #[ORM\Column(length: 4, nullable: true)]
     private ?string $currency = null;
 
-    #[ORM\Column(type: 'json', nullable: true)]
-    private ?array $setting = null;
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    private ?UserSetting $setting = null;
+
 
     public function __construct()
     {
@@ -157,27 +160,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getSetting(): ?array
+    public function getSetting(): ?UserSetting
     {
         return $this->setting;
     }
 
-    public function setSetting(?array $setting): static
+    public function setSetting(UserSetting $setting): static
     {
-        if ($setting === null) {
-            $setting = [
-                'coloredCategories' => true,
-                'coloredParentCategories' => true,
-                'colorExpenseChart' => "#eeeeee",
-                'colorIncomeChart' => "#ffffff",
-                'transactionsPerPage' => 20,
-                'defaultColorForCategoryAndParent' => "#1c6263",
-                'categoriesWithoutColor' => false,
-            ];
-        }
         $this->setting = $setting;
-
         return $this;
     }
-
 }

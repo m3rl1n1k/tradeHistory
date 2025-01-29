@@ -15,5 +15,5 @@ import './js/DayNight_mode.js'
 export const app = startStimulusApp(require.context(
     '@symfony/stimulus-bridge/lazy-controller-loader!./controllers',
     true,
-    /\.(j|t)sx?$/
+    /\.([jt])sx?$/
 ));
