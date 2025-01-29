@@ -116,15 +116,6 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center {{ isActive(path('app_user_settings',{'id':app.user.id})) }}
-                            gap-2" href="{{ path('app_user_settings',{'id':app.user.id}) }}">
-                                <svg class="bi">
-                                    <use xlink:href="#setting"></use>
-                                </svg>
-                                {{ 'setting'|trans({}, 'menu') }}
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link d-flex align-items-center {{ isActive(path('app_feedback')) }} gap-2"
                                href="{{ path('app_feedback') }}">
                                 <svg class="bi">

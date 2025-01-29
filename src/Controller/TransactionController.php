@@ -67,7 +67,7 @@ class TransactionController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_transaction_show', methods: ['GET'])]
-    #[IsGranted('show', 'transaction')]
+    #[IsGranted('view', 'transaction')]
     public function show(Transaction $transaction): Response
     {
         return $this->render('transaction/show.html.twig', [
