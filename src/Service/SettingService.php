@@ -11,7 +11,10 @@ class SettingService
 
     public function __construct(protected UserRepository $userEntity)
     {
-        self::$setting = $this->userEntity->getUser()->getSetting();
+        $user = $this->userEntity->getUser();
+        if ($user !== null) {
+            self::$setting = $user->getSetting();
+        }
     }
 
     public static function isColoredCategories(): bool

@@ -37,8 +37,7 @@ class ParentCategoryController extends AbstractController
         $form = $this->createForm(ParentCategoryType::class, $parentCategory);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->validateSimilarName(ParentCategory::class, $parentCategory, $entityManager);
+        if ($form->isSubmitted() && $form->isValid() && $this->validateSimilarName(ParentCategory::class, $parentCategory, $entityManager)) {
             $parentCategory->setUser($this->getUser());
             $entityManager->persist($parentCategory);
             $entityManager->flush();

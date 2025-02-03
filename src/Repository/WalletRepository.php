@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use App\Entity\Wallet;
+use App\Trait\RepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -18,14 +19,16 @@ use Symfony\Bundle\SecurityBundle\Security;
  */
 class WalletRepository extends ServiceEntityRepository
 {
-	private ?User $user;
-	
-	public function __construct(ManagerRegistry    $registry,
-								protected Security $security)
-	{
-		parent::__construct($registry, Wallet::class);
-		$this->user = $this->security->getUser();
-	}
+    private ?User $user;
+
+    public function __construct(ManagerRegistry    $registry,
+                                protected Security $security)
+    {
+        parent::__construct($registry, Wallet::class);
+        $this->user = $this->security->getUser();
+    }
+
+    use RepositoryTrait;
 
 //    /**
 //     * @return Wallet[] Returns an array of Wallet objects
@@ -51,13 +54,13 @@ class WalletRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-	
-	public function getAll(): array
-	{
-		$result = [];
-		foreach ($this->findBy(['user' => $this->user->getId()]) as $wallet) {
-			$result[$wallet->getId()] = $wallet;
-		}
-		return $result;
-	}
+
+    public function getAll(): array
+    {
+        $result = [];
+        foreach ($this->findBy(['user' => $this->user->getId()]) as $wallet) {
+            $result[$wallet->getId()] = $wallet;
+        }
+        return $result;
+    }
 }

@@ -1,32 +1,38 @@
 {{ form_start(form) }}
 {{ include('component/_alert.html.twig') }}
-<div class="row">
-    <div class="col-md-12 mt-3">
+<div class="row ">
+    <div class="col-md-8 col-sm-12 mt-3">
         <div class="input-group">
-            <span class="input-group-text" id="basic-addon1">
-                {{ form_label(form.wallet, 'From/To', {'label_attr': {'class': 'form-label'}}) }}
-            </span>
+            <span class="input-group-text">{{ form_label(form.wallet, 'From', {'label_attr': {'class': 'form-label'}}) }}</span>
             {{ form_widget(form.wallet, {'attr': {'class': 'form-control'}}) }}
             {{ form_widget(form.amount, {'attr': {'class': 'form-control', 'placeholder': 'Amount'}}) }}
             <span class="input-group-text">{{ app.user.currency }}</span>
-            {{ form_widget(form.Category, {'attr': {'class': 'form-control'}}) }}
         </div>
+    </div>
+    <div class="col-md-4 col-sm-12 mt-3">
+        <div class="input-group">
+            <span class="input-group-text">
+                Category
+            </span>
+            {{ form_widget(form.category, {'attr': {'class': 'form-control', 'style': 'height:2.85rem'}}) }}
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6 mt-3">
+        {{ form_label(form.type, 'Type', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="col-sm-6 mt-3">
+        {#        {{ dump(form.date.vars.value) }} #}
+        {{ form_label(form.date, 'Date', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.date, {'attr': {'class': 'form-control', 'max': form.date.vars.value}}) }}
     </div>
 </div>
 <div class="row">
     <div class="col-12 mt-3">
         {{ form_label(form.description, 'Desription', {'label_attr': {'class': 'form-label'}}) }}
         {{ form_widget(form.description, {'attr': {'class': 'form-control '}}) }}
-    </div>
-</div>
-<div class="row">
-    <div class="col-6 mt-3">
-        {{ form_label(form.type, 'Type', {'label_attr': {'class': 'form-label'}}) }}
-        {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
-    </div>
-    <div class="col-6 mt-3">
-        {{ form_label(form.date, 'Date', {'label_attr': {'class': 'form-label'}}) }}
-        {{ form_widget(form.date, {'attr': {'class': 'form-control', 'max': form.date.vars.value}}) }}
     </div>
 </div>
 
