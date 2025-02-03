@@ -41,7 +41,7 @@ final class Version20250126171239 extends AbstractMigration
         $this->addSql('CREATE TABLE "user" (id INT NOT NULL, setting_id INT NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, currency VARCHAR(4) DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649EE35BD72 ON "user" (setting_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_IDENTIFIER_EMAIL ON "user" (email)');
-        $this->addSql('CREATE TABLE user_setting (id INT NOT NULL, colored_categories BOOLEAN DEFAULT NULL, colored_parent_categories BOOLEAN DEFAULT NULL, color_expense_chart VARCHAR(13) DEFAULT NULL, color_income_chart VARCHAR(13) DEFAULT NULL, transactions_per_page INT DEFAULT NULL, default_color_for_category_and_parent VARCHAR(13) DEFAULT NULL, color_picker_in_form BOOLEAN DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE user_setting (id INT NOT NULL, colored_categories BOOLEAN DEFAULT NULL, colored_parent_categories BOOLEAN DEFAULT NULL, color_expense_chart VARCHAR(13) DEFAULT NULL, color_income_chart VARCHAR(13) DEFAULT NULL, transactions_per_page INT DEFAULT NULL, default_color_for_category_and_parent VARCHAR(13) DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE wallet (id INT NOT NULL, user_id INT NOT NULL, number VARCHAR(15) NOT NULL, currency VARCHAR(4) DEFAULT NULL, amount DOUBLE PRECISION DEFAULT NULL, name VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_7C68921F96901F54 ON wallet (number)');
         $this->addSql('CREATE INDEX IDX_7C68921FA76ED395 ON wallet (user_id)');

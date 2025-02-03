@@ -28,6 +28,9 @@ class Wallet
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $name = null;
 
+    #[ORM\Column(type: "boolean", nullable: true)]
+    private ?bool $isMain = null;
+
     #[ORM\ManyToOne(inversedBy: 'wallets')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?User $user = null;
@@ -155,5 +158,16 @@ class Wallet
     {
         $this->amountNotNull($amount);
         return $this->getAmount() - $amount;
+    }
+
+    public function isMain(): ?bool
+    {
+        return $this->isMain;
+    }
+
+    public function setIsMain(?bool $isMain): Wallet
+    {
+        $this->isMain = $isMain;
+        return $this;
     }
 }

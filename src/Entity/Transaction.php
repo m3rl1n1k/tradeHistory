@@ -5,6 +5,8 @@ namespace App\Entity;
 
 use App\Enum\TransactionEnum;
 use App\Repository\TransactionRepository;
+use DateMalformedStringException;
+use DateTime;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -132,9 +134,18 @@ class Transaction
         return $this->date;
     }
 
+
+    /**
+     * @throws DateMalformedStringException
+     */
     public function setDate(DateTimeInterface $date): static
     {
-        $this->date = $date;
+        $date = $date->format('Y-m-d');
+
+        $time = new DateTime();
+        $time = $time->format("H:i:s");
+        $transactionTime = $date . " " . $time;
+        $this->date = new DateTime($transactionTime);
 
         return $this;
     }

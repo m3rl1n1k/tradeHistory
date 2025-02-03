@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Entity\Wallet;
 use App\Form\WalletType;
 use App\Repository\WalletRepository;
@@ -11,7 +10,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
@@ -33,15 +31,16 @@ class WalletController extends AbstractController
     }
 
     #[Route('/new', name: 'app_wallet_new', methods: ['GET', 'POST'])]
-    public function new(#[CurrentUser] ?User $user, Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $wallet = new Wallet();
         $form = $this->createForm(WalletType::class, $wallet);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $wallet->setUser($user);
+        if ($form->isSubmitted() && $form->isValid() && $this->validateIsMainWallet(Wallet::class, $wallet, $entityManager, [
+                'data' => $form->getData()
+            ])) {
+            $wallet->setUser($this->getUser());
             $currency = $form->get('currency')->getData();
             $wallet->setNumber($currency);
             $entityManager->persist($wallet);
@@ -70,7 +69,9 @@ class WalletController extends AbstractController
         $form = $this->createForm(WalletType::class, $wallet);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $this->validateIsMainWallet(Wallet::class, $wallet, $entityManager, [
+                'data' => $form->getData()
+            ])) {
             $entityManager->flush();
             return $this->redirectToRoute('app_wallet_index', [], Response::HTTP_SEE_OTHER);
         }

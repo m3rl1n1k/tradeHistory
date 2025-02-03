@@ -9,7 +9,7 @@ use DateTime;
 use Exception;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -30,6 +30,7 @@ class TransactionType extends AbstractType
     {
         $category = $options['category'];
         $wallets = $options['wallet'];
+        $date = new DateTime();
         $builder
             ->add('wallet', ChoiceType::class, [
                 'placeholder' => "Select wallet",
@@ -47,7 +48,7 @@ class TransactionType extends AbstractType
                     'step' => 0.01
                 ]
             ])
-            ->add('Category', ChoiceType::class, [
+            ->add('category', ChoiceType::class, [
                 'duplicate_preferred_choices' => false,
                 'required' => false,
                 'choices' => $category,
@@ -60,10 +61,10 @@ class TransactionType extends AbstractType
                 [
                     'choices' => TransactionEnum::transactionTypes(),
                 ])
-            ->add('date', DateTimeType::class, [
-                'data' => new DateTime(),
+            ->add('date', DateType::class, [
+                'data' => $date,
                 'attr' => [
-                    'max' => (new DateTime())->format('Y-m-d'),
+                    'max' => $date->format('Y-m-d'),
                 ],
             ])
             ->add('description', TextareaType::class, [

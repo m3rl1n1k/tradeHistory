@@ -1,17 +1,23 @@
 {{ form_start(form) }}
 {{ include('component/_alert.html.twig') }}
 <div class="row">
-    <div class="col-lg-6 col-md-12 mt-3">
+    <div class="col-lg-6 col-md-12 col-sm-6 mt-3">
         {{ form_label(form.currency, 'Currency', {'label_attr': {'class': 'form-label'}}) }}
         {{ form_widget(form.currency, {'attr': {'class': 'form-control'}}) }}
     </div>
-    <div class="col-lg-6 col-md-12 mt-3">
+    <div class="col-lg-6 col-md-12 col-sm-6 mt-3">
         {{ form_label(form.amount, 'Amount', {'label_attr': {'class': 'form-label'}}) }}
         {{ form_widget(form.amount, {'attr': {'class': 'form-control'}}) }}
     </div>
-    <div class="col-lg-6 col-md-12 mt-3">
+    <div class="col-lg-6 col-md-12 col-sm-6 mt-3">
         {{ form_label(form.name, 'Name of wallet', {'label_attr': {'class': 'form-label'}}) }}
         {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="col-lg-6 col-md-12 col-sm-6 mt-3">
+        <div class="form-check form-switch">
+            {{ form_label(form.isMain, 'Main wallet:', {'label_attr': {'class': 'form-check-label'}}) }}
+            {{ form_widget(form.isMain, {'attr': {'class': 'form-check-input'}}) }}
+        </div>
     </div>
 </div>
 
