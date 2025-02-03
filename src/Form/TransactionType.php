@@ -30,7 +30,9 @@ class TransactionType extends AbstractType
     {
         $category = $options['category'];
         $wallets = $options['wallet'];
-        $date = new DateTime();
+        $transaction = $options['transaction'];
+        $date = $options['date'];
+        $transactionDate = $transaction && $transaction->getDate() ? $transaction->getDate() : $date;
         $builder
             ->add('wallet', ChoiceType::class, [
                 'placeholder' => "Select wallet",
@@ -62,10 +64,11 @@ class TransactionType extends AbstractType
                     'choices' => TransactionEnum::transactionTypes(),
                 ])
             ->add('date', DateType::class, [
-                'data' => $date,
                 'attr' => [
-                    'max' => $date->format('Y-m-d'),
+                    'max' => (new DateTime())->format('Y-m-d'),
                 ],
+                'widget' => 'single_text',
+                'data' => $transactionDate,
             ])
             ->add('description', TextareaType::class, [
                 'required' => false,
@@ -80,7 +83,9 @@ class TransactionType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Transaction::class,
             'wallet' => Wallet::class,
-            'category' => null
+            'category' => null,
+            'transaction' => null,
+            'date' => new DateTime()
         ]);
     }
 }

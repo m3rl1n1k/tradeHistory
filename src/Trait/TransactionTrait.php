@@ -4,6 +4,7 @@ namespace App\Trait;
 
 use App\Entity\Transaction;
 use App\Form\TransactionType;
+use DateTime;
 use Symfony\Component\Form\FormInterface;
 
 trait TransactionTrait
@@ -15,6 +16,8 @@ trait TransactionTrait
                 return $category['categories'];
             }, $this->parentCategoryRepository->getMainAndSubCategories()),
             'wallet' => $this->walletRepository->getAll(),
+            'transaction' => $transaction,
+            'date' => new DateTime()
         ]);
     }
 }

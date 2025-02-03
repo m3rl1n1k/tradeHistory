@@ -13,10 +13,14 @@
 .phpunit.result.cache
 ###< phpunit/phpunit ###
 
+###> symfony/framework-bundle ###
+/.env.install
+###< symfony/framework-bundle ###
+
+
 ###> symfony/phpunit-bridge ###
 ###< symfony/phpunit-bridge ###
 .idea
-/.env.install
 /logs/
 /docker/
 
@@ -29,3 +33,4 @@ yarn-error.log
 /tests/
 /DumpDB/
 /DumpDB/public/
+/public/build/
