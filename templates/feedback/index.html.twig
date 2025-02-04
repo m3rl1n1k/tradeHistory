@@ -4,12 +4,9 @@
 
 {% block body %}
     <div class="row">
-        {% if is_granted("ROLE_FEEDBACK_CHECKER") %}
-            {{ include('feedback/_feedback_list.html.twig') }}
-        {% else %}
             {{ form_start(form) }}
             {{ include('component/_alert.html.twig') }}
-            <div class="row">
+            <div class="row mb-3">
                 <div class="offset-lg-2 col-lg-7 col-md-12 mt-3">
                     {{ form_label(form.message, 'Message', {'label_attr': {'class': 'form-label'}}) }}
                     {{ form_widget(form.message, {'attr': {'class': 'form-control'}}) }}
@@ -20,6 +17,8 @@
                 <button class="btn btn-success">{{ button_label|default('Send') }}</button>
             </div>
             {{ form_end(form) }}
+        {% if is_granted("ROLE_FEEDBACK_CHECKER") %}
+            {{ include('feedback/_feedback_list.html.twig') }}
         {% endif %}
     </div>
 
