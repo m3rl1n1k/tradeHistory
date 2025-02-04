@@ -36,7 +36,7 @@ class CategoryType extends AbstractType
             $builder->add('color', ColorType::class, [
                 'required' => false,
                 'attr' => [
-                    "value" => $this->settingService::getDefaultColorForCategoryAndParent()
+                    "value" => $options['color'] ?? $this->settingService::getDefaultColorForCategoryAndParent(),
                 ]
             ]);
         }
@@ -48,7 +48,8 @@ class CategoryType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Category::class,
             'parent_categories' => Category::class,
-            'values' => null
+            'values' => null,
+            'color' => $this->settingService::getDefaultColorForCategoryAndParent()
         ]);
     }
 }
