@@ -34,6 +34,18 @@ class SettingService
 
     public static function getTransactionsPerPage(): ?int
     {
+
+
         return self::$setting->getTransactionsPerPage();
+    }
+
+    public static function getColorExpenseChart(): ?string
+    {
+        return self::$setting->getColorExpenseChart();
+    }
+
+    public static function getColorIncomeChart(): ?string
+    {
+        return self::$setting->getColorIncomeChart();
     }
 }
