@@ -36,7 +36,6 @@ class ChartService
         $data = $this->datasetDashboard(TransactionEnum::Expense->value);
         $dataset = $data['dataset'];
         $colors = $data['colors'];
-//        dd($data, $dataset, $colors);
 
         $chart->setData([
             'labels' => $this->getCategoriesList(),
@@ -79,27 +78,27 @@ class ChartService
      */
     protected function datasetDashboard(int $type): array
     {
-        $dataset = $colors = [];
-        $dataset['no_category'] = null;
+        $data = $colors = [];
+        $data['no_category'] = null;
         foreach ($this->transactions as $transaction) {
             $category = $transaction->getCategory();
-            if ($category !== null) {
-                $colors[] = $category->getColor();
-            } else {
-                $colors[] = null;
-            }
-            if ($transaction->getType() === $type && $category !== null) {
-                $dataset[$category->getId()] = $this->transactionRepository->getTransactionSum([
+            if ($category !== null && $transaction->getType() === $type) {
+                $data[$category->getId()] = $this->transactionRepository->getTransactionSum([
                     'category' => $category->getId(),
                 ]);
+                $colors[] = $category->getColor();
             } elseif ($transaction->getType() === $type) {
-                $dataset['no_category'] += $transaction->getAmount();
+                $data['no_category'] += $transaction->getAmount();
             }
         }
-        
+
+        if ($data['no_category'] === null) {
+            array_shift($data);
+        }
+
         return [
-            'dataset' => array_values($dataset),
-            'colors' => $colors,
+            'dataset' => array_values($data),
+            'colors' => array_unique($colors),
         ];
     }
 

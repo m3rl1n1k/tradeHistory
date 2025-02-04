@@ -57,7 +57,8 @@ class CategoryController extends AbstractController
     Response
     {
         $form = $this->createForm(CategoryType::class, $category, [
-            'parent_categories' => $this->parentCategories
+            'parent_categories' => $this->parentCategories,
+            'color' => $category->getColor()
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
