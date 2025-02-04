@@ -12,13 +12,22 @@ abstract class AbstractController extends \Symfony\Bundle\FrameworkBundle\Contro
 {
     use TargetPathTrait;
 
-    protected function validateSimilarName(string $entityName, object $entity, EntityManagerInterface $em): bool
+    protected function validateSimilarName(string $entityName, object $entity, EntityManagerInterface $em, array $options = []): bool
     {
         $this->methodIsAvailable('getName', $entity);
         /** @var RepositoryTrait $repo */
         $repo = $this->getRepository($entityName, $em);
         $name = $entity->getName();
-        if (!$res = $repo->hasSame(['name' => $name, 'user' => $this->getUser()->getId()])) {
+        $metadata = $em->getClassMetadata(get_class($entity));
+        if (isset($options['flag']) && $options['flag'] === 'edit') {
+            return true;
+        }
+        if (!$metadata->hasField('user')) {
+            $res = $repo->hasSame(['name' => $name]);
+        } else {
+            $res = $repo->hasSame(['name' => $name, 'user' => $this->getUser()->getId()]);
+        }
+        if (!$res) {
             $this->addFlash('error', "You already category with name: $name");
         }
         return $res;
