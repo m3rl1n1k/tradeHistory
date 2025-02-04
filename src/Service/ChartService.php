@@ -36,7 +36,6 @@ class ChartService
         $data = $this->datasetDashboard(TransactionEnum::Expense->value);
         $dataset = $data['dataset'];
         $colors = $data['colors'];
-
         $chart->setData([
             'labels' => $this->getCategoriesList(),
             'datasets' => [
@@ -83,22 +82,18 @@ class ChartService
         foreach ($this->transactions as $transaction) {
             $category = $transaction->getCategory();
             if ($category !== null && $transaction->getType() === $type) {
+                $colors[$category->getId()] = $category->getColor() ?? "#eeeeee";
                 $data[$category->getId()] = $this->transactionRepository->getTransactionSum([
                     'category' => $category->getId(),
                 ]);
-                $colors[] = $category->getColor();
             } elseif ($transaction->getType() === $type) {
                 $data['no_category'] += $transaction->getAmount();
             }
         }
 
-        if ($data['no_category'] === null) {
-            array_shift($data);
-        }
-
         return [
             'dataset' => array_values($data),
-            'colors' => array_unique($colors),
+            'colors' => array_values($colors)
         ];
     }
 
