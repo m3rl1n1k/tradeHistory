@@ -17,12 +17,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TransactionType extends AbstractType
 {
-    private string $date;
-
-    public function __construct()
-    {
-    }
-
     /**
      * @throws Exception
      */
