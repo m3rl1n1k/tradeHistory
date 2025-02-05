@@ -53,13 +53,13 @@ class ChartService
                 'legend' => [
                     'display' => false,
                 ],
-//                'title' => [
-//                    'display' => true,
-//                    'text' => "Expense: {$this->totalExpense()}",
-//                    'font' => [
-//                        'size' => 20
-//                    ],
-//                ]
+                'title' => [
+                    'display' => true,
+                    'text' => "Expense: {$this->totalExpense()}",
+                    'font' => [
+                        'size' => 20
+                    ],
+                ]
             ],
         ]);
 
@@ -78,7 +78,7 @@ class ChartService
     protected function datasetDashboard(int $type): array
     {
         $data = $colors = [];
-        $data['no_category'] = null;
+        $data['without_category'] = null;
         foreach ($this->transactions as $transaction) {
             $category = $transaction->getCategory();
             if ($category !== null && $transaction->getType() === $type) {
@@ -87,7 +87,8 @@ class ChartService
                     'category' => $category->getId(),
                 ]);
             } elseif ($transaction->getType() === $type) {
-                $data['no_category'] += $transaction->getAmount();
+                $data['without_category'] += $transaction->getAmount();
+                $colors['without_category'] = "#3a3a3a";
             }
         }
 
@@ -100,13 +101,18 @@ class ChartService
     public function getCategoriesList(): array
     {
         $list = [];
-        $list[] = "No Category";
+        $list['Without Category'] = "Without Category";
         foreach ($this->transactions as $transaction) {
             $category = $transaction->getCategory();
             if ($category !== null)
                 $list[] = $transaction->getCategory()->getName();
         }
         return array_values(array_unique($list));
+    }
+
+    private function totalExpense(): float
+    {
+        return 12.3;
     }
 
     protected function colors($type = ''): string
