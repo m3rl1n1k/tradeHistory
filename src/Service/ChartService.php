@@ -16,6 +16,7 @@ class ChartService
      * @var Transaction[]
      */
     private array $transactions;
+    private ?string $withoutCategory = null;
 
     public function __construct(protected ChartBuilderInterface $chartBuilder,
                                 protected TransactionRepository $transactionRepository,
@@ -36,8 +37,9 @@ class ChartService
         $data = $this->datasetDashboard(TransactionEnum::Expense->value);
         $dataset = $data['dataset'];
         $colors = $data['colors'];
+        $labels = $this->getCategoriesList();
         $chart->setData([
-            'labels' => $this->getCategoriesList(),
+            'labels' => $labels,
             'datasets' => [
                 [
                     'data' => $dataset,
@@ -87,9 +89,12 @@ class ChartService
                     'category' => $category->getId(),
                 ]);
             } elseif ($transaction->getType() === $type) {
-                $data['without_category'] += $transaction->getAmount();
+                $this->withoutCategory = $data['without_category'] += $transaction->getAmount();
                 $colors['without_category'] = "#3a3a3a";
             }
+        }
+        if ($data['without_category'] === null) {
+            unset($data['without_category']);
         }
 
         return [
@@ -101,7 +106,9 @@ class ChartService
     public function getCategoriesList(): array
     {
         $list = [];
-        $list['Without Category'] = "Without Category";
+        if ($this->withoutCategory !== null) {
+            $list['without_category'] = "Without Category";
+        }
         foreach ($this->transactions as $transaction) {
             $category = $transaction->getCategory();
             if ($category !== null)
@@ -110,7 +117,7 @@ class ChartService
         return array_values(array_unique($list));
     }
 
-    private function totalExpense(): float
+    private function totalExpense(): ?float
     {
         return 12.3;
     }
