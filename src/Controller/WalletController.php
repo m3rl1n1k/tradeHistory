@@ -37,9 +37,10 @@ class WalletController extends AbstractController
         $form = $this->createForm(WalletType::class, $wallet);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid() && $this->validateIsMainWallet(Wallet::class, $wallet, $entityManager, [
-                'data' => $form->getData()
-            ])) {
+        $isMain = $this->validateIsMainWallet(Wallet::class, $wallet, $entityManager, [
+            'data' => $form->getData()
+        ]);
+        if ($form->isSubmitted() && $form->isValid() && $isMain) {
             $wallet->setUser($this->getUser());
             $currency = $form->get('currency')->getData();
             $wallet->setNumber($currency);
@@ -69,9 +70,12 @@ class WalletController extends AbstractController
         $form = $this->createForm(WalletType::class, $wallet);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid() && $this->validateIsMainWallet(Wallet::class, $wallet, $entityManager, [
-                'data' => $form->getData()
-            ])) {
+        $isMain = $this->validateIsMainWallet(Wallet::class, $wallet, $entityManager, [
+            'data' => $form->getData()
+        ]);
+        if ($form->isSubmitted() && $form->isValid() && $isMain) {
+            $currency = $form->get('currency')->getData();
+            $wallet->setNumber($currency);
             $entityManager->flush();
             return $this->redirectToRoute('app_wallet_index', [], Response::HTTP_SEE_OTHER);
         }

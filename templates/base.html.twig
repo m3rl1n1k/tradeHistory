@@ -17,15 +17,27 @@
 {{ include('component/_icons_menu.html.twig') }}
 
 <header class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow" data-bs-theme="dark">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white"
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" style="background: none !important;"
        href="{{ path('app_home') }}">{{ 'index.title'|trans({}, 'translation') }}</a>
 
     {{ include('component/_mobile_version_menu.html.twig') }}
+    <form method="GET" class="w-100" id="search-form">
+        <div class="input-group">
+            <input id="search-input" class="form-control rounded-0" type="text"
+                   placeholder="Search transaction by category"
+                   aria-label="Search"
+                   name="search">
+            <button class="btn btn-secondary" id="search-button" type="submit">Search</button>
+        </div>
+    </form>
 
-    <div id="navbarSearch" class="navbar-search w-100 collapse">
-        <input class="form-control w-100 rounded-0 border-0" type="text" placeholder="Search" aria-label="Search">
+    <div class="wrapper-search-result hidden">
+        <button type="button" class="btn-close" id="close-btn"
+                aria-label="Close"></button>
+        <div id="search-result"></div>
     </div>
 
+    {#    {% block search_results %}{% endblock %} #}
 
 </header>
 <div class="container-fluid">
@@ -36,7 +48,6 @@
                 <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
                     <ul class="nav flex-column">
                         {% set mainWallet = app.user.wallets|filter(wallet => wallet.isMain)|first %}
-                        {#                        {{ dump(mainWallet) }} #}
                         {% if mainWallet != false %}
                             <li class="nav-item">
                                 <span class="nav-link d-flex align-items-center gap-2 text-decoration-underline">
@@ -167,14 +178,5 @@
 {{ encore_entry_script_tags('app') }}
 {% block javascripts %} {% endblock %}
 
-<script type="application/javascript">
-    const button = document.querySelector('button.btn');
-    const form = document.querySelector('form')
-    if (form != null) {
-        form.addEventListener('submit', function () {
-            button.disabled = true
-        })
-    }
-</script>
 </body>
 </html>

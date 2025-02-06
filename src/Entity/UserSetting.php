@@ -31,6 +31,9 @@ class UserSetting
     #[ORM\Column(length: 13, nullable: true)]
     private ?string $defaultColorForCategoryAndParent;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $showColorInTransactionList;
+
     public function __construct()
     {
         $this->coloredCategories = false;
@@ -39,6 +42,7 @@ class UserSetting
         $this->colorIncomeChart = '#eeeeee';
         $this->transactionsPerPage = 20;
         $this->defaultColorForCategoryAndParent = '#aaaaaa';
+        $this->showColorInTransactionList = false;
     }
 
     public function getId(): ?int
@@ -112,6 +116,17 @@ class UserSetting
     {
         $this->defaultColorForCategoryAndParent = $defaultColorForCategoryAndParent;
 
+        return $this;
+    }
+
+    public function isShowColorInTransactionList(): ?bool
+    {
+        return $this->showColorInTransactionList;
+    }
+
+    public function setShowColorInTransactionList(?bool $showColorInTransactionList): self
+    {
+        $this->showColorInTransactionList = $showColorInTransactionList;
         return $this;
     }
 }

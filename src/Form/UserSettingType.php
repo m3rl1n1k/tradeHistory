@@ -40,6 +40,11 @@ class UserSettingType extends AbstractType
             ->add('defaultColorForCategoryAndParent', ColorType::class, [
                 'label' => 'Default Color For Category And Parent',
                 'data' => $options['data']->getDefaultColorForCategoryAndParent()
+            ])
+            ->add('showColorInTransactionList', CheckboxType::class, [
+                'label' => 'Show color in transaction list',
+                'required' => false,
+                'data' => $options['data']->isShowColorInTransactionList()
             ]);
     }
 
