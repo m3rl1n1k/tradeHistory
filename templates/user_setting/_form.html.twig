@@ -12,6 +12,12 @@
             {{ form_label(form.coloredParentCategories, 'Parent category with color', {'label_attr': {'class': 'form-check-label'}}) }}
         </div>
     </div>
+    <div class="col-md-4 col-sm-6 mt-3">
+        <div class="form-check form-switch">
+            {{ form_widget(form.showColorInTransactionList, {'attr': {'class': 'form-check-input'}}) }}
+            {{ form_label(form.showColorInTransactionList, 'Show color in transaction list', {'label_attr': {'class': 'form-check-label'}}) }}
+        </div>
+    </div>
 </div>
 <div class="row">
     <div class="col-md-3 col-sm-6 mt-3">

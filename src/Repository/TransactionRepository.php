@@ -118,6 +118,11 @@ class TransactionRepository extends ServiceEntityRepository
 //            return $mapper->mapToDTO($row);
 //        }, $data);
     }
+
+    public function searchByCategory(string $category): array
+    {
+        return $this->findBy(['category' => $category, 'user' => $this->security->getUser()]);
+    }
 }
 
 
