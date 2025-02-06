@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Transaction;
 use App\Enum\TransactionEnum;
 use App\Repository\TransactionRepository;
+use App\Service\SettingService;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
@@ -21,7 +22,7 @@ class ChartService
     public function __construct(protected ChartBuilderInterface $chartBuilder,
                                 protected TransactionRepository $transactionRepository,
                                 protected DateService           $dateService,
-                                protected SettingService        $userSettings
+                                private readonly SettingService $settingService
     )
     {
         $this->transactions = $this->transactionRepository->getAllPerMonth();
@@ -84,7 +85,7 @@ class ChartService
         foreach ($this->transactions as $transaction) {
             $category = $transaction->getCategory();
             if ($category !== null && $transaction->getType() === $type) {
-                $colors[$category->getId()] = $category->getColor() ?? "#eeeeee";
+                $colors[$category->getId()] = $category->getColor() ?? $this->settingService::getDefaultColorForCategoryAndParent();
                 $data[$category->getId()] = $this->transactionRepository->getTransactionSum([
                     'category' => $category->getId(),
                 ]);
@@ -125,10 +126,10 @@ class ChartService
     protected function colors($type = ''): string
     {
         if ((int)$type === TransactionEnum::Expense->value) {
-            return $this->userSettings::getColorExpenseChart();
+            return $this->settingService::getColorExpenseChart();
         }
         if ((int)$type === TransactionEnum::Profit->value) {
-            return $this->userSettings::getColorIncomeChart();
+            return $this->settingService::getColorIncomeChart();
         }
         return "";
     }

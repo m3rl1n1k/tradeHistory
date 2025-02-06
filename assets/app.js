@@ -41,11 +41,14 @@ if (form != null && form.id === 'search-form') {
         search_btn.disabled = false
     })
 }
-// if (form != null) {
-//     form.addEventListener('submit', function () {
-//         button.disabled = true
-//     })
-// }
+if (form != null) {
+    form.addEventListener('submit', function () {
+        button.disabled = true
+        setTimeout(function () {
+            search_btn.disabled = false
+        }, 3000)
+    })
+}
 
 export const app = startStimulusApp(require.context(
     '@symfony/stimulus-bridge/lazy-controller-loader!./controllers',
