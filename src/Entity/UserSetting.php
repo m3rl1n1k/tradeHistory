@@ -34,6 +34,9 @@ class UserSetting
     #[ORM\Column(nullable: true)]
     private ?bool $showColorInTransactionList;
 
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $transactionColumnShow;
+
     public function __construct()
     {
         $this->coloredCategories = false;
@@ -43,6 +46,7 @@ class UserSetting
         $this->transactionsPerPage = 20;
         $this->defaultColorForCategoryAndParent = '#aaaaaa';
         $this->showColorInTransactionList = false;
+        $this->transactionColumnShow = [];
     }
 
     public function getId(): ?int
@@ -127,6 +131,20 @@ class UserSetting
     public function setShowColorInTransactionList(?bool $showColorInTransactionList): self
     {
         $this->showColorInTransactionList = $showColorInTransactionList;
+        return $this;
+    }
+
+    public function getTransactionColumnsShow(): ?array
+    {
+        if ($this->transactionColumnShow === null) {
+            $this->transactionColumnShow = ['id', 'amount', 'category', 'date', 'description'];
+        }
+        return $this->transactionColumnShow;
+    }
+
+    public function setTransactionColumnsShow(?array $transactionColumnShow): self
+    {
+        $this->transactionColumnShow = $transactionColumnShow;
         return $this;
     }
 }

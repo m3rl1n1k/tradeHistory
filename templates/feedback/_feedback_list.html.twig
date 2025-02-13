@@ -9,6 +9,9 @@
         <th>
             Change status
         </th>
+        <th>
+            Delete
+        </th>
     </tr>
     {% for feedback in feedback_list %}
         <tr class="{{ feedback.fixed ? "table-success" : "table-danger" }}">
@@ -30,6 +33,15 @@
                         </button>
                     </form>
                 {% endif %}
+            </td>
+            <td>
+                <form action="{{ path('app_delete_feedback', {'id':feedback.id}) }}" method="post"
+                      onsubmit="return confirm('Are you sure you want to delete this item?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ feedback.id) }}">
+                    <button class="btn btn-danger" type="submit">
+                        Delete
+                    </button>
+                </form>
             </td>
         </tr>
     {% endfor %}

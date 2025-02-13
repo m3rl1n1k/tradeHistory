@@ -4,7 +4,7 @@ namespace App\Form;
 
 use App\Entity\Transaction;
 use App\Entity\Wallet;
-use App\Enum\TransactionEnum;
+use App\Enum\TransactionTypeEnum;
 use DateTime;
 use Exception;
 use Symfony\Component\Form\AbstractType;
@@ -55,7 +55,7 @@ class TransactionType extends AbstractType
             ])
             ->add('type', ChoiceType::class,
                 [
-                    'choices' => TransactionEnum::transactionTypes(),
+                    'choices' => TransactionTypeEnum::transactionTypes(),
                 ])
             ->add('date', DateType::class, [
                 'attr' => [

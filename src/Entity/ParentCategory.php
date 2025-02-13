@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Helper\StringHelper;
 use App\Repository\ParentCategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -47,7 +48,7 @@ class ParentCategory
 
     public function setName(string $name): static
     {
-        $this->name = ucfirst($name);
+        $this->name = StringHelper::uc_first($name);
 
         return $this;
     }

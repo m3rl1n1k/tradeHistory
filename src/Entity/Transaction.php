@@ -3,7 +3,7 @@
 
 namespace App\Entity;
 
-use App\Enum\TransactionEnum;
+use App\Enum\TransactionTypeEnum;
 use App\Repository\TransactionRepository;
 use DateMalformedStringException;
 use DateTime;
@@ -98,7 +98,7 @@ class Transaction
 
     public function isIncome(): bool
     {
-        return $this->getType() === TransactionEnum::Profit->value ?? false;
+        return $this->getType() === TransactionTypeEnum::Profit->value ?? false;
     }
 
     public function getType(): ?int
@@ -114,7 +114,7 @@ class Transaction
 
     public function isExpense(): bool
     {
-        return $this->getType() === TransactionEnum::Expense->value ?? false;
+        return $this->getType() === TransactionTypeEnum::Expense->value ?? false;
     }
 
     public function getCategory(): ?Category

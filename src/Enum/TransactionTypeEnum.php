@@ -4,7 +4,7 @@ namespace App\Enum;
 
 use App\Trait\EnumToArrayTrait;
 
-enum TransactionEnum: int
+enum TransactionTypeEnum: int
 {
 
     use EnumToArrayTrait;
@@ -15,6 +15,6 @@ enum TransactionEnum: int
 
     public static function transactionTypes(): array
     {
-        return TransactionEnum::valueAsKey();
+        return TransactionTypeEnum::valueAsKey();
     }
 }

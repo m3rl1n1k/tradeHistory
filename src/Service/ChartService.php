@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Transaction;
-use App\Enum\TransactionEnum;
+use App\Enum\TransactionTypeEnum;
 use App\Repository\TransactionRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -24,7 +24,7 @@ class ChartService
                                 protected SettingService        $userSettings
     )
     {
-        $this->transactions = $this->transactionRepository->getAllPerMonth();
+        $this->transactions = $this->transactionRepository->getTransactionForCurrentMonth();
     }
 
     /**
@@ -34,7 +34,7 @@ class ChartService
     public function dashboardChart(): Chart
     {
         $chart = $this->create(Chart::TYPE_DOUGHNUT);
-        $data = $this->datasetDashboard(TransactionEnum::Expense->value);
+        $data = $this->datasetDashboard(TransactionTypeEnum::Expense->value);
         $dataset = $data['dataset'];
         $colors = $data['colors'];
         $labels = $this->getCategoriesList();
@@ -57,7 +57,7 @@ class ChartService
                 ],
                 'title' => [
                     'display' => true,
-                    'text' => "Expense: {$this->totalExpense()}",
+                    'text' => "Expense by month: {$this->totalExpense()}",
                     'font' => [
                         'size' => 20
                     ],
@@ -73,10 +73,6 @@ class ChartService
         return $this->chartBuilder->createChart($type);
     }
 
-    /**
-     * @throws NonUniqueResultException
-     * @throws NoResultException
-     */
     protected function datasetDashboard(int $type): array
     {
         $data = $colors = [];
@@ -85,9 +81,8 @@ class ChartService
             $category = $transaction->getCategory();
             if ($category !== null && $transaction->getType() === $type) {
                 $colors[$category->getId()] = $category->getColor() ?? "#eeeeee";
-                $data[$category->getId()] = $this->transactionRepository->getTransactionSum([
-                    'category' => $category->getId(),
-                ]);
+                $categoryId = $category->getId();
+                $data[$categoryId] = $this->transactionRepository->calculateSum($this->transactions, ['category' => $categoryId]);
             } elseif ($transaction->getType() === $type) {
                 $this->withoutCategory = $data['without_category'] += $transaction->getAmount();
                 $colors['without_category'] = "#3a3a3a";
@@ -119,15 +114,15 @@ class ChartService
 
     private function totalExpense(): ?float
     {
-        return 12.3;
+        return $this->transactionRepository->getTotalExpenseByMonth($this->transactions);
     }
 
     protected function colors($type = ''): string
     {
-        if ((int)$type === TransactionEnum::Expense->value) {
+        if ((int)$type === TransactionTypeEnum::Expense->value) {
             return $this->userSettings::getColorExpenseChart();
         }
-        if ((int)$type === TransactionEnum::Profit->value) {
+        if ((int)$type === TransactionTypeEnum::Profit->value) {
             return $this->userSettings::getColorIncomeChart();
         }
         return "";

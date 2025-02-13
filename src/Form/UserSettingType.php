@@ -46,6 +46,12 @@ class UserSettingType extends AbstractType
                 'required' => false,
                 'data' => $options['data']->isShowColorInTransactionList()
             ]);
+//            ->add('transactionColumnsShow', ChoiceType::class, [
+//                'label' => 'Transaction Columns Show',
+//                'required' => false,
+//                'choices' => TransactionColumnEnum::transactionColumns(),
+//                'multiple' => true,
+//            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

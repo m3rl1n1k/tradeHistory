@@ -2,10 +2,9 @@
 
 namespace App\Controller;
 
-use App\Enum\TransactionEnum;
+use App\Enum\TransactionTypeEnum;
 use App\Form\ReportPeriodType;
 use App\Service\ChartService;
-use App\Service\Transaction\TransactionService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -43,8 +42,8 @@ class ReportController extends AbstractController
 
 
             $transactions = $this->transactionService->getTransactionsPerPeriod($start, $end);
-            $income = $this->transactionService->getSum($transactions, TransactionEnum::Profit->value);
-            $expense = $this->transactionService->getSum($transactions, TransactionEnum::Expense->value);
+            $income = $this->transactionService->getSum($transactions, TransactionTypeEnum::Profit->value);
+            $expense = $this->transactionService->getSum($transactions, TransactionTypeEnum::Expense->value);
             $transactionsHistory = $this->transactionService->groupTransactionsByCategory($transactions);
             $historyChart = $this->chartService->historyChart($transactionsHistory);
 
