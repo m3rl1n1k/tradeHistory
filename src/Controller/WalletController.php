@@ -69,11 +69,9 @@ class WalletController extends AbstractController
     {
         $form = $this->createForm(WalletType::class, $wallet);
         $form->handleRequest($request);
-
-        $isMain = $this->validateIsMainWallet(Wallet::class, $wallet, $entityManager, [
-            'data' => $form->getData()
-        ]);
-        if ($form->isSubmitted() && $form->isValid() && $isMain) {
+        if ($form->isSubmitted() && $form->isValid() && $this->validateIsMainWallet(Wallet::class, $wallet, $entityManager, [
+                'data' => $form->getData()
+            ])) {
             $currency = $form->get('currency')->getData();
             $wallet->setNumber($currency);
             $entityManager->flush();

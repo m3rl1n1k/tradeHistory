@@ -10,11 +10,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         submitButton.addEventListener('mouseout', function () {
             submitButton.setAttribute('type', 'submit');
-            submitButton.textContent = "Save";
+            submitButton.textContent = "Send";
         })
     });
 
-    const  form = document.getElementsByName('feedback')
+    const form = document.getElementsByName('feedback')
     const inputArea = document.querySelector('#feedback_message')
 
     inputArea.innerHTML = ''

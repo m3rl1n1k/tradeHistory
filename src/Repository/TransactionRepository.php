@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Transaction;
-use App\Enum\TransactionEnum;
+use App\Enum\TransactionTypeEnum;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -29,6 +29,25 @@ class TransactionRepository extends ServiceEntityRepository
         parent::__construct($registry, Transaction::class);
     }
 
+    public function calculateSum(array $transactions, array $options = []): float
+    {
+        $sum = 0;
+        foreach ($transactions as $transaction) {
+            if ($transaction->getCategory() !== null && $options['category'] === $transaction->getCategory()->getId()) {
+                $sum += $transaction->getAmount();
+            }
+        }
+        return $sum;
+    }
+
+    public function getTotalExpenseByMonth(array $transactions): float
+    {
+        $sum = 0;
+        foreach ($transactions as $transaction) {
+            $sum += $transaction->getAmount();
+        }
+        return $sum;
+    }
 
     public function getTransactionsPerPeriod(DateTimeInterface $dateStart, DateTimeInterface $dateEnd): mixed
     {
@@ -51,7 +70,7 @@ class TransactionRepository extends ServiceEntityRepository
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function getTransactionSum(array $conditions = [], string $type = TransactionEnum::Expense->value): mixed
+    public function getTransactionSum(array $conditions = [], string $type = TransactionTypeEnum::Expense->value): mixed
     {
         $queryBuilder = $this->createQueryBuilder('t')
             ->select('SUM(t.amount)')
@@ -74,7 +93,7 @@ class TransactionRepository extends ServiceEntityRepository
             ->getSingleScalarResult() ?? 0;
     }
 
-    public function getAllPerMonth(): ?array
+    public function getTransactionForCurrentMonth(): ?array
     {
         $list = [];
         $month = date("m");
@@ -112,11 +131,6 @@ class TransactionRepository extends ServiceEntityRepository
             ->orderBy('t.date', 'DESC')
             ->setMaxResults(10)
             ->getQuery()->getResult();
-
-//        return array_map(function ($row) {
-//            $mapper = new TransactionMapper();
-//            return $mapper->mapToDTO($row);
-//        }, $data);
     }
 
     public function searchByCategory(string $category): array

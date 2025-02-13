@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Helper\StringHelper;
 use App\Repository\CategoryRepository;
 use App\Repository\TransactionRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +16,7 @@ class SearchController extends AbstractController
     public function search(Request $request, TransactionRepository $transactionRepository, CategoryRepository $categoryRepository): Response
     {
         $list = [];
-        $category = $categoryRepository->findOneBy(['name' => ucfirst(htmlspecialchars($request->query->get('s')))]);
+        $category = $categoryRepository->findOneBy(['name' => StringHelper::uc_first(htmlspecialchars($request->query->get('s')))]);
         if ($category !== null) {
             $list = $transactionRepository->searchByCategory($category->getId());
         }

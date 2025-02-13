@@ -27,7 +27,7 @@
                    placeholder="Search transaction by category"
                    aria-label="Search"
                    name="search">
-            <button class="btn btn-secondary" id="search-button" type="submit">Search</button>
+            <button class="btn btn-secondary rounded-0" id="search-button" type="submit">Search</button>
         </div>
     </form>
 
@@ -175,6 +175,13 @@
         </main>
     </div>
 </div>
+<script>
+    const button = document.querySelector('button.btn');
+    const form = document.querySelector('form')
+    form.addEventListener('submit', function () {
+        button.disabled = true
+    })
+</script>
 {{ encore_entry_script_tags('app') }}
 {% block javascripts %} {% endblock %}
 

@@ -36,7 +36,12 @@
         {{ form_label(form.transactionsPerPage, 'Count transactions to show per page', {'label_attr': {'class': 'form-label'}}) }}
         {{ form_widget(form.transactionsPerPage, {'attr': {'class': 'form-control'}}) }}
     </div>
+    {#    <div class="row"> #}
+    {#        <div class="col-md-3 col-sm-6 mt-3"> #}
+    {#            {{ form_label(form.transactionColumnsShow, 'Transaction Columns Show', {'label_attr': {'class': 'form-label'}}) }} #}
+    {#            {{ form_widget(form.transactionColumnsShow, {'attr': {'class': 'form-select selectpicker'}}) }} #}
+    {#        </div> #}
+    {#    </div> #}
 </div>
-{# {{ form_widget(form) }} #}
 <button class=" mt-2 btn btn-success">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

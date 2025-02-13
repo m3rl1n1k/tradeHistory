@@ -19,7 +19,10 @@ use Symfony\Bundle\SecurityBundle\Security;
  */
 class WalletRepository extends ServiceEntityRepository
 {
+    use RepositoryTrait;
+
     private ?User $user;
+
 
     public function __construct(ManagerRegistry    $registry,
                                 protected Security $security)
@@ -28,7 +31,6 @@ class WalletRepository extends ServiceEntityRepository
         $this->user = $this->security->getUser();
     }
 
-    use RepositoryTrait;
 
 //    /**
 //     * @return Wallet[] Returns an array of Wallet objects

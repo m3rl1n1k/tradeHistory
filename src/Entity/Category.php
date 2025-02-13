@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Helper\StringHelper;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -36,8 +37,7 @@ class Category
 
     public function setName(string $name): static
     {
-        $this->name = ucfirst($name);
-
+        $this->name = StringHelper::uc_first($name);
         return $this;
     }
 
