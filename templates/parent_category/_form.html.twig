@@ -4,7 +4,7 @@
     <div class="col-lg-6 col-md-12">
         <div class="input-group mb-3">
             <span class="input-group-text"
-                  id="basic-addon3"> {{ form_label(form.name, 'Name of category ', {'label_attr': {'class': 'form-label'}}) }}</span>
+                  id="basic-addon3"> {{ form_label(form.name, 'Name', {'label_attr': {'class': 'form-label'}}) }}</span>
             {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
             {% if app.user.setting.coloredParentCategories %}
                 <span class="input-group-text"

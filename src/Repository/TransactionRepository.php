@@ -44,7 +44,9 @@ class TransactionRepository extends ServiceEntityRepository
     {
         $sum = 0;
         foreach ($transactions as $transaction) {
-            $sum += $transaction->getAmount();
+            if ($transaction->getType() === TransactionTypeEnum::Expense->value) {
+                $sum += $transaction->getAmount();
+            }
         }
         return $sum;
     }

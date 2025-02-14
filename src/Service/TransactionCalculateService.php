@@ -1,30 +1,29 @@
 <?php
 
-namespace App\Service\Transaction;
+namespace App\Service;
 
 use App\Entity\Transaction;
 use App\Entity\Wallet;
+use App\Service\Interfaces\TransactionCalculationInterface;
 use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
 
-class CalculateService implements CalculationInterface
+class TransactionCalculateService implements TransactionCalculationInterface
 {
-    public function __construct()
-    {
-    }
 
 
     /**
      * @param string $flag
-     * @param Transaction|null $transaction
+     * @param object|null $object
      * @param array $options
      * @return void
      */
-    public function calculate(string $flag, ?Transaction $transaction = null, array $options = []): void
+    public function calculate(string $flag, ?object $object = null, array $options = []): void
     {
+        /** @var Transaction $object */
         match ($flag) {
-            'new' => $this->newTransaction($transaction->getWallet(), $transaction),
-            'edit' => $this->editTransaction($transaction->getWallet(), $transaction, $options['oldAmount']),
-            'remove' => $this->removeTransaction($transaction->getWallet(), $transaction),
+            'new' => $this->newTransaction($object->getWallet(), $object),
+            'edit' => $this->editTransaction($object->getWallet(), $object, $options['oldAmount']),
+            'remove' => $this->removeTransaction($object->getWallet(), $object),
             'default' => throw new ParameterNotFoundException("Flag $flag not found!")
         };
     }

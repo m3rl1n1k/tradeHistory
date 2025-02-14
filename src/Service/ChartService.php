@@ -5,8 +5,6 @@ namespace App\Service;
 use App\Entity\Transaction;
 use App\Enum\TransactionTypeEnum;
 use App\Repository\TransactionRepository;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
@@ -27,10 +25,6 @@ class ChartService
         $this->transactions = $this->transactionRepository->getTransactionForCurrentMonth();
     }
 
-    /**
-     * @throws NonUniqueResultException
-     * @throws NoResultException
-     */
     public function dashboardChart(): Chart
     {
         $chart = $this->create(Chart::TYPE_DOUGHNUT);
@@ -106,7 +100,7 @@ class ChartService
         }
         foreach ($this->transactions as $transaction) {
             $category = $transaction->getCategory();
-            if ($category !== null)
+            if ($category !== null && $transaction->getType() === TransactionTypeEnum::Expense->value)
                 $list[] = $transaction->getCategory()->getName();
         }
         return array_values(array_unique($list));

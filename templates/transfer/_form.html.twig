@@ -1,0 +1,16 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-sm-12 mt-3">
+        <div class="input-group">
+            <span class="input-group-text">{{ form_label(form.walletOut, 'From', {'label_attr': {'class': 'form-label'}}) }}</span>
+            {{ form_widget(form.walletOut, {'attr': {'class': 'form-control'}}) }}
+            {{ form_widget(form.amount, {'attr': {'class': 'form-control', 'placeholder': 'Amount'}}) }}
+            {{ form_widget(form.walletIn, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="mt-2">
+        <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+        <a class="btn btn-outline-secondary float-end" href="{{ path('app_transfer_index') }}">Back to list</a>
+    </div>
+</div>
+{{ form_end(form) }}

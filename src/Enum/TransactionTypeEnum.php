@@ -12,9 +12,12 @@ enum TransactionTypeEnum: int
     case Expense = 2;
     case Profit = 1;
 
+    case Transfer = 3;
+
 
     public static function transactionTypes(): array
     {
-        return TransactionTypeEnum::valueAsKey();
+        $types = TransactionTypeEnum::valueAsKey();
+        return array_slice($types, 0, 2);
     }
 }

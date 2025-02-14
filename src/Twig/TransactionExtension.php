@@ -23,6 +23,7 @@ class TransactionExtension extends AbstractExtension
         return match ($type) {
             TransactionTypeEnum::Profit->value => "btn-success",
             TransactionTypeEnum::Expense->value => "btn-danger",
+            TransactionTypeEnum::Transfer->value => "btn-info",
             default => "btn-outline-info"
         };
     }

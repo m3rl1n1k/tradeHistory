@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Transfer index{% endblock %}
+
+{% block body %}
+    <h1>Transfers</h1>
+    <div class="row">
+        <div class="my-3">
+            {{ include('component/_link_succes.html.twig', {'href': path('app_transfer_new') }) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <table class="table table-responsive">
+            <thead>
+            <tr>
+                <th>Amount</th>
+                <th>From</th>
+                <th>To</th>
+                {#            <th>actions</th> #}
+            </tr>
+            </thead>
+            <tbody>
+            {% for transfer in transfers %}
+                <tr>
+                    <td>{{ transfer.amount }} {{ transfer.walletOut.currency }}</td>
+                    <td>{{ transfer.walletOut.name ?? transfer.walletOut.number }}</td>
+                    <td>{{ transfer.walletIn.name ?? transfer.walletIn.number }}</td>
+                    {#                <td> #}
+                    {#                    #}{#                    <a href="{{ path('app_transfer_show', {'id': transfer.id}) }}">show</a> #}
+                    {#                    #}{#                    <a href="{{ path('app_transfer_edit', {'id': transfer.id}) }}">edit</a> #}
+                    {#                </td> #}
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
