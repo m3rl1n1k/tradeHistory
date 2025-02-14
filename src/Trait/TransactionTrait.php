@@ -15,7 +15,7 @@ trait TransactionTrait
             'category' => array_map(function ($category) {
                 return $category['categories'];
             }, $this->parentCategoryRepository->getMainAndSubCategories()),
-            'wallet' => $this->walletRepository->getAll(),
+            'wallet' => $this->getUser()->getWallets(),
             'transaction' => $transaction,
             'date' => new DateTime()
         ]);

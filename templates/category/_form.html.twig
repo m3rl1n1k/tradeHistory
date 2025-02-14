@@ -4,17 +4,21 @@
     <div class="col-lg-12 col-md-12 mt-3">
         <div class="input-group">
             <span class="input-group-text"
-                  id="basic-addon3">{{ form_label(form.ParentCategory, 'Select Parent and type name:', {'label_attr': {'class': 'form-label'}}) }}</span>
+                  id="basic-addon3">{{ form_label(form.ParentCategory, 'Main', {'label_attr': {'class': 'form-label'}}) }}</span>
             {{ form_widget(form.ParentCategory, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="input-group mt-sm-3 mt-3">
+            <span class="input-group-text"
+                  id="basic-addon3">{{ form_label(form.name, 'Category', {'label_attr': {'class': 'form-label'}}) }}</span>
             {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
             {% if app.user.setting.coloredCategories %}
                 <span class="input-group-text"
                       id="basic-addon2">{{ form_widget(form.color, {'attr': {'class': 'form-control form-control-color'}}) }}</span>
             {% endif %}
-            {{ include('component/_button.html.twig') }}
         </div>
     </div>
     <div class="mt-4">
+        {{ include('component/_button.html.twig') }}
 
         {{ include('component/_link.html.twig', {'href' : path('app_parent_category_index') }) }}
     </div>

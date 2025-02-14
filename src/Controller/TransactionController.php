@@ -6,8 +6,8 @@ use App\Entity\Transaction;
 use App\Repository\ParentCategoryRepository;
 use App\Repository\TransactionRepository;
 use App\Repository\WalletRepository;
+use App\Service\Interfaces\TransactionCalculationInterface;
 use App\Service\Pagination\PaginateInterface;
-use App\Service\Transaction\CalculationInterface;
 use App\Trait\TransactionTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -21,9 +21,9 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class TransactionController extends AbstractController
 {
     public function __construct(
-        protected CalculationInterface     $calculation,
-        protected ParentCategoryRepository $parentCategoryRepository,
-        protected WalletRepository         $walletRepository,)
+        protected TransactionCalculationInterface $calculation,
+        protected ParentCategoryRepository        $parentCategoryRepository,
+        protected WalletRepository                $walletRepository,)
     {
     }
 

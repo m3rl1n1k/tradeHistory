@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Wallet;
 use App\Form\WalletType;
-use App\Repository\WalletRepository;
 use App\Service\WalletService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,10 +22,10 @@ class WalletController extends AbstractController
     }
 
     #[Route('/', name: 'app_wallet_index')]
-    public function index(WalletRepository $walletRepository): Response
+    public function index(): Response
     {
         return $this->render('wallet/index.html.twig', [
-            'wallets' => $walletRepository->getAll(),
+            'wallets' => $this->getUser()->getWallets(),
         ]);
     }
 

@@ -5,7 +5,6 @@ namespace App\Entity;
 
 use App\Enum\TransactionTypeEnum;
 use App\Repository\TransactionRepository;
-use DateMalformedStringException;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
@@ -33,7 +32,7 @@ class Transaction
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'transactions')]
-    #[ORM\JoinColumn(nullable: false,)]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Wallet $wallet = null;
 
     #[ORM\ManyToOne]
@@ -135,9 +134,6 @@ class Transaction
     }
 
 
-    /**
-     * @throws DateMalformedStringException
-     */
     public function setDate(DateTimeInterface $date): static
     {
         $date = $date->format('Y-m-d');
