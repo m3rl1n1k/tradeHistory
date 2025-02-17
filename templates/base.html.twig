@@ -9,8 +9,10 @@
     <link rel="icon"
           href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
-    {{ encore_entry_link_tags('app') }}
-    {% block stylesheets %}{% endblock %}
+
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
 </head>
 <body class="bg-gray-100">
 
@@ -48,11 +50,17 @@
             <li><a class="block py-2 text-gray-700 hover:bg-gray-200 rounded" href="{{ path('app_transfer_index') }}">{{ 'transfer'|trans({}, 'menu') }}</a></li>
             <li><a class="block py-2 text-gray-700 hover:bg-gray-200 rounded" href="{{ path('app_transaction_index') }}">{{ 'transaction'|trans({}, 'menu') }}</a></li>
             <li><a class="block py-2 text-gray-700 hover:bg-gray-200 rounded" href="{{ path('app_parent_category_index') }}">{{ 'category'|trans({}, 'menu') }}</a></li>
+            <li><a class="block py-2 text-gray-700 hover:bg-gray-200 rounded" href="{{ path('app_wallet_index') }}">{{ 'wallet'|trans({}, 'menu') }}</a></li>
+            <li><a class="block py-2 text-gray-700 hover:bg-gray-200 rounded" href="{{ path('app_user_index') }}">{{ 'profile'|trans({}, 'menu') }}</a></li>
+            <li><a class="block py-2 text-gray-700 hover:bg-gray-200 rounded" href="{{ path('app_user_setting_index') }}">{{ 'setting'|trans({}, 'menu') }}</a></li>
+            <li><a class="block py-2 text-gray-700 hover:bg-gray-200 rounded" href="{{ path('app_feedback') }}">{{ 'feedback'|trans({}, 'menu') }}</a></li>
+            <li><a class="block py-2 text-gray-700 hover:bg-gray-200 rounded" href="{{ path('app_logout') }}">{{ 'sing_out'|trans({}, 'menu') }}</a></li>
         </ul>
     </nav>
     <main class="flex-1 p-4">
         {{ include('component/_flash.html.twig') }}
-        {% block body %} {% endblock body %}
+        {% block body %}
+        {% endblock body %}
     </main>
 </div>
 
@@ -61,7 +69,9 @@
         document.querySelector('button#search-button').disabled = true;
     });
 </script>
-{{ encore_entry_script_tags('app') }}
-{% block javascripts %} {% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
 </body>
 </html>
