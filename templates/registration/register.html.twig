@@ -3,30 +3,41 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <div class="min-vh-100 py-5">
-    <h1>Register</h1>
-        {{ form_errors(registrationForm) }}
-        {{ form_start(registrationForm) }}
-        <div class="row mb-3 ">
-            <div class="col-lg-6 col-md-12 mt-3">
-                {{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
+    <div class="min-h-screen flex flex-col justify-center py-5 px-4 bg-gray-100">
+        <h1 class="text-4xl font-bold text-center mb-8">Register</h1>
+
+        <div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-lg">
+            {{ form_errors(registrationForm) }}
+
+            {{ form_start(registrationForm) }}
+
+            <div class="space-y-4">
+                <div class="mb-4">
+                    <label for="{{ registrationForm.email.vars.id }}" class="block text-sm font-medium text-gray-700">Email</label>
+                    {{ form_widget(registrationForm.email, {'attr': {'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}}) }}
+                </div>
+
+                <div class="mb-4">
+                    <label for="{{ registrationForm.plainPassword.vars.id }}" class="block text-sm font-medium text-gray-700">Password</label>
+                    {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}}) }}
+                </div>
+
+                <div class="flex items-center mb-4">
+                    {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'mr-2'}}) }}
+                    <label for="{{ registrationForm.agreeTerms.vars.id }}" class="text-sm text-gray-600">
+                        Agree with <a href="{{ path('app_registration_terms') }}" class="text-blue-500 hover:underline">terms</a>
+                    </label>
+                </div>
+
+                <div class="flex justify-between items-center">
+                    <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                        Register
+                    </button>
+                    <a href="{{ path('app_login') }}" class="text-sm text-blue-500 hover:underline ml-4">Login</a>
+                </div>
             </div>
-            <div class="col-lg-6 col-md-12 mt-3">
-                {{ form_label(registrationForm.plainPassword, 'Password', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control'}}) }}
-            </div>
+
+            {{ form_end(registrationForm) }}
         </div>
-        <div class="mb-3">
-
-            {{ form_label(registrationForm.agreeTerms, 'Agree with ', {'label_attr': {'class': 'form-label'}}) }}
-            <a href="{{ path('app_registration_terms') }}">terms</a>{{ form_widget(registrationForm.agreeTerms, {'attr':
-                {'class': 'form-check'}}) }}
-
-        </div>
-
-        <button type="submit" class="btn btn-primary">Register</button>
-        <a href="{{ path('app_login') }}" class="btn btn-outline-success float-end ">Login</a>
-        {{ form_end(registrationForm) }}
     </div>
 {% endblock %}

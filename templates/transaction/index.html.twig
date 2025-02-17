@@ -3,49 +3,47 @@
 {% block title %}Transactions{% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="my-3">
-            {{ include('component/_link_succes.html.twig', {'href': path('app_transaction_new') }) }}
-        </div>
+    <div class="my-3">
+        {{ include('component/_link_succes.html.twig', {'href': path('app_transaction_new') }) }}
     </div>
-    <div class="row">
-        <table class="table table-hover table-responsive">
-            <thead>
+
+    <div class="overflow-x-auto">
+        <table class="min-w-full table-auto">
+            <thead class="border-b bg-gray-100">
             <tr>
-                <th>Amount</th>
-                <th>Category</th>
-                <th>Number</th>
-                <th>Date</th>
+                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Amount</th>
+                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Category</th>
+                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Number</th>
+                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Date</th>
             </tr>
             </thead>
             <tbody>
-            {#        {% set transactionColumns = app.user.setting.transactionColumnsShow %} #}
             {% for transaction in pagerfanta.currentPageResults %}
                 <tr class="custom-row"
                         {% if app.user.setting.showColorInTransactionList %}
-                    style="--bs-table-color: {{ contrast(transaction.Category.color|default('')) }};
-                            --bs-table-bg: {{ transaction.Category.color|default('') }};"
+                    style="--tw-table-bg: {{ transaction.Category.color|default('') }};"
                         {% endif %}>
-                    <td class="text-center">
+                    <td class="px-4 py-2 text-center">
                         <a class="btn {{ color(transaction.type) }} text-decoration-none"
                            href="{{ path('app_transaction_show', {'id': transaction.id}) }}">
                             {{ transaction.amount }}
                         </a>
                     </td>
-                    <td>{{ transaction.Category ? transaction.Category.name : '' }}</td>
-                    <td>{{ transaction.wallet.name ?? transaction.wallet.number }}</td>
-                    <td>{{ transaction.date ? transaction.date|date('d M') : '' }}</td>
+                    <td class="px-4 py-2">{{ transaction.Category ? transaction.Category.name : '' }}</td>
+                    <td class="px-4 py-2">{{ transaction.wallet.name ?? transaction.wallet.number }}</td>
+                    <td class="px-4 py-2">{{ transaction.date ? transaction.date|date('d M') : '' }}</td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="6">no records found</td>
+                    <td colspan="4" class="px-4 py-2 text-center text-gray-500">No records found</td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-        <div class="pagination">
+
+        <div class="mt-4">
             <div class="pagerfanta">
-                {{ pagerfanta(pagerfanta, 'twitter_bootstrap5') }}
+                {{ pagerfanta(pagerfanta, 'tailwind') }}
             </div>
         </div>
     </div>

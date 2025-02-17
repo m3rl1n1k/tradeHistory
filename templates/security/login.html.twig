@@ -3,33 +3,37 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-    <div class="min-vh-100">
-        <form method="post" class="my-5">
+    <div class="min-h-screen flex items-center justify-center">
+        <form method="post" class="w-full max-w-md p-6 bg-white shadow-md rounded-lg">
             {% if error %}
-                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                <div class="alert alert-danger text-red-600 mb-4">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
             {% endif %}
 
-            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-            <div class="row  ">
-                <div class="col-sm-12 col-lg-6">
-                    <label for="inputEmail">Email</label>
-                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control"
-                           autocomplete="email" required autofocus>
-                </div>
-                <div class="col-sm-12 col-lg-6">
-                    <label for="inputPassword">Password</label>
-                    <input type="password" name="password" id="inputPassword" class="form-control"
-                           autocomplete="current-password" required>
-                </div>
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            <h1 class="text-2xl font-semibold text-center mb-6">Please sign in</h1>
 
-                <div class="col-12">
-                    <button class="btn btn-lg btn-primary mt-4" type="submit">
-                        Sign in
-                    </button>
-                    <a href="{{ path('app_register') }}" class="btn btn-secondary btn-lg mt-4 text-white
-                float-end">Register</a>
-                </div>
+            <div class="mb-4">
+                <label for="inputEmail" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                       autocomplete="email" required autofocus>
+            </div>
+
+            <div class="mb-6">
+                <label for="inputPassword" class="block text-sm font-medium text-gray-700">Password</label>
+                <input type="password" name="password" id="inputPassword"
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                       autocomplete="current-password" required>
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <div class="flex items-center justify-between">
+                <button class="btn btn-lg btn-primary mt-4 bg-blue-500 text-white w-full py-2 px-4 rounded-md hover:bg-blue-600" type="submit">
+                    Sign in
+                </button>
+                <a href="{{ path('app_register') }}" class="text-sm text-blue-500 hover:text-blue-700 mt-4 float-right">
+                    Register
+                </a>
             </div>
         </form>
     </div>

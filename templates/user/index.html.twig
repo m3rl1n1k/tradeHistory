@@ -5,30 +5,32 @@
 {% block body %}
     {{ form_start(form_user, {'attr': {'class': 'editUser'}}) }}
     {% if form_errors(form_user) %}
-        <div class="alert alert-danger position-fixed z-3">
+        <div class="alert alert-danger fixed top-10 left-1/2 transform -translate-x-1/2 z-30 w-96">
             {{ form_errors(form_user) }}
         </div>
     {% endif %}
-    <div class="row">
-        <div class="col-lg-6 col-md-12">
+    <div class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="mb-3">
                 {{ form_label(form_user.email, 'Email address', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form_user.email, {'attr': {'class': 'form-control edit', 'disabled': 'disabled'}}) }}
+                {{ form_widget(form_user.email, {'attr': {'class': 'form-input', 'disabled': 'disabled'}}) }}
             </div>
-        </div>
-        <div class="col-lg-6 col-md-12">
             <div class="mb-3">
                 {{ form_label(form_user.currency, 'Select your currency', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form_user.currency, {'attr': {'class': 'form-select edit', 'id': 'currency', 'disabled': 'disabled'}}) }}
+                {{ form_widget(form_user.currency, {'attr': {'class': 'form-select', 'id': 'currency', 'disabled': 'disabled'}}) }}
             </div>
         </div>
-    </div>
-   
 
-    <button type="button" class="btn btn-primary" id="user_edit">Edit</button>
+        <button type="button" class="btn btn-primary mt-4" id="user_edit">Edit</button>
+    </div>
     {{ form_end(form_user) }}
 
-    {#    {% if remove_user is not null %} #}
+    {% block javascripts %}
+        {{ encore_entry_script_tags('user') }}
+    {% endblock %}
+{% endblock %}
+
+ {#    {% if remove_user is not null %} #}
     {#        {{ form_start(remove_user, {'action': path('app_remove_account', {'id': user.id})}) }} #}
     {#        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}"> #}
     {#        <button class="btn btn-primary" id="user_delete" #}
@@ -36,8 +38,3 @@
     {#        </button> #}
     {#        {{ form_end(remove_user) }} #}
     {#    {% endif %} #}
-
-    {% block javascripts %}
-        {{ encore_entry_script_tags('user') }}
-    {% endblock %}
-{% endblock %}
