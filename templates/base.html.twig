@@ -51,7 +51,7 @@
             <li><a class="block py-2 text-gray-700 hover:bg-gray-200 rounded" href="{{ path('app_transaction_index') }}">{{ 'transaction'|trans({}, 'menu') }}</a></li>
             <li><a class="block py-2 text-gray-700 hover:bg-gray-200 rounded" href="{{ path('app_parent_category_index') }}">{{ 'category'|trans({}, 'menu') }}</a></li>
             <li><a class="block py-2 text-gray-700 hover:bg-gray-200 rounded" href="{{ path('app_wallet_index') }}">{{ 'wallet'|trans({}, 'menu') }}</a></li>
-            <li><a class="block py-2 text-gray-700 hover:bg-gray-200 rounded" href="{{ path('app_user_index') }}">{{ 'profile'|trans({}, 'menu') }}</a></li>
+            <li><a class="block py-2 text-gray-700 hover:bg-gray-200 rounded {{ isActive(path('app_user_index',{'id':app.user.id})) }}" href="{{ path('app_user_index',  {'id':app.user.id}) }}">{{ 'profile'|trans({}, 'menu') }}</a></li>
             <li><a class="block py-2 text-gray-700 hover:bg-gray-200 rounded" href="{{ path('app_user_setting_index') }}">{{ 'setting'|trans({}, 'menu') }}</a></li>
             <li><a class="block py-2 text-gray-700 hover:bg-gray-200 rounded" href="{{ path('app_feedback') }}">{{ 'feedback'|trans({}, 'menu') }}</a></li>
             <li><a class="block py-2 text-gray-700 hover:bg-gray-200 rounded" href="{{ path('app_logout') }}">{{ 'sing_out'|trans({}, 'menu') }}</a></li>
