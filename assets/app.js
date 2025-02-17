@@ -11,7 +11,7 @@ import './js/bootstrap.bundle.min.js'
 import './js/DayNight_mode.js'
 
 
-import './js/search'
+import './js/search.js'
 
 export const app = startStimulusApp(require.context(
     '@symfony/stimulus-bridge/lazy-controller-loader!./controllers',
