@@ -73,6 +73,8 @@ Encore
 
     // Enable Stimulus Bridge for Symfony UX
     .enableStimulusBridge('./assets/controllers.json')
+
+    .enablePostCssLoader()
 ;
 
 module.exports = Encore.getWebpackConfig();
