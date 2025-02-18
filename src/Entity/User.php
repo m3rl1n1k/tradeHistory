@@ -45,7 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Transfer>
      */
-    #[ORM\OneToMany(mappedBy: 'userId', targetEntity: Transfer::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Transfer::class, orphanRemoval: true)]
     private Collection $transfers;
 
 

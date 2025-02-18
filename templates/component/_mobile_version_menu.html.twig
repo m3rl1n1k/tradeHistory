@@ -1,17 +1,24 @@
 <ul class="flex md:hidden">
     <li class="relative">
         <div class="dropdown inline-block">
-            <button class="nav-link px-3 bg-transparent border-0 text-gray-800 hover:text-gray-600 focus:outline-none" type="button" aria-expanded="false">
+            <button id="new"
+                    class="text-white nav-link px-3 bg-transparent border-0 text-gray-800 hover:text-gray-600 focus:outline-none"
+                    type="button" aria-expanded="false">
                 New
             </button>
-            <ul class="dropdown-menu absolute hidden bg-gray-800 text-white shadow-lg rounded-lg w-48">
-                <li><a href="{{ path('app_transaction_new') }}" class="dropdown-item w-full px-4 py-2 hover:bg-green-600">{{ 'transaction'|trans({}, 'menu') }}
-                        <svg class="bi inline-block ml-2">
+            <ul class="dropdown-menu absolute hidden bg-gray-800 text-white shadow-lg rounded-lg w-48 mt-1"
+                id="dropdown_list">
+                <li><a href="{{ path('app_transaction_new') }}"
+                       class="dropdown-item w-full px-4 py-2 hover:bg-green-600 flex items-center">
+                        {{ 'transaction'|trans({}, 'menu') }}
+                        <svg class="bi inline-block ml-2 w-4 h-4">
                             <use xlink:href="#plus"></use>
                         </svg>
                     </a></li>
-                <li><a href="{{ path('app_category_new') }}" class="dropdown-item w-full px-4 py-2 hover:bg-green-600">{{ 'category'|trans({}, 'menu') }}
-                        <svg class="bi inline-block ml-2">
+                <li><a href="{{ path('app_category_new') }}"
+                       class="dropdown-item w-full px-4 py-2 hover:bg-green-600 flex items-center">
+                        {{ 'category'|trans({}, 'menu') }}
+                        <svg class="bi inline-block ml-2 w-4 h-4">
                             <use xlink:href="#plus"></use>
                         </svg>
                     </a></li>
@@ -19,10 +26,35 @@
         </div>
     </li>
     <li class="nav-item text-nowrap">
-        <button class="px-3 py-2 text-white bg-transparent border-0 hover:bg-gray-700 focus:outline-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-            <svg class="bi text-white">
+        <button id="burger" class="px-3 py-2 text-white bg-transparent border-0 hover:bg-gray-700 focus:outline-none"
+                type="button">
+            <svg class="bi text-white w-6 h-6">
                 <use xlink:href="#list"></use>
             </svg>
         </button>
     </li>
 </ul>
+
+<script type="application/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        const btn = document.getElementById('new')
+        const dropdown_list = document.getElementById('dropdown_list')
+
+        btn.addEventListener('click', function () {
+            console.log('s')
+            dropdown_list.classList.toggle('hidden')
+        })
+    })
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+            const burger = document.getElementById('burger')
+            const menu = document.getElementById('menu');
+
+            burger.addEventListener('click', function () {
+                menu.classList.toggle('hidden')
+            })
+        }
+    )
+</script>

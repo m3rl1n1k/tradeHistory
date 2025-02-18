@@ -35,3 +35,4 @@ yarn-error.log
 /DumpDB/public/
 /public/build/
 /.env.prod
+/migrations/

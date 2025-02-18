@@ -34,7 +34,7 @@ RUN pecl install apcu && docker-php-ext-enable apcu
 RUN pecl install xdebug && docker-php-ext-enable xdebug;
 
 # Додавання конфігурації Xdebug
-COPY ./docker/configs/php/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+#COPY ./docker/configs/php/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
 # Встановлення Composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
@@ -45,10 +45,10 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 ENV TERM xterm-256color
 
 # Встановлення прав для користувача 'container' (додатковий захист)
-RUN chown -R container:container ${WORKDIR}
+# RUN chown -R container:container ${WORKDIR}
 
 # Переключення на користувача 'container'
-USER container
+# USER container
 
 # Запуск PHP-FPM
 CMD php-fpm

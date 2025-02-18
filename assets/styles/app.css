@@ -89,6 +89,13 @@ svg.text-white {
     position: absolute;
     top: 5px;
     right: 15px;
+}
 
+.body {
+    position: relative;
+}
 
+.mobile_show {
+    position: absolute;
+    left: 0;
 }
