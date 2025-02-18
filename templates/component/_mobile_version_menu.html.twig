@@ -51,7 +51,11 @@
     document.addEventListener('DOMContentLoaded', function () {
             const burger = document.getElementById('burger')
             const menu = document.getElementById('menu');
-
+            if (window.innerWidth <= 767) {
+                if (menu != null) {
+                    menu.classList.add('hidden')
+                }
+            }
             burger.addEventListener('click', function () {
                 menu.classList.toggle('hidden')
             })

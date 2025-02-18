@@ -11,7 +11,6 @@ Encore
     .addEntry('app', './assets/app.js')
     .addEntry('user', './assets/js/user_blockInputs.js')
     .addEntry('settings', './assets/js/user_settings.js')
-    .addStyleEntry('style', './assets/styles/app.css')
     .splitEntryChunks()
     .enablePostCssLoader()
     .enableSingleRuntimeChunk()
