@@ -1,5 +1,5 @@
 services:
-  php_prod:
+  php:
     restart: always
     container_name: php_${PROJECT_NAME}
     build:
@@ -15,9 +15,9 @@ services:
     networks:
       - tradeHistory_prod
 
-  postgres_prod:
+  postgres:
     restart: always
-    image: postgres:17
+    image: postgres:16
     container_name: postgres_${PROJECT_NAME}
     ports:
       - ${POSTGRES_PORT}:5432
@@ -31,7 +31,7 @@ services:
     networks:
       - tradeHistory_prod
 
-  nginx_prod:
+  nginx:
     restart: always
     image: nginx:latest
     container_name: nginx_${PROJECT_NAME}
