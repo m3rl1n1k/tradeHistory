@@ -12,6 +12,7 @@
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
+
 ###> symfony/framework-bundle ###
 /.env.install
 ###< symfony/framework-bundle ###
@@ -30,4 +31,6 @@ npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 /tests/
+/DumpDB/
+/DumpDB/public/
 /public/build/
