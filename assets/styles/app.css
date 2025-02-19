@@ -1,4 +1,4 @@
-/*@import "tailwindcss";*/
+@import "tailwindcss";
 
 tr.custom-row:hover {
     filter: invert(0.9);
