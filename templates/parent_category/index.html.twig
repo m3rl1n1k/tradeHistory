@@ -4,10 +4,10 @@
 
 {% block body %}
     {{ include('component/_icons_category.html.twig') }}
-    <h1>Category</h1>
-    <div class="row">
-        <h4>Create:</h4>
-        <div class="col">
+    <h1 class="text-3xl font-bold">Category</h1>
+    <div class="mb-5">
+        <h4 class="text-xl font-semibold">Create:</h4>
+        <div class="flex flex-col md:flex-row">
             {{ include('component/_link_succes.html.twig', {
                 'href': path('app_parent_category_new'),
                 'link_label':'Main category'}) }}
@@ -18,25 +18,25 @@
             }) }}
         </div>
     </div>
-    <div class="row mt-5">
+    <div class="mt-10">
         {% for categories in parent_categories %}
             {% if categories is not empty %}
-                <div class="col-lg-6 col-md-12 my-3">
-                    <div class="card">
-                        <div class="card-header" {{ contrast(categories['parentCategory'].color) }}>
+                <div class="lg:w-1/2 md:w-full my-3">
+                    <div class="bg-white shadow-lg rounded-lg">
+                        <div class="bg-[{{ contrast(categories['parentCategory'].color) }}] p-4 rounded-t-lg text-white font-semibold">
                             {{ categories['parentCategory'].name }}
                             {{ include('parent_category/_delete_form.html.twig') }}
                         </div>
-                        <ul class="list-group list-group-flush">
+                        <ul class="list-none">
                             {% for category in categories['categories'] %}
-                                <li class="list-group-item" {{ contrast(category.color) }}>
-                                    <svg class="bi">
+                                <li class="px-4 py-2 flex justify-between items-center border-b {{ contrast(category.color) }}">
+                                    <svg class="bi text-gray-500 mr-2" width="1em" height="1em">
                                         <use xlink:href="#arrow-return-right"></use>
                                     </svg>
                                     {{ category.name }}
-                                    <span class="float-end mx-2">{{ include('category/_delete_form.html.twig') }}</span>
-                                    <a class="btn btn-sm btn-warning float-end"
-                                       href="{{ path('app_category_edit' ,{'id' : category.id}) }}">Edit</a>
+                                    <span class="ml-2">{{ include('category/_delete_form.html.twig') }}</span>
+                                    <a class="btn btn-sm bg-yellow-500 text-white ml-2 py-1 px-3 rounded"
+                                       href="{{ path('app_category_edit', {'id': category.id}) }}">Edit</a>
                                 </li>
                             {% endfor %}
                         </ul>

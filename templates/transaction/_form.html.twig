@@ -1,44 +1,43 @@
 {{ form_start(form) }}
 {{ include('component/_alert.html.twig') }}
-<div class="row ">
-    <div class="col-md-8 col-sm-12 mt-3">
-        <div class="input-group">
-            <span class="input-group-text">{{ form_label(form.wallet, 'From', {'label_attr': {'class': 'form-label'}}) }}</span>
-            {{ form_widget(form.wallet, {'attr': {'class': 'form-control'}}) }}
-            {{ form_widget(form.amount, {'attr': {'class': 'form-control', 'placeholder': 'Amount'}}) }}
-            <span class="input-group-text">{{ app.user.currency }}</span>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="mt-3">
+        <div class="flex items-center">
+            <span class="text-sm text-gray-600">{{ form_label(form.wallet, 'From', {'label_attr': {'class': 'form-label'}}) }}</span>
+            {{ form_widget(form.wallet, {'attr': {'class': 'form-control w-full p-2 border border-gray-300 rounded-md'}}) }}
+            {{ form_widget(form.amount, {'attr': {'class': 'form-control w-full p-2 border border-gray-300 rounded-md', 'placeholder': 'Amount'}}) }}
+            <span class="text-sm text-gray-600">{{ app.user.currency }}</span>
         </div>
     </div>
-    <div class="col-md-4 col-sm-12 mt-3">
-        <div class="input-group">
-            <span class="input-group-text">
-                Category
-            </span>
-            {{ form_widget(form.category, {'attr': {'class': 'form-control', 'style': 'height:2.85rem'}}) }}
+    <div class="mt-3">
+        <div class="flex items-center">
+            <span class="text-sm text-gray-600">Category</span>
+            {{ form_widget(form.category, {'attr': {'class': 'form-control w-full p-2 border border-gray-300 rounded-md', 'style': 'height:2.85rem'}}) }}
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-sm-6 mt-3">
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+    <div class="mt-3">
         {{ form_label(form.type, 'Type', {'label_attr': {'class': 'form-label'}}) }}
-        {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
+        {{ form_widget(form.type, {'attr': {'class': 'form-control w-full p-2 border border-gray-300 rounded-md'}}) }}
     </div>
-    <div class="col-sm-6 mt-3">
-        {#        {{ dump(form.date.vars.value) }} #}
+    <div class="mt-3">
         {{ form_label(form.date, 'Date', {'label_attr': {'class': 'form-label'}}) }}
-        {{ form_widget(form.date, {'attr': {'class': 'form-control', 'max': form.date.vars.value}}) }}
-    </div>
-</div>
-<div class="row">
-    <div class="col-12 mt-3">
-        {{ form_label(form.description, 'Desription', {'label_attr': {'class': 'form-label'}}) }}
-        {{ form_widget(form.description, {'attr': {'class': 'form-control '}}) }}
+        {{ form_widget(form.date, {'attr': {'class': 'form-control w-full p-2 border border-gray-300 rounded-md', 'max': form.date.vars.value}}) }}
     </div>
 </div>
 
-<div class="mt-4">
-    <button class="btn btn-success">{{ button_label|default('Save') }}</button>
-    <a class="btn btn-outline-secondary float-end" href="{{ path('app_transaction_index') }}">Back to list</a>
+<div class="mt-3">
+    <div class="w-full">
+        {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-control w-full p-2 border border-gray-300 rounded-md'}}) }}
+    </div>
 </div>
+
+<div class="mt-4 flex justify-between items-center">
+    <button class="btn bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600">{{ button_label|default('Save') }}</button>
+    <a class="btn bg-transparent border border-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-100" href="{{ path('app_transaction_index') }}">Back to list</a>
+</div>
+
 {{ form_end(form) }}
-

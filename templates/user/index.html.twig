@@ -4,31 +4,38 @@
 
 {% block body %}
     {{ form_start(form_user, {'attr': {'class': 'editUser'}}) }}
+
     {% if form_errors(form_user) %}
-        <div class="alert alert-danger position-fixed z-3">
+        <div class="alert alert-danger fixed top-10 left-1/2 transform -translate-x-1/2 z-30 w-96 bg-red-500 text-white p-4 rounded-lg shadow-md">
             {{ form_errors(form_user) }}
         </div>
     {% endif %}
-    <div class="row">
-        <div class="col-lg-6 col-md-12">
-            <div class="mb-3">
-                {{ form_label(form_user.email, 'Email address', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form_user.email, {'attr': {'class': 'form-control edit', 'disabled': 'disabled'}}) }}
-            </div>
-        </div>
-        <div class="col-lg-6 col-md-12">
-            <div class="mb-3">
-                {{ form_label(form_user.currency, 'Select your currency', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form_user.currency, {'attr': {'class': 'form-select edit', 'id': 'currency', 'disabled': 'disabled'}}) }}
-            </div>
-        </div>
-    </div>
-   
 
-    <button type="button" class="btn btn-primary" id="user_edit">Edit</button>
+    <div class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="mb-4">
+                {{ form_label(form_user.email, 'Email address', {'label_attr': {'class': 'text-lg font-semibold text-gray-700'}}) }}
+                {{ form_widget(form_user.email, {'attr': {'class': 'w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500', 'disabled': 'disabled'}}) }}
+            </div>
+            <div class="mb-4">
+                {{ form_label(form_user.currency, 'Select your currency', {'label_attr': {'class': 'text-lg font-semibold text-gray-700'}}) }}
+                {{ form_widget(form_user.currency, {'attr': {'class': 'w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500', 'id': 'currency', 'disabled': 'disabled'}}) }}
+            </div>
+        </div>
+
+        <button type="button" class="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6" id="user_edit">
+            Edit
+        </button>
+    </div>
+
     {{ form_end(form_user) }}
 
-    {#    {% if remove_user is not null %} #}
+    {% block javascripts %}
+        {{ encore_entry_script_tags('user') }}
+    {% endblock %}
+{% endblock %}
+
+ {#    {% if remove_user is not null %} #}
     {#        {{ form_start(remove_user, {'action': path('app_remove_account', {'id': user.id})}) }} #}
     {#        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}"> #}
     {#        <button class="btn btn-primary" id="user_delete" #}
@@ -36,8 +43,3 @@
     {#        </button> #}
     {#        {{ form_end(remove_user) }} #}
     {#    {% endif %} #}
-
-    {% block javascripts %}
-        {{ encore_entry_script_tags('user') }}
-    {% endblock %}
-{% endblock %}

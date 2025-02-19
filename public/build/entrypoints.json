@@ -2,27 +2,29 @@
   "entrypoints": {
     "app": {
       "js": [
-        "/build/runtime.620a04ca.js",
-        "/build/518.fd1383d9.js",
-        "/build/522.30867eaa.js",
-        "/build/app.2a1bb778.js"
+        "/build/runtime.js",
+        "/build/vendors-node_modules_core-js_internals_export_js-node_modules_core-js_internals_object-keys_js.js",
+        "/build/vendors-node_modules_core-js_modules_es_array_for-each_js-node_modules_core-js_modules_es_obj-24d1ca.js",
+        "/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_core-js_modules_es_ar-80e102.js",
+        "/build/app.js"
       ],
       "css": [
-        "/build/app.eddf2224.css"
+        "/build/app.css"
       ]
     },
     "user": {
       "js": [
-        "/build/runtime.620a04ca.js",
-        "/build/518.fd1383d9.js",
-        "/build/user.6c0dec29.js"
+        "/build/runtime.js",
+        "/build/vendors-node_modules_core-js_internals_export_js-node_modules_core-js_internals_object-keys_js.js",
+        "/build/vendors-node_modules_core-js_modules_es_array_for-each_js-node_modules_core-js_modules_es_obj-24d1ca.js",
+        "/build/user.js"
       ]
     },
     "settings": {
       "js": [
-        "/build/runtime.620a04ca.js",
-        "/build/518.fd1383d9.js",
-        "/build/settings.cc7d2b1c.js"
+        "/build/runtime.js",
+        "/build/vendors-node_modules_core-js_internals_export_js-node_modules_core-js_internals_object-keys_js.js",
+        "/build/settings.js"
       ]
     }
   }
