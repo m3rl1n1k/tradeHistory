@@ -24,15 +24,12 @@
 /logs/
 /docker/
 /tests/
-/DumpDB/
-/DumpDB/public/
-/public/build/
+/public/build
 /.env.prod
 /migrations/
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
-/public/build/
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
