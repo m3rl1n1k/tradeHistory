@@ -46,7 +46,7 @@
             <div class="w-full md:w-1/2">
                 <div class="w-1/2 mx-auto">
                     <div class="my-3">
-                        {{ render_chart(chart) }}
+                        {{ render_chart(chart)|raw }}
                     </div>
                 </div>
             </div>
@@ -85,7 +85,8 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="4" class="text-center py-3">{{ 'index.not_found_records'|trans({}, 'translation') }}</td>
+                        <td colspan="4"
+                            class="text-center py-3">{{ 'index.not_found_records'|trans({}, 'translation') }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -94,5 +95,3 @@
     {% endif %}
 
 {% endblock %}
-
-
