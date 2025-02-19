@@ -130,6 +130,7 @@ function fixWebcore() {
 	docker compose --env-file .env.prod exec -u root -it php  bash -c "composer update"
 	docker compose --env-file .env.prod exec -u root -it php  bash -c "composer require symfony/webpack-encore-bundle"
 	clearCache
+	npm install --force
 	npm run build
 }
 
