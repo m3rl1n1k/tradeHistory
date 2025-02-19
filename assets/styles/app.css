@@ -1,4 +1,4 @@
-@import "tailwindcss";
+/*@import "tailwindcss";*/
 
 tr.custom-row:hover {
     filter: invert(0.9);
@@ -98,10 +98,4 @@ svg.text-white {
 .mobile_show {
     position: absolute;
     right: 0;
-<<<<<<< HEAD
 }
-=======
-}
-
-
->>>>>>> a5809e2 (bug with styles)

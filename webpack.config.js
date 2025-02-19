@@ -25,8 +25,6 @@ Encore
     .addEntry('settings', './assets/js/user_settings.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
-    .addEntry('user', './assets/js/user_blockInputs.js')
-    .addEntry('settings', './assets/js/user_settings.js')
     .splitEntryChunks()
 
     // will require an extra script tag for runtime.js
