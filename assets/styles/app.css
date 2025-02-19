@@ -1,4 +1,6 @@
-@import "bootstrap.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 tr.custom-row:hover {
     filter: invert(0.9);
