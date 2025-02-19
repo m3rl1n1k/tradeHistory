@@ -1,0 +1,22 @@
+{% block body %}
+    <form id="report_period" method="post">
+        {{ form_start(form) }}
+        {{ include('component/_alert.html.twig') }}
+        <div class="row">
+            <div class="col-6">
+                {{ form_label(form.dateFrom) }}
+                {{ form_widget(form.dateFrom) }}
+                {{ form_errors(form.dateFrom) }}
+            </div>
+            <div class="col-6">
+                {{ form_label(form.dateEnd) }}
+                {{ form_widget(form.dateEnd) }}
+                {{ form_errors(form.dateEnd) }}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success mt-4">Show</button>
+        {{ form_end(form) }}
+    </form>
+{% endblock %}
+
+

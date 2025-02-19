@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Фінансові витрати</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+
+<!-- Шапка сайту -->
+<header class="flex justify-between items-center p-4 bg-white dark:bg-gray-800 shadow-md">
+    <div class="text-xl font-semibold">Фінансові витрати</div>
+    <div class="flex items-center space-x-4">
+        <button class="p-2 bg-gray-200 rounded-lg dark:bg-gray-700" id="theme-toggle">
+            <i class="fas fa-moon"></i>
+        </button>
+        <a class="text-blue-500" href="#">Вийти</a>
+    </div>
+</header>
+
+<div class="flex">
+    <!-- Бічне меню -->
+    <nav class="w-64 bg-white dark:bg-gray-800 h-screen p-4 shadow-md">
+        <ul class="space-y-4">
+            <li><a class="text-gray-900 dark:text-gray-100 hover:text-blue-500" href="#">Дашборд</a></li>
+            <li><a class="text-gray-900 dark:text-gray-100 hover:text-blue-500" href="#">Категорії</a></li>
+            <li><a class="text-gray-900 dark:text-gray-100 hover:text-blue-500" href="#">Транзакції</a></li>
+            <li><a class="text-gray-900 dark:text-gray-100 hover:text-blue-500" href="#">Налаштування</a></li>
+        </ul>
+    </nav>
+
+    <main class="flex-1 p-6">
+        <!-- Дашборд -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="bg-white dark:bg-gray-800 shadow-lg p-4 rounded-lg">
+                <h3 class="text-lg font-semibold">Швидкий доступ</h3>
+                <button class="w-full bg-blue-500 text-white p-2 rounded-lg mt-4">Додати категорію</button>
+                <button class="w-full bg-green-500 text-white p-2 rounded-lg mt-4">Додати транзакцію</button>
+            </div>
+            <div class="bg-white dark:bg-gray-800 shadow-lg p-4 rounded-lg">
+                <h3 class="text-lg font-semibold">Графік витрат за місяць</h3>
+                <canvas id="expenseChart"></canvas>
+            </div>
+            <div class="bg-white dark:bg-gray-800 shadow-lg p-4 rounded-lg">
+                <h3 class="text-lg font-semibold">Загальний баланс</h3>
+                <p class="text-2xl font-bold text-green-600">+ 10,500 грн</p>
+                <h4 class="mt-2">Останні транзакції</h4>
+                <ul class="space-y-2">
+                    <li>1,000 грн - Продукти</li>
+                    <li>500 грн - Транспорт</li>
+                    <li>2,000 грн - Ресторан</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Категорії -->
+        <div class="mt-8 bg-white dark:bg-gray-800 shadow-lg p-4 rounded-lg">
+            <h3 class="text-lg font-semibold">Категорії</h3>
+            <button class="w-full bg-blue-500 text-white p-2 rounded-lg mt-4">Додати категорію</button>
+            <ul class="mt-4 space-y-4">
+                <li class="flex items-center">
+                    <span class="w-4 h-4 bg-blue-500 rounded-full mr-2"></span>
+                    Продукти
+                </li>
+                <li class="flex items-center">
+                    <span class="w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                    Транспорт
+                </li>
+                <li class="flex items-center">
+                    <span class="w-4 h-4 bg-red-500 rounded-full mr-2"></span>
+                    Ресторан
+                </li>
+            </ul>
+        </div>
+
+        <!-- Транзакції -->
+        <div class="mt-8 bg-white dark:bg-gray-800 shadow-lg p-4 rounded-lg">
+            <h3 class="text-lg font-semibold">Транзакції</h3>
+            <button class="w-full bg-green-500 text-white p-2 rounded-lg mt-4">Додати транзакцію</button>
+            <table class="mt-4 w-full table-auto">
+                <thead>
+                <tr class="border-b">
+                    <th class="py-2">Дата</th>
+                    <th class="py-2">Категорія</th>
+                    <th class="py-2">Сума</th>
+                    <th class="py-2">Тип</th>
+                    <th class="py-2">Гаманець</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="border-b">
+                    <td class="py-2">01.02.2025</td>
+                    <td class="py-2">Продукти</td>
+                    <td class="py-2">1,000 грн</td>
+                    <td class="py-2">Витрата</td>
+                    <td class="py-2">Гаманець 1</td>
+                </tr>
+                <tr class="border-b">
+                    <td class="py-2">03.02.2025</td>
+                    <td class="py-2">Транспорт</td>
+                    <td class="py-2">500 грн</td>
+                    <td class="py-2">Витрата</td>
+                    <td class="py-2">Гаманець 2</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Авторизація -->
+        <div class="mt-8 bg-white dark:bg-gray-800 shadow-lg p-4 rounded-lg">
+            <h3 class="text-lg font-semibold">Вхід / Реєстрація</h3>
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm" for="email">Email</label>
+                    <input class="w-full p-2 border border-gray-300 rounded-lg" id="email" placeholder="Введіть email"
+                           type="email">
+                </div>
+                <div>
+                    <label class="block text-sm" for="password">Пароль</label>
+                    <input class="w-full p-2 border border-gray-300 rounded-lg" id="password"
+                           placeholder="Введіть пароль"
+                           type="password">
+                </div>
+                <button class="w-full bg-blue-500 text-white p-2 rounded-lg" type="submit">Вхід</button>
+            </form>
+        </div>
+    </main>
+</div>
+
+<script>
+    // Перемикач теми
+    const themeToggle = document.getElementById('theme-toggle');
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+    });
+
+    // Графік витрат
+    const ctx = document.getElementById('expenseChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Продукти', 'Транспорт', 'Ресторан'],
+            datasets: [{
+                data: [10, 20, 30],
+                backgroundColor: ['#4CAF50', '#FF9800', '#F44336'],
+            }]
+        }
+    });
+</script>
+
+</body>
+</html>

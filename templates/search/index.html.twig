@@ -1,0 +1,36 @@
+{% block search_results %}
+    <div class="mb-4">
+        <span class="text-lg font-semibold">Count: {{ count }}</span>
+    </div>
+    <div>
+        <table class="min-w-full table-auto">
+            <thead>
+            <tr class="bg-gray-100 border-b">
+                <th class="px-4 py-2 text-left">Amount</th>
+                <th class="px-4 py-2 text-left">Category</th>
+                <th class="px-4 py-2 text-left">Number</th>
+                <th class="px-4 py-2 text-left">Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for transaction in list %}
+                <tr class="hover:bg-gray-50 border-b">
+                    <td class="px-4 py-2 text-center">
+                        <a class="btn {{ color(transaction.type) }} text-decoration-none"
+                           href="{{ path('app_transaction_show', {'id': transaction.id}) }}">
+                            {{ transaction.amount }}
+                        </a>
+                    </td>
+                    <td class="px-4 py-2">{{ transaction.Category ? transaction.Category.name : '' }}</td>
+                    <td class="px-4 py-2">{{ transaction.wallet.number ?? transaction.wallet.name }}</td>
+                    <td class="px-4 py-2">{{ transaction.date ? transaction.date|date('d M') : '' }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="px-4 py-2 text-center text-gray-500">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,5 @@
+{% if form_errors(form) %}
+    <div class="fixed top-4 right-4 bg-red-500 text-white p-3 rounded shadow-lg z-50">
+        {{ form_errors(form) }}
+    </div>
+{% endif %}

@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Wallet{% endblock %}
+
+{% block body %}
+    <h1>Edit wallet</h1>
+
+    {{ include('wallet/_form.html.twig', {'button_label': 'Update'}) }}
+{% endblock %}

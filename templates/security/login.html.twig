@@ -1,0 +1,56 @@
+{% extends 'main_base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+    <div class="min-h-screen flex items-center justify-center bg-gray-100">
+        <form method="post" class="w-full max-w-sm p-6 bg-white shadow-lg rounded-lg">
+            {% if error %}
+                <div class="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-sm">
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                </div>
+            {% endif %}
+
+            <h1 class="text-2xl font-bold text-center mb-6 text-gray-700">Welcome Back</h1>
+
+            <div class="mb-4">
+                <label for="inputEmail" class="block text-sm font-medium text-gray-600">Email</label>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
+                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-600"
+                       autocomplete="email" required autofocus placeholder="Enter your email">
+            </div>
+
+            <div class="mb-4 relative">
+                <label for="inputPassword" class="block text-sm font-medium text-gray-600">Password</label>
+                <div class="relative">
+                    <input type="password" name="password" id="inputPassword"
+                           class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 pr-10 text-gray-600"
+                           autocomplete="current-password" required placeholder="Enter your password">
+                    <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500">
+                        👁️
+                    </button>
+                </div>
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <div class="flex flex-col space-y-4">
+                <button class="bg-blue-500 text-white w-full py-2 px-4 rounded-md hover:bg-blue-600 transition" type="submit">
+                    Sign in
+                </button>
+
+                <a href="{{ path('app_register') }}" class="text-center text-sm text-blue-500 hover:text-blue-700 transition">
+                    Don't have an account? Register
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("togglePassword").addEventListener("click", function () {
+            const passwordField = document.getElementById("inputPassword");
+            passwordField.type = passwordField.type === "password" ? "text" : "password";
+        });
+    </script>
+{% endblock %}
+

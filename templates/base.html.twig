@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en" class="h-full bg-gray-100">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="generator" content="Hugo 0.118.2">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+</head>
+<body class="h-full">
+
+{{ include('component/_icons_menu.html.twig') }}
+
+<header class="sticky top-0 bg-gray-900 text-white shadow-md p-4 flex items-center justify-between">
+    <a class="text-lg font-bold" href="{{ path('app_home') }}">{{ 'index.title'|trans({}, 'translation') }}</a>
+    {{ include('component/_mobile_version_menu.html.twig') }}
+    <form id="search-form" method="GET" class="w-full max-w-sm">
+        <div class="flex">
+            <input id="search-input" class="w-full p-2 rounded-l-md border border-gray-300" type="text"
+                   placeholder="Search transaction by category"
+                   aria-label="Search"
+                   name="search">
+            <button class="bg-gray-700 text-white px-4 rounded-r-md" id="search-button" type="submit">Search</button>
+        </div>
+    </form>
+</header>
+<div class="flex body">
+    <nav class="w-64 bg-white border-r p-4 mobile_show" id="menu">
+        <ul>
+            {% set mainWallet = app.user.wallets|filter(wallet => wallet.isMain)|first %}
+            {% if mainWallet != false %}
+                <li class="mb-2 text-gray-700">
+                    <span class="font-semibold">{{ 'amount'|trans({}, 'menu') }}:</span>
+                    {% if mainWallet.currency == app.user.currency %}
+                        {{ mainWallet.amount }}
+                    {% else %}
+                        0
+                    {% endif %}
+                    {{ app.user.currency }}
+                </li>
+            {% endif %}
+            <li><a class="block p-2 text-gray-700 hover:bg-gray-200 rounded"
+                   href="{{ path('app_home') }}">{{ 'dashboard'|trans({}, 'menu') }}</a></li>
+            <li><a class="block p-2 text-gray-700 hover:bg-gray-200 rounded"
+                   href="{{ path('app_transfer_index') }}">{{ 'transfer'|trans({}, 'menu') }}</a></li>
+            <li><a class="block p-2 text-gray-700 hover:bg-gray-200 rounded"
+                   href="{{ path('app_transaction_index') }}">{{ 'transaction'|trans({}, 'menu') }}</a></li>
+            <li><a class="block p-2 text-gray-700 hover:bg-gray-200 rounded"
+                   href="{{ path('app_parent_category_index') }}">{{ 'category'|trans({}, 'menu') }}</a></li>
+            <li><a class="block p-2 text-gray-700 hover:bg-gray-200 rounded"
+                   href="{{ path('app_wallet_index') }}">{{ 'wallet'|trans({}, 'menu') }}</a></li>
+            <li>
+                <a class="block p-2 text-gray-700 hover:bg-gray-200 rounded {{ isActive(path('app_user_index',{'id':app.user.id})) }}"
+                   href="{{ path('app_user_index',  {'id':app.user.id}) }}">{{ 'profile'|trans({}, 'menu') }}</a></li>
+            <li><a class="block p-2 text-gray-700 hover:bg-gray-200 rounded"
+                   href="{{ path('app_user_setting_index') }}">{{ 'setting'|trans({}, 'menu') }}</a></li>
+            <li><a class="block p-2 text-gray-700 hover:bg-gray-200 rounded"
+                   href="{{ path('app_feedback') }}">{{ 'feedback'|trans({}, 'menu') }}</a></li>
+            <li><a class="block p-2 text-gray-700 hover:bg-gray-200 rounded"
+                   href="{{ path('app_logout') }}">{{ 'sing_out'|trans({}, 'menu') }}</a></li>
+        </ul>
+    </nav>
+    <main class="flex-1 p-4">
+        {{ include('component/_flash.html.twig') }}
+        {% block body %}
+        {% endblock body %}
+    </main>
+</div>
+
+<script>
+    document.querySelector('form').addEventListener('submit', function () {
+        document.querySelector('button#search-button').disabled = true;
+    });
+</script>
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
+</body>
+</html>
