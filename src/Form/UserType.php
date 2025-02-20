@@ -17,7 +17,7 @@ class UserType extends AbstractType
 		$builder
 			->add('email', EmailType::class, [
 				'mapped' => false,
-			      	'data'=> $data->getEmail()
+			      	'data'=> $user->getEmail()
 			])
 			->add('currency', ChoiceType::class, [
 				'choices' => CurrencyEnum::associativeArray(),
