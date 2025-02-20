@@ -15,7 +15,9 @@ class UserType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options): void
 	{
 		$builder
-			->add('email', EmailType::class)
+			->add('email', EmailType::class, [
+				'mapped' => false,
+			])
 			->add('currency', ChoiceType::class, [
 				'choices' => CurrencyEnum::associativeArray(),
 			]);
