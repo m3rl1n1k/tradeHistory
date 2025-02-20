@@ -19,11 +19,11 @@
             </div>
             <div class="mb-4">
                 {{ form_label(form_user.currency, 'Select your currency', {'label_attr': {'class': 'text-lg font-semibold text-gray-700'}}) }}
-                {{ form_widget(form_user.currency, {'attr': {'class': 'w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500', 'id': 'currency', 'disabled': 'disabled'}}) }}
+                {{ form_widget(form_user.currency, {'attr': {'class': 'w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500', 'id': 'currency'}}) }}
             </div>
         </div>
 
-        <button type="button" class="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6" id="user_edit">
+        <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6" id="user_edit">
             Edit
         </button>
     </div>
