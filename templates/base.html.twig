@@ -126,7 +126,8 @@
 </script>
 
 {% block javascripts %}
-    {% block importmap %}{{ importmap('app') }}{% endblock %}
+    <script src="{{ asset('./assets/app.js') }}"></script>
+    {% block importmap %}{% endblock %}
 {% endblock %}
 </body>
 </html>
