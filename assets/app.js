@@ -4,10 +4,9 @@
  * We recommend including the built version of this JavaScript file
  * (and its CSS file) in your base layout (base.html.twig).
  */
-
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
 
-import './js/search'
-// import './js/user_blockInputs'
-import './js/mobile_menu'
+import './js/user_blockInputs.js'
+import './js/search.js'
+import './js/menu.js'

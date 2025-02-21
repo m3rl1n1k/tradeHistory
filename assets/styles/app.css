@@ -1,101 +1,44 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-tr.custom-row:hover {
-    filter: invert(0.9);
-    transition: 0.4s;
+#search-group, #search-result {
+    /* Initially hidden */
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: dropDown 0.3s ease-out forwards;
 }
 
-.sr-only {
-    display: none;
-}
-
-svg.text-white {
-    fill: #ffffff;
-}
-
-.bi {
-    display: inline-block;
-    width: 1rem;
-    height: 1rem;
-}
-
-/*
- * Sidebar
- */
-
-@media (min-width: 768px) {
-    .sidebar .offcanvas-lg {
-        position: -webkit-sticky;
-        position: sticky;
-        top: 48px;
+/* Keyframes for the drop-down animation */
+@keyframes dropDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
     }
-
-    .navbar-search {
-        display: block;
+    100% {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-.sidebar .nav-link {
-    font-size: .875rem;
-    font-weight: 500;
+@keyframes dropUp {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
 }
 
-.sidebar .nav-link.active {
-    color: #2470dc;
+.fade {
+    opacity: 1;
+    transform: translateY(0);
+    animation: dropUp 0.3s ease-in forwards;
 }
 
-.sidebar-heading {
-    font-size: .75rem;
-}
-
-/*
- * Navbar
- */
-
-.navbar-brand {
-    padding-top: .75rem;
-    padding-bottom: .75rem;
-    background-color: rgba(0, 0, 0, .25);
-    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
-}
-
-.navbar .form-control {
-    padding: .75rem 1rem;
-}
-
-/*search-result*/
-.wrapper-search-result {
-    display: block;
-    height: calc(100vh - 3.125rem);
-    padding: .75rem 1rem;
-    right: 0;
-    top: 3em;
-    position: fixed;
-    background-color: rgba(0, 0, 0, .5);
-    z-index: 2000
-}
-
-#search-result {
-    height: calc(100vh - 3.125rem);
-    overflow: auto;
-}
-
-.hidden {
-    display: none !important;
-}
-
-.count {
-    display: block;
-    position: absolute;
-    top: 5px;
-    right: 15px;
-}
-
-.body {
-    position: relative;
-}
-
-.mobile_show {
-    position: absolute;
-    right: 0;
+.mobile-version {
+    position: absolute !important;
+    width: 100% !important;
 }

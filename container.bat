@@ -12,20 +12,20 @@ echo.
 
 :: Опис команд
 if "%COMMAND%"=="--start" (
-    echo Executing: docker compose --env-file .env.prod up %ARGUMENT%
-    docker compose --env-file .env.prod up %ARGUMENT%
+    echo Executing: docker compose --env-file .env.local up %ARGUMENT%
+    docker compose --env-file .env.local up %ARGUMENT%
 ) else if "%COMMAND%"=="--restart" (
-    echo Executing: docker compose --env-file .env.prod restart
-    docker compose --env-file .env.prod restart
+    echo Executing: docker compose --env-file .env.local restart
+    docker compose --env-file .env.local restart
 ) else if "%COMMAND%"=="--stop" (
-    echo Executing: docker compose --env-file .env.prod stop
-    docker compose --env-file .env.prod stop
+    echo Executing: docker compose --env-file .env.local stop
+    docker compose --env-file .env.local stop
 ) else if "%COMMAND%"=="--down" (
-    echo Executing: docker compose --env-file .env.prod stop
-    docker compose --env-file .env.prod down
+    echo Executing: docker compose --env-file .env.local stop
+    docker compose --env-file .env.local down
 ) else if "%COMMAND%"=="--connect" (
-    echo Executing: docker compose --env-file .env.prod exec -it %ARGUMENT% /bin/bash
-    docker compose --env-file .env.prod exec -it %ARGUMENT% /bin/bash
+    echo Executing: docker compose --env-file .env.local exec -it %ARGUMENT% /bin/bash
+    docker compose --env-file .env.local exec -it %ARGUMENT% /bin/bash
 ) else if "%COMMAND%"=="--build" (
     echo Executing: docker compose --env-file %ARGUMENT% up --build
     docker compose --env-file %ARGUMENT% up --build
