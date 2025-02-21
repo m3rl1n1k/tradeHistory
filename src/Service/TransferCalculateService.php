@@ -29,9 +29,9 @@ class TransferCalculateService implements TransferCalculationInterface
         if ($walletIn->getNumber() === $walletOut->getNumber()) {
             throw new Exception("Can't make transfer to same wallet");
         }
-        if ($walletOut->getAmount() > $amount) {
-            throw new Exception("Amount must be less than or equal to " . $walletOut->getAmount());
-        }
+//        if ($walletOut->getAmount() > $amount) {
+//            throw new Exception("Amount must be less than or equal to " . $walletOut->getAmount());
+//        }
         match ($flag) {
             'new' => $this->newTransfer($walletOut, $walletIn, $amount),
 //            'edit' => $this->editTransfer($walletOut, $walletIn, $amount, $options['oldAmount']),

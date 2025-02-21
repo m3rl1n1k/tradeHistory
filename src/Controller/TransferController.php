@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Transfer;
+use App\Entity\Wallet;
 use App\Form\TransferType;
 use App\Repository\TransferRepository;
 use App\Service\Interfaces\TransferCalculationInterface;
@@ -33,7 +34,8 @@ final class TransferController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $transfer = new Transfer();
-        $form = $this->createForm(TransferType::class, $transfer);
+
+        $form = $this->createForm(TransferType::class, $transfer, ['wallets' => $this->getUser()->getWallets()]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->calculation->calculate('new', $transfer);
