@@ -30,6 +30,6 @@
 /public/build/
 
 ###> symfony/asset-mapper ###
-/public/assets/
+#/public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
