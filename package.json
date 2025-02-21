@@ -11,6 +11,12 @@
     "url": "https://github.com/m3rl1n1k/tradeHistory.git"
   },
   "private": true,
+  "extra": {
+    "symfony": {
+        "allow-contrib": true,
+        "entrypoints": []
+    }
+},
   "dependencies": {
     "@symfony/stimulus-bridge": "^4.0.0"
   }
