@@ -9,7 +9,7 @@
     {% block stylesheets %}
     {% endblock %}
 
-    <script src="{{ asset('https://cdn.jsdelivr.net/npm/chart.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 <body class="dark:bg-gray-800 bg-gray-300 min-h-screen">
@@ -126,8 +126,8 @@
 </script>
 
 {% block javascripts %}
-    <script src="{{ asset('./assets/app.js') }}"></script>
-    {% block importmap %}{% endblock %}
+    <script src="{{ asset('assets/app.js') }}"></script>
+    {#    {% block importmap %}{% endblock %} #}
 {% endblock %}
 </body>
 </html>
