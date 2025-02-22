@@ -15,7 +15,7 @@
 <body class="dark:bg-gray-800 bg-gray-300 min-h-screen">
 <header class="flex justify-between items-center p-4 bg-white dark:bg-gray-800 shadow-md">
     <div class="text-xl font-semibold dark:text-white" id="title">{{ 'index.title'|trans({}, 'translation') }}</div>
-    <div class="flex items-center space-x-4 max-w-[calc(100vw-2rem)] max-w-full">
+    <div class="flex items-center space-x-4 max-w-full">
         <form class="w-full max-w-sm" id="search-form" method="GET">
             <div class="relative">
                 <div class="justify-between hidden " id="search-group">
@@ -24,7 +24,7 @@
                             type="button">x
                     </button>
                     <input aria-label="Search"
-                           class="focus:rounded-none px-4 py-2 border-t border-b border-gray-400 relative w-80 text-gray-700 border border-gray-300 dark:text-gray-300"
+                           class="w-full focus:rounded-none px-4 py-2 border-t border-b border-gray-400 relative text-gray-700 border border-gray-300 dark:text-gray-300"
                            id="search-input"
                            name="search"
                            placeholder="Search"
