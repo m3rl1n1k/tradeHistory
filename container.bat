@@ -25,7 +25,7 @@ if "%COMMAND%"=="--start" (
     docker compose --env-file .env.local down
 ) else if "%COMMAND%"=="--connect" (
     echo Executing: docker compose --env-file .env.local exec -it %ARGUMENT% /bin/bash
-    docker compose --env-file .env.local exec -it %ARGUMENT% /bin/bash
+    docker compose --env-file .env.local exec -it -u %FILE% %ARGUMENT% /bin/bash
 ) else if "%COMMAND%"=="--build" (
     echo Executing: docker compose --env-file %ARGUMENT% up --build
     docker compose --env-file %ARGUMENT% up --build
