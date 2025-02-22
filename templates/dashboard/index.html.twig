@@ -2,6 +2,10 @@
 
 {% block title %}{{ 'index.title'|trans({}, 'translation') }}{% endblock %}
 
+{% block stylesheets %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
 {% block body %}
     {% if app.user.currency() is empty %}
         <div class="mt-3">
