@@ -7,6 +7,6 @@
 // any CSS you import will output into a single css file (app.css in this case)
 // import './styles/app.css';
 
-import './js/user_blockInputs.js'
-import './js/search.js'
-import './js/menu.js'
+// import './js/user_blockInputs.js'
+// import './js/search.js'
+// import './js/menu.js'
