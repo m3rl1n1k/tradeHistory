@@ -46,7 +46,6 @@
     "symfony/validator": "7.2.x",
     "symfony/web-link": "7.2.x",
     "symfony/yaml": "7.2.x",
-    "symfonycasts/tailwind-bundle": "^0.7.1",
     "twig/extra-bundle": "^2.12|^3.0",
     "twig/twig": "3.14.1.0"
   },
@@ -93,16 +92,5 @@
       "allow-contrib": false,
       "require": "7.2.x"
     }
-  },
-  "require-dev": {
-    "doctrine/doctrine-fixtures-bundle": "^3.6",
-    "phpunit/phpunit": "^9.5",
-    "symfony/browser-kit": "7.2.x",
-    "symfony/css-selector": "7.2.x",
-    "symfony/debug-bundle": "7.2.x",
-    "symfony/maker-bundle": "^1.55",
-    "symfony/phpunit-bridge": "^6.3",
-    "symfony/stopwatch": "7.2.x",
-    "symfony/web-profiler-bundle": "7.2.x"
   }
 }
