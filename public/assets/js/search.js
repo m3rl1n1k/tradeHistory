@@ -8,22 +8,24 @@ const bg = document.querySelector('#form-bg')
 const exit = document.querySelector('#exit')
 const resultBlock = document.querySelector('#search-result')
 const btn_menu = document.querySelector('#menu-btn')
+const header = document.querySelector('#header')
 
+//open form
 open_btn.addEventListener('click', function () {
-    //show input
     toggle_search_form()
-    //change type to submit
-    //show block with results
-    //close block
 })
+//close form
 close_btn.addEventListener('click', function () {
     setTimeout(() => {
         search_group.classList.toggle('fade')
     }, 300)
     toggle_search_form()
+    header.classList.remove('justify-center')
+    header.classList.add('justify-between')
 })
 
-search_btn.addEventListener('submit', function () {
+search_btn.addEventListener('submit', function (event) {
+    event.preventDefault()
     search()
 });
 
@@ -34,6 +36,8 @@ function resolution_condition() {
         if (exit != null) {
             exit.classList.toggle('hidden')
         }
+        header.classList.add('justify-center')
+        header.classList.remove('justify-between')
     }
 
 }
@@ -49,10 +53,19 @@ function toggle_search_form() {
 
 
 function search() {
-    let query = document.getElementById('search-input').value
-    resultBlock.classList.toggle('hidden');
-    document.body.classList.add('overflow-hidden')
-    fetch('/search?s=' + encodeURIComponent(query)).then(response => response.text())
-        .then(html => document.getElementById('search-result').innerHTML = html)
-    search_btn.disabled = false
+    let query = document.getElementById('search-input').value;
+    let resultBlock = document.getElementById('search-wrap');
+    let searchResult = document.getElementById('search-result');
+
+    if (!query.trim()) return; // Запобігаємо запитам із пустим рядком
+
+    resultBlock.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+
+    fetch('/search?s=' + encodeURIComponent(query)) // Використовуємо відносний шлях
+        .then(response => response.text())
+        .then(html => {
+            searchResult.innerHTML = html;
+        })
+        .catch(error => console.error('Error:', error));
 }
