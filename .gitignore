@@ -23,19 +23,19 @@
 .idea
 /logs/
 /docker/
+/tests/
+/public/build
+/.env.prod
+/migrations/
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
-/public/build_/
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
-/tests/
-/DumpDB/
-/DumpDB/public/
 /public/build/
 
 ###> symfony/asset-mapper ###
-/public/assets/
+#/public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###

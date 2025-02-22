@@ -1,0 +1,137 @@
+#!/bin/bash
+COMMAND=$1
+shift
+ARGUMENT=("$@")
+
+declare -A commands
+
+commands[--logs]="docker compose --env-file .env.prod logs --follow"
+commands[--start]="startContainers"
+commands[--restart]="restartContainers"
+commands[--stop]="stopContainers"
+commands[--connect]="connectToContainer"
+commands[--build]="build"
+commands[--kill]="killContainers"
+commands[--remove]="removeContainers"
+commands[--reset]="resetData"
+commands[--drop-database]="dropDatabase"
+commands[--help]="showHelp"
+
+commands[--clear-cache]="clearCache"
+commands[--fix-webcore]="fixWebcore"
+
+function showHelp() {
+  echo "Доступні команди:"
+  echo "  --logs               - Переглянути логи контейнерів"
+  echo "  --start [srv]        - Запустити контейнер (або всі, якщо не вказано)"
+  echo "  --restart [srv]      - Перезапустити контейнер"
+  echo "  --stop [srv]         - Зупинити контейнер"
+  echo "  --connect [srv] [usr]- Підключитися до контейнера (користувач за замовчуванням: www-data)"
+  echo "  --build              - Зібрати Docker-образи"
+  echo "  --kill [srv]         - Завершити роботу контейнерів"
+  echo "  --remove [srv]       - Видалити контейнери"
+  echo "  --reset              - Очистити всі Docker-ресурси"
+  echo "  --drop-database      - Видалити всі Docker-томи (БД)"
+  echo "  --help               - Показати цю підказку"
+  echo "  --clear-cache        - Очистити кеш"
+}
+
+function startContainers() {
+  if [[ -z "$ARGUMENT" ]]; then
+    echo "Запуск всіх контейнерів..."
+    docker compose --env-file .env.prod up -d
+  else
+    echo "Запуск контейнера '${ARGUMENT[*]}'..."
+    docker compose --env-file .env.prod up -d "${ARGUMENT[@]}"
+  fi
+}
+
+function restartContainers() {
+  if [[ -z "$ARGUMENT" ]]; then
+    echo "Перезапуск всіх контейнерів..."
+    docker compose --env-file .env.prod restart
+  else
+    echo "Перезапуск контейнера '${ARGUMENT[*]}'..."
+    docker restart "${ARGUMENT[@]}"
+  fi
+}
+
+function stopContainers() {
+  if [[ -z "$ARGUMENT" ]]; then
+    echo "Зупинка всіх контейнерів..."
+    docker compose --env-file .env.prod stop
+  else
+    echo "Зупинка контейнера '${ARGUMENT[*]}'..."
+    docker stop "${ARGUMENT[@]}"
+  fi
+}
+
+function connectToContainer() {
+  local container="${ARGUMENT[0]}"
+  local user="${ARGUMENT[1]:-www-data}"  # За замовчуванням www-data
+  if [[ -z "$container" ]]; then
+    echo "Помилка: потрібно вказати ім'я контейнера!"
+    exit 1
+  fi
+  echo "Підключення до контейнера '$container' під користувачем '$user'..."
+  docker compose --env-file .env.prod exec -u "$user" -it "$container" /bin/bash
+}
+
+function build() {
+  echo "Збірка Docker-образів..."
+  docker compose --env-file .env.prod up --build
+}
+
+function killContainers() {
+  local container="${ARGUMENT[0]}"
+  if [[ -z "$container" ]]; then
+    echo "Завершення всіх контейнерів..."
+    docker compose --env-file .env.prod down
+  else
+    echo "Завершення контейнера '$container'..."
+    docker stop "$container"
+  fi
+}
+
+function removeContainers() {
+  local container="${ARGUMENT[0]}"
+  if [[ -z "$container" ]]; then
+    echo "Видалення всіх контейнерів..."
+    docker compose --env-file .env.prod down --volumes --rmi all
+  else
+    echo "Видалення контейнера '$container'..."
+    docker compose --env-file .env.prod rm -f "$container"
+  fi
+}
+
+function resetData() {
+  echo "Очищення всіх Docker-ресурсів..."
+  docker system prune -a -f
+}
+
+function dropDatabase() {
+  echo "Видалення всіх Docker-томів (БД)..."
+  docker compose volume prune -f
+}
+
+function runCommand() {
+  if [[ -n ${commands[$COMMAND]} ]]; then
+    ${commands[$COMMAND]}
+  else
+    echo "Command '$COMMAND' not found! Use --help"
+  fi
+}
+
+function clearCache() {
+	docker compose --env-file .env.prod exec -u root -it php  bash -c "bin/console cache:clear && mkdir var/cache/prod/http_cache"
+}
+
+function fixWebcore() {
+	docker compose --env-file .env.prod exec -u root -it php  bash -c "composer update"
+	docker compose --env-file .env.prod exec -u root -it php  bash -c "composer require symfony/webpack-encore-bundle"
+	clearCache
+	npm install --force
+	npm run build
+}
+
+runCommand

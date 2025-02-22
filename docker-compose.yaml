@@ -1,5 +1,5 @@
 services:
-  php_local:
+  php:
     restart: always
     container_name: php_${PROJECT_NAME}
     build:
@@ -13,11 +13,11 @@ services:
     volumes:
       - ./:${WORKDIR}
     networks:
-      - tradeHistory_local
+      - tradeHistory
 
-  postgres_local:
+  postgres:
     restart: always
-    image: postgres:17
+    image: postgres:16
     container_name: postgres_${PROJECT_NAME}
     ports:
       - ${POSTGRES_PORT}:5432
@@ -29,9 +29,9 @@ services:
     volumes:
       - database:/var/lib/postgresql/data
     networks:
-      - tradeHistory_local
+      - tradeHistory
 
-  nginx_local:
+  nginx:
     restart: always
     image: nginx:latest
     container_name: nginx_${PROJECT_NAME}
@@ -49,11 +49,11 @@ services:
       - ./logs/nginx:/var/log/nginx
       - ./logs/cache:/var/cache/nginx
     networks:
-      - tradeHistory_local
+      - tradeHistory
 
 volumes:
   database:
 
 networks:
-  tradeHistory_local:
+  tradeHistory:
     driver: bridge

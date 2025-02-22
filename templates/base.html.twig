@@ -2,30 +2,29 @@
 <html class="bg-gray-100" data-theme="dark" lang="en">
 <head>
     <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>{% block title %}{% endblock %}</title>
     <link href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>"
           rel="icon">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/app.css') }}">
     {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
     {% endblock %}
-
-    <script src="{{ asset('https://cdn.jsdelivr.net/npm/chart.js') }}"></script>
 
 </head>
 <body class="dark:bg-gray-800 bg-gray-300 min-h-screen">
 <header class="flex justify-between items-center p-4 bg-white dark:bg-gray-800 shadow-md">
     <div class="text-xl font-semibold dark:text-white" id="title">{{ 'index.title'|trans({}, 'translation') }}</div>
-    <div class="flex items-center space-x-4">
+    <div class="flex items-center space-x-4 max-w-full">
         <form class="w-full max-w-sm" id="search-form" method="GET">
             <div class="relative">
-                <div class="justify-between hidden" id="search-group">
+                <div class="justify-between hidden " id="search-group">
                     <button class="px-4 py-2 bg-gray-900 text-gray-400 border border-gray-400 rounded-l-lg"
                             id="close-btn"
                             type="button">x
                     </button>
                     <input aria-label="Search"
-                           class="focus:rounded-none px-4 py-2 border-t border-b border-gray-400 relative w-80 text-gray-700 border border-gray-300 dark:text-gray-300"
+                           class="w-full focus:rounded-none px-4 py-2 border-t border-b border-gray-400 relative text-gray-700 border border-gray-300 dark:text-gray-300"
                            id="search-input"
                            name="search"
                            placeholder="Search"
@@ -51,7 +50,8 @@
         <!--        </button>-->
     </div>
     <a class="bg-blue-500 text-white p-2 rounded-lg hidden md:block" href="{{ path('app_logout') }}">Вийти</a>
-    <button class="text-gray-700 dark:text-gray-300 sm:block md:hidden" id="menu-btn" type="button">
+    <button class="text-gray-700 dark:text-gray-300 sm:block md:hidden" style="width: 1rem; height: auto" id="menu-btn"
+            type="button">
         <svg class="size-6" fill="none" id="open-menu" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
              xmlns="http://www.w3.org/2000/svg">
             <path d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" stroke-linecap="round"
@@ -66,28 +66,31 @@
 </header>
 <div class="flex body relative">
     <nav class="hidden md:block bg-gray-300 dark:bg-gray-800 w-64 h-full p-4 my-2" id="menu">
-            {% set mainWallet = app.user.wallets|filter(wallet => wallet.isMain)|first %}
-            {% if mainWallet != false %}
-        <ul class="space-y-4 md-shadow">
-            <li class="mb-2 dark:text-gray-100"><span class="font-semibold">{{ 'amount'|trans({}, 'menu') }}:</span>
-                {% if mainWallet.currency == app.user.currency %}
-                    {{ mainWallet.amount }}
-                {% else %}
-                    0
-                {% endif %}
-                {{ app.user.currency }}
-            </li>
-        </ul>
-        <hr class="text-gray-300 my-2">
-            {% endif %}
+        {% set mainWallet = app.user.wallets|filter(wallet => wallet.isMain)|first %}
+        {% if mainWallet != false %}
+            <ul class="space-y-4 md-shadow">
+                <li class="mb-2 dark:text-gray-100"><span class="font-semibold">{{ 'amount'|trans({}, 'menu') }}:</span>
+                    {% if mainWallet.currency == app.user.currency %}
+                        {{ mainWallet.amount }}
+                    {% else %}
+                        0
+                    {% endif %}
+                    {{ app.user.currency }}
+                </li>
+            </ul>
+            <hr class="text-gray-300 my-2">
+        {% endif %}
         <ul class="space-y-4 md-shadow">
             <li><a class="text-gray-900 dark:text-gray-100 hover:text-blue-500 {{ isActive(path('app_home')) }}"
                    href="{{ path('app_home') }}">{{ 'dashboard'|trans({}, 'menu') }}</a></li>
-            <li><a class="text-gray-900 dark:text-gray-100 hover:text-blue-500 {{ isActive(path('app_transaction_index')) }}"
+            <li>
+                <a class="text-gray-900 dark:text-gray-100 hover:text-blue-500 {{ isActive(path('app_transaction_index')) }}"
                    href="{{ path('app_transaction_index') }}">{{ 'transaction'|trans({}, 'menu') }}</li>
-            <li><a class="text-gray-900 dark:text-gray-100 hover:text-blue-500 {{ isActive(path('app_transfer_index')) }}"
+            <li>
+                <a class="text-gray-900 dark:text-gray-100 hover:text-blue-500 {{ isActive(path('app_transfer_index')) }}"
                    href="{{ path('app_transfer_index') }}">{{ 'transfer'|trans({}, 'menu') }}</a></li>
-            <li><a class="text-gray-900 dark:text-gray-100 hover:text-blue-500 {{ isActive(path('app_parent_category_index')) }}"
+            <li>
+                <a class="text-gray-900 dark:text-gray-100 hover:text-blue-500 {{ isActive(path('app_parent_category_index')) }}"
                    href="{{ path('app_parent_category_index') }}">{{ 'category'|trans({}, 'menu') }}</a></li>
             <li><a class="text-gray-900 dark:text-gray-100 hover:text-blue-500 {{ isActive(path('app_wallet_index')) }}"
                    href="{{ path('app_wallet_index') }}">{{ 'wallet'|trans({}, 'menu') }}</a></li>
@@ -97,14 +100,16 @@
             <li>
                 <a class="text-gray-900 dark:text-gray-100 hover:text-blue-500 {{ isActive(path('app_user_index',{'id':app.user.id})) }}"
                    href="{{ path('app_user_index',  {'id':app.user.id}) }}">{{ 'profile'|trans({}, 'menu') }}</a></li>
-            <li><a class="text-gray-900 dark:text-gray-100 hover:text-blue-500 {{ isActive(path('app_user_setting_index')) }}"
+            <li>
+                <a class="text-gray-900 dark:text-gray-100 hover:text-blue-500 {{ isActive(path('app_user_setting_index')) }}"
                    href="{{ path('app_user_setting_index') }}">{{ 'setting'|trans({}, 'menu') }}</a></li>
             <li><a class="text-gray-900 dark:text-gray-100 hover:text-blue-500 {{ isActive(path('app_feedback')) }}"
                    href="{{ path('app_feedback') }}">{{ 'feedback'|trans({}, 'menu') }}</a></li>
         </ul>
         <hr class="text-gray-300 my-2">
         <ul class="space-y-4 md-shadow">
-            <li><a class="text-gray-900 dark:text-gray-100 hover:text-blue-500 {{ isActive(path('app_user_index', {'id':app.user.id})) }}"
+            <li>
+                <a class="text-gray-900 dark:text-gray-100 hover:text-blue-500 {{ isActive(path('app_user_index', {'id':app.user.id})) }}"
                    href="{{ path('app_logout') }}">{{ 'sing_out'|trans({}, 'menu') }}</a></li>
         </ul>
     </nav>
@@ -120,9 +125,9 @@
         document.querySelector('button#search-button').disabled = true;
     });
 </script>
-
-{% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-{% endblock %}
+<script src="{{ asset('assets/js/menu.js') }}"></script>
+<script src="{{ asset('assets/js/search.js') }}"></script>
+<script src="{{ asset('assets/js/toggle-theme.js') }}"></script>
+{% block javascripts %}{% endblock %}
 </body>
 </html>

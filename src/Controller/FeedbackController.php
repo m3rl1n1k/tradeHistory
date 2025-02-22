@@ -31,8 +31,7 @@ class FeedbackController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
-            $date = new DateTime();
-            $formData->setDate($date);
+            $formData->setDate(new DateTime());
             $formData->setName($this->getUser()->getUserIdentifier());
 
             $entityManager->persist($feedback);
