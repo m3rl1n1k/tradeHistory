@@ -22,17 +22,19 @@ class DashboardController extends AbstractController
     {
     }
 
-    /**
-     * @throws NonUniqueResultException
-     * @throws NoResultException
-     */
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/home', name: 'app_home', methods: ['GET'])]
     public function home(TransactionRepository $transactionRepository): Response
-    {
+    {   $data =$this->chartService->dashboardChart();
+        $labels = $data['labels'];
+        $chartData = $data['datasets']['data'];
+        $colors = $data['datasets']['backgroundColor'];
         return $this->render('dashboard/index.html.twig', [
             'last_transaction' => $transactionRepository->getLastTransaction(),
-            'chart' => $this->chartService->dashboardChart(),
+            'labels' => json_encode($labels,JSON_PRETTY_PRINT),
+            'data'=> json_encode($chartData,JSON_PRETTY_PRINT),
+            'colors' => json_encode($colors,JSON_PRETTY_PRINT),
+            'expense_amount' => $data['expense'],
             'amount' => $this->walletService->getTotal()
         ]);
     }
