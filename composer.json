@@ -40,7 +40,6 @@
     "symfony/security-bundle": "7.2.x",
     "symfony/security-core": "7.2.x",
     "symfony/serializer": "7.2.x",
-    "symfony/stimulus-bundle": "^2.23",
     "symfony/string": "7.2.x",
     "symfony/translation": "7.2.x",
     "symfony/twig-bundle": "7.2.x",
@@ -48,7 +47,6 @@
     "symfony/validator": "7.2.x",
     "symfony/web-link": "7.2.x",
     "symfony/yaml": "7.2.x",
-    "symfonycasts/tailwind-bundle": "^0.7.1",
     "twig/extra-bundle": "^2.12|^3.0",
     "twig/twig": "3.14.1.0"
   },

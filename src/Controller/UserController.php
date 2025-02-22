@@ -19,7 +19,7 @@ class UserController extends AbstractController
     public function index(int $id, Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(UserType::class, $user);
-        $removeUser = $this->createFormBuilder();
+//        $removeUser = $this->createFormBuilder();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -30,7 +30,7 @@ class UserController extends AbstractController
         }
         return $this->render('user/index.html.twig', [
             'form_user' => $form,
-            'remove_user' => $removeUser->getForm(),
+//            'remove_user' => $removeUser->getForm(),
         ]);
     }
 

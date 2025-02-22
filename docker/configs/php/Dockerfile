@@ -6,7 +6,7 @@ ARG WORKDIR
 WORKDIR ${WORKDIR}
 
 # Створення користувача 'container'
-RUN #useradd -m container
+RUN useradd -m container
 
 # Оновлення системи та встановлення необхідних утиліт
 RUN apt-get -y update && \
@@ -45,10 +45,10 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 ENV TERM xterm-256color
 
 # Встановлення прав для користувача 'container' (додатковий захист)
-RUN #chown -R container:container ${WORKDIR}
+RUN chown -R container:container ${WORKDIR}
 
 # Переключення на користувача 'container'
-#USER container
+USER container
 
 # Запуск PHP-FPM
 CMD php-fpm
