@@ -18,11 +18,15 @@
     <main class="flex-1 p-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 dark:text-gray-300">
             <div class="bg-white dark:bg-gray-600 shadow-lg p-4 rounded-lg">
-                <h3 class="text-lg font-semibold">Quick</h3>
-                <a href="{{ path('app_category_new') }}" class="w-full bg-blue-500 text-white p-2 rounded-lg mt-4">
-                    Add {{ 'category'|trans({}, 'menu') }}</a>
-                <a href="{{ path('app_transaction_new') }}" class="w-full bg-green-500 text-white p-2 rounded-lg mt-4">
-                    Add {{ 'transaction'|trans({}, 'menu') }}</a>
+                <h3 class="text-lg font-semibold my-3">Quick</h3>
+                <div class="flex flex-col">
+                    <a href="{{ path('app_category_new') }}"
+                       class="w-full bg-blue-500 text-white p-2 rounded-lg mt-4">
+                        Add {{ 'category'|trans({}, 'menu') }}</a>
+                    <a href="{{ path('app_transaction_new') }}"
+                       class="w-full bg-green-500 text-white p-2 rounded-lg mt-4">
+                        Add {{ 'transaction'|trans({}, 'menu') }}</a>
+                </div>
             </div>
             <div class="bg-white dark:bg-gray-600 shadow-lg p-4 rounded-lg dark:text-gray-300">
                 <h3 class="text-lg font-semibold">Expense by month</h3>
@@ -36,7 +40,7 @@
                             {% for transaction in last_transaction %}
                                 <li><a class="text-decoration-none {{ color(transaction.type) }} hover:underline"
                                        href="{{ path('app_transaction_show', {'id': transaction.id}) }}">
-                                        {{ transaction.amount }} -
+                                        {{ transaction.amount }} {{ transaction.wallet.currency }}-
                                         {{ transaction.category.name ?? '' }} -
                                         {{ transaction.date|date('d M') }}
                                     </a>
