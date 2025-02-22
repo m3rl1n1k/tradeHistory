@@ -36,7 +36,9 @@ function resolution_condition() {
         if (exit != null) {
             exit.classList.toggle('hidden')
         }
-        header.classList.add('justify-center')
+        if (header != null) {
+            header.classList.add('justify-center')
+        }
         header.classList.remove('justify-between')
     }
 
@@ -60,7 +62,7 @@ function search() {
     if (!query.trim()) return; // Запобігаємо запитам із пустим рядком
 
     resultBlock.classList.remove('hidden');
-    document.body.classList.add('overflow-hidden');
+    // document.body.classList.add('overflow-hidden');
 
     fetch('/search?s=' + encodeURIComponent(query)) // Використовуємо відносний шлях
         .then(response => response.text())
