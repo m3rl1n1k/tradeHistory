@@ -15,15 +15,65 @@
             </a>
         </div>
     {% endif %}
+    <main class="flex-1 p-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 dark:text-gray-300">
+            <div class="bg-white dark:bg-gray-600 shadow-lg p-4 rounded-lg">
+                <h3 class="text-lg font-semibold">Quick</h3>
+                <a href="{{ path('app_category_new') }}" class="w-full bg-blue-500 text-white p-2 rounded-lg mt-4">
+                    Add {{ 'menu.category'|trans({}, 'translation') }}</a>
+                <a href="{{ path('app_transaction_new') }}" class="w-full bg-green-500 text-white p-2 rounded-lg mt-4">
+                    Add {{ 'menu.transaction'|trans({}, 'translation') }}</a>
+            </div>
+            <div class="bg-white dark:bg-gray-600 shadow-lg p-4 rounded-lg dark:text-gray-300">
+                <h3 class="text-lg font-semibold">Expense by month</h3>
+                <canvas id="expenseChart"></canvas>
+            </div>
+            <div class="bg-white dark:bg-gray-600 shadow-lg p-4 rounded-lg dark:text-gray-300 flex justify-between ">
+                <div class="">
+                    <h3 class="text-lg font-semibold">{{ 'index.last_transaction'|trans({}, 'translation') }}</h3>
+                    <ul class="space-y-2 over">
+                        {% if last_transaction|length > 0 %}
+                            {% for transaction in last_transaction %}
+                                <li><a class="text-decoration-none {{ color(transaction.type) }} hover:underline"
+                                       href="{{ path('app_transaction_show', {'id': transaction.id}) }}">
+                                        {{ transaction.amount }} -
+                                        {{ transaction.category.name ?? '' }} -
+                                        {{ transaction.date|date('d M') }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        {% else %}
+                            <li>{{ 'index.not_found_records'|trans({}, 'translation') }}</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            <div class="bg-white dark:bg-gray-600 shadow-lg p-4 rounded-lg dark:text-gray-300 flex justify-between ">
+                <div class="">
+                    <h3 class="text-lg font-semibold">{{ 'index.card.total'|trans({}, 'translation') }}</h3>
+                    <p class="text-2xl font-bold text-green-600">+{{ amount ? amount : 0 }} {{ app.user.currency }}</p>
+                    <ul class="space-y-2 over">
+                        {% if app.user.wallets|length > 0 %}
+                            {% for wallet in app.user.wallets %}
+                                <li>{{ wallet.name ?? wallet.number }} - {{ wallet.amount }} {{ wallet.currency }}</li>
+                            {% endfor %}
+                        {% else %}
+                            <li>Not found any wallet yet</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
     <div class="mt-3 md:flex space-x-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div class="mt-2 md:w-1/3 sm:w-full lg:w-1/4">
-            <a href="{{ path('app_transaction_new') }}"
+            <a href=""
                class="bg-green-500 text-white w-full flex items-center justify-center py-3 px-4 rounded-lg hover:bg-green-600 transition-all">
                 <span class="text-lg">{{ 'transaction'|trans({}, 'menu') }}</span>
             </a>
         </div>
         <div class="mt-2 md:w-1/3 sm:w-full lg:w-1/4">
-            <a href="{{ path('app_category_new') }}"
+            <a href=""
                class="bg-green-500 text-white w-full flex items-center justify-center py-3 px-4 rounded-lg hover:bg-green-600 transition-all">
                 <span class="text-lg">{{ 'category'|trans({}, 'menu') }}</span>
             </a>
@@ -36,7 +86,7 @@
                             <h5 class="text-lg font-semibold">{{ 'index.card.total'|trans({}, 'translation') }}</h5>
                             <p class="text-gray-600">{{ 'index.card.description'|trans({}, 'translation') }}</p>
                             <span class="text-gray-600 py-2 px-3 rounded-md">
-                                {{ amount ? amount : 0 }} {{ app.user.currency }}
+
                             </span>
                         </div>
                     </div>
@@ -60,42 +110,4 @@
             <h4 class="text-blue-500">{{ 'index.chart_not_available'|trans({}, 'translation') }}</h4>
         </div>
     {% endif %}
-
-
-    {% if last_transaction|length > 0 %}
-        <div class="mt-5">
-            <h2 class="text-xl font-semibold">{{ 'index.last_transaction'|trans({}, 'translation') }}</h2>
-            <table class="table-auto w-full mt-3">
-                <thead>
-                <tr>
-                    <th class="text-center px-4 py-2 border-b">Amount</th>
-                    <th class="px-4 py-2 border-b">Category</th>
-                    <th class="px-4 py-2 border-b">Wallet</th>
-                    <th class="px-4 py-2 border-b">Date</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for transaction in last_transaction %}
-                    <tr class="hover:bg-gray-100">
-                        <td class="text-center px-4 py-2">
-                            <a class="text-decoration-none {{ color(transaction.type) }} hover:underline"
-                               href="{{ path('app_transaction_show', {'id': transaction.id}) }}">
-                                {{ transaction.amount }}
-                            </a>
-                        </td>
-                        <td class="px-4 py-2">{{ transaction.category.name ?? '' }}</td>
-                        <td class="px-4 py-2">{{ transaction.wallet.name ?? transaction.wallet.number }}</td>
-                        <td class="px-4 py-2">{{ transaction.date|date('d M') }}</td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="4"
-                            class="text-center py-3">{{ 'index.not_found_records'|trans({}, 'translation') }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    {% endif %}
-
 {% endblock %}
