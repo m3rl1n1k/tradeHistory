@@ -3,7 +3,7 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-    <div class="min-h-screen flex items-center justify-center bg-gray-700">
+    <div class="min-h-screen flex items-center justify-center">
         <form method="post" class="w-full max-w-sm p-6 shadow-lg rounded-lg">
             {% if error %}
                 <div class="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-sm">
@@ -11,12 +11,12 @@
                 </div>
             {% endif %}
 
-            <h1 class="text-2xl font-bold text-center mb-6 text-gray-700">Welcome Back</h1>
+            <h1 class="text-2xl font-bold text-center mb-6 text-gray-300">Welcome Back</h1>
 
             <div class="mb-4">
                 <label for="inputEmail" class="block text-sm font-medium text-gray-300">Email</label>
                 <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
-                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-600"
+                       class="text-gray-200 mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-600"
                        autocomplete="email" required autofocus placeholder="Enter your email">
             </div>
 
@@ -24,7 +24,7 @@
                 <label for="inputPassword" class="block text-sm font-medium text-gray-300">Password</label>
                 <div class="relative">
                     <input type="password" name="password" id="inputPassword"
-                           class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 pr-10 text-gray-600"
+                           class="text-gray-200 mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 pr-10 text-gray-600"
                            autocomplete="current-password" required placeholder="Enter your password">
                     <button type="button" id="togglePassword"
                             class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500">
@@ -48,7 +48,9 @@
             </div>
         </form>
     </div>
+{% endblock %}
 
+{% block javascripts %}
     <script>
         document.getElementById("togglePassword").addEventListener("click", function () {
             const passwordField = document.getElementById("inputPassword");
