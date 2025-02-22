@@ -7,19 +7,9 @@
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
-
-###> phpunit/phpunit ###
-/phpunit.xml
-.phpunit.result.cache
-###< phpunit/phpunit ###
-
 ###> symfony/framework-bundle ###
 /.env.install
 ###< symfony/framework-bundle ###
-
-
-###> symfony/phpunit-bridge ###
-###< symfony/phpunit-bridge ###
 .idea
 /logs/
 /docker/
