@@ -16,8 +16,7 @@ class ChartService
     private array $transactions;
     private ?string $withoutCategory = null;
 
-    public function __construct(protected ChartBuilderInterface $chartBuilder,
-                                protected TransactionRepository $transactionRepository,
+    public function __construct(protected TransactionRepository $transactionRepository,
                                 protected DateService           $dateService,
                                 protected SettingService        $userSettings
     )
@@ -25,46 +24,21 @@ class ChartService
         $this->transactions = $this->transactionRepository->getTransactionForCurrentMonth();
     }
 
-    public function dashboardChart(): Chart
+    public function dashboardChart(): array
     {
-        $chart = $this->create(Chart::TYPE_DOUGHNUT);
         $data = $this->datasetDashboard(TransactionTypeEnum::Expense->value);
         $dataset = $data['dataset'];
         $colors = $data['colors'];
         $labels = $this->getCategoriesList();
-        $chart->setData([
+        return [
             'labels' => $labels,
             'datasets' => [
-                [
                     'data' => $dataset,
                     'backgroundColor' => $colors,
                     'borderWidth' => 1,
-                ],
             ],
-        ]);
-
-// Set the chart options
-        $chart->setOptions([
-            'plugins' => [
-                'legend' => [
-                    'display' => false,
-                ],
-                'title' => [
-                    'display' => true,
-                    'text' => "Expense by month: {$this->totalExpense()}",
-                    'font' => [
-                        'size' => 20
-                    ],
-                ]
-            ],
-        ]);
-
-        return $chart;
-    }
-
-    protected function create(string $type = Chart::TYPE_BAR): Chart
-    {
-        return $this->chartBuilder->createChart($type);
+            'expense' => $this->totalExpense()
+        ];
     }
 
     protected function datasetDashboard(int $type): array
