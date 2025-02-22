@@ -38,8 +38,8 @@ function resolution_condition() {
         }
         if (header != null) {
             header.classList.add('justify-center')
+            header.classList.remove('justify-between')
         }
-        header.classList.remove('justify-between')
     }
 
 }
