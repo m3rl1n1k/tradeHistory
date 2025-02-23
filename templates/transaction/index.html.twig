@@ -3,13 +3,11 @@
 {% block title %}Transactions{% endblock %}
 
 {% block body %}
-    <div class="my-3">
-        {{ include('component/_link_succes.html.twig', {'href': path('app_transaction_new') }) }}
-    </div>
+
 
     <div class="overflow-x-auto">
         <table class="min-w-full table-auto">
-            <thead class="border-b bg-gray-100">
+            <thead class="border-b dark:bg-gray-100">
             <tr>
                 <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Amount</th>
                 <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Category</th>
@@ -18,8 +16,8 @@
             </tr>
             </thead>
             <tbody>
-            {% for transaction in pagerfanta.currentPageResults %}
-                <tr class="custom-row"
+            {% for transaction in pager.currentPageResults %}
+                <tr class="bg-gray-500 custom-row hover:bg-gray-400 dark:bg-gray-200 "
                         {% if app.user.setting.showColorInTransactionList %}
                     style="--tw-table-bg: {{ transaction.Category.color|default('') }};"
                         {% endif %}>
@@ -40,10 +38,39 @@
             {% endfor %}
             </tbody>
         </table>
-
         <div class="mt-4">
-            <div class="pagerfanta">
-                {{ pagerfanta(pagerfanta, 'twitter_bootstrap5') }}
+            <div class="pager">
+                <div class="mt-6">
+                    <nav aria-label="Page navigation" class="flex justify-center">
+                        <ul class="flex list-style-none">
+                            {# Previous Page #}
+                            <li class="page-item {{ pager.currentPage == 1 ? 'disabled' : '' }}">
+                                <a class="page-link px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 rounded-l-md border border-gray-300 dark:border-gray-600"
+                                   href="{{ path('app_transaction_index', app.request.query.all|merge({'page': pager.currentPage - 1})) }}">
+                                    &laquo; Prev
+                                </a>
+                            </li>
+
+                            {# Page Numbers #}
+                            {% for page in 1..pager.nbPages %}
+                                <li class="page-item {{ page == pager.currentPage ? 'bg-blue-500 text-white' : '' }}">
+                                    <a class="page-link px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 rounded-md border border-gray-300 dark:border-gray-600"
+                                       href="{{ path('app_transaction_index', app.request.query.all|merge({'page': page})) }}">
+                                        {{ page }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+
+                            {# Next Page #}
+                            <li class="page-item {{ pager.currentPage == pager.nbPages ? 'disabled' : '' }}">
+                                <a class="page-link px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 rounded-r-md border border-gray-300 dark:border-gray-600"
+                                   href="{{ path('app_transaction_index', app.request.query.all|merge({'page': pager.currentPage + 1})) }}">
+                                    Next &raquo;
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
         </div>
     </div>

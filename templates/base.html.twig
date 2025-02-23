@@ -1,18 +1,22 @@
 <!doctype html>
-<html class="bg-gray-100" data-theme="light" lang="en">
+<html class="dark" lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>{% block title %}{% endblock %}</title>
     <link href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>"
           rel="icon">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('assets/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/app.tailwind.css') }}">
     {% block stylesheets %}
     {% endblock %}
-
+    <style>
+        .fade-out {
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+    </style>
 </head>
-<body class="dark:bg-gray-800 bg-gray-300 min-h-screen">
+<body class="dark:bg-gray-800 bg-gray-300 min-h-scree">
 <header class="flex justify-between items-center p-4 bg-white dark:bg-gray-800 shadow-md">
     <div class="text-xl font-semibold dark:text-white" id="title">{{ 'index.title'|trans({}, 'translation') }}</div>
     <div class="flex items-center space-x-4 max-w-full">
@@ -24,7 +28,7 @@
                             type="button">x
                     </button>
                     <input aria-label="Search"
-                           class="w-full focus:rounded-none px-4 py-2 border-t border-b border-gray-400 relative text-gray-700 border border-gray-300 dark:text-gray-300"
+                           class="w-full focus:rounded-none px-4 py-2 border-t border-b border-gray-400 relative text-gray-700 border dark:text-gray-300"
                            id="search-input"
                            name="search"
                            placeholder="Search"
@@ -45,11 +49,8 @@
                     type="button">Search
             </button>
         </form>
-        <!--        <button class="p-2 bg-gray-200 rounded-lg dark:bg-gray-700" id="theme-toggle">-->
-        <!--            <i class="fas fa-moon"></i>-->
-        <!--        </button>-->
     </div>
-    <a class="bg-blue-500 text-white p-2 rounded-lg hidden md:block" href="{{ path('app_logout') }}">Вийти</a>
+    <a class="bg-blue-500 text-white p-2 rounded-lg hidden md:block" href="{{ path('app_logout') }}">{{ 'sing_out'|trans({}, 'menu') }}</a>
     <button class="text-gray-700 dark:text-gray-300 sm:block md:hidden" style="width: 1rem; height: auto" id="menu-btn"
             type="button">
         <svg class="size-6" fill="none" id="open-menu" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
@@ -115,11 +116,12 @@
     </nav>
     <main class="flex-1 p-4">
         {{ include('component/_flash.html.twig') }}
-        {% block body %}
-        {% endblock body %}
+        {% block body %}{% endblock body %}
     </main>
 </div>
-
+{#<div class="bg-white dark:bg-gray-600 p-4">#}
+{#    Це блок, фон якого має змінюватися в темній темі#}
+{#</div>#}
 <script>
     document.querySelector('form').addEventListener('submit', function () {
         document.querySelector('button#search-button').disabled = true;
@@ -128,6 +130,14 @@
 <script src="{{ asset('assets/js/menu.js') }}"></script>
 <script src="{{ asset('assets/js/search.js') }}"></script>
 <script src="{{ asset('assets/js/toggle-theme.js') }}"></script>
+<script>
+    function fadeOutAndRemove(element) {
+        element.classList.add("fade-out");
+        setTimeout(() => {
+            element.remove();
+        }, 1000); // Чекаємо 3 секунди перед видаленням
+    }
+</script>
 {% block javascripts %}{% endblock %}
 </body>
 </html>
