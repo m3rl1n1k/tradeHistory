@@ -16,6 +16,7 @@ const loader = document.querySelector('#loader')
 open_btn.addEventListener('click', function () {
     main.classList.toggle('hidden')
     toggle_search_form()
+    resultBlock.classList.toggle('hidden')
 })
 //close form
 close_btn.addEventListener('click', function () {
