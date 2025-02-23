@@ -74,7 +74,7 @@ function connectToContainer() {
     exit 1
   fi
   echo "Підключення до контейнера '$container' під користувачем '$user'..."
-  docker compose --env-file .env.prod exec -u "$user" -it "$container" /bin/bash
+  docker compose --env-file .env.local exec -u "$user" -it "$container" /bin/sh
 }
 
 function build() {

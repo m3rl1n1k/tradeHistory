@@ -39,3 +39,10 @@ yarn-error.log
 #/public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+/bin/tailwindcss-linux-x64
+/public/assets/app.tailwind.css
+/composer.phar
+
+###> phpstan/phpstan ###
+phpstan.neon
+###< phpstan/phpstan ###

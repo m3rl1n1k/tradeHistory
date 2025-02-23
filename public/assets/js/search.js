@@ -20,15 +20,34 @@ close_btn.addEventListener('click', function () {
         search_group.classList.toggle('fade')
     }, 300)
     toggle_search_form()
-    header.classList.remove('justify-center')
-    header.classList.add('justify-between')
+    if (header != null){
+        header.classList.remove('justify-center')
+        header.classList.add('justify-between')
+    }
+
 })
 
-search_btn.addEventListener('submit', function (event) {
+search_btn.addEventListener('click', function (event) {
     event.preventDefault()
     search()
 });
+function search() {
+    let query = document.getElementById('search-input').value;
+    let resultBlock = document.getElementById('search-wrap');
+    let searchResult = document.getElementById('search-result');
 
+    if (!query.trim()) return; // Запобігаємо запитам із пустим рядком
+
+    resultBlock.classList.remove('hidden');
+    // document.body.classList.add('overflow-hidden');
+
+    fetch('/search?s=' + encodeURIComponent(query)) // Використовуємо відносний шлях
+        .then(response => response.text())
+        .then(html => {
+            searchResult.innerHTML = html;
+        })
+        .catch(error => console.error('Error:', error));
+}
 
 function resolution_condition() {
     if (window.innerWidth <= 767) {
@@ -51,23 +70,4 @@ function toggle_search_form() {
     open_btn.classList.toggle('hidden')
     btn_menu.classList.toggle('hidden')
     resolution_condition()
-}
-
-
-function search() {
-    let query = document.getElementById('search-input').value;
-    let resultBlock = document.getElementById('search-wrap');
-    let searchResult = document.getElementById('search-result');
-
-    if (!query.trim()) return; // Запобігаємо запитам із пустим рядком
-
-    resultBlock.classList.remove('hidden');
-    // document.body.classList.add('overflow-hidden');
-
-    fetch('/search?s=' + encodeURIComponent(query)) // Використовуємо відносний шлях
-        .then(response => response.text())
-        .then(html => {
-            searchResult.innerHTML = html;
-        })
-        .catch(error => console.error('Error:', error));
 }

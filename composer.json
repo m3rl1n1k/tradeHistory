@@ -42,7 +42,6 @@
     "symfony/string": "7.2.x",
     "symfony/translation": "7.2.x",
     "symfony/twig-bundle": "7.2.x",
-    "symfony/ux-chartjs": "^2.22",
     "symfony/validator": "7.2.x",
     "symfony/web-link": "7.2.x",
     "symfony/yaml": "7.2.x",
@@ -92,5 +91,19 @@
       "allow-contrib": false,
       "require": "7.2.x"
     }
-  }
+  },
+  "require-dev": {
+    "dama/doctrine-test-bundle": "^8.0.2",
+    "doctrine/doctrine-fixtures-bundle": "^3.5",
+    "phpstan/phpstan": "^2.0",
+    "phpstan/phpstan-doctrine": "^2.0",
+    "phpstan/phpstan-symfony": "^2.0",
+    "symfony/browser-kit": "^7",
+    "symfony/css-selector": "^7",
+    "symfony/debug-bundle": "^7",
+    "symfony/maker-bundle": "^1.36",
+    "symfony/phpunit-bridge": "^7",
+    "symfony/stopwatch": "^7",
+    "symfony/web-profiler-bundle": "^7"
+    }
 }
