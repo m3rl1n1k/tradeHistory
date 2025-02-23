@@ -34,14 +34,11 @@
                            placeholder="Search"
                            required
                            type="text">
+                    <div class="hidden loader border-4 border-gray-500 dark:border-gray-300" id="loader"></div>
                     <button class="px-4 border bg-gray-900 text-gray-400 border-gray-400 rounded-r-lg text-lg"
                             id="search-btn"
                             type="submit">>
                     </button>
-                    <div class="hidden bg-white dark:bg-gray-500 absolute right-0 top-11 p-2 rounded  sm:h-full md:h-90 w-full rounded-l dark:text-gray-300"
-                         id="search-wrap">
-                        <div id="search-result"></div>
-                    </div>
                 </div>
             </div>
             <button class="bg-gray-600 text-white p-2 rounded-lg"
@@ -114,7 +111,11 @@
                    href="{{ path('app_logout') }}">{{ 'sing_out'|trans({}, 'menu') }}</a></li>
         </ul>
     </nav>
-    <main class="flex-1 p-4">
+    <div class="flex-1 p-4 z-0 fade hidden" id="search-result">
+
+    </div>
+    <main class="flex-1 p-4 z-0" id="main-block">
+
         {{ include('component/_flash.html.twig') }}
         {% block body %}{% endblock body %}
     </main>

@@ -3,52 +3,53 @@
 {% block title %}Transaction {{ transaction.amount }}{% endblock %}
 
 {% block body %}
-    <h1 class="text-2xl font-bold my-4">Transaction</h1>
+    <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg mt-6">
+        <h2 class="text-gray-900 dark:text-gray-300 text-2xl">Transaction</h2>
+        <div class="">
+            <table class="min-w-full table-auto border-collapse">
+                <tbody class="text-sm">
+                <tr class="border-b">
+                    <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">Id</th>
+                    <td class="px-4 py-2 text-gray-900 dark:text-gray-200">{{ transaction.id }}</td>
+                </tr>
+                <tr class="border-b">
+                    <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">Amount</th>
+                    <td class="px-4 py-2 text-gray-900 dark:text-gray-200">{{ transaction.amount }}</td>
+                </tr>
+                {% if transaction.Category %}
+                    <tr class="border-b">
+                        <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">Category</th>
+                        <td class="px-4 py-2 text-gray-900 dark:text-gray-200">{{ transaction.Category.name }}</td>
+                    </tr>
+                {% endif %}
+                <tr class="border-b">
+                    <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">Number</th>
+                    <td class="px-4 py-2 text-gray-900 dark:text-gray-200">{{ transaction.wallet.number }}</td>
+                </tr>
+                <tr class="border-b">
+                    <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">Type</th>
+                    <td class="px-4 py-2 text-gray-900 dark:text-gray-200">{{ type(transaction.type) }}</td>
+                </tr>
+                <tr class="border-b">
+                    <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">Date</th>
+                    <td class="px-4 py-2 text-gray-900 dark:text-gray-200">{{ transaction.date ? transaction.date|date('d M y') : '' }}</td>
+                </tr>
+                {% if transaction.description %}
+                    <tr class="border-b">
+                        <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">Description</th>
+                        <td class="px-4 py-2 text-gray-900 dark:text-gray-200">{{ transaction.description }}</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
 
-    <div class="overflow-x-auto">
-        <table class="min-w-full table-auto border-collapse">
-            <tbody class="text-sm">
-            <tr class="border-b">
-                <th class="px-4 py-2 text-left text-gray-600">Id</th>
-                <td class="px-4 py-2">{{ transaction.id }}</td>
-            </tr>
-            <tr class="border-b">
-                <th class="px-4 py-2 text-left text-gray-600">Amount</th>
-                <td class="px-4 py-2">{{ transaction.amount }}</td>
-            </tr>
-            {% if transaction.Category %}
-                <tr class="border-b">
-                    <th class="px-4 py-2 text-left text-gray-600">Category</th>
-                    <td class="px-4 py-2">{{ transaction.Category.name }}</td>
-                </tr>
-            {% endif %}
-            <tr class="border-b">
-                <th class="px-4 py-2 text-left text-gray-600">Number</th>
-                <td class="px-4 py-2">{{ transaction.wallet.number }}</td>
-            </tr>
-            <tr class="border-b">
-                <th class="px-4 py-2 text-left text-gray-600">Type</th>
-                <td class="px-4 py-2">{{ type(transaction.type) }}</td>
-            </tr>
-            <tr class="border-b">
-                <th class="px-4 py-2 text-left text-gray-600">Date</th>
-                <td class="px-4 py-2">{{ transaction.date ? transaction.date|date('d M y') : '' }}</td>
-            </tr>
-            {% if transaction.description %}
-                <tr class="border-b">
-                    <th class="px-4 py-2 text-left text-gray-600">Description</th>
-                    <td class="px-4 py-2">{{ transaction.description }}</td>
-                </tr>
-            {% endif %}
-            </tbody>
-        </table>
+        <div class="mt-4">
+            <a class="px-4 py-2 text-white bg-yellow-500 hover:bg-yellow-600 rounded-md inline-flex justify-between"
+               href="{{ path('app_transaction_edit', {'id': transaction.id}) }}">Edit</a>
+            {{ include('component/_link.html.twig', {'href': path('app_transaction_index'), 'aditional_class': 'mx-3'}) }}
+            {{ include('transaction/_delete_form.html.twig') }}
+        </div>
     </div>
 
-    <div class="mt-4">
-        {{ include('component/_link.html.twig', {'href': path('app_transaction_index'), 'aditional_class': 'mx-3'}) }}
-        {% if transaction.type is not same as 3 %}
-            <a class="btn btn-warning px-4 py-2 text-white bg-yellow-500 hover:bg-yellow-600 rounded-md" href="{{ path('app_transaction_edit', {'id': transaction.id}) }}">Edit</a>
-        {% endif %}
-        {{ include('transaction/_delete_form.html.twig') }}
-    </div>
 {% endblock %}

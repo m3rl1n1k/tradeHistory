@@ -1,36 +1,39 @@
-{{ form_start(form) }}
+{{ form_start(form, {'attr': {'class': 'space-y-6 bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg'}}) }}
 {{ include('component/_alert.html.twig') }}
+
 <div class="space-y-6">
     <div class="flex flex-col sm:flex-row sm:space-x-4">
         <div class="w-full sm:w-80">
-            <label for="{{ form.ParentCategory.vars.id }}" class="block text-gray-700 dark:text-gray-300 font-semibold mb-2 ">{{ 'Main' }}</label>
+            <label for="{{ form.ParentCategory.vars.id }}" class="block text-gray-900 dark:text-gray-300 font-semibold mb-2">{{ 'Main' }}</label>
             {{ form_widget(form.ParentCategory, {
                 'attr': {
-                    'class': 'w-full p-3 rounded-md border border-gray-300 dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                    'class': 'w-full p-3 rounded-md border border-gray-300 dark:bg-gray-800 dark:border-gray-600 text-gray-900 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                 }
             }) }}
         </div>
+
         <div class="w-full sm:w-80 inline-flex justify-between md:justify-around">
-            <div class="w-80">
-                <label for="{{ form.name.vars.id }}" class="block text-gray-700 dark:text-gray-300 font-semibold mb-2">{{ 'Name' }}</label>
+            <div class="w-full sm:w-80">
+                <label for="{{ form.name.vars.id }}" class="block text-gray-900 dark:text-gray-300 font-semibold mb-2">{{ 'Name' }}</label>
                 {{ form_widget(form.name, {
                     'attr': {
-                        'class': 'w-80 p-3 rounded-md border border-gray-300 dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                         'class': 'w-full sm:w-80 p-3 rounded-md border border-gray-300 dark:bg-gray-800 dark:border-gray-600 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent sm:max-w-full max-w-xs'
                     }
                 }) }}
             </div>
             {% if app.user.setting.coloredCategories %}
-               <div>
-                   <label for="{{ form.color.vars.id }}" class="w-20 block text-gray-700 dark:text-gray-300 font-semibold mt-4">{{ 'Color' }}</label>
-                   {{ form_widget(form.color, {
-                       'attr': {
-                           'class': 'sm:w-full w-20 h-10 rounded-md border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500'
-                       }
-                   }) }}
-               </div>
+                <div>
+                    <label for="{{ form.color.vars.id }}" class="w-20 block text-gray-900 dark:text-gray-300 font-semibold mt-4">{{ 'Color' }}</label>
+                    {{ form_widget(form.color, {
+                        'attr': {
+                            'class': 'sm:w-full w-20 h-10 rounded-md border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                        }
+                    }) }}
+                </div>
             {% endif %}
         </div>
     </div>
+
     <div class="flex space-x-4 mt-6">
         <div>
             {{ include('component/_button.html.twig') }}
@@ -40,4 +43,5 @@
         </div>
     </div>
 </div>
+
 {{ form_end(form) }}

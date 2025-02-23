@@ -3,35 +3,31 @@
 {% block title %}Wallet{% endblock %}
 
 {% block body %}
-    <h1 class="text-3xl font-semibold mb-6">Wallet</h1>
-
-    <div class="overflow-x-auto">
-        <table class="min-w-full table-auto border-collapse border border-gray-300">
-            <tbody>
-            <tr class="bg-gray-100">
-                <th class="px-4 py-2 text-left">Number</th>
-                <td class="px-4 py-2">{{ wallet.number }}</td>
+    <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg mt-6">
+    <h2 class="text-gray-900 dark:text-gray-300 text-2xl">Wallet</h2>
+    <div class="">
+        <table class="min-w-full table-auto border-collapse">
+            <tbody class="text-sm">
+            <tr class="border-b">
+                <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">Number</th>
+                <td class="px-4 py-2 text-gray-900 dark:text-gray-200">{{ wallet.number }}</td>
             </tr>
-            <tr class="border-t">
-                <th class="px-4 py-2 text-left">Name</th>
-                <td class="px-4 py-2">{{ wallet.name }}</td>
+            <tr class="border-b">
+                <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">Name</th>
+                <td class="px-4 py-2 text-gray-900 dark:text-gray-200">{{ wallet.name }}</td>
             </tr>
-            <tr class="border-t">
-                <th class="px-4 py-2 text-left">Amount</th>
-                <td class="px-4 py-2">{{ wallet.amount }}</td>
+            <tr class="border-b">
+                <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">Amount</th>
+                <td class="px-4 py-2 text-gray-900 dark:text-gray-200">{{ wallet.amount }}</td>
             </tr>
             </tbody>
         </table>
     </div>
 
     <div class="mt-4">
-        {{ include('component/_link.html.twig', {'href': path('app_wallet_index'), 'aditional_class': 'mx-3'}) }}
-    </div>
-
-    <div class="flex justify-between mt-4">
-        <a class="btn btn-warning text-white bg-yellow-500 hover:bg-yellow-400 px-4 py-2 rounded-md" href="{{ path('app_wallet_edit', {'number': wallet.number}) }}">
-            Edit
-        </a>
+        <a class="px-4 py-2 text-white bg-yellow-500 hover:bg-yellow-600 rounded-md inline-flex justify-between"
+           href="{{ path('app_wallet_edit', {'number': wallet.number}) }}">Edit</a>
+        {{ include('component/_link.html.twig', {'href': path('app_transaction_index'), 'aditional_class': 'mx-3'}) }}
         {{ include('wallet/_delete_form.html.twig') }}
     </div>
 {% endblock %}

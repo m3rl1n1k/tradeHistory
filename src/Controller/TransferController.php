@@ -27,6 +27,7 @@ final class TransferController extends AbstractController
     {
         return $this->render('transfer/index.html.twig', [
             'transfers' => $transferRepository->findBy(['user' => $this->getUser()]),
+            'pager' => null
         ]);
     }
 

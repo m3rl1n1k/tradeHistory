@@ -23,7 +23,6 @@ class SearchController extends AbstractController
 
         return $this->render('search/index.html.twig', [
             'list' => $list,
-            'count' => count($list),
         ]);
     }
 }

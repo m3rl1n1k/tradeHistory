@@ -34,7 +34,7 @@ class TransactionController extends AbstractController
     {
         $query = $transactionRepository->getUserTransactions(true);
         return $this->render('transaction/index.html.twig', [
-            'pagerfanta' => $paginate->paginate($query, $request),
+            'pager' => $paginate->paginate($query, $request),
         ]);
     }
 

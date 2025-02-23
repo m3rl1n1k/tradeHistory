@@ -9,9 +9,12 @@ const exit = document.querySelector('#exit')
 const resultBlock = document.querySelector('#search-result')
 const btn_menu = document.querySelector('#menu-btn')
 const header = document.querySelector('#header')
+const main = document.querySelector('#main-block')
+const loader = document.querySelector('#loader')
 
 //open form
 open_btn.addEventListener('click', function () {
+    main.classList.toggle('hidden')
     toggle_search_form()
 })
 //close form
@@ -20,10 +23,12 @@ close_btn.addEventListener('click', function () {
         search_group.classList.toggle('fade')
     }, 300)
     toggle_search_form()
+    main.classList.toggle('hidden')
     if (header != null){
         header.classList.remove('justify-center')
         header.classList.add('justify-between')
     }
+    resultBlock.classList.toggle('hidden')
 
 })
 
@@ -33,18 +38,27 @@ search_btn.addEventListener('click', function (event) {
 });
 function search() {
     let query = document.getElementById('search-input').value;
-    let resultBlock = document.getElementById('search-wrap');
-    let searchResult = document.getElementById('search-result');
-
     if (!query.trim()) return; // Запобігаємо запитам із пустим рядком
 
     resultBlock.classList.remove('hidden');
     // document.body.classList.add('overflow-hidden');
-
+    loader.classList.toggle('hidden')
+    if (document.documentElement.className.toString() === 'dark'){
+        loader.style.borderTopColor = "rgba(209, 213, 219)"
+        loader.style.borderRightColor = "rgba(209, 213, 219)"
+        loader.style.borderBottomColor = "rgba(209, 213, 219)"
+    }
+    else{
+        loader.style.borderTopColor = "rgba(55, 65, 81)"
+        loader.style.borderRightColor = "rgba(55, 65, 81)"
+        loader.style.borderBottomColor = "rgba(55, 65, 81)"
+    }
+    // Show the loader
     fetch('/search?s=' + encodeURIComponent(query)) // Використовуємо відносний шлях
         .then(response => response.text())
         .then(html => {
-            searchResult.innerHTML = html;
+            resultBlock.innerHTML = html;
+            loader.classList.toggle('hidden')
         })
         .catch(error => console.error('Error:', error));
 }

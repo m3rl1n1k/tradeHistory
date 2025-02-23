@@ -3,44 +3,43 @@
 {% block title %}Category{% endblock %}
 
 {% block body %}
-    {{ include('component/_icons_category.html.twig') }}
-    <h1 class="text-3xl font-bold">Category</h1>
+    <h2 class="text-gray-900 dark:text-gray-300 text-2xl">Category</h2>
     <div class="mb-5">
-        <h4 class="text-xl font-semibold">Create:</h4>
-        <div class="flex flex-col md:flex-row">
+        <h4 class="text-gray-900 dark:text-gray-300 text-xl mt-4">Create:</h4>
+        <div class="flex flex-col md:flex-row gap-4 mt-2">
             {{ include('component/_link_succes.html.twig', {
                 'href': path('app_parent_category_new'),
-                'link_label':'Main category'}) }}
+                'link_label': 'Main category'
+            }) }}
             {{ include('component/_link_succes.html.twig', {
                 'href': path('app_category_new'),
-                'link_label': 'Sub category',
-                'aditional_class':'mx-4'
+                'link_label': 'Sub category'
             }) }}
         </div>
     </div>
-    <div class="mt-10">
+
+    <div class="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
         {% for categories in parent_categories %}
             {% if categories is not empty %}
-                <div class="lg:w-1/2 md:w-full my-3">
-                    <div class="bg-white shadow-lg rounded-lg">
-                        <div class="bg-[{{ contrast(categories['parentCategory'].color) }}] p-4 rounded-t-lg text-white font-semibold">
-                            {{ categories['parentCategory'].name }}
-                            {{ include('parent_category/_delete_form.html.twig') }}
-                        </div>
-                        <ul class="list-none">
-                            {% for category in categories['categories'] %}
-                                <li class="px-4 py-2 flex justify-between items-center border-b {{ contrast(category.color) }}">
-                                    <svg class="bi text-gray-500 mr-2" width="1em" height="1em">
-                                        <use xlink:href="#arrow-return-right"></use>
-                                    </svg>
-                                    {{ category.name }}
-                                    <span class="ml-2">{{ include('category/_delete_form.html.twig') }}</span>
-                                    <a class="btn btn-sm bg-yellow-500 text-white ml-2 py-1 px-3 rounded"
-                                       href="{{ path('app_category_edit', {'id': category.id}) }}">Edit</a>
-                                </li>
-                            {% endfor %}
-                        </ul>
+                <div class="bg-white dark:bg-gray-700 shadow-lg rounded-lg overflow-hidden">
+                    <div class="p-4 bg-[{{ contrast(categories['parentCategory'].color) }}] dark:text-white text-gray-900 font-semibold flex justify-between items-center">
+                        <span>{{ categories['parentCategory'].name }}</span>
+                        {{ include('parent_category/_delete_form.html.twig') }}
                     </div>
+                    <ul class="divide-y divide-gray-300 dark:divide-gray-600">
+                        {% for category in categories['categories'] %}
+                            <li class="flex justify-between items-center px-4 py-2 dark:text-gray-200">
+                                <div class="flex items-center">
+                                    {{ category.name }}
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <a class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-medium py-1 px-3 rounded-md"
+                                       href="{{ path('app_category_edit', {'id': category.id}) }}">Edit</a>
+                                    {{ include('category/_delete_form.html.twig') }}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             {% endif %}
         {% endfor %}

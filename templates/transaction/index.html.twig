@@ -3,75 +3,74 @@
 {% block title %}Transactions{% endblock %}
 
 {% block body %}
-
-
-    <div class="overflow-x-auto">
-        <table class="min-w-full table-auto">
-            <thead class="border-b dark:bg-gray-100">
-            <tr>
-                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Amount</th>
-                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Category</th>
-                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Number</th>
-                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Date</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for transaction in pager.currentPageResults %}
-                <tr class="bg-gray-500 custom-row hover:bg-gray-400 dark:bg-gray-200 "
-                        {% if app.user.setting.showColorInTransactionList %}
-                    style="--tw-table-bg: {{ transaction.Category.color|default('') }};"
-                        {% endif %}>
-                    <td class="px-4 py-2 text-center">
-                        <a class="btn {{ color(transaction.type) }} text-decoration-none"
-                           href="{{ path('app_transaction_show', {'id': transaction.id}) }}">
-                            {{ transaction.amount }}
-                        </a>
-                    </td>
-                    <td class="px-4 py-2">{{ transaction.Category ? transaction.Category.name : '' }}</td>
-                    <td class="px-4 py-2">{{ transaction.wallet.name ?? transaction.wallet.number }}</td>
-                    <td class="px-4 py-2">{{ transaction.date ? transaction.date|date('d M') : '' }}</td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="4" class="px-4 py-2 text-center text-gray-500">No records found</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        <div class="mt-4">
-            <div class="pager">
-                <div class="mt-6">
-                    <nav aria-label="Page navigation" class="flex justify-center">
-                        <ul class="flex list-style-none">
-                            {# Previous Page #}
-                            <li class="page-item {{ pager.currentPage == 1 ? 'disabled' : '' }}">
-                                <a class="page-link px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 rounded-l-md border border-gray-300 dark:border-gray-600"
-                                   href="{{ path('app_transaction_index', app.request.query.all|merge({'page': pager.currentPage - 1})) }}">
-                                    &laquo; Prev
-                                </a>
-                            </li>
-
-                            {# Page Numbers #}
-                            {% for page in 1..pager.nbPages %}
-                                <li class="page-item {{ page == pager.currentPage ? 'bg-blue-500 text-white' : '' }}">
-                                    <a class="page-link px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 rounded-md border border-gray-300 dark:border-gray-600"
-                                       href="{{ path('app_transaction_index', app.request.query.all|merge({'page': page})) }}">
-                                        {{ page }}
-                                    </a>
-                                </li>
-                            {% endfor %}
-
-                            {# Next Page #}
-                            <li class="page-item {{ pager.currentPage == pager.nbPages ? 'disabled' : '' }}">
-                                <a class="page-link px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 rounded-r-md border border-gray-300 dark:border-gray-600"
-                                   href="{{ path('app_transaction_index', app.request.query.all|merge({'page': pager.currentPage + 1})) }}">
-                                    Next &raquo;
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
+    <h2 class="text-gray-900 dark:text-gray-300 text-2xl">Transaction</h2>
+    <div class="mb-5">
+        <div class="flex flex-col md:flex-row gap-4 mt-2">
+            {{ include('component/_link_succes.html.twig', {
+                'href': path('app_transaction_new'),
+                'link_label': 'Create'
+            }) }}
         </div>
     </div>
+
+    <table class="min-w-full table-auto border-collapse rounded-lg shadow-md overflow-hidden dark:bg-gray-600">
+        <thead class="border-b bg-gray-100 dark:bg-gray-700">
+        <tr>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Amount</th>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Category</th>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Number</th>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for transaction in pager.currentPageResults %}
+            <tr class="hover:bg-gray-200 hover:text-gray-600 transition-colors text-gray-900 dark:hover:bg-gray-400 dark:text-gray-300"
+                    {% if app.user.setting.showColorInTransactionList %}
+                style="background-color: {{ transaction.Category.color|default('transparent') }};"
+                    {% endif %}>
+                <td class="px-4 py-2 text-center font-medium">
+                    <a class="hover:underline p-2 text-blue-600 dark:text-blue-400"
+                       href="{{ path('app_transaction_show', {'id': transaction.id}) }}">
+                        {{ transaction.amount }} <span class="text-xs">{{ transaction.wallet.currency }}</span>
+                    </a>
+                </td>
+                <td class="px-4 py-2">{{ transaction.Category ? transaction.Category.name : '' }}</td>
+                <td class="px-4 py-2">{{ transaction.wallet.name ?? transaction.wallet.number }}</td>
+                <td class="px-4 py-2">{{ transaction.date ? transaction.date|date('d M') : '' }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4" class="px-4 py-2 text-center text-gray-500 dark:text-gray-400">No records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+        <div class="mt-6 flex justify-center">
+            {% if pager.haveToPaginate %}
+                <nav class="flex space-x-2">
+                    {% if pager.currentPage > 1 %}
+                        <a href="{{ path('app_transaction_index', app.request.query.all|merge({'page': pager.currentPage - 1})) }}"
+                           class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-500">
+                            &laquo; Prev
+                        </a>
+                    {% endif %}
+
+                    {% for page in 1..pager.nbPages %}
+                        <a href="{{ path('app_transaction_index', app.request.query.all|merge({'page': page})) }}"
+                           class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 {{ page == pager.currentPage ? 'bg-blue-500 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-500' }}">
+                            {{ page }}
+                        </a>
+                    {% endfor %}
+
+                    {% if pager.currentPage < pager.nbPages %}
+                        <a href="{{ path('app_transaction_index', app.request.query.all|merge({'page': pager.currentPage + 1})) }}"
+                           class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-500">
+                            Next &raquo;
+                        </a>
+                    {% endif %}
+                </nav>
+            {% endif %}
+        </div>
 {% endblock %}

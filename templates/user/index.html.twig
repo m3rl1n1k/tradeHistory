@@ -3,7 +3,7 @@
 {% block title %}User{% endblock %}
 
 {% block body %}
-    {{ form_start(form_user, {'attr': {'class': 'editUser'}}) }}
+    {{ form_start(form_user, {'attr': {'class': 'space-y-6 bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg'}}) }}
 
     {% if form_errors(form_user) %}
         <div class="alert alert-danger fixed top-10 left-1/2 transform -translate-x-1/2 z-30 w-96 bg-red-500 text-white p-4 rounded-lg shadow-md">
@@ -13,22 +13,36 @@
 
     <div class="space-y-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="mb-4">
-                {{ form_label(form_user.email, 'Email address', {'label_attr': {'class': 'text-lg font-semibold text-gray-700'}}) }}
-                {{ form_widget(form_user.email, {'attr': {'class': 'w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500', 'disabled': 'disabled'}}) }}
+            <div class="w-full sm:w-80">
+                <label for="{{ form_user.email.vars.id }}" class="block text-gray-900 dark:text-gray-300 font-semibold mb-2">{{ 'Email address' }}</label>
+                {{ form_widget(form_user.email, {
+                    'attr': {
+                        'class': 'w-full p-3 rounded-md border border-gray-300 dark:bg-gray-800 dark:border-gray-600 text-gray-900 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+                        'disabled': 'disabled'
+                    }
+                }) }}
             </div>
-            <div class="mb-4">
-                {{ form_label(form_user.currency, 'Select your currency', {'label_attr': {'class': 'text-lg font-semibold text-gray-700'}}) }}
-                {{ form_widget(form_user.currency, {'attr': {'class': 'w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500', 'id': 'currency'}}) }}
+            <div class="w-full sm:w-80">
+                <label for="{{ form_user.currency.vars.id }}" class="block text-gray-900 dark:text-gray-300 font-semibold mb-2">{{ 'Select your currency' }}</label>
+                {{ form_widget(form_user.currency, {
+                    'attr': {
+                        'class': 'w-full p-3 rounded-md border border-gray-300 dark:bg-gray-800 dark:border-gray-600 text-gray-900 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                    }
+                }) }}
             </div>
         </div>
 
-        <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6" id="user_edit">
-            Edit
-        </button>
+        <div class="flex space-x-4 mt-6">
+            <div class="w-full sm:w-auto">
+                <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6">
+                    {{ 'Save' }}
+                </button>
+            </div>
+        </div>
     </div>
 
     {{ form_end(form_user) }}
+
 
     {% block javascripts %}
         {{ encore_entry_script_tags('user') }}
