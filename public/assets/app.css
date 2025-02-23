@@ -1,4 +1,9 @@
 @import "tailwindcss";
+
+.custom-size{
+    min-height: 20rem;
+    min-width:100%;
+}
 #search-group, #search-result {
     /* Initially hidden */
     opacity: 0;
@@ -38,4 +43,26 @@
 .mobile-version {
     position: absolute !important;
     width: 100% !important;
+}
+
+.loader {
+    position: absolute;
+    right: 3rem;
+    top: 0.3rem;
+    border-radius: 50%;
+    border: 4px solid; /* Set border width */
+    height: 2rem;
+    width: 2rem;
+    border-left-color: transparent; /* Transparent left border for spinner effect */
+    animation: spin89345 1s ease-in-out infinite;
+}
+
+@keyframes spin89345 {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }

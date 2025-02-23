@@ -1,33 +1,33 @@
 {% block search_results %}
-    <div class="mb-4">
-        <span class="text-lg font-semibold">Count: {{ count }}</span>
-    </div>
     <div>
-        <table class="min-w-full table-auto">
-            <thead>
-            <tr class="bg-gray-100 border-b">
-                <th class="px-4 py-2 text-left">Amount</th>
-                <th class="px-4 py-2 text-left">Category</th>
-                <th class="px-4 py-2 text-left">Number</th>
-                <th class="px-4 py-2 text-left">Date</th>
+        <table class="min-w-full table-auto border-collapse rounded-lg shadow-md overflow-hidden dark:bg-gray-600">
+            <thead class="border-b bg-gray-100 dark:bg-gray-700">
+            <tr>
+                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Amount</th>
+                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Category</th>
+                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Number</th>
+                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Date</th>
             </tr>
             </thead>
             <tbody>
             {% for transaction in list %}
-                <tr class="hover:bg-gray-50 border-b">
-                    <td class="px-4 py-2 text-center">
-                        <a class="btn {{ color(transaction.type) }} text-decoration-none"
+                <tr class="hover:bg-gray-200 hover:text-gray-600 transition-colors text-gray-900 dark:hover:bg-gray-400 dark:text-gray-300"
+                        {% if app.user.setting.showColorInTransactionList %}
+                    style="background-color: {{ transaction.Category.color|default('transparent') }};"
+                        {% endif %}>
+                    <td class="px-4 py-2 text-center font-medium">
+                        <a class="hover:underline p-2 text-blue-600 dark:text-blue-400"
                            href="{{ path('app_transaction_show', {'id': transaction.id}) }}">
-                            {{ transaction.amount }}
+                            {{ transaction.amount }} <span class="text-xs">{{ transaction.wallet.currency }}</span>
                         </a>
                     </td>
                     <td class="px-4 py-2">{{ transaction.Category ? transaction.Category.name : '' }}</td>
-                    <td class="px-4 py-2">{{ transaction.wallet.number ?? transaction.wallet.name }}</td>
+                    <td class="px-4 py-2">{{ transaction.wallet.name ?? transaction.wallet.number }}</td>
                     <td class="px-4 py-2">{{ transaction.date ? transaction.date|date('d M') : '' }}</td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="4" class="px-4 py-2 text-center text-gray-500">No records found</td>
+                    <td colspan="4" class="px-4 py-2 text-center text-gray-500 dark:text-gray-400">No records found</td>
                 </tr>
             {% endfor %}
             </tbody>

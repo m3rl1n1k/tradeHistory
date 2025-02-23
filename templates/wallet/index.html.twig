@@ -3,38 +3,41 @@
 {% block title %}Wallet{% endblock %}
 
 {% block body %}
-
-    <div class="my-3">
-        {{ include('component/_link_succes.html.twig', {'href': path('app_wallet_new') }) }}
+    <h2 class="text-gray-900 dark:text-gray-300 text-2xl">Wallet</h2>
+    <div class="mb-5">
+        <div class="flex flex-col md:flex-row gap-4 mt-2">
+            {{ include('component/_link_succes.html.twig', {
+                'href': path('app_wallet_new'),
+                'link_label': 'Create'
+            }) }}
+        </div>
     </div>
 
-    <div class="overflow-x-auto">
-        <table class="min-w-full table-auto border-collapse border border-gray-300">
-            <thead>
-            <tr class="bg-gray-100">
-                <th class="px-4 py-2 text-left">Number</th>
-                <th class="px-4 py-2 text-left">Amount</th>
-                <th class="px-4 py-2 text-left">Name</th>
+    <table class="min-w-full table-auto border-collapse rounded-lg shadow-md overflow-hidden dark:bg-gray-600">
+        <thead class="border-b bg-gray-100 dark:bg-gray-700">
+        <tr class="hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-gray-900 dark:text-gray-300 hover:text-gray-600">
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Number</th>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Name</th>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for wallet in wallets %}
+            <tr class="hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-gray-900 dark:text-gray-300 hover:text-gray-600 sm:">
+                <td class="px-4 py-2 text-center font-medium">
+                    <a class="hover:underline p-2 text-blue-600 dark:text-blue-400" href="{{ path('app_wallet_show',{'number': wallet.number}) }}">
+                        {{ wallet.number }}
+                    </a>
+                </td>
+                <td class="px-4 py-2">{{ wallet.name ?? '---' }}</td>
+                <td class="px-4 py-2">{{ wallet.amount }}</td>
             </tr>
-            </thead>
-            <tbody>
-            {% for wallet in wallets %}
-                <tr class="border-t hover:bg-gray-50">
-                    <td class="px-4 py-2">
-                        <a class="text-blue-500 hover:underline" href="{{ path('app_wallet_show',{'number': wallet.number}) }}">
-                            {{ wallet.number }}
-                        </a>
-                    </td>
-                    <td class="px-4 py-2">{{ wallet.amount }}</td>
-                    <td class="px-4 py-2">{{ wallet.name ?? '---' }}</td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="3" class="px-4 py-2 text-center text-gray-500">No records found</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+        {% else %}
+            <tr>
+                <td colspan="4" class="px-4 py-2 text-center text-gray-500 dark:text-gray-400">No records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
 {% endblock %}

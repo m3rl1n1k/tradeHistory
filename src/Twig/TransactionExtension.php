@@ -21,10 +21,10 @@ class TransactionExtension extends AbstractExtension
     public function color(int $type): string
     {
         return match ($type) {
-            TransactionTypeEnum::Profit->value => "btn-success",
-            TransactionTypeEnum::Expense->value => "btn-danger",
-            TransactionTypeEnum::Transfer->value => "btn-info",
-            default => "btn-outline-info"
+            TransactionTypeEnum::Profit->value => 'style="background-color:rgba(52,211,153)"',
+            TransactionTypeEnum::Expense->value => 'style="background-color:rgba(248,113,13)"',
+            TransactionTypeEnum::Transfer->value => 'style="background-color:rgba(96,165,250)"',
+            default => 'style="background-color:rgba(156,163,175)"',
         };
     }
 

@@ -3,33 +3,67 @@
 {% block title %}Transfers{% endblock %}
 
 {% block body %}
-    <h1 class="text-3xl font-semibold mb-5">Transfers</h1>
-    <div class="mb-4">
-        {{ include('component/_link_succes.html.twig', {'href': path('app_transfer_new') }) }}
+    <h2 class="text-gray-900 dark:text-gray-300 text-2xl">Transfer</h2>
+    <div class="mb-5">
+        <div class="flex flex-col md:flex-row gap-4 mt-2">
+            {{ include('component/_link_succes.html.twig', {
+                'href': path('app_transfer_new'),
+                'link_label': 'Create'
+            }) }}
+        </div>
     </div>
 
-    <div class="overflow-x-auto">
-        <table class="min-w-full table-auto">
-            <thead class="bg-gray-100">
-            <tr>
-                <th class="px-4 py-2 text-left">Amount</th>
-                <th class="px-4 py-2 text-left">From</th>
-                <th class="px-4 py-2 text-left">To</th>
+    <table class="min-w-full table-auto border-collapse rounded-lg shadow-md overflow-hidden dark:bg-gray-600">
+        <thead class="border-b bg-gray-100 dark:bg-gray-700">
+        <tr>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Amount</th>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">From</th>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">To</th>
+            {#            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Date</th> #}
+        </tr>
+        </thead>
+        <tbody>
+        {% for transfer in transfers %}
+            <tr class="hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-gray-900 dark:text-gray-300 hover:text-gray-600 sm:">
+                <td class="px-4 py-2 text-center font-medium">
+                    <{{ transfer.amount }} {{ transfer.walletOut.currency }}
+                </td>
+                <td class="px-4 py-2">{{ transfer.walletOut.name ?? transfer.walletOut.number }}</td>
+                <td class="px-4 py-2">{{ transfer.walletIn.name ?? transfer.walletIn.number }}</td>
             </tr>
-            </thead>
-            <tbody>
-            {% for transfer in transfers %}
-                <tr class="border-t hover:bg-gray-50">
-                    <td class="px-4 py-2">{{ transfer.amount }} {{ transfer.walletOut.currency }}</td>
-                    <td class="px-4 py-2">{{ transfer.walletOut.name ?? transfer.walletOut.number }}</td>
-                    <td class="px-4 py-2">{{ transfer.walletIn.name ?? transfer.walletIn.number }}</td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="3" class="px-4 py-2 text-center text-gray-500">No records found</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+        {% else %}
+            <tr>
+                <td colspan="4" class="px-4 py-2 text-center text-gray-500 dark:text-gray-400">No records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% if pager is not null %}
+        <div class="mt-6 flex justify-center">
+            {% if pager.haveToPaginate %}
+                <nav class="flex space-x-2">
+                    {% if pager.currentPage > 1 %}
+                        <a href="{{ path('app_transaction_index', app.request.query.all|merge({'page': pager.currentPage - 1})) }}"
+                           class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-500">
+                            &laquo; Prev
+                        </a>
+                    {% endif %}
+
+                    {% for page in 1..pager.nbPages %}
+                        <a href="{{ path('app_transaction_index', app.request.query.all|merge({'page': page})) }}"
+                           class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 {{ page == pager.currentPage ? 'bg-blue-500 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-500' }}">
+                            {{ page }}
+                        </a>
+                    {% endfor %}
+
+                    {% if pager.currentPage < pager.nbPages %}
+                        <a href="{{ path('app_transaction_index', app.request.query.all|merge({'page': pager.currentPage + 1})) }}"
+                           class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-500">
+                            Next &raquo;
+                        </a>
+                    {% endif %}
+                </nav>
+            {% endif %}
+        </div>
+    {% endif %}
 {% endblock %}
