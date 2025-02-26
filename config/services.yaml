@@ -27,7 +27,6 @@ services:
 
   App\Service\Interfaces\CrypticInterface:
     alias: App\Service\CryptService
-    public: true
 
   App\Service\CryptService:
     arguments:
