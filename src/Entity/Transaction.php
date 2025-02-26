@@ -18,8 +18,8 @@ class Transaction
     #[ORM\Column(type: "integer")]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?float $amount = null;
+    #[ORM\Column(type: 'encrypted_string')]
+    private ?string $amount = null;
 
     #[ORM\Column]
     private ?int $type = null;

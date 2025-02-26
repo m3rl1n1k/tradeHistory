@@ -20,11 +20,11 @@ class Transfer
     #[ORM\JoinColumn(nullable: false)]
     private ?Wallet $walletIn = null;
 
-    #[ORM\Column]
-    private ?float $amount = null;
+    #[ORM\Column(type: 'encrypted_string')]
+    private ?string $amount = null;
 
     #[ORM\ManyToOne(inversedBy: 'transfers')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?User $user = null;
 
     public function getId(): ?int

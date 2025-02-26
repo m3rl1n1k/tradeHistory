@@ -23,3 +23,15 @@ services:
 
   # add more service definitions when explicit configuration is needed
   # please note that last definitions always *replace* previous ones
+
+
+  App\Service\Interfaces\CrypticInterface:
+    alias: App\Service\CryptService
+    public: true
+
+  App\Service\CryptService:
+    arguments:
+      $key: '%env(ENCRYPTION_KEY)%'
+
+  App\Doctrine\Type\EncryptedStringType:
+    class: App\Doctrine\Type\EncryptedStringType

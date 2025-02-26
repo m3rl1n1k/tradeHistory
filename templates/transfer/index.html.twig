@@ -24,9 +24,9 @@
         </thead>
         <tbody>
         {% for transfer in transfers %}
-            <tr class="hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-gray-900 dark:text-gray-300 hover:text-gray-600 sm:">
+            <tr class="hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-gray-900 dark:text-gray-300 hover:text-gray-300">
                 <td class="px-4 py-2 text-center font-medium">
-                    <{{ transfer.amount }} {{ transfer.walletOut.currency }}
+                    {{ transfer.amount }} {{ transfer.walletOut.currency }}
                 </td>
                 <td class="px-4 py-2">{{ transfer.walletOut.name ?? transfer.walletOut.number }}</td>
                 <td class="px-4 py-2">{{ transfer.walletIn.name ?? transfer.walletIn.number }}</td>

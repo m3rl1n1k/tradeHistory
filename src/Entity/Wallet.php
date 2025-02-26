@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\WalletRepository;
+use App\Service\CryptService;
+use App\Service\Interfaces\CrypticInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,6 +13,7 @@ use LogicException;
 #[ORM\Entity(repositoryClass: WalletRepository::class)]
 class Wallet
 {
+
     const LENGTH = 9;
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "SEQUENCE")]
@@ -22,8 +25,8 @@ class Wallet
     #[ORM\Column(length: 4, nullable: true)]
     private ?string $currency = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?float $amount = null;
+    #[ORM\Column(type: 'encrypted_string', nullable: false)]
+    private ?string $amount = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $name = null;
