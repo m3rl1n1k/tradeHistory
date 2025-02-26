@@ -25,13 +25,27 @@ services:
   # please note that last definitions always *replace* previous ones
 
 
-  App\Service\Interfaces\CrypticInterface:
-    alias: App\Service\CryptService
-    public: true
+#  App\Service\Interfaces\CrypticInterface:
+#    alias: App\Service\CryptService
+#
+#  App\Service\CryptService:
+#    arguments:
+#      $key: '%env(ENCRYPTION_KEY)%'
+#
+#  App\Doctrine\Type\EncryptedStringType:
+#    class: App\Doctrine\Type\EncryptedStringType
 
+App\Service\Interfaces\CrypticInterface:
+  alias: App\Service\CryptService
+  public: true # Make it public to be accessible
+
+  # Define the CryptService and inject the encryption key from the environment
   App\Service\CryptService:
     arguments:
       $key: '%env(ENCRYPTION_KEY)%'
 
+  # Your custom Doctrine type
   App\Doctrine\Type\EncryptedStringType:
     class: App\Doctrine\Type\EncryptedStringType
+    calls:
+      - setCryptic: [ '@App\Service\Interfaces\CrypticInterface' ]
