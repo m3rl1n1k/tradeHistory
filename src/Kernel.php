@@ -4,7 +4,7 @@ namespace App;
 
 use App\Doctrine\Compiler\DoctrineTypeCompilerPass;
 use App\Doctrine\Type\EncryptedStringType;
-use App\Service\CryptService;
+use App\Service\Interfaces\CrypticInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -19,9 +19,8 @@ class Kernel extends BaseKernel
         parent::boot();
 
         $container = $this->getContainer();
-        $cryptService = $container->get(CryptService::class);
-
-        // Встановлюємо CryptService у кастомний Doctrine Type
+        /** @var CrypticInterface $cryptService */
+        $cryptService = $container->get(CrypticInterface::class);
         EncryptedStringType::setCryptic($cryptService);
     }
 
