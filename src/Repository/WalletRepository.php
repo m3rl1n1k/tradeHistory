@@ -4,8 +4,10 @@ namespace App\Repository;
 
 use App\Entity\User;
 use App\Entity\Wallet;
+use App\Service\Interfaces\CrypticInterface;
 use App\Trait\RepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\LockMode;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\SecurityBundle\Security;
 
@@ -25,10 +27,9 @@ class WalletRepository extends ServiceEntityRepository
 
 
     public function __construct(ManagerRegistry    $registry,
-                                protected Security $security)
+                                protected CrypticInterface $cryptic,)
     {
         parent::__construct($registry, Wallet::class);
-        $this->user = $this->security->getUser();
     }
 
 
@@ -55,6 +56,24 @@ class WalletRepository extends ServiceEntityRepository
 //            ->getQuery()
 //            ->getOneOrNullResult()
 //        ;
+//    }
+
+//    public function find($id, $lockMode = null, $lockVersion = null): ?object
+//    {
+//        $wallet = parent::find($id, $lockMode, $lockVersion);
+//        if ($wallet) {
+//            $wallet->setEncryptor($this->cryptic);  // Ensure Encryptor is set after retrieval
+//        }
+//        return $wallet;
+//    }
+//
+//    public function findAll(): array
+//    {
+//        $wallets = parent::findAll();
+//        foreach ($wallets as $wallet) {
+//            $wallet->setEncryptor($this->cryptic); // Set Encryptor for all wallets
+//        }
+//        return $wallets;
 //    }
 
 }

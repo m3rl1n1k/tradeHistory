@@ -46,7 +46,8 @@
     "symfony/web-link": "7.2.x",
     "symfony/yaml": "7.2.x",
     "twig/extra-bundle": "^2.12|^3.0",
-    "twig/twig": "3.14.1.0"
+    "twig/twig": "3.14.1.0",
+    "ext-openssl": "*"
   },
   "config": {
     "allow-plugins": {

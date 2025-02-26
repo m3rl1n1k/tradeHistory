@@ -23,7 +23,7 @@
         </thead>
         <tbody>
         {% for wallet in wallets %}
-            <tr class="hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-gray-900 dark:text-gray-300 hover:text-gray-600 sm:">
+            <tr class="hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-gray-900 dark:text-gray-300 hover:text-gray-300">
                 <td class="px-4 py-2 text-center font-medium">
                     <a class="hover:underline p-2 text-blue-600 dark:text-blue-400" href="{{ path('app_wallet_show',{'number': wallet.number}) }}">
                         {{ wallet.number }}

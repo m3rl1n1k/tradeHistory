@@ -9,6 +9,10 @@ doctrine:
 
     profiling_collect_backtrace: '%kernel.debug%'
     use_savepoints: true
+
+    types:
+      encrypted_string: App\Doctrine\Type\EncryptedStringType
+
   orm:
     auto_generate_proxy_classes: true
     enable_lazy_ghost_objects: true
