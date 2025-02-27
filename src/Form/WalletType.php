@@ -34,6 +34,7 @@ class WalletType extends AbstractType
             ])
             ->add('isMain', CheckboxType::class, [
                 'required' => false,
+                'label' => 'Is main wallet?',
             ]);
     }
 

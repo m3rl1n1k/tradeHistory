@@ -33,14 +33,10 @@ class WalletController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $wallet = new Wallet();
+        $wallet->setUser($this->getUser());
         $form = $this->createForm(WalletType::class, $wallet);
         $form->handleRequest($request);
-
-        $isMain = $this->validateIsMainWallet(Wallet::class, $wallet, $entityManager, [
-            'data' => $form->getData()
-        ]);
-        if ($form->isSubmitted() && $form->isValid() && $isMain) {
-            $wallet->setUser($this->getUser());
+        if ($form->isSubmitted() && $form->isValid()) {
             $currency = $form->get('currency')->getData();
             $wallet->setNumber($currency);
             $entityManager->persist($wallet);
@@ -68,9 +64,10 @@ class WalletController extends AbstractController
     {
         $form = $this->createForm(WalletType::class, $wallet);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid() && $this->validateIsMainWallet(Wallet::class, $wallet, $entityManager, [
-                'data' => $form->getData()
-            ])) {
+        //&& $this->validateIsMainWallet(Wallet::class, $wallet, $entityManager, [
+        //                'data' => $form->getData()
+        //            ])
+        if ($form->isSubmitted() && $form->isValid()) {
             $currency = $form->get('currency')->getData();
             $wallet->setNumber($currency);
             $entityManager->flush();

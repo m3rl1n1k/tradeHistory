@@ -41,7 +41,8 @@
                             {% for transaction in last_transaction %}
                                 <li><a class="text-decoration-none {{ color(transaction.type) }} hover:underline"
                                        href="{{ path('app_transaction_show', {'id': transaction.id}) }}">
-                                        {{ transaction.amount }} <span class="text-xs">{{ transaction.wallet.currency }}</span> -
+                                        {{ transaction.amount }} <span
+                                                class="text-xs">{{ transaction.wallet.currency }}</span> -
                                         {{ transaction.category.name ?? '' }} -
                                         {{ transaction.date|date('d M') }}
                                     </a>
@@ -56,11 +57,16 @@
             <div class="bg-white dark:bg-gray-600 shadow-lg p-4 rounded-lg dark:text-gray-300 flex justify-between ">
                 <div class="">
                     <h3 class="text-lg font-semibold">{{ 'index.card.total'|trans({}, 'translation') }}</h3>
-                    <p class="text-2xl font-bold text-green-600">+{{ amount ? amount : 0 }} {{ app.user.currency }}</p>
+                    <p class="text-2xl font-bold text-green-600 replace-block">{{ amount ? amount : 0 }} {{ app.user.currency }}</p>
+                    <span class="stars hidden text-2xl font-bold text-green-600">******</span>
                     <ul class="space-y-2 over">
                         {% if app.user.wallets|length > 0 %}
                             {% for wallet in app.user.wallets %}
-                                <li>{{ wallet.name ?? wallet.number }} - {{ wallet.amount }} {{ wallet.currency }}</li>
+                                <li>{{ wallet.name ?? wallet.number }} -
+                                    <span class="replace-block">{{ wallet.amount }}</span>
+                                    <span class="stars hidden">******</span>
+                                    <span class="text-sm">{{ wallet.currency }}</span>
+                                </li>
                             {% endfor %}
                         {% else %}
                             <li>Not found any wallet yet</li>
@@ -81,6 +87,7 @@
                 return 'black'; // Light mode: Black text color
             }
         }
+
         const ctx = document.getElementById('expenseChart').getContext('2d');
         new Chart(ctx, {
             type: 'pie',
