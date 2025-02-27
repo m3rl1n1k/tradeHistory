@@ -27,7 +27,11 @@ function hide_sum() {
 
 if (hide_user_sum != null) {
     btn_switch.addEventListener('click', function () {
-        localStorage.setItem('hidden_sum', 'true')
+        if (localStorage.getItem('hidden_sum')) {
+            localStorage.setItem('hidden_sum', 'false')
+        } else {
+            localStorage.setItem('hidden_sum', 'true')
+        }
         switch_eye()
         hide_sum()
     })
