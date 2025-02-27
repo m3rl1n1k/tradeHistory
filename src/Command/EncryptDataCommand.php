@@ -45,12 +45,13 @@ class EncryptDataCommand extends Command
         try {
             foreach ($amounts as $amount) {
                 $encrypted = $this->cryptService->encrypt($amount['amount']);
-                $res = $this->em->createQuery("UPDATE $table t SET t.amount = :encrypted WHERE t.id = :id")
+                 $this->em->createQuery("UPDATE $table t SET t.amount = :encrypted WHERE t.id = :id")
                     ->setParameter('encrypted', $encrypted)
                     ->setParameter('id', $amount['id'])
                     ->getResult();
-                $output->writeln($res) . '\n';
-            }
+                $output->writeln("write id = {$amount['id']} with value $encrypted") . '\n';
+	    }
+	    $this->em->commit();
         } catch (Exception $e) {
             $this->em->rollback();
             $output->writeln('<error>' . $e->getMessage() . '</error>');
