@@ -31,10 +31,10 @@ RUN docker-php-ext-install opcache
 RUN pecl install apcu && docker-php-ext-enable apcu
 
 # Встановлення та активація Xdebug і YAML
-RUN pecl install xdebug && docker-php-ext-enable xdebug;
+#RUN pecl install xdebug && docker-php-ext-enable xdebug;
 
 # Додавання конфігурації Xdebug
-COPY ./docker/configs/php/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+#COPY ./docker/configs/php/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
 # Встановлення Composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \

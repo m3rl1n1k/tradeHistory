@@ -11,6 +11,7 @@ services:
       WORKDIR: ${WORKDIR}
       PHP_IDE_CONFIG: serverName=tradeHistory
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - ./:${WORKDIR}
     networks:
       - tradeHistory

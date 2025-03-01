@@ -6,7 +6,7 @@ use App\Entity\Wallet;
 use App\Enum\CurrencyEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+	use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,13 +19,16 @@ class WalletType extends AbstractType
     {
         $builder
             ->add('currency', ChoiceType::class, [
-                'choices' => CurrencyEnum::associativeArray()
+		    'choices' => CurrencyEnum::associativeArray(),
+		    'label'=> 'Currency'
             ])
             ->add('amount', NumberType::class, [
-                'required' => false,
+		    'required' => false,
+		    'label' => 'Amount'
             ])
             ->add('name', TextType::class, [
-                'required' => false,
+		    'required' => false,
+		    'label'=>'Name',
                 'constraints' => [
                     new Length([
                         'max' => 20
