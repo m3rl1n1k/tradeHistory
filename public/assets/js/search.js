@@ -14,9 +14,11 @@ const loader = document.querySelector('#loader')
 
 //open form
 open_btn.addEventListener('click', function () {
-    main.classList.toggle('hidden')
-    toggle_search_form()
-    resultBlock.classList.toggle('hidden')
+    if (menu.classList.contains('hidden')) {
+        main.classList.toggle('hidden')
+        toggle_search_form()
+        resultBlock.classList.toggle('hidden')
+    }
 })
 //close form
 close_btn.addEventListener('click', function () {
@@ -25,7 +27,7 @@ close_btn.addEventListener('click', function () {
     }, 300)
     toggle_search_form()
     main.classList.toggle('hidden')
-    if (header != null){
+    if (header != null) {
         header.classList.remove('justify-center')
         header.classList.add('justify-between')
     }
@@ -37,6 +39,7 @@ search_btn.addEventListener('click', function (event) {
     event.preventDefault()
     search()
 });
+
 function search() {
     let query = document.getElementById('search-input').value;
     if (!query.trim()) return; // Запобігаємо запитам із пустим рядком
@@ -44,12 +47,11 @@ function search() {
     resultBlock.classList.remove('hidden');
     // document.body.classList.add('overflow-hidden');
     loader.classList.toggle('hidden')
-    if (document.documentElement.className.toString() === 'dark'){
+    if (document.documentElement.className.toString() === 'dark') {
         loader.style.borderTopColor = "rgba(209, 213, 219)"
         loader.style.borderRightColor = "rgba(209, 213, 219)"
         loader.style.borderBottomColor = "rgba(209, 213, 219)"
-    }
-    else{
+    } else {
         loader.style.borderTopColor = "rgba(55, 65, 81)"
         loader.style.borderRightColor = "rgba(55, 65, 81)"
         loader.style.borderBottomColor = "rgba(55, 65, 81)"

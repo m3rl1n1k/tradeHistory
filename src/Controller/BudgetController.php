@@ -4,20 +4,27 @@ namespace App\Controller;
 
 use App\Entity\Budget;
 use App\Form\BudgetType;
+use App\Repository\BudgetRepository;
+use App\Service\Budget\BudgetService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted("IS_AUTHENTICATED_FULLY")]
 #[Route('/budget')]
 final class BudgetController extends AbstractController
 {
+
     #[Route(name: 'app_budget_index', methods: ['GET'])]
-    public function index(): Response
+    public function index(BudgetRepository $budgetRepository, BudgetService $budgetService): Response
     {
-        return $this->render('pages/budget/index.html.twig', [
-            'budgets' => $this->getUser()->getBudgets(),
+        $budgets = $budgetRepository->findBy(['user' => $this->getUser()], ['month' => 'DESC']);
+        $budgets = $budgetService->summary($budgets);
+        return $this->render('budget/index.html.twig', [
+            'budgets' => $budgets,
         ]);
     }
 
@@ -27,7 +34,6 @@ final class BudgetController extends AbstractController
         $budget = new Budget();
         $form = $this->createForm(BudgetType::class, $budget);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $budget->setUser($this->getUser());
             $entityManager->persist($budget);
@@ -36,9 +42,20 @@ final class BudgetController extends AbstractController
             return $this->redirectToRoute('app_budget_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('pages/budget/new.html.twig', [
+        return $this->render('budget/new.html.twig', [
             'budget' => $budget,
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/summary/{month}', name: 'app_budget_show', methods: ['GET'])]
+    public function show(string $month, BudgetRepository $budgetRepository, BudgetService $budgetService): Response
+    {
+        $budget = $budgetRepository->findBy(['user' => $this->getUser(), 'month' => $month]);
+        $budget = $budgetService->summary($budget, 'monthly');
+        return $this->render('budget/show.html.twig', [
+            'budget' => $budget,
+            'date' => $month
         ]);
     }
 
@@ -54,7 +71,7 @@ final class BudgetController extends AbstractController
             return $this->redirectToRoute('app_budget_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('pages/budget/edit.html.twig', [
+        return $this->render('budget/edit.html.twig', [
             'budget' => $budget,
             'form' => $form,
         ]);

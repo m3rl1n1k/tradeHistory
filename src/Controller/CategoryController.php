@@ -8,6 +8,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\ParentCategoryRepository;
 use App\Service\CategoryService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -15,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 #[Route('/category')]
-class CategoryController extends AbstractController
+final class CategoryController extends AbstractController
 {
     private array $parentCategories;
 

@@ -1,0 +1,57 @@
+{{ form_start(form) }}
+    {{ include('component/_alert.html.twig') }}
+<div class="space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="mt-3">
+            <label for="{{ form.plannedAmount.vars.id }}"
+                   class="block text-gray-900 dark:text-gray-300 font-semibold mb-2">{{ 'Planned amount' }}</label>
+            {{ form_widget(form.plannedAmount, {
+                'attr': {
+                    'class': 'w-full p-3 rounded-md border border-gray-300 dark:bg-gray-800 dark:border-gray-600 text-gray-900 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                }
+            }) }}
+            {% if  form.plannedAmount.vars.errors|length > 0 %}
+                <p class="text-red-500 dark:text-red-400 text-sm mt-1">
+                    {{ form.plannedAmount.vars.errors[0].message }}
+                </p>
+            {% endif %}
+        </div>
+
+        <div class="mt-3">
+            <label for="{{ form.month.vars.id }}"
+                   class="block text-gray-900 dark:text-gray-300 font-semibold mb-2">{{ 'Month' }}</label>
+            {{ form_widget(form.month, {
+                'attr': {
+                    'class': 'w-full p-3 rounded-md border border-gray-300 dark:bg-gray-800 dark:border-gray-600 text-gray-900 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                }
+            }) }}
+            {% if  form.month.vars.errors|length > 0 %}
+                <p class="text-red-500 dark:text-red-400 text-sm mt-1">
+                    {{ form.month.vars.errors[0].message }}
+                </p>
+            {% endif %}
+        </div>
+
+        <div class="mt-3">
+            <label for="{{ form.category.vars.id }}"
+                   class="block text-gray-900 dark:text-gray-300 font-semibold mb-2">{{ 'Category' }}</label>
+            {{ form_widget(form.category, {
+                'attr': {
+                    'class': 'w-full p-3 rounded-md border border-gray-300 dark:bg-gray-800 dark:border-gray-600 text-gray-900 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                }
+            }) }}
+            {% if  form.category.vars.errors|length > 0 %}
+                <p class="text-red-500 dark:text-red-400 text-sm mt-1">
+                    {{ form.category.vars.errors[0].message }}
+                </p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="mt-4 flex justify-between items-center">
+        <button class="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600">{{ button_label|default('Save') }}</button>
+        {{ include('component/_link.html.twig') }}
+    </div>
+</div>
+{{ form_end(form) }}
+<script type="application/javascript" src="{{ asset('assets/js/monthPicker.js') }}"></script>

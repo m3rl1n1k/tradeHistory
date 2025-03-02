@@ -2,12 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\Category;
 use App\Entity\Transaction;
 use App\Enum\TransactionTypeEnum;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -51,48 +50,19 @@ class TransactionRepository extends ServiceEntityRepository
         return $sum;
     }
 
-    public function getTransactionsPerPeriod(DateTimeInterface $dateStart, DateTimeInterface $dateEnd): mixed
+    public function getTransactionsPerPeriodByCategory(Category $category, DateTimeInterface $startDate, DateTimeInterface $endDate): mixed
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.date BETWEEN :startDate AND :endDate')
-            ->andWhere('t.user = :user')
-            ->setParameter('startDate', $dateStart)
-            ->setParameter('endDate', $dateEnd)
-            ->setParameter('user', $this->security->getUser())
+        $builder = $this->createQueryBuilder('t');
+//        $builder->select('t.amount');
+        $builder->where('t.category = :category')
+            ->setParameter('category', $category);
+        $builder->andWhere('t.date BETWEEN :startDate AND :endDate');
+        $result = $builder->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
             ->getQuery()
             ->getResult();
-    }
 
-    /**
-     * conditions ['date', 'category', 'user']
-     *
-     * @param string $type
-     * @param array $conditions
-     * @return mixed
-     * @throws NoResultException
-     * @throws NonUniqueResultException
-     */
-    public function getTransactionSum(array $conditions = [], string $type = TransactionTypeEnum::Expense->value): mixed
-    {
-        $queryBuilder = $this->createQueryBuilder('t')
-            ->select('SUM(t.amount)')
-            ->andWhere('t.user = :user')
-            ->setParameter('user', $this->security->getUser());
-
-        foreach ($conditions as $key => $value) {
-            if (in_array($key, ['date', 'category', 'user'])) {
-                $queryBuilder->andWhere("t.$key = :$key")
-                    ->setParameter($key, $value);
-            }
-        }
-
-        if ($type) {
-            $queryBuilder->andWhere('t.type = :type')
-                ->setParameter('type', $type);
-        }
-
-        return $queryBuilder->getQuery()
-            ->getSingleScalarResult() ?? 0;
+        return $result;
     }
 
     public function getTransactionForCurrentMonth(): ?array
@@ -140,5 +110,3 @@ class TransactionRepository extends ServiceEntityRepository
         return $this->findBy(['category' => $category, 'user' => $this->security->getUser()]);
     }
 }
-
-

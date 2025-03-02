@@ -6,6 +6,7 @@ use App\Entity\Wallet;
 use App\Form\WalletType;
 use App\Service\WalletService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,7 +14,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 #[Route('/wallet')]
-class WalletController extends AbstractController
+final class WalletController extends AbstractController
 {
     public function __construct(
         protected WalletService $walletService

@@ -9,23 +9,23 @@ use Doctrine\ORM\Mapping as ORM;
 class Budget
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'budgets')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'budgets')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    private User $user;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: Category::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Category $category = null;
+    private Category $category;
 
-    #[ORM\Column]
-    private ?float $planingAmount = null;
+    #[ORM\Column(type: 'encrypted_string')]
+    private float $plannedAmount;
 
-    #[ORM\Column]
-    private ?float $actualAmount = null;
+    #[ORM\Column(type: 'string', length: 20)] // Format: 'YYYY-MM'
+    private string $month;
 
     public function getId(): ?int
     {
@@ -56,27 +56,26 @@ class Budget
         return $this;
     }
 
-    public function getPlaningAmount(): ?float
+    public function getPlannedAmount(): ?float
     {
-        return $this->planingAmount;
+        return $this->plannedAmount;
     }
 
-    public function setPlaningAmount(float $planingAmount): static
+    public function setPlannedAmount(float $plannedAmount): static
     {
-        $this->planingAmount = $planingAmount;
+        $this->plannedAmount = $plannedAmount;
 
         return $this;
     }
 
-    public function getActualAmount(): ?float
+    public function getMonth(): string
     {
-        return $this->actualAmount;
+        return $this->month;
     }
 
-    public function setActualAmount(float $actualAmount): static
+    public function setMonth(string $month): self
     {
-        $this->actualAmount = $actualAmount;
-
+        $this->month = $month;
         return $this;
     }
 }

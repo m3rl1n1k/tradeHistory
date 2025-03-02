@@ -1,0 +1,34 @@
+{% extends '../main_base.html.twig' %}
+{% block body %}
+    <main class="flex-1 p-4">
+        <div class="grid text-gray-300">
+            <div class="bg-gray-600 shadow-lg p-4 rounded-lg">
+                <h3 class="text-lg font-semibold my-2">FAQ</h3>
+                <div class="space-y-6">
+                    <!-- Загальні питання -->
+                    <div>
+                        <h4 class="font-semibold">General Questions</h4>
+                        <ul class="space-y-2">
+                            <li><strong>❓ What is this website?</strong><br>
+                                This is a finance management service that allows you to conveniently manage
+                                transactions, categories, budgets, and analyze expenses using charts.
+                            </li>
+                            <li><strong>❓ How can I register and log in?</strong><br>
+                                Currently, only invited users can join the system. Registration is not open.
+                            </li>
+                            <li><strong>❓ What types of financial transactions are supported?</strong><br>
+                                The website supports expenses, income, and internal transfers between wallets.
+                            </li>
+                            <li><strong>❓ Are my financial data secure?</strong><br>
+                                Yes. All amounts are encrypted, and passwords are hashed.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-3">
+            {{ include('component/_link.html.twig') }}
+        </div>
+    </main>
+{% endblock body %}
