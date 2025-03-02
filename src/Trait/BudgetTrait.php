@@ -4,7 +4,6 @@ namespace App\Trait;
 
 use App\Entity\Budget;
 use App\Form\BudgetType;
-use DateTime;
 use Symfony\Component\Form\FormInterface;
 
 trait BudgetTrait
@@ -15,8 +14,6 @@ trait BudgetTrait
             'category' => array_map(function ($category) {
                 return $category['categories'];
             }, $this->parentCategoryRepository->getMainAndSubCategories()),
-            'budget' => $budget,
-            'date' => new DateTime()
         ]);
     }
 }
