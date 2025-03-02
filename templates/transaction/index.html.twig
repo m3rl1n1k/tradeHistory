@@ -47,30 +47,30 @@
     </table>
 
 
-        <div class="mt-6 flex justify-center">
-            {% if pager.haveToPaginate %}
-                <nav class="flex space-x-2">
-                    {% if pager.currentPage > 1 %}
-                        <a href="{{ path('app_transaction_index', app.request.query.all|merge({'page': pager.currentPage - 1})) }}"
-                           class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-500">
-                            &laquo; Prev
-                        </a>
-                    {% endif %}
+    <div class="mt-6 flex justify-center">
+        {% if pager.haveToPaginate %}
+            <nav class="flex space-x-2">
+                {% if pager.currentPage > 1 %}
+                    <a href="{{ path('app_transaction_index', app.request.query.all|merge({'page': pager.currentPage - 1})) }}"
+                       class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-500">
+                        &laquo;
+                    </a>
+                {% endif %}
 
-                    {% for page in 1..pager.nbPages %}
-                        <a href="{{ path('app_transaction_index', app.request.query.all|merge({'page': page})) }}"
-                           class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 {{ page == pager.currentPage ? 'bg-blue-500 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-500' }}">
-                            {{ page }}
-                        </a>
-                    {% endfor %}
+                {% for page in 1..pager.nbPages %}
+                    <a href="{{ path('app_transaction_index', app.request.query.all|merge({'page': page})) }}"
+                       class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 {{ page == pager.currentPage ? 'bg-blue-500 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-500' }}">
+                        {{ page }}
+                    </a>
+                {% endfor %}
 
-                    {% if pager.currentPage < pager.nbPages %}
-                        <a href="{{ path('app_transaction_index', app.request.query.all|merge({'page': pager.currentPage + 1})) }}"
-                           class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-500">
-                            Next &raquo;
-                        </a>
-                    {% endif %}
-                </nav>
-            {% endif %}
-        </div>
+                {% if pager.currentPage < pager.nbPages %}
+                    <a href="{{ path('app_transaction_index', app.request.query.all|merge({'page': pager.currentPage + 1})) }}"
+                       class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-500">
+                        &raquo;
+                    </a>
+                {% endif %}
+            </nav>
+        {% endif %}
+    </div>
 {% endblock %}
