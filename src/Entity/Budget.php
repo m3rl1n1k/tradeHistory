@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\BudgetRepository;
+use App\Validator\BudgetCategory;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BudgetRepository::class)]
@@ -19,6 +20,7 @@ class Budget
 
     #[ORM\ManyToOne(targetEntity: Category::class)]
     #[ORM\JoinColumn(nullable: false)]
+    #[BudgetCategory]
     private Category $category;
 
     #[ORM\Column(type: 'encrypted_string')]
