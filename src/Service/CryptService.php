@@ -30,6 +30,9 @@ class CryptService implements CrypticInterface
 
     public function decrypt(string $data): string
     {
+        if (empty($data) || base64_decode($data, true) === false) {
+            return $data;
+        }
         $encryptedData = base64_decode($data);
         $ivLength = openssl_cipher_iv_length($this->cipher);
         $iv = substr($encryptedData, 0, $ivLength);

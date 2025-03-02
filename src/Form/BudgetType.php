@@ -35,6 +35,7 @@ class BudgetType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Budget::class,
+            'category' => null,
         ]);
     }
 }
