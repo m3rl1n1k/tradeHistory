@@ -11,6 +11,7 @@ use App\Service\Pagination\PaginateInterface;
 use App\Trait\TransactionTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -18,7 +19,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 #[Route('/transaction')]
-class TransactionController extends AbstractController
+final class TransactionController extends AbstractController
 {
     public function __construct(
         protected TransactionCalculationInterface $calculation,

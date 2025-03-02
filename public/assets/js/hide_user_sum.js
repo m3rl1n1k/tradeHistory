@@ -12,28 +12,22 @@ if (localStorage.getItem('hidden_sum')) {
 function switch_eye() {
     eye_open.classList.toggle('hidden')
     eye_close.classList.toggle('hidden')
-
 }
 
 function hide_sum() {
     hide_user_sum.forEach(function (el) {
-        starts.forEach(function (star) {
-            el.classList.toggle('hidden')
-            star.classList.toggle('hidden')
-            return false;
-        })
+        el.classList.toggle('hidden')
+    })
+    starts.forEach(function (star) {
+        star.classList.toggle('hidden')
     })
 }
 
 if (hide_user_sum != null) {
     btn_switch.addEventListener('click', function () {
-        if (localStorage.getItem('hidden_sum')) {
-            localStorage.setItem('hidden_sum', 'false')
-        } else {
-            localStorage.setItem('hidden_sum', 'true')
-        }
-        switch_eye()
+        localStorage.setItem('hidden_sum', 'true')
         hide_sum()
+        switch_eye()
     })
 
 }

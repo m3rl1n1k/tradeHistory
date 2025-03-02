@@ -5,13 +5,14 @@ namespace App\Controller;
 use App\Enum\TransactionTypeEnum;
 use App\Form\ReportPeriodType;
 use App\Service\ChartService;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
-class ReportController extends AbstractController
+final class ReportController extends AbstractController
 {
     public function __construct(
         protected ChartService $chartService,

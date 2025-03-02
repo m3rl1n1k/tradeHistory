@@ -34,6 +34,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Wallet::class, orphanRemoval: true)]
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private Collection $wallets;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Budget::class, orphanRemoval: true)]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    private Collection $budgets;
 
     #[ORM\Column(length: 4, nullable: true)]
     private ?string $currency = null;
@@ -53,6 +56,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->wallets = new ArrayCollection();
         $this->transfers = new ArrayCollection();
+        $this->budgets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -202,6 +206,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($transfer->getUser() === $this) {
                 $transfer->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getBudgets(): Collection
+    {
+        return $this->budgets;
+    }
+
+    public function addBudget(Budget $budget): static
+    {
+        if (!$this->budgets->contains($budget)) {
+            $this->budgets->add($budget);
+            $budget->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBudget(Budget $budget): static
+    {
+        if ($this->budgets->removeElement($budget)) {
+            // set the owning side to null (unless already changed)
+            if ($budget->getUser() === $this) {
+                $budget->setUser(null);
             }
         }
 

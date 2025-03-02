@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Budget{% endblock %}
+
+{% block body %}
+    <h2 class="text-gray-900 dark:text-gray-300 text-2xl">Budget on {{ date|date('M Y') }}</h2>
+    <main class="flex-1 p-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 dark:text-gray-300">
+            {% for category in budget.categories %}
+                <div class="bg-white dark:bg-gray-700 shadow-lg p-5 rounded-2xl transition hover:shadow-xl">
+                    <div class="flex justify-between items-center mb-3">
+                        <h4 class="text-lg font-semibold text-gray-900 dark:text-white">{{ category.name }}</h4>
+                        <a class="" href="{{ path('app_budget_edit', {'id' : category.budgetId}) }}"><span
+                                    class="text-sm text-yellow-500 dark:text-yellow-400">Edit</span></a>
+                        {{ include('budget/_delete_form.html.twig') }}
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Planned Expense:</span>
+                            <span class="font-medium text-gray-900 dark:text-white">{{ category.plannedAmount }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Actual Expense:</span>
+                            <span class="font-medium text-red-500 dark:text-red-400">{{ category.actualAmount }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Remaining:</span>
+                            <span class="font-medium {% if (category.plannedAmount - category.actualAmount) < 0 %}
+                                    text-red-500 dark:text-red-400 {% else %} text-green-500 dark:text-green-400 {% endif %}">
+                        {{ category.plannedAmount - category.actualAmount }}</span>
+                        </div>
+
+                        {% set percent = (category.actualAmount / category.plannedAmount) * 100 %}
+                        <div class="mb-1 text-base font-medium {% if percent < 50 %} text-green-700 dark:text-green-500
+                                {% elseif percent < 80 %} text-yellow-700 dark:text-yellow-500
+                                {% else %} text-red-700 dark:text-red-500 {% endif %}">
+                            {{ percent|round(1) }}% spent
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="h-2.5 rounded-full transition-all"
+                                 style="width: {{ percent > 100 ? 100 : percent }}%;
+                                         background-color: {% if percent < 50 %} #10B981
+                                 {% elseif percent < 80 %} #FBBF24
+                                 {% else %} #EF4444 {% endif %};">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="mt-4 flex justify-between items-center">
+                {{ include('component/_link.html.twig') }}
+            </div>
+        </div>
+    </main>
+{% endblock %}

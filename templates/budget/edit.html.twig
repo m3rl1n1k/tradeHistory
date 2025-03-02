@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Budget{% endblock %}
+
+{% block body %}
+    <h2 class="text-gray-900 dark:text-gray-300 text-2xl">Edit budget</h2>
+
+    {{ include('budget/_form.html.twig', {'button_label': 'Update'}) }}
+{% endblock %}
