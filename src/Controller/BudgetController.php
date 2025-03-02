@@ -3,9 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Budget;
-use App\Form\BudgetType;
 use App\Repository\BudgetRepository;
+use App\Repository\ParentCategoryRepository;
 use App\Service\Budget\BudgetService;
+use App\Trait\BudgetTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/budget')]
 final class BudgetController extends AbstractController
 {
+    public function __construct(protected ParentCategoryRepository $parentCategoryRepository)
+    {
+    }
+
+    use BudgetTrait;
 
     #[Route(name: 'app_budget_index', methods: ['GET'])]
     public function index(BudgetRepository $budgetRepository, BudgetService $budgetService): Response
@@ -32,7 +38,7 @@ final class BudgetController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $budget = new Budget();
-        $form = $this->createForm(BudgetType::class, $budget);
+        $form = $this->getForm($budget);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $budget->setUser($this->getUser());
@@ -62,7 +68,7 @@ final class BudgetController extends AbstractController
     #[Route('/{id}/edit', name: 'app_budget_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Budget $budget, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(BudgetType::class, $budget);
+        $form = $this->getForm($budget);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
