@@ -1,0 +1,12 @@
+title: "Register"
+email:
+  label: "Email"
+  placeholder: "Enter your email"
+password:
+  label: "Password"
+  placeholder: "Enter your password"
+sign_up: "Register"
+sign_in: "Login"
+terms:
+  agree: "Agree with"
+  terms: "terms"

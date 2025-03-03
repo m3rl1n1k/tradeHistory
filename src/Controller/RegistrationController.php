@@ -10,12 +10,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 final class RegistrationController extends AbstractController
 {
-    #[Route('/register', name: 'app_register')]
+    #[Route('/{_locale}/register', name: 'app_register', requirements: [
+        '_locale' => 'en|ua',
+    ])]
     public function register(#[CurrentUser] ?User $user, Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         if (!empty($user)) {
@@ -47,7 +49,9 @@ final class RegistrationController extends AbstractController
         ]);
     }
 
-    #[Route('/terms', name: 'app_registration_terms')]
+    #[Route('/{_locale}/terms', name: 'app_registration_terms', requirements: [
+        '_locale' => 'en|ua',
+    ])]
     public function terms(): Response
     {
         return $this->render('registration/terms.html.twig');

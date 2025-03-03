@@ -76,8 +76,11 @@ class Transaction
         return $this->amount;
     }
 
-    public function setAmount(float $amount): static
+    public function setAmount(string|float $amount): static
     {
+        if (is_string($amount)) {
+            $amount = floatval(str_replace(',', '.', $amount));
+        }
         $this->amount = $amount;
 
         return $this;

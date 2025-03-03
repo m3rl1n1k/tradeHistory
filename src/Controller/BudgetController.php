@@ -55,6 +55,7 @@ final class BudgetController extends AbstractController
     }
 
     #[Route('/summary/{month}', name: 'app_budget_show', methods: ['GET'])]
+    #[IsGranted("view", 'budget')]
     public function show(string $month, BudgetRepository $budgetRepository, BudgetService $budgetService): Response
     {
         $budget = $budgetRepository->findBy(['user' => $this->getUser(), 'month' => $month]);
@@ -66,6 +67,7 @@ final class BudgetController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_budget_edit', methods: ['GET', 'POST'])]
+    #[IsGranted("edit", 'budget')]
     public function edit(Request $request, Budget $budget, EntityManagerInterface $entityManager): Response
     {
         $form = $this->getForm($budget);

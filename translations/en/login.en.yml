@@ -1,0 +1,9 @@
+title: "Welcome back"
+email:
+  label: "Email"
+  placeholder: "Enter your email"
+password:
+  label: "Password"
+  placeholder: "Enter your password"
+sign_in: "Sign in"
+register: "Don't have an account? Register"
