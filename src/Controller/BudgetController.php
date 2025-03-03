@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted("IS_AUTHENTICATED_FULLY")]
-#[Route('/_{locale}/budget')]
+#[Route('/budget')]
 final class BudgetController extends AbstractController
 {
     public function __construct(protected ParentCategoryRepository $parentCategoryRepository)
