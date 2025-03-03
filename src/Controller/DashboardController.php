@@ -22,7 +22,7 @@ final class DashboardController extends AbstractController
     }
 
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    #[Route('/home', name: 'app_home', methods: ['GET'])]
+    #[Route('/{_locale}/home', name: 'app_home', methods: ['GET'])]
     public function home(TransactionRepository $transactionRepository): Response
     {
         $data = $this->chartService->dashboardChart();

@@ -4,39 +4,39 @@
 
 {% block body %}
     <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg mt-6">
-        <h2 class="text-gray-900 dark:text-gray-300 text-2xl">Transaction</h2>
+        <h2 class="text-gray-900 dark:text-gray-300 text-2xl">{{ 'show.title'|trans({}, 'transaction') }}</h2>
         <div class="">
             <table class="min-w-full table-auto border-collapse">
                 <tbody class="text-sm">
                 <tr class="border-b">
-                    <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">Id</th>
+                    <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">{{ 'show.id'|trans({}, 'transaction') }}</th>
                     <td class="px-4 py-2 text-gray-900 dark:text-gray-200">{{ transaction.id }}</td>
                 </tr>
                 <tr class="border-b">
-                    <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">Amount</th>
+                    <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">{{ 'show.amount'|trans({}, 'transaction') }}</th>
                     <td class="px-4 py-2 text-gray-900 dark:text-gray-200">{{ transaction.amount }}</td>
                 </tr>
                 {% if transaction.Category %}
                     <tr class="border-b">
-                        <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">Category</th>
+                        <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">{{ 'show.category'|trans({}, 'transaction') }}</th>
                         <td class="px-4 py-2 text-gray-900 dark:text-gray-200">{{ transaction.Category.name }}</td>
                     </tr>
                 {% endif %}
                 <tr class="border-b">
-                    <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">Number</th>
+                    <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">{{ 'show.wallet'|trans({}, 'transaction') }}</th>
                     <td class="px-4 py-2 text-gray-900 dark:text-gray-200">{{ transaction.wallet.number }}</td>
                 </tr>
                 <tr class="border-b">
-                    <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">Type</th>
+                    <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">{{ 'show.type'|trans({}, 'transaction') }}</th>
                     <td class="px-4 py-2 text-gray-900 dark:text-gray-200">{{ type(transaction.type) }}</td>
                 </tr>
                 <tr class="border-b">
-                    <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">Date</th>
+                    <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">{{ 'show.date'|trans({}, 'transaction') }}</th>
                     <td class="px-4 py-2 text-gray-900 dark:text-gray-200">{{ transaction.date ? transaction.date|date('d M y') : '' }}</td>
                 </tr>
                 {% if transaction.description %}
                     <tr class="border-b">
-                        <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">Description</th>
+                        <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">{{ 'show.description'|trans({}, 'transaction') }}</th>
                         <td class="px-4 py-2 text-gray-900 dark:text-gray-200">{{ transaction.description }}</td>
                     </tr>
                 {% endif %}

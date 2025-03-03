@@ -1,0 +1,14 @@
+title: "Панель керування"
+last_transaction: "Останні транзакції"
+not_found_records: "Записів не знайдено"
+total: "Загалом"
+
+quick:
+  title: "Швидкий доступ"
+  transaction: "Додати транзакцію"
+  category: "Додати категорію"
+  budget: "Додати бюджет"
+
+chart:
+  title: "Графік витрат"
+  total: "Всього витрачено"

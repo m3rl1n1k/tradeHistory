@@ -28,11 +28,11 @@
                             id="close-btn"
                             type="button">x
                     </button>
-                    <input aria-label="Search"
+                    <input aria-label="{{ 'search'|trans({}, 'base') }}"
                            class="w-full focus:rounded-none px-4 py-2 border-t border-b border-gray-400 relative text-gray-700 border dark:text-gray-300"
                            id="search-input"
                            name="search"
-                           placeholder="Search"
+                           placeholder="{{ 'search'|trans({}, 'base') }}"
                            required
                            type="text">
                     <div class="hidden loader border-4 border-gray-500 dark:border-gray-300" id="loader"></div>
@@ -44,7 +44,7 @@
             </div>
             <button class="bg-gray-600 text-white p-2 rounded-lg"
                     id="open-btn"
-                    type="button">Search
+                    type="button">{{ 'search'|trans({}, 'base') }}
             </button>
         </form>
     </div>
@@ -216,7 +216,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round"
                               d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"></path>
                     </svg>
-                    <span class="ml-2">{{ 'sing_out'|trans({}, 'menu') }}</span></a></li>
+                    <span class="ml-2">{{ 'sign_out'|trans({}, 'menu') }}</span></a></li>
         </ul>
     </nav>
     <div class="flex-1 p-4 z-0 fade hidden" id="search-result">

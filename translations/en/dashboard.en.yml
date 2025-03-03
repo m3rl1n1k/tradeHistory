@@ -1,0 +1,14 @@
+title: "Dashboard"
+last_transaction: "Last transactions"
+not_found_records: "Records not found"
+total: "Total"
+
+quick:
+  title: "Quick access"
+  transaction: "Add transaction"
+  category: "Add category"
+  budget: "Add budget"
+
+chart:
+  title: "Expense chart"
+  total: "Totally expensed"
