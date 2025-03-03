@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted("IS_AUTHENTICATED_FULLY")]
-#[Route('/budget')]
+#[Route('/_{locale}/budget')]
 final class BudgetController extends AbstractController
 {
     public function __construct(protected ParentCategoryRepository $parentCategoryRepository)
@@ -55,7 +55,6 @@ final class BudgetController extends AbstractController
     }
 
     #[Route('/summary/{month}', name: 'app_budget_show', methods: ['GET'])]
-    #[IsGranted("view", 'budget')]
     public function show(string $month, BudgetRepository $budgetRepository, BudgetService $budgetService): Response
     {
         $budget = $budgetRepository->findBy(['user' => $this->getUser(), 'month' => $month]);
