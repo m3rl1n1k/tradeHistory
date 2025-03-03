@@ -10,22 +10,25 @@
                     {{ error.messageKey|trans(error.messageData, 'security') }}
                 </div>
             {% endif %}
-
-            <h1 class="text-2xl font-bold text-center mb-6 text-gray-300">Welcome Back</h1>
+            <h1 class="text-2xl font-bold text-center mb-6 text-gray-300">{{ 'title'|trans({},'login') }}</h1>
 
             <div class="mb-4">
-                <label for="inputEmail" class="block text-sm font-medium text-gray-300">Email</label>
+                <label for="inputEmail"
+                       class="block text-sm font-medium text-gray-300">{{ 'email.label'|trans({},'login') }}</label>
                 <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
                        class="dark:text-gray-200 mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-600"
-                       autocomplete="email" required autofocus placeholder="Enter your email">
+                       autocomplete="email" required autofocus
+                       placeholder="{{ 'email.placeholder'|trans({},'login') }}">
             </div>
 
             <div class="mb-4 relative">
-                <label for="inputPassword" class="block text-sm font-medium text-gray-300">Password</label>
+                <label for="inputPassword"
+                       class="block text-sm font-medium text-gray-300">{{ 'password.label'|trans({},'login') }}</label>
                 <div class="relative">
                     <input type="password" name="password" id="inputPassword"
                            class="dark:text-gray-200 mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 pr-10 text-gray-600"
-                           autocomplete="current-password" required placeholder="Enter your password">
+                           autocomplete="current-password" required
+                           placeholder="{{ 'password.placeholder'|trans({},'login') }}">
                     <button type="button" id="togglePassword"
                             class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500">
                         👁️
@@ -38,12 +41,12 @@
             <div class="flex flex-col space-y-4">
                 <button class="bg-blue-500 text-white w-full py-2 px-4 rounded-md hover:bg-blue-600 transition"
                         type="submit">
-                    Sign in
+                    {{ 'sign_in'|trans({},'login') }}
                 </button>
 
                 <a href="{{ path('app_register') }}"
                    class="text-center text-sm text-blue-500 hover:text-blue-700 transition">
-                    Don't have an account? Register
+                    {{ 'register'|trans({},'login') }}
                 </a>
             </div>
         </form>

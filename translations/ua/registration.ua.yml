@@ -1,0 +1,12 @@
+title: "Реєстрація"
+email:
+  label: "Електронна пошта"
+  placeholder: "Введіть вашу електронну пошту"
+password:
+  label: "Пароль"
+  placeholder: "Введіть ваш пароль"
+sign_up: "Зареєструватися"
+sign_in: "Увійти"
+terms:
+  agree: "Погоджуюсь з"
+  terms: "умовами"

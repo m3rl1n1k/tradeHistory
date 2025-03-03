@@ -63,8 +63,11 @@ class Budget
         return $this->plannedAmount;
     }
 
-    public function setPlannedAmount(float $plannedAmount): static
+    public function setPlannedAmount(string|float $plannedAmount): static
     {
+        if (is_string($plannedAmount)) {
+            $plannedAmount = floatval(str_replace(',', '.', $plannedAmount));
+        }
         $this->plannedAmount = $plannedAmount;
 
         return $this;
