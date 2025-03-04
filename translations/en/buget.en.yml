@@ -1,0 +1,31 @@
+index:
+  title: "Budgets"
+  create: "Create"
+  card:
+    overview: "Budget Overview"
+    planned: "Planned"
+    actual: "Actual"
+    remaining: "Remaining"
+    spent: "spent"
+edit:
+  title: "Edit budget"
+  update: "Update"
+
+show:
+  title: "Budget on"
+  card:
+    edit: "Edit"
+    delete: "Remove"
+    overview: "Budget Overview"
+    planned: "Planned"
+    actual: "Actual"
+    remaining: "Remaining"
+    spent: "spent"
+
+new:
+  title: "New budget"
+form:
+  planned: "Planned amount"
+  month: "Month"
+  category: "Category"
+  save: "Save"

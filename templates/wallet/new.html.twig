@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Wallet{% endblock %}
+{% block title %}{{ 'new.title'|trans({},'wallet') }}{% endblock %}
 
 {% block body %}
-    <h2 class="text-gray-900 dark:text-gray-300 text-2xl">Create new wallet</h2>
+    <h2 class="text-gray-900 dark:text-gray-300 text-2xl">{{ 'new.title'|trans({},'wallet') }}</h2>
 
     {{ include('wallet/_form.html.twig') }}
 

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Transaction {{ transaction.amount }}{% endblock %}
+{% block title %}{{ 'show.title'|trans({}, 'transaction') }} {{ transaction.amount }}{% endblock %}
 
 {% block body %}
     <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg mt-6">

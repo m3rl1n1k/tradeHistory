@@ -1,0 +1,18 @@
+index:
+  title: "Categories"
+  create:
+    title: "Create category"
+    main: "Main"
+    sub: "Sub"
+  edit: "Edit"
+  delete: "Remove"
+
+new:
+  title: "Create new parent category"
+
+form:
+  name: "Name of category"
+  color: "Color"
+  save: "Save"
+
+delete: "Remove"

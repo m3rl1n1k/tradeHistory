@@ -2,3 +2,4 @@ index:
   title: "Trade History"
 back: "Назад"
 search: "Пошук"
+confirm_message: "Ви впевнені, що хочете видалити цей елемент?"

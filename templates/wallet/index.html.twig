@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Wallet{% endblock %}
+{% block title %}{{ 'index.title'|trans({},'wallet') }}{% endblock %}
 
 {% block body %}
-    <h2 class="text-gray-900 dark:text-gray-300 text-2xl">Wallet</h2>
+    <h2 class="text-gray-900 dark:text-gray-300 text-2xl">{{ 'index.title'|trans({},'wallet') }}</h2>
     <div class="mb-5">
         <div class="flex flex-col md:flex-row gap-4 mt-2">
             {{ include('component/_link_succes.html.twig', {
                 'href': path('app_wallet_new'),
-                'link_label': 'Create'
+                'link_label':  'index.create'|trans({},'wallet')
             }) }}
         </div>
     </div>
@@ -16,16 +16,17 @@
     <table class="min-w-full table-auto border-collapse rounded-lg shadow-md overflow-hidden dark:bg-gray-600">
         <thead class="border-b bg-gray-100 dark:bg-gray-700">
         <tr class="hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-gray-900 dark:text-gray-300 hover:text-gray-600">
-            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Number</th>
-            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Name</th>
-            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Amount</th>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">{{ 'index.table.number'|trans({},'wallet') }}</th>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">{{ 'index.table.name'|trans({},'wallet') }}</th>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">{{ 'index.table.amount'|trans({},'wallet') }}</th>
         </tr>
         </thead>
         <tbody>
         {% for wallet in wallets %}
             <tr class="hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-gray-900 dark:text-gray-300 hover:text-gray-300">
                 <td class="px-4 py-2 text-center font-medium">
-                    <a class="hover:underline p-2 text-blue-600 dark:text-blue-400" href="{{ path('app_wallet_show',{'number': wallet.number}) }}">
+                    <a class="hover:underline p-2 text-blue-600 dark:text-blue-400"
+                       href="{{ path('app_wallet_show',{'number': wallet.number}) }}">
                         {{ wallet.number }}
                     </a>
                 </td>
@@ -34,7 +35,8 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="4" class="px-4 py-2 text-center text-gray-500 dark:text-gray-400">No records found</td>
+                <td colspan="4"
+                    class="px-4 py-2 text-center text-gray-500 dark:text-gray-400">{{ 'index.no_records'|trans({},'wallet') }}</td>
             </tr>
         {% endfor %}
         </tbody>

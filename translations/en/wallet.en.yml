@@ -1,0 +1,29 @@
+index:
+  title: "Wallets"
+  create: "Create"
+  table:
+    number: "Number"
+    name: "Name"
+    amount: "Amount"
+  no_records: "No records found"
+new:
+  title: "Create new wallet"
+
+show:
+  title: "Wallet"
+  card:
+    number: "Number"
+    name: "Name"
+    amount: "Amount"
+  edit: "Edit"
+  delete: "Remove"
+
+edit:
+  title: "Edit wallet"
+  update: "Update"
+form:
+  currency: "Currency"
+  name: "Name"
+  amount: "Amount"
+  is_main: "Is main wallet"
+  save: "Save"

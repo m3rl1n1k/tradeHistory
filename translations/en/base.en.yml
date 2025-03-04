@@ -2,3 +2,4 @@ index:
   title: "Trade History"
 back: "Back"
 search: "Search"
+confirm_message: "Are you sure you want to delete this item?"

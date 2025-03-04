@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New transaction{% endblock %}
+{% block title %}{{ 'new.title'|trans({}, 'transaction') }}{% endblock %}
 
 {% block body %}
     <h2 class="text-gray-900 dark:text-gray-300 text-2xl">{{ 'new.title'|trans({}, 'transaction') }}</h2>

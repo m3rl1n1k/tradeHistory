@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Transfer{% endblock %}
+{% block title %}{{ 'new.title'|trans({}, 'transfer') }}{% endblock %}
 
 {% block body %}
-    <h2 class="text-gray-900 dark:text-gray-300 text-2xl">Create new transfer</h2>
+    <h2 class="text-gray-900 dark:text-gray-300 text-2xl">{{ 'new.title'|trans({}, 'transfer') }}</h2>
 
     {{ include('transfer/_form.html.twig') }}
 
