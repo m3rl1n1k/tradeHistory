@@ -49,8 +49,15 @@ services:
       - ./docker/configs/nginx/project.conf.template:/etc/nginx/templates/project.conf.template
       - ./logs/nginx:/var/log/nginx
       - ./logs/cache:/var/cache/nginx
+      - ./ssl:/etc/ssl/private
     networks:
       - tradeHistory
+        #certbot:
+        #image: certbot/certbot
+        #volumes:
+        #- ./ssl:/etc/letsencrypt
+        #- ./docker/configs/nginx:/etc/nginx/conf.d
+        #entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"  
 
 volumes:
   database:

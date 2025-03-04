@@ -79,7 +79,7 @@ function connectToContainer() {
 
 function build() {
   echo "Збірка Docker-образів..."
-  docker compose --env-file .env.prod up --build
+  docker compose --env-file .env.prod up --build -d
 }
 
 function killContainers() {

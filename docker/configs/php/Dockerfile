@@ -16,7 +16,7 @@ RUN apt-get -y update && \
     vim  \
     rsync  \
     libicu-dev && apt-get clean && rm -rf /var/lib/apt/lists/*  && \
-    docker-php-ext-configure intl
+    docker-php-ext-configure intl && docker-php-ext-install intl
 
 
 # Встановлення розширень PostgreSQL
