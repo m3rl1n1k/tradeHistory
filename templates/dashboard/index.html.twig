@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'index.title'|trans({}, 'translation') }}{% endblock %}
+{% block title %}{{ 'title'|trans({}, 'dashboard') }}{% endblock %}
 
 {% block stylesheets %}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -18,24 +18,27 @@
     <main class="flex-1 p-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 dark:text-gray-300">
             <div class="bg-white dark:bg-gray-600 shadow-lg p-4 rounded-lg">
-                <h3 class="text-lg font-semibold my-2">Quick</h3>
+                <h3 class="text-lg font-semibold my-2">{{ 'quick.title'|trans({}, 'dashboard') }}</h3>
                 <div class="flex flex-col">
                     <a href="{{ path('app_transaction_new') }}"
                        class="text-center w-full bg-green-500 text-white p-2 rounded-lg mt-4">
-                        Add {{ 'transaction'|trans({}, 'menu') }}</a>
+                        {{ 'quick.transaction'|trans({}, 'dashboard') }}</a>
+                    <a href="{{ path('app_budget_new') }}"
+                       class="text-center w-full bg-blue-500 text-white p-2 rounded-lg mt-4">
+                        {{ 'quick.budget'|trans({}, 'dashboard') }}</a>
                     <a href="{{ path('app_category_new') }}"
                        class="text-center w-full bg-blue-500 text-white p-2 rounded-lg mt-4">
-                        Add {{ 'category'|trans({}, 'menu') }}</a>
+                        {{ 'quick.category'|trans({}, 'dashboard') }}</a>
                 </div>
             </div>
             <div class="bg-white dark:bg-gray-600 shadow-lg p-4 rounded-lg dark:text-gray-300">
-                <h3 class="text-lg font-semibold">Expense chart</h3>
+                <h3 class="text-lg font-semibold">{{ 'chart.title'|trans({}, 'dashboard') }}</h3>
                 <canvas id="expenseChart"></canvas>
-                <h4 class="text-lg font-semibold">Totally expensed {{ expense_amount }} {{ app.user.currency }}</h4>
+                <h4 class="text-lg font-semibold">{{ 'chart.total'| trans({}, 'dashboard') }} {{ expense_amount }} {{ app.user.currency }}</h4>
             </div>
             <div class="bg-white dark:bg-gray-600 shadow-lg p-4 rounded-lg dark:text-gray-300 flex justify-between ">
                 <div class="">
-                    <h3 class="text-lg font-semibold">{{ 'index.last_transaction'|trans({}, 'translation') }}</h3>
+                    <h3 class="text-lg font-semibold">{{ 'last_transaction'|trans({}, 'dashboard') }}</h3>
                     <ul class="space-y-2 over">
                         {% if last_transaction|length > 0 %}
                             {% for transaction in last_transaction %}
@@ -49,14 +52,14 @@
                                 </li>
                             {% endfor %}
                         {% else %}
-                            <li>{{ 'index.not_found_records'|trans({}, 'translation') }}</li>
+                            <li>{{ 'not_found_records'|trans({}, 'dashboard') }}</li>
                         {% endif %}
                     </ul>
                 </div>
             </div>
             <div class="bg-white dark:bg-gray-600 shadow-lg p-4 rounded-lg dark:text-gray-300 flex justify-between ">
                 <div class="">
-                    <h3 class="text-lg font-semibold">{{ 'index.card.total'|trans({}, 'translation') }}</h3>
+                    <h3 class="text-lg font-semibold">{{ 'total'|trans({}, 'dashboard') }}</h3>
                     <p class="text-2xl font-bold text-green-600 replace-block">{{ amount ? amount : 0 }} {{ app.user.currency }}</p>
                     <span class="stars hidden text-2xl font-bold text-green-600">******</span>
                     <ul class="space-y-2 over">

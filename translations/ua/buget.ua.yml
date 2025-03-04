@@ -1,0 +1,33 @@
+index:
+  title: "Бюджети"
+  create: "Створити"
+  card:
+    overview: "Огляд бюджету"
+    planned: "Заплановано"
+    actual: "Фактичне"
+    remaining: "Залишок"
+    spent: "Витрачено"
+
+edit:
+  title: "Редагувати бюджет"
+  update: "Оновити"
+
+show:
+  title: "Бюджет на"
+  card:
+    edit: "Редагувати"
+    delete: "Видалити"
+    overview: "Огляд бюджету"
+    planned: "Заплановано"
+    actual: "Фактичне"
+    remaining: "Залишок"
+    spent: "Витрачено"
+
+new:
+  title: "Новий бюджет"
+
+form:
+  planned: "Запланована сума"
+  month: "Місяць"
+  category: "Категорія"
+  save: "Зберегти"

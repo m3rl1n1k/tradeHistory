@@ -1,40 +1,45 @@
 {% if app.user.wallets is not empty %}
-{{ form_start(form) }}
+    {{ form_start(form) }}
     <div class="space-y-6 bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg">
         <div class="flex flex-col sm:flex-row sm:space-x-4">
             <div class="w-full sm:w-80">
-                <label for="{{ form.walletOut.vars.id }}" class="block text-gray-900 dark:text-gray-300 font-semibold mb-2">{{ form_label(form.walletOut, 'From', {'label_attr': {'class': 'block text-gray-900 dark:text-gray-300 font-semibold mb-2'}}) }}</label>
+                <label for="{{ form.walletOut.vars.id }}"
+                       class="block text-gray-900 dark:text-gray-300 font-semibold mb-2">{{ form_label(form.walletOut, 'form.from'|trans({}, 'transfer'), {'label_attr': {'class': 'block text-gray-900 dark:text-gray-300 font-semibold mb-2'}}) }}</label>
                 {{ form_widget(form.walletOut, {
                     'attr': {
-                        'class': 'w-full p-3 rounded-md border border-gray-300 dark:bg-gray-800 dark:border-gray-600 text-gray-900 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                        'class': 'w-full p-3 rounded-md border border-gray-300 dark:bg-gray-800 dark:border-gray-600 text-gray-900 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+                        'placwholder': 'form.from'|trans({}, 'transfer')
                     }
                 }) }}
             </div>
             <div class="w-full sm:w-80 mt-3 sm:mt-0">
-                <label for="{{ form.amount.vars.id }}" class="block text-gray-900 dark:text-gray-300 font-semibold mb-2">{{ form_label(form.amount, 'Amount', {'label_attr': {'class': 'block text-gray-900 dark:text-gray-300 font-semibold mb-2'}}) }}</label>
+                <label for="{{ form.amount.vars.id }}"
+                       class="block text-gray-900 dark:text-gray-300 font-semibold mb-2">{{ form_label(form.amount, 'form.amount'|trans({}, 'transfer'), {'label_attr': {'class': 'block text-gray-900 dark:text-gray-300 font-semibold mb-2'}}) }}</label>
                 {{ form_widget(form.amount, {
                     'attr': {
                         'class': 'w-full sm:w-80 p-3 rounded-md border border-gray-300 dark:bg-gray-800 dark:border-gray-600 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent sm:max-w-full max-w-xs',
-                        'placeholder': 'Amount'
+                        'placeholder': 'form.amount'|trans({}, 'transfer')
                     }
                 }) }}
             </div>
             <div class="w-full sm:w-80 mt-3 sm:mt-0">
-                <label for="{{ form.walletIn.vars.id }}" class="block text-gray-900 dark:text-gray-300 font-semibold mb-2">{{ form_label(form.walletIn, 'To', {'label_attr': {'class': 'block text-gray-900 dark:text-gray-300 font-semibold mb-2'}}) }}</label>
+                <label for="{{ form.walletIn.vars.id }}"
+                       class="block text-gray-900 dark:text-gray-300 font-semibold mb-2">{{ form_label(form.walletIn, 'form.to'|trans({}, 'transfer'), {'label_attr': {'class': 'block text-gray-900 dark:text-gray-300 font-semibold mb-2'}}) }}</label>
                 {{ form_widget(form.walletIn, {
                     'attr': {
-                        'class': 'w-full p-3 rounded-md border border-gray-300 dark:bg-gray-800 dark:border-gray-600 text-gray-900 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                        'class': 'w-full p-3 rounded-md border border-gray-300 dark:bg-gray-800 dark:border-gray-600 text-gray-900 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+                        'placeholder': 'form.to'|trans({}, 'transfer')
                     }
                 }) }}
             </div>
         </div>
 
         <div class="mt-6 flex justify-between">
-            <button type="submit" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-md shadow-md">{{ button_label|default('Save') }}</button>
-            <a href="{{ path('app_transfer_index') }}" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-md">{{ 'Back to list' }}</a>
+            <button class="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600">{{ button_label|default( 'form.save'|trans({}, 'transfer') ) }}</button>
+            {{ include('component/_link.html.twig') }}
         </div>
     </div>
-{{ form_end(form) }}
+    {{ form_end(form) }}
 {% else %}
-<h3>You don't have any wallet yet!</h3>
-{% endif%}
+    <h3>You don't have any wallet yet!</h3>
+{% endif %}

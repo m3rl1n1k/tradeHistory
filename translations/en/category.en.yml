@@ -1,0 +1,16 @@
+index:
+  edit: "Edit"
+
+new:
+  title: "Create new category"
+
+edit:
+  title: "Edit category"
+  update: "Update"
+
+form:
+  main: "Main category"
+  name: "Name of category"
+  color: "Color"
+
+delete: "Remove"

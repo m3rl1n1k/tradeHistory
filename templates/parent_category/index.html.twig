@@ -1,19 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Category{% endblock %}
+{% block title %}{{ 'index.title'|trans({}, 'parent_category') }}{% endblock %}
 
 {% block body %}
-    <h2 class="text-gray-900 dark:text-gray-300 text-2xl">Category</h2>
+    <h2 class="text-gray-900 dark:text-gray-300 text-2xl">{{ 'index.title'|trans({}, 'parent_category') }}</h2>
     <div class="mb-5">
-        <h4 class="text-gray-900 dark:text-gray-300 text-xl mt-4">Create:</h4>
+        <h4 class="text-gray-900 dark:text-gray-300 text-xl mt-4">{{ 'index.create.title'|trans({}, 'parent_category') }}
+            :</h4>
         <div class="flex flex-col md:flex-row gap-4 mt-2">
             {{ include('component/_link_succes.html.twig', {
                 'href': path('app_parent_category_new'),
-                'link_label': 'Main category'
+                'link_label':  'index.create.main'|trans({}, 'parent_category')
             }) }}
             {{ include('component/_link_succes.html.twig', {
                 'href': path('app_category_new'),
-                'link_label': 'Sub category'
+                'link_label':  'index.create.sub'|trans({}, 'parent_category')
             }) }}
         </div>
     </div>
@@ -34,7 +35,7 @@
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <a class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-medium py-1 px-3 rounded-md"
-                                       href="{{ path('app_category_edit', {'id': category.id}) }}">Edit</a>
+                                       href="{{ path('app_category_edit', {'id': category.id}) }}">{{ 'index.edit'|trans({}, 'category') }}</a>
                                     {{ include('category/_delete_form.html.twig') }}
                                 </div>
                             </li>

@@ -1,0 +1,17 @@
+not_found: "Records not found"
+
+index:
+  title: "Transfers"
+  create: "Create"
+  table:
+    amount: "Amount"
+    from: "From"
+    to: "To"
+
+new:
+  title: "Crete new transfer"
+form:
+  amount: "Amount"
+  from: "From"
+  to: "To"
+  save: "Save"

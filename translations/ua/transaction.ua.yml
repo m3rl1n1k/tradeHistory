@@ -1,0 +1,37 @@
+not_found: "Записів не знайдено"
+
+index:
+  title: "Транзакції"
+  create: "Створити"
+  table:
+    amount: "Сума"
+    category: "Категорія"
+    wallet: "Гаманець"
+    date: "Дата"
+
+show:
+  title: "Транзакція"
+  id: "ID"
+  amount: "Сума"
+  category: "Категорія"
+  wallet: "Гаманець"
+  type: "Тип"
+  date: "Дата"
+  description: "Опис"
+  edit: "Редагувати"
+  delete: "Видалити"
+
+edit:
+  title: "Редагувати транзакцію"
+
+new:
+  title: "Створити нову транзакцію"
+
+form:
+  from: "Від"
+  amount: "Сума"
+  category: "Категорія"
+  type: "Тип"
+  date: "Дата"
+  description: "Опис"
+  save: "Зберегти"

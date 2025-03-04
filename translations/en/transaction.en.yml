@@ -1,0 +1,33 @@
+not_found: "Records not found"
+
+index:
+  title: "Transaction"
+  create: "Create"
+  table:
+    amount: "Amount"
+    category: "Category"
+    wallet: "Wallet"
+    date: "Date"
+show:
+  title: "Transaction"
+  id: "Id"
+  amount: "Amount"
+  category: "Category"
+  wallet: "Wallet"
+  type: "Type"
+  date: "Date"
+  description: "Description"
+  edit: "Edit"
+  delete: "Delete"
+edit:
+  title: "Edit transaction"
+new:
+  title: "Create new transaction"
+form:
+  from: "From"
+  amount: "Amount"
+  category: "Category"
+  type: "Type"
+  date: "Date"
+  description: "Description"
+  save: "Save"

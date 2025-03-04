@@ -1,0 +1,18 @@
+not_found: "Записів не знайдено"
+
+index:
+  title: "Перекази"
+  create: "Створити"
+  table:
+    amount: "Сума"
+    from: "Від"
+    to: "До"
+
+new:
+  title: "Створити новий переказ"
+
+form:
+  amount: "Сума"
+  from: "Від"
+  to: "До"
+  save: "Зберегти"

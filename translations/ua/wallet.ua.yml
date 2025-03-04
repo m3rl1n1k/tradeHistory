@@ -1,0 +1,31 @@
+index:
+  title: "Гаманці"
+  create: "Створити"
+  table:
+    number: "Номер"
+    name: "Назва"
+    amount: "Сума"
+  no_records: "Записів не знайдено"
+
+new:
+  title: "Створити новий гаманець"
+
+show:
+  title: "Гаманець"
+  card:
+    number: "Номер"
+    name: "Назва"
+    amount: "Сума"
+  edit: "Редагувати"
+  delete: "Видалити"
+
+edit:
+  title: "Редагувати гаманець"
+  update: "Оновити"
+
+form:
+  currency: "Валюта"
+  name: "Назва"
+  amount: "Сума"
+  is_main: "Основний гаманець"
+  save: "Зберегти"

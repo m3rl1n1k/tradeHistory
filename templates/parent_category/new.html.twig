@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Category{% endblock %}
+{% block title %}{{ 'new.title'|trans({},'parent_category') }}{% endblock %}
 
 {% block body %}
-    <h2 class="text-gray-900 dark:text-gray-300 text-2xl">Create new parent category</h2>
+    <h2 class="text-gray-900 dark:text-gray-300 text-2xl">{{ 'new.title'|trans({},'parent_category') }}</h2>
     {{ include('parent_category/_form.html.twig') }}
 {% endblock %}
