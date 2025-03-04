@@ -21,7 +21,7 @@ final class FeedbackController extends AbstractController
     {
     }
 
-    #[Route('/feedback', name: 'app_feedback')]
+    #[Route('/{_locale}/feedback', name: 'app_feedback')]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
         $feedbackList = $this->feedbackRepository->getAll();

@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
-#[Route('/user')]
+#[Route('/{_locale}/user')]
 final class UserController extends AbstractController
 {
     #[Route('/{id}', name: 'app_user_index', methods: ['GET', 'POST'])]

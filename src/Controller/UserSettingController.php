@@ -14,7 +14,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 final class UserSettingController extends AbstractController
 {
-    #[Route('/setting', name: 'app_user_setting_index', methods: ['GET', 'POST'])]
+    #[Route('/{_locale}/setting', name: 'app_user_setting_index', methods: ['GET', 'POST'])]
     public function settings(Request $request, EntityManagerInterface $entityManager): Response
     {
         /** @var User $userSetting */
