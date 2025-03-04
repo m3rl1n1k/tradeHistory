@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Transfer;
-use App\Entity\Wallet;
 use App\Form\TransferType;
 use App\Repository\TransferRepository;
 use App\Service\Interfaces\TransferCalculationInterface;
@@ -15,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted("IS_AUTHENTICATED_FULLY")]
-#[Route('/transfer')]
+#[Route('/{_locale}/transfer')]
 final class TransferController extends AbstractController
 {
     public function __construct(protected TransferCalculationInterface $calculation)

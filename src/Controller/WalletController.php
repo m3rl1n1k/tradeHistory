@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
-#[Route('/wallet')]
+#[Route('/{_locale}/wallet')]
 final class WalletController extends AbstractController
 {
     public function __construct(

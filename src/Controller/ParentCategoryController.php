@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
-#[Route('/parent/category')]
+#[Route('/{_locale}/parent/category')]
 final class ParentCategoryController extends AbstractController
 {
     public function __construct(protected CategoryRepository       $CategoryRepository,
