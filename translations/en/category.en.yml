@@ -12,5 +12,6 @@ form:
   main: "Main category"
   name: "Name of category"
   color: "Color"
+  save: "Save"
 
 delete: "Remove"

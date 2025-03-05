@@ -16,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 final class RegistrationController extends AbstractController
 {
     #[Route('/{_locale}/register', name: 'app_register', requirements: [
-        '_locale' => 'en|ua',
+        '_locale' => 'en|uk',
     ])]
     public function register(#[CurrentUser] ?User $user, Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
@@ -50,7 +50,7 @@ final class RegistrationController extends AbstractController
     }
 
     #[Route('/{_locale}/terms', name: 'app_registration_terms', requirements: [
-        '_locale' => 'en|ua',
+        '_locale' => 'en|uk',
     ])]
     public function terms(): Response
     {

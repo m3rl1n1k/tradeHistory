@@ -8,6 +8,7 @@ use App\Service\Interfaces\CrypticInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 
 class Kernel extends BaseKernel
@@ -22,6 +23,14 @@ class Kernel extends BaseKernel
         /** @var CrypticInterface $cryptService */
         $cryptService = $container->get(CrypticInterface::class);
         EncryptedStringType::setCryptic($cryptService);
+
+        // Set locale dynamically based on session or request
+        if ($this->container->has('request_stack')) {
+            $request = $this->container->get('request_stack')->getCurrentRequest();
+            if ($request instanceof Request) {
+                $this->container->get('translator')->setLocale($request->getLocale());
+            }
+        }
     }
 
     /**
