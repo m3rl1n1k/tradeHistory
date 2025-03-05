@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Transaction;
 use App\Enum\TransactionTypeEnum;
 use App\Repository\TransactionRepository;
+use App\Service\Category\CategoryList;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
@@ -18,7 +19,8 @@ class ChartService
 
     public function __construct(protected TransactionRepository $transactionRepository,
                                 protected DateService           $dateService,
-                                protected SettingService        $userSettings
+                                protected SettingService        $userSettings,
+                                protected CategoryList          $categoryList,
     )
     {
         $this->transactions = $this->transactionRepository->getTransactionForCurrentMonth();
@@ -33,9 +35,9 @@ class ChartService
         return [
             'labels' => $labels,
             'datasets' => [
-                    'data' => $dataset,
-                    'backgroundColor' => $colors,
-                    'borderWidth' => 1,
+                'data' => $dataset,
+                'backgroundColor' => $colors,
+                'borderWidth' => 1,
             ],
             'expense' => $this->totalExpense()
         ];
@@ -66,16 +68,11 @@ class ChartService
         ];
     }
 
-    public function getCategoriesList(): array
+    public function getCategoriesList($category = null, $without = null): array
     {
         $list = [];
         if ($this->withoutCategory !== null) {
             $list['without_category'] = "Without Category";
-        }
-        foreach ($this->transactions as $transaction) {
-            $category = $transaction->getCategory();
-            if ($category !== null && $transaction->getType() === TransactionTypeEnum::Expense->value)
-                $list[] = $transaction->getCategory()->getName();
         }
         return array_values(array_unique($list));
     }
