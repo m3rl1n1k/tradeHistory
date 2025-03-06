@@ -1,0 +1,6 @@
+index:
+  title: "Profile"
+  form:
+    email: "Email"
+    currency_select: "Select your currency"
+    save: "Save"

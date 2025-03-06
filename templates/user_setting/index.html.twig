@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}UserSetting index{% endblock %}
+{% block title %}{{ 'index.title'|trans({}, 'settings') }}{% endblock %}
 
 {% block body %}
-    <h2 class="text-gray-900 dark:text-gray-300 text-2xl">App settings</h2>
+    <h2 class="text-gray-900 dark:text-gray-300 text-2xl">{{ 'index.title'|trans({}, 'settings') }}</h2>
     {% include "user_setting/_form.html.twig" %}
 
 

@@ -1,0 +1,10 @@
+index:
+  title: "App settings"
+  form:
+    coloredCategories: "Category with color"
+    coloredParentCategories: "Parent category with color"
+    showColorInTransactionList: "Show color in transaction list"
+    defaultColorForCategoryAndParent: "Default color for both categories"
+    colorExpenseChart: "Color for expense chart"
+    colorIncomeChart: "Color for profit chart"
+    transactionsPerPage: "Count transactions to show per page"

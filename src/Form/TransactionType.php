@@ -29,7 +29,8 @@ class TransactionType extends AbstractType
         $transactionDate = $transaction && $transaction->getDate() ? $transaction->getDate() : $date;
         $builder
             ->add('wallet', ChoiceType::class, [
-                'placeholder' => "Select wallet",
+                'translation_domain' => 'transaction',
+                'placeholder' => "form.select.wallet",
                 'choice_label' => function (Wallet $wallet) {
                     return (!empty($wallet->getName()) ? $wallet->getName() : $wallet->getNumber()) . " | " . $wallet->getAmount() . " " . $wallet->getCurrency();
                 },
@@ -38,7 +39,8 @@ class TransactionType extends AbstractType
             ])
             ->add('amount', NumberType::class, [
                 'error_bubbling' => true,
-                'invalid_message' => 'Not walid data for amount!',
+                'translation_domain' => 'transaction',
+                'invalid_message' => 'form.error.amount',
                 'attr' => [
                     'type' => 'number',
                     'step' => 0.01
@@ -51,11 +53,13 @@ class TransactionType extends AbstractType
                 'choice_label' => 'name',
                 'choice_value' => 'id',
                 'label' => 'Category',
-                'placeholder' => "Select category"
+                'translation_domain' => 'transaction',
+                'placeholder' => "form.select.category",
             ])
             ->add('type', ChoiceType::class,
                 [
                     'choices' => TransactionTypeEnum::transactionTypes(),
+                    'translation_domain' => 'transaction',
                 ])
             ->add('date', DateType::class, [
                 'attr' => [

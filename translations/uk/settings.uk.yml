@@ -1,0 +1,11 @@
+index:
+  title: "Налаштування застосунку"
+  form:
+    coloredCategories: "Категорія з кольором"
+    coloredParentCategories: "Батьківська категорія з кольором"
+    showColorInTransactionList: "Показувати колір у списку транзакцій"
+    defaultColorForCategoryAndParent: "Колір за замовчуванням для обох категорій"
+    colorExpenseChart: "Колір для графіка витрат"
+    colorIncomeChart: "Колір для графіка доходів"
+    transactionsPerPage: "Кількість транзакцій на сторінці"
+    save: "Зберегти"

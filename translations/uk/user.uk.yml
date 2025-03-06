@@ -1,0 +1,6 @@
+index:
+  title: "Профіль"
+  form:
+    email: "Електронна пошта"
+    currency_select: "Виберіть вашу валюту"
+    save: "Зберегти"

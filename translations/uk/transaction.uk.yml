@@ -28,7 +28,12 @@ new:
   title: "Створити нову транзакцію"
 
 form:
-  from: "Від"
+  from: "З"
+  error:
+    amount: "Неправильний формат суми"
+  select:
+    wallet: "Виберіть гаманець"
+    category: "Виберіть категорію"
   amount: "Сума"
   category: "Категорія"
   type: "Тип"

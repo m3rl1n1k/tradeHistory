@@ -25,9 +25,16 @@ new:
   title: "Create new transaction"
 form:
   from: "From"
+  error:
+    amount: "Invalid format for amount"
+  select:
+    wallet: "Select wallet"
+    category: "Select category"
   amount: "Amount"
   category: "Category"
   type: "Type"
   date: "Date"
   description: "Description"
   save: "Save"
+Profit: "Profit"
+Expense: "Expense"
