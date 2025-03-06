@@ -62,7 +62,7 @@
                     <h3 class="text-lg font-semibold">{{ 'total'|trans({}, 'dashboard') }}</h3>
                     <p class="text-2xl font-bold text-green-600 replace-block">{{ amount ? amount : 0 }} {{ app.user.currency }}</p>
                     <span class="stars hidden text-2xl font-bold text-green-600">******</span>
-                    {{ include('component/_hidden_sum.html.twig') }}
+                    {#                    {{ include('component/_hidden_sum.html.twig') }} #}
                     <ul class="space-y-2 over">
                         {% if app.user.wallets|length > 0 %}
                             {% for wallet in app.user.wallets %}
