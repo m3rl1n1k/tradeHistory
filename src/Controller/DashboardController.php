@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
-use App\Repository\CategoryRepository;
+use App\Repository\BudgetRepository;
 use App\Repository\TransactionRepository;
+use App\Service\Budget\BudgetService;
 use App\Service\ChartService;
 use App\Service\WalletService;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -14,9 +16,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class DashboardController extends AbstractController
 {
     public function __construct(
-        protected ChartService       $chartService,
-        protected CategoryRepository $CategoryRepository,
-        protected WalletService      $walletService,
+        protected ChartService     $chartService,
+        protected BudgetRepository $budgetRepository,
+        protected BudgetService    $budgetService,
+        protected WalletService    $walletService,
     )
     {
     }
@@ -29,7 +32,10 @@ final class DashboardController extends AbstractController
         $labels = $data['labels'];
         $chartData = $data['datasets']['data'];
         $colors = $data['datasets']['backgroundColor'];
+        $firstDayOfMonth = new DateTime('now');
+        $budget = $this->budgetRepository->findOneBy(['user' => $this->getUser(), 'month' => $firstDayOfMonth->format('Y-m-01')]);
         return $this->render('dashboard/index.html.twig', [
+            'current_budget' => $this->budgetService->summary([$budget]),
             'last_transaction' => $transactionRepository->getLastTransaction(),
             'labels' => json_encode($labels, JSON_PRETTY_PRINT),
             'data' => json_encode($chartData, JSON_PRETTY_PRINT),

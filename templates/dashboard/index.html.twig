@@ -24,7 +24,7 @@
                        class="text-center w-full bg-green-500 text-white p-2 rounded-lg mt-4">
                         {{ 'quick.transaction'|trans({}, 'dashboard') }}</a>
                     <a href="{{ path('app_budget_new') }}"
-                       class="text-center w-full bg-blue-500 text-white p-2 rounded-lg mt-4">
+                       class="text-center w-full bg-yellow-500 text-white p-2 rounded-lg mt-4">
                         {{ 'quick.budget'|trans({}, 'dashboard') }}</a>
                     <a href="{{ path('app_category_new') }}"
                        class="text-center w-full bg-blue-500 text-white p-2 rounded-lg mt-4">
@@ -57,6 +57,50 @@
                     </ul>
                 </div>
             </div>
+            <div class="bg-white dark:bg-gray-600 shadow-lg p-4 rounded-lg dark:text-gray-300">
+                <div class="">
+                    <h3 class="text-lg font-semibold">{{ 'current_budget'|trans({}, 'dashboard') }}</h3>
+                    {% for date, budget in current_budget %}
+                        <div class="flex justify-between items-center mb-3">
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">{{ date|date('M Y') }}</h4>
+                            <a class="" href="{{ path('app_budget_show', {'month' : date}) }}"><span
+                                        class="text-sm text-gray-500 dark:text-gray-400">{{ 'index.card.overview'|trans({}, 'buget') }}</span></a>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-300">{{ 'index.card.planned'|trans({}, 'buget') }}:</span>
+                                <span class="font-medium text-gray-900 dark:text-white">{{ budget.totalPlanned }} {{ app.user.currency }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-300">{{ 'index.card.actual'|trans({}, 'buget') }}:</span>
+                                <span class="font-medium text-red-500 dark:text-red-400">{{ budget.totalActual }} {{ app.user.currency }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-300">{{ 'index.card.remaining'|trans({}, 'buget') }}:</span>
+                                <span class="font-medium {% if (budget.totalPlanned - budget.totalActual) < 0 %}
+                            text-red-500 dark:text-red-400 {% else %} text-green-500 dark:text-green-400 {% endif %}">
+                {{ budget.totalPlanned - budget.totalActual }} {{ app.user.currency }}</span>
+                            </div>
+
+                            {# Прогрес-бар #}
+                            {% set percent = (budget.totalActual / budget.totalPlanned) * 100 %}
+                            <div class="mb-1 text-base font-medium {% if percent < 50 %} text-green-700 dark:text-green-500
+                        {% elseif percent < 80 %} text-yellow-700 dark:text-yellow-500
+                        {% else %} text-red-700 dark:text-red-500 {% endif %}">
+                                {{ percent|round(1) }}% {{ 'index.card.spent'|trans({}, 'buget') }}
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                                <div class="h-2.5 rounded-full transition-all"
+                                     style="width: {{ percent > 100 ? 100 : percent }}%;
+                                             background-color: {% if percent < 50 %} #10B981
+                                     {% elseif percent < 80 %} #FBBF24
+                                     {% else %} #EF4444 {% endif %};">
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
             <div class="bg-white dark:bg-gray-600 shadow-lg p-4 rounded-lg dark:text-gray-300 flex justify-between ">
                 <div class="">
                     <h3 class="text-lg font-semibold">{{ 'total'|trans({}, 'dashboard') }}</h3>
@@ -73,7 +117,7 @@
                                 </li>
                             {% endfor %}
                         {% else %}
-                            <li>Not found any wallet yet</li>
+                            <li>{{ 'not_found_records'|trans({}, 'dashboard') }}</li>
                         {% endif %}
                     </ul>
                 </div>

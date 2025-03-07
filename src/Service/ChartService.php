@@ -5,8 +5,7 @@ namespace App\Service;
 use App\Entity\Transaction;
 use App\Enum\TransactionTypeEnum;
 use App\Repository\TransactionRepository;
-use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
-use Symfony\UX\Chartjs\Model\Chart;
+use App\Service\Category\CategoryList;
 
 class ChartService
 {
@@ -19,7 +18,7 @@ class ChartService
     public function __construct(protected TransactionRepository $transactionRepository,
                                 protected DateService           $dateService,
                                 protected SettingService        $userSettings,
-//                                protected CategoryList          $categoryList,
+                                protected CategoryList          $categoryList,
     )
     {
         $this->transactions = $this->transactionRepository->getTransactionForCurrentMonth();
@@ -67,7 +66,7 @@ class ChartService
         ];
     }
 
-    public function getCategoriesList($category = null, $without = null): array
+    public function getCategoriesList(): array
     {
         $list = [];
         if ($this->withoutCategory !== null) {

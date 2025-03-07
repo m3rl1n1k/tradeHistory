@@ -12,3 +12,5 @@ quick:
 chart:
   title: "Expense chart"
   total: "Totally expensed"
+
+current_budget: "Current budget"

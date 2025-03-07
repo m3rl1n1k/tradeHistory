@@ -16,11 +16,11 @@ class BudgetService
     {
     }
 
-    public function summary(array|Budget $budgets, string $type = 'yearly', array $options = []): array|BudgetSummary
+    public function summary(array|Budget $budget, string $type = 'yearly', array $options = []): array|BudgetSummary
     {
         return match ($type) {
-            'yearly' => $this->summaryYearly($budgets, $options),
-            'monthly' => $this->summaryMonthly($budgets, $options),
+            'yearly' => $this->summaryYearly($budget, $options),
+            'monthly' => $this->summaryMonthly($budget, $options),
         };
     }
 
