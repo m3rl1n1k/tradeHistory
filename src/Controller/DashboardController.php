@@ -33,9 +33,9 @@ final class DashboardController extends AbstractController
         $chartData = $data['datasets']['data'];
         $colors = $data['datasets']['backgroundColor'];
         $firstDayOfMonth = new DateTime('now');
-        $budget = $this->budgetRepository->findOneBy(['user' => $this->getUser(), 'month' => $firstDayOfMonth->format('Y-m-01')]);
+        $budget = $this->budgetRepository->findBy(['user' => $this->getUser(), 'month' => $firstDayOfMonth->format('Y-m-01')]);
         return $this->render('dashboard/index.html.twig', [
-            'current_budget' => $this->budgetService->summary([$budget]),
+            'current_budget' => $this->budgetService->summary($budget),
             'last_transaction' => $transactionRepository->getLastTransaction(),
             'labels' => json_encode($labels, JSON_PRETTY_PRINT),
             'data' => json_encode($chartData, JSON_PRETTY_PRINT),
