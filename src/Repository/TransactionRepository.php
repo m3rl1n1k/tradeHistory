@@ -89,7 +89,7 @@ class TransactionRepository extends ServiceEntityRepository
             ->where('t.user = :user')
             ->orderBy('t.date', 'DESC')
             ->setParameter('user', $this->security->getUser());
-        if ($max !== null) {
+        if ($max !== null && $max < 50) {
             $query->setMaxResults(abs((int)$max));
         }
         return $rawQuery ? $query->getQuery() : $query->getQuery()->getResult();

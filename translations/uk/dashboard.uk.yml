@@ -12,3 +12,5 @@ quick:
 chart:
   title: "Графік витрат"
   total: "Всього витрачено"
+
+current_budget: "Поточний бюджет"
