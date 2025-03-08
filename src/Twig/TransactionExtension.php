@@ -14,6 +14,7 @@ class TransactionExtension extends AbstractExtension
         return [
             new TwigFunction('type', [$this, 'type']),
             new TwigFunction('color', [$this, 'color']),
+            new TwigFunction('contrast', [$this, 'tableColorContrast']),
         ];
     }
 
@@ -34,5 +35,21 @@ class TransactionExtension extends AbstractExtension
             TransactionTypeEnum::Expense->value => "Expense",
             TransactionTypeEnum::Transfer->value => "Transfer"
         };
+    }
+
+    public function tableColorContrast($color): string
+    {
+        if (empty($color)) {
+            return '';
+        }
+        // Convert hex color to RGB
+        list($r, $g, $b) = sscanf($color, "#%02x%02x%02x");
+
+        // Calculate perceived brightness (Luma)
+        $brightness = ($r * 0.299 + $g * 0.587 + $b * 0.114) / 255;
+
+        // Return white or black based on background brightness
+        $contrast = $brightness > 0.5 ? '#0a0a0a' : '#eeeeee';
+        return "style=background:$color;color:$contrast";
     }
 }
