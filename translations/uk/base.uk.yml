@@ -1,5 +1,7 @@
 index:
   title: "Trade History"
 back: "Назад"
-search: "Пошук"
+search:
+  button: "Пошук"
+  placeholder: "Введіть категорію"
 confirm_message: "Ви впевнені, що хочете видалити цей елемент?"

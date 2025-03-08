@@ -1,5 +1,7 @@
 index:
   title: "Trade History"
 back: "Back"
-search: "Search"
+search:
+  button: "Search"
+  placeholder: "Enter category"
 confirm_message: "Are you sure you want to delete this item?"

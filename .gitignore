@@ -30,3 +30,15 @@
 ###> phpstan/phpstan ###
 phpstan.neon
 ###< phpstan/phpstan ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
+/node_modules/
+
+/container.bat
+/container
+/symfony.lock
+/composer.lock
+/nginx.ssl

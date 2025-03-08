@@ -16,6 +16,7 @@
     <table class="min-w-full table-auto border-collapse rounded-lg shadow-md overflow-hidden dark:bg-gray-600">
         <thead class="border-b bg-gray-100 dark:bg-gray-700">
         <tr>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">{{ 'index.table.type'|trans({}, 'transaction') }}</th>
             <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">{{ 'index.table.amount'|trans({}, 'transaction') }}</th>
             <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">{{ 'index.table.category'|trans({}, 'transaction') }}</th>
             <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">{{ 'index.table.wallet'|trans({}, 'transaction') }}</th>
@@ -28,8 +29,11 @@
                     {% if app.user.setting.showColorInTransactionList %}
                 style="background-color: {{ transaction.Category.color|default('transparent') }};"
                     {% endif %}>
-                <td class="px-4 py-2 text-center font-medium">
-                    <a class="hover:underline p-2 text-blue-600 dark:text-blue-400"
+                <td>
+                    {{ include('component/_transaction_type.html.twig', {'type' : transaction.type}) }}
+                </td>
+                <td class="px-4 py-2 font-medium">
+                    <a class="hover:underline p-2"
                        href="{{ path('app_transaction_show', {'id': transaction.id}) }}">
                         {{ transaction.amount }} <span class="text-xs">{{ transaction.wallet.currency }}</span>
                     </a>
