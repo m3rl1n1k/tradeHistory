@@ -42,9 +42,11 @@
                     <ul class="space-y-2 over">
                         {% if last_transaction|length > 0 %}
                             {% for transaction in last_transaction %}
-                                <li><a class="text-decoration-none {{ color(transaction.type) }} hover:underline"
+                                <li class="flex items-center">
+                                    {{ include('component/_transaction_type.html.twig', {'type' : transaction.type}) }}
+                                    <a class="text-decoration-none {{ color(transaction.type) }} hover:underline"
                                        href="{{ path('app_transaction_show', {'id': transaction.id}) }}">
-                                        {{ transaction.amount }} <span
+                                        &nbsp;{{ transaction.amount }} <span
                                                 class="text-xs">{{ transaction.wallet.currency }}</span> -
                                         {{ transaction.category.name ?? '' }} -
                                         {{ transaction.date|date('d M') }}
@@ -106,7 +108,6 @@
                     <h3 class="text-lg font-semibold">{{ 'total'|trans({}, 'dashboard') }}</h3>
                     <p class="text-2xl font-bold text-green-600 replace-block">{{ amount ? amount : 0 }} {{ app.user.currency }}</p>
                     <span class="stars hidden text-2xl font-bold text-green-600">******</span>
-                    {{ include('component/_hidden_sum.html.twig') }}
                     <ul class="space-y-2 over">
                         {% if app.user.wallets|length > 0 %}
                             {% for wallet in app.user.wallets %}

@@ -1,0 +1,15 @@
+index:
+  title: "Feedback"
+  message: "Message"
+  category: "Category"
+  form:
+    placeholder: "Write your message. This can be all you want! Suggestions, problems with the site, and more... So, I will try to fix this as quickly as I can =)"
+    save: "Send"
+
+special:
+  list: "List"
+  close: "Close"
+  delete: "Remove"
+  status:
+    open: "Open"
+    fixed: "Fixed"

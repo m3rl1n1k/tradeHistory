@@ -4,6 +4,7 @@ index:
   title: "Transaction"
   create: "Create"
   table:
+    type: "Type"
     amount: "Amount"
     category: "Category"
     wallet: "Wallet"

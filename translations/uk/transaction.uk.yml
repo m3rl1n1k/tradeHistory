@@ -1,6 +1,7 @@
 not_found: "Записів не знайдено"
 
 index:
+  type: "Тип"
   title: "Транзакції"
   create: "Створити"
   table:
