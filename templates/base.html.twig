@@ -4,7 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>{% block title %}{% endblock %}</title>
-    <link href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>"
+    <link href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='size-6'>
+    <path d='M3 3v18h18'/>
+    <rect x='6' y='14' width='3' height='5'/>
+    <rect x='11' y='10' width='3' height='9'/>
+    <rect x='16' y='6' width='3' height='13'/>
+    </svg>
+    "
           rel="icon">
     <link rel="stylesheet" href="{{ asset('assets/app.tailwind.css') }}">
     {% block stylesheets %}

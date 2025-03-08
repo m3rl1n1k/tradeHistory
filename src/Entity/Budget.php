@@ -19,14 +19,14 @@ class Budget
     private User $user;
 
     #[ORM\ManyToOne(targetEntity: Category::class)]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     #[BudgetCategory]
     private Category $category;
 
     #[ORM\Column(type: 'encrypted_string')]
     private float $plannedAmount;
 
-    #[ORM\Column(type: 'string', length: 20)] // Format: 'YYYY-MM'
+    #[ORM\Column(type: 'string', length: 20)] // Format: 'YYYY-MM-'
     private string $month;
 
     public function getId(): ?int
