@@ -19,7 +19,7 @@
             <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">{{ 'index.table.type'|trans({}, 'transaction') }}</th>
             <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">{{ 'index.table.amount'|trans({}, 'transaction') }}</th>
             <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">{{ 'index.table.category'|trans({}, 'transaction') }}</th>
-            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">{{ 'index.table.wallet'|trans({}, 'transaction') }}</th>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 hidden md:block">{{ 'index.table.wallet'|trans({}, 'transaction') }}</th>
             <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">{{ 'index.table.date'|trans({}, 'transaction') }}</th>
         </tr>
         </thead>
@@ -39,7 +39,7 @@
                     </a>
                 </td>
                 <td class="px-4 py-2">{{ transaction.Category ? transaction.Category.name : '' }}</td>
-                <td class="px-4 py-2">{{ transaction.wallet.name ?? transaction.wallet.number }}</td>
+                <td class="px-4 py-2 hidden md:block">{{ transaction.wallet.name ?? transaction.wallet.number }}</td>
                 <td class="px-4 py-2">{{ transaction.date ? transaction.date|date('d M') : '' }}</td>
             </tr>
         {% else %}
