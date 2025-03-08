@@ -34,7 +34,6 @@ class TransferCalculateService implements TransferCalculationInterface
 //        }
         match ($flag) {
             'new' => $this->newTransfer($walletOut, $walletIn, $amount),
-//            'edit' => $this->editTransfer($walletOut, $walletIn, $amount, $options['oldAmount']),
             'default' => throw new NotFoundHttpException('Flag not found')
         };
 
@@ -42,22 +41,26 @@ class TransferCalculateService implements TransferCalculationInterface
 
     private function newTransfer(object $walletOut, object $walletIn, float $amount): void
     {
-        $this->entityManager->beginTransaction();
-        //from out minus amount in plus amount and check if currency same
-        /** @var Wallet $walletOut */
-        $sum = $walletOut->decrement($amount);
-        $walletOut->setAmount($sum);
-        $sum = $walletIn->increment($amount);
-        $walletIn->setAmount($sum);
-        $this->createTransaction($amount, $walletOut, $walletIn);
-        $this->entityManager->commit();
+        try {
+            $this->entityManager->beginTransaction();
+            //from out minus amount in plus amount and check if currency same
+            /** @var Wallet $walletOut */
+            $sum = $walletOut->decrement($amount);
+            $walletOut->setAmount($sum);
+            $sum = $walletIn->increment($amount);
+            $walletIn->setAmount($sum);
+            $this->createTransaction($amount, $walletOut, $walletIn);
+            $this->entityManager->commit();
+        } catch (Exception $e) {
+            $this->entityManager->rollback();
+        }
     }
 
     private function createTransaction($amount, $walletOut, $walletIn): void
     {
         $transaction = new Transaction();
-        $transaction->setUser($walletIn->getUser());
-        $transaction->setWallet($walletIn);
+        $transaction->setUser($walletOut->getUser());
+        $transaction->setWallet($walletOut);
         $transaction->setDate(new DateTime());
         $transaction->setAmount($amount);
         $out = $walletOut->getname() ?? $walletOut->getNumber();
@@ -67,12 +70,5 @@ class TransferCalculateService implements TransferCalculationInterface
 
         $this->entityManager->persist($transaction);
         $this->entityManager->flush();
-    }
-
-    private function editTransfer(object $walletOut, object $walletIn, float $amount, float $oldAmount): void
-    {
-        $amount = abs($amount - $oldAmount);
-        $walletOut->decrement($amount);
-        $walletIn->increment($amount);
     }
 }
