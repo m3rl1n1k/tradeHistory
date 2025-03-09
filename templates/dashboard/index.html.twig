@@ -106,7 +106,8 @@
             <div class="bg-white dark:bg-gray-600 shadow-lg p-4 rounded-lg dark:text-gray-300 flex justify-between ">
                 <div class="">
                     <h3 class="text-lg font-semibold">{{ 'total'|trans({}, 'dashboard') }}</h3>
-                    <p class="text-2xl font-bold text-green-600 replace-block">{{ amount ? amount : 0 }} {{ app.user.currency }}</p>
+                    <p class="text-2xl font-bold text-green-600 replace-block">
+                        ~ {{ amount ? amount : 0 }} {{ app.user.currency }}</p>
                     <span class="stars hidden text-2xl font-bold text-green-600">******</span>
                     <ul class="space-y-2 over">
                         {% if app.user.wallets|length > 0 %}

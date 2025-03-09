@@ -25,7 +25,7 @@ final class TransferController extends AbstractController
     public function index(TransferRepository $transferRepository): Response
     {
         return $this->render('transfer/index.html.twig', [
-            'transfers' => $transferRepository->findBy(['user' => $this->getUser()]),
+            'transfers' => $transferRepository->findBy(['user' => $this->getUser()], ['id' => 'DESC']),
             'pager' => null
         ]);
     }

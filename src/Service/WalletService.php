@@ -5,14 +5,14 @@ namespace App\Service;
 use App\Entity\User;
 use App\Entity\Wallet;
 use App\Repository\WalletRepository;
-use Quandl;
+use App\Service\Interfaces\CurrencyConverterInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 
 class WalletService
 {
-    public function __construct(protected WalletRepository $walletRepository,
-                                protected Security         $security,
-                                protected ExchangeService  $exchangeService)
+    public function __construct(protected WalletRepository           $walletRepository,
+                                protected Security                   $security,
+                                protected CurrencyConverterInterface $currencyConverter)
     {
     }
 
@@ -26,7 +26,7 @@ class WalletService
             if ($wallet->getCurrency() === $user->getCurrency())
                 $sum += $wallet->getAmount();
             else
-                $sum += $wallet->getAmount() * $this->exchangeService->currencyExchange("{$wallet->getCurrency()}_{$user->getCurrency()}");
+                $sum += $this->currencyConverter->convert($wallet->getAmount(), $wallet->getCurrency(), $user->getCurrency());
         }
         return $sum;
     }

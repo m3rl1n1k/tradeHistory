@@ -6,6 +6,7 @@ use App\Entity\Transaction;
 use App\Entity\Transfer;
 use App\Entity\Wallet;
 use App\Enum\TransactionTypeEnum;
+use App\Service\Interfaces\CurrencyConverterInterface;
 use App\Service\Interfaces\TransferCalculationInterface;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,7 +15,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TransferCalculateService implements TransferCalculationInterface
 {
-    public function __construct(protected EntityManagerInterface $entityManager)
+    public function __construct(protected EntityManagerInterface $entityManager, protected CurrencyConverterInterface $currencyConverter)
     {
     }
 
@@ -41,33 +42,40 @@ class TransferCalculateService implements TransferCalculationInterface
 
     private function newTransfer(object $walletOut, object $walletIn, float $amount): void
     {
-        try {
-            $this->entityManager->beginTransaction();
-            //from out minus amount in plus amount and check if currency same
-            /** @var Wallet $walletOut */
-            $sum = $walletOut->decrement($amount);
-            $walletOut->setAmount($sum);
-            $sum = $walletIn->increment($amount);
-            $walletIn->setAmount($sum);
-            $this->createTransaction($amount, $walletOut, $walletIn);
-            $this->entityManager->commit();
-        } catch (Exception $e) {
-            $this->entityManager->rollback();
-        }
+//        try {
+//            $this->entityManager->beginTransaction();
+        //from out minus amount in plus amount and check if currency same
+        /** @var Wallet $walletOut */
+        $sum = $walletOut->decrement($amount);
+        $walletOut->setAmount($sum);
+        $amount = $this->currencyConverter->convert($amount, $walletOut->getCurrency(), $walletIn->getCurrency());
+        $sum = $walletIn->increment($amount);
+        $walletIn->setAmount($sum);
+        $this->createTransaction($amount, $walletOut, $walletIn, ['rate' => $this->currencyConverter->getRate()]);
+//            $this->entityManager->commit();
+//        } catch (Exception $e) {
+//            $this->entityManager->rollback();
+//        }
     }
 
-    private function createTransaction($amount, $walletOut, $walletIn): void
+    private function createTransaction($amount, $walletOut, $walletIn, array $options = []): void
     {
         $transaction = new Transaction();
         $transaction->setUser($walletOut->getUser());
-        $transaction->setWallet($walletOut);
+        $transaction->setWallet($walletIn);
         $transaction->setDate(new DateTime());
         $transaction->setAmount($amount);
         $out = $walletOut->getname() ?? $walletOut->getNumber();
         $in = $walletIn->getName() ?? $walletIn->getNumber();
-        $transaction->setDescription("Transfer from $out to $in");
-        $transaction->setType(TransactionTypeEnum::Transfer->value);
+        $message = "Transfer from $out to $in. ";
 
+        if (!empty($options['rate'])) {
+            $rate = $options['rate'];
+            $message .= "Using rate $rate. ";
+        }
+
+        $transaction->setDescription($message);
+        $transaction->setType(TransactionTypeEnum::Transfer->value);
         $this->entityManager->persist($transaction);
         $this->entityManager->flush();
     }
