@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Repository\BudgetRepository;
 use App\Repository\TransactionRepository;
 use App\Service\Budget\BudgetService;
-use App\Service\ChartService;
+use App\Service\Chart\ChartService;
 use App\Service\WalletService;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

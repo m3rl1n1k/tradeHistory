@@ -2,48 +2,40 @@
 
 namespace App\Service;
 
-use InvalidArgumentException;
+use App\Entity\ExchangeRate;
+use App\Service\Interfaces\CurrencyConverterInterface;
+use Psr\Cache\InvalidArgumentException;
 
-class CurrencyConverterService
+class CurrencyConverterService implements CurrencyConverterInterface
 {
-	protected array $exchangesRates = [];
-	
-	public function __construct(
-		protected ExchangeService $exchangeService
-	)
-	{
-		$this->exchangesRates = $this->setRates();
-	}
-	
-	private function setRates(): array
-	{
-		return $this->exchangesRates = [
-			'USD_PLN' => $this->exchangeService->currencyExchange('USD_PLN'),
-			'USD_UAH' => $this->exchangeService->currencyExchange('USD_UAH'),
-			
-			'PLN_USD' => $this->exchangeService->currencyExchange('PLN_USD'),
-			'PLN_UAH' => $this->exchangeService->currencyExchange('PLN_UAH'),
-			
-			'UAH_USD' => $this->exchangeService->currencyExchange('UAH_USD'),
-			'UAH_PLN' => $this->exchangeService->currencyExchange('UAH_PLN'),
-		];
-	}
-	
-	public function convertAmount(string $from, string $to, float $amount): float
-	{
-		$rateKey = "{$from}_$to";
-		if (!array_key_exists($rateKey, $this->exchangesRates)) {
-			throw new InvalidArgumentException("Exchange rate not found for $from to $to");
-		}
-		$exchangeRate = $this->exchangesRates[$rateKey];
-		return $amount * $exchangeRate;
-	}
-	
-	public function getRate(string $from, string $to)
-	{
-		$rateKey = "{$from}_$to";
-		return $this->setRates()[$rateKey];
-	}
-	
-	
+    private $currencyRate;
+
+    public function __construct(protected ExchangeRateService $exchangeService)
+    {
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function convert(float $amount, string $currencyFrom, string $currencyIn): float
+    {
+        if ($currencyIn === "UAH" || $currencyFrom === "UAH") {
+            return $amount;
+        }
+        if ($currencyFrom === $currencyIn) {
+            return $amount;
+        }
+        $exchangeRate = $this->exchangeService->getExchangeRate($currencyIn, $currencyFrom);
+        if ($exchangeRate instanceof ExchangeRate) {
+            $exchangeRate = $exchangeRate->getCurrencyRate();
+        }
+        $this->currencyRate = $exchangeRate[$currencyFrom];
+        $result = $amount / $exchangeRate[$currencyFrom];
+        return round($result, 2, PHP_ROUND_HALF_DOWN);
+    }
+
+    public function getRate()
+    {
+        return $this->currencyRate;
+    }
 }
