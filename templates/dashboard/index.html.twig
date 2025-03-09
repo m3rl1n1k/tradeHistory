@@ -126,6 +126,7 @@
             </div>
         </div>
     </main>
+    {{ dump(chart) }}
 {% endblock %}
 
 {% block javascripts %}
@@ -142,10 +143,10 @@
         new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: {{ labels|raw }},
+                labels: {{ chart.labels|raw }},
                 datasets: [{
-                    data: {{ data|raw }},
-                    backgroundColor: {{ colors|raw }},
+                    data: {{ chart.datasets.data|raw }},
+                    backgroundColor: {{ chart.datasets.backgroundColor|raw }},
                     color: ['#eeee']
                 }]
             },

@@ -10,6 +10,7 @@ quick:
   budget: "Додати бюджет"
 
 chart:
+  no_category: "Без категорії"
   title: "Графік витрат"
   total: "Всього витрачено"
 

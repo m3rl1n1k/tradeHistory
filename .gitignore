@@ -9,6 +9,7 @@
 ###< symfony/framework-bundle ###
 ###> symfony/framework-bundle ###
 /.env.install
+/.env
 ###< symfony/framework-bundle ###
 .idea
 /logs/

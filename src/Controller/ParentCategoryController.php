@@ -18,7 +18,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/{_locale}/parent/category')]
 final class ParentCategoryController extends AbstractController
 {
-    public function __construct(protected CategoryRepository       $CategoryRepository,
+    public function __construct(protected CategoryRepository       $categoryRepository,
                                 protected ParentCategoryRepository $parentCategoryRepository)
     {
     }
@@ -58,7 +58,7 @@ final class ParentCategoryController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $parentCategory->getId(), $request->request->get('_token'))) {
             try {
                 $entityManager->beginTransaction();
-                foreach ($this->CategoryRepository->getAll($parentCategory->getId()) as $category) {
+                foreach ($this->categoryRepository->getAll($parentCategory->getId()) as $category) {
                     $entityManager->remove($category);
                 }
 
