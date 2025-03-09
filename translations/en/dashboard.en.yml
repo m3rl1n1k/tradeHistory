@@ -10,6 +10,7 @@ quick:
   budget: "Add budget"
 
 chart:
+  no_category: "Without category"
   title: "Expense chart"
   total: "Totally expensed"
 
