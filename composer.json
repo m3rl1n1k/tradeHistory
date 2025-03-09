@@ -7,11 +7,13 @@
     "php": ">=8.2",
     "ext-ctype": "*",
     "ext-iconv": "*",
+    "ext-openssl": "*",
     "babdev/pagerfanta-bundle": "^4.2",
     "dannyben/php-quandl": "^0.5.2",
     "doctrine/doctrine-bundle": "^2.10",
     "doctrine/doctrine-migrations-bundle": "^3.4",
     "doctrine/orm": "^2.16",
+    "everapi/freecurrencyapi-php": "*",
     "othyn/php-enum-enhancements": "^1.0",
     "pagerfanta/pagerfanta": "^4.3",
     "pagerfanta/twig": "4.*",
@@ -46,8 +48,7 @@
     "symfony/web-link": "7.2.x",
     "symfony/yaml": "7.2.x",
     "twig/extra-bundle": "^2.12|^3.0",
-    "twig/twig": "3.14.1.0",
-    "ext-openssl": "*"
+    "twig/twig": "3.14.1.0"
   },
   "config": {
     "allow-plugins": {
