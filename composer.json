@@ -7,6 +7,7 @@
     "php": ">=8.2",
     "ext-ctype": "*",
     "ext-iconv": "*",
+    "ext-openssl": "*",
     "babdev/pagerfanta-bundle": "^4.2",
     "dannyben/php-quandl": "^0.5.2",
     "doctrine/doctrine-bundle": "^2.10",
@@ -46,8 +47,7 @@
     "symfony/web-link": "7.2.x",
     "symfony/yaml": "7.2.x",
     "twig/extra-bundle": "^2.12|^3.0",
-    "twig/twig": "3.14.1.0",
-    "ext-openssl": "*"
+    "twig/twig": "3.14.1.0"
   },
   "config": {
     "allow-plugins": {
@@ -92,16 +92,5 @@
       "allow-contrib": false,
       "require": "7.2.x"
     }
-  },
-  "require-dev": {
-    "doctrine/doctrine-fixtures-bundle": "^3.6",
-    "phpunit/phpunit": "^9.5",
-    "symfony/browser-kit": "7.2.x",
-    "symfony/css-selector": "7.2.x",
-    "symfony/debug-bundle": "7.2.x",
-    "symfony/maker-bundle": "^1.55",
-    "symfony/phpunit-bridge": "^6.3",
-    "symfony/stopwatch": "7.2.x",
-    "symfony/web-profiler-bundle": "7.2.x"
   }
 }
